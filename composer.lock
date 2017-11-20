@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "163c94a955a9c68b07a07d64efc0940d",
+    "content-hash": "1265177efa377984f1556c3eddebebf4",
     "packages": [
         {
             "name": "aura/intl",
@@ -289,6 +289,53 @@
             "time": "2017-03-21T13:48:47+00:00"
         },
         {
+            "name": "josbeir/cakephp-json-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/josbeir/cakephp-json-api.git",
+                "reference": "ebbc60614f0fc78f33bbfd482f5d5cee2e2a44f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/josbeir/cakephp-json-api/zipball/ebbc60614f0fc78f33bbfd482f5d5cee2e2a44f6",
+                "reference": "ebbc60614f0fc78f33bbfd482f5d5cee2e2a44f6",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "neomerx/json-api": "^0.6.5",
+                "php": ">=5.4.16"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "2.*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "JsonApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jasper Smet",
+                    "homepage": "https://github.com/josbeir/cakephp-jsonapi/graphs/contributors"
+                }
+            ],
+            "description": "json-api specification plugin for CakePHP - http://jsonapi.org/",
+            "keywords": [
+                "cakephp",
+                "json",
+                "jsonapi"
+            ],
+            "time": "2016-09-10T09:02:14+00:00"
+        },
+        {
             "name": "josegonzalez/dotenv",
             "version": "2.1.0",
             "source": {
@@ -449,6 +496,63 @@
                 "php mobile detect"
             ],
             "time": "2017-08-29T18:23:54+00:00"
+        },
+        {
+            "name": "neomerx/json-api",
+            "version": "v0.6.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neomerx/json-api.git",
+                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neomerx/json-api/zipball/53468c0a5addf76e2d863fe967614546a2305e3c",
+                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~4.6 || ^5.0",
+                "psr/http-message": "^1.0",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Neomerx\\JsonApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "neomerx",
+                    "email": "info@neomerx.com"
+                }
+            ],
+            "description": "Framework agnostic JSON API (jsonapi.org) implementation",
+            "homepage": "https://github.com/neomerx/json-api",
+            "keywords": [
+                "JSON-API",
+                "api",
+                "json",
+                "jsonapi",
+                "jsonapi.org",
+                "neomerx"
+            ],
+            "time": "2016-02-06T11:58:12+00:00"
         },
         {
             "name": "psr/http-message",
@@ -2149,6 +2253,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "josbeir/cakephp-json-api": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,
