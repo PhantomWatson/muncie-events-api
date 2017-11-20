@@ -1,0 +1,30 @@
+language: php
+
+dist: trusty
+
+sudo: false
+
+php:
+  - 7.1
+
+env:
+  - PHPUNIT=1
+  - PHPCS=1
+
+matrix:
+  fast_finish: true
+
+before_script:
+  - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:^3.0; fi
+  - if [[ $PHPUNIT = 1 ]]; then composer install; fi
+  - if [[ $PHPUNIT = 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
+  - if [[ $PHPUNIT = 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
+  - if [[ $PHPUNIT = 1 ]]; then sh -c "mysql -e 'CREATE DATABASE IF NOT EXISTS test_myapp;'"; fi
+  - phpenv rehash
+
+script:
+  - if [[ $PHPUNIT = 1 ]]; then vendor/bin/phpunit; fi
+  - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config ./webroot; fi
+
+notifications:
+  email: false
