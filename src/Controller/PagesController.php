@@ -28,13 +28,21 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
-
     /**
      * Home page
      *
      * @return void
      */
     public function home()
+    {
+    }
+
+    /**
+     * Docs page
+     *
+     * @return void
+     */
+    public function docsV1()
     {
     }
 }
