@@ -28,9 +28,7 @@ class TagsTableTest extends TestCase
         'app.users',
         'app.events',
         'app.categories',
-        'app.mailing_list',
-        'app.categories_mailing_list',
-        'app.series',
+        'app.event_series',
         'app.images',
         'app.events_images',
         'app.events_tags'

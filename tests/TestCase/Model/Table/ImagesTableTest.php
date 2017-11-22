@@ -28,9 +28,7 @@ class ImagesTableTest extends TestCase
         'app.users',
         'app.events',
         'app.categories',
-        'app.mailing_list',
-        'app.categories_mailing_list',
-        'app.series',
+        'app.event_series',
         'app.events_images',
         'app.tags',
         'app.events_tags'

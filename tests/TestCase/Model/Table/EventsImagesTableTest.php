@@ -29,9 +29,7 @@ class EventsImagesTableTest extends TestCase
         'app.events',
         'app.users',
         'app.categories',
-        'app.mailing_list',
-        'app.categories_mailing_list',
-        'app.series',
+        'app.event_series',
         'app.tags',
         'app.events_tags'
     ];
