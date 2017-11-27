@@ -182,6 +182,34 @@
                 }
               }
             }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "errors" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "title" : {
+                            "type" : "string",
+                            "example" : "Invalid protocol"
+                          },
+                          "detail" : {
+                            "type" : "string",
+                            "example" : "The API must be used over HTTPS"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security" : [ {
