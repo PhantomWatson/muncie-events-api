@@ -14,6 +14,7 @@
  */
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 
@@ -94,5 +95,20 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+    }
+
+    /**
+     * isAuthorized method
+     *
+     * @param User $user User entity
+     * @return bool
+     */
+    public function isAuthorized($user)
+    {
+        if (!$this->request->getParam('prefix')) {
+            return true;
+        }
+
+        return false;
     }
 }
