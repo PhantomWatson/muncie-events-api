@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -81,7 +83,7 @@ class UsersTable extends Table
         $validator
             ->scalar('bio')
             ->requirePresence('bio', 'create')
-            ->notEmpty('bio');
+            ->allowEmpty('bio');
 
         $validator
             ->email('email')
@@ -108,5 +110,20 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']));
 
         return $rules;
+    }
+
+    /**
+     * beforeMarshal method
+     *
+     * @param Event $event Event
+     * @param ArrayObject $data Entity data
+     * @param ArrayObject $options Array of options
+     * @return void
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    {
+        if (isset($data['email'])) {
+            $data['email'] = mb_strtolower($data['email']);
+        }
     }
 }

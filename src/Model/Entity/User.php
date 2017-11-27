@@ -60,15 +60,4 @@ class User extends Entity
     protected $_hidden = [
         'password'
     ];
-
-    /**
-     * Automatically lowercases email addresses
-     *
-     * @param string $email Email address
-     * @return string
-     */
-    protected function _getEmail($email)
-    {
-        return strtolower($email);
-    }
 }
