@@ -46,6 +46,7 @@ Router::defaultRouteClass(DashedRoute::class);
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
     $routes->redirect('/docs', '/docs/v1/index.html');
+    $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
 
     /**
      * Connect catchall routes for all controllers.

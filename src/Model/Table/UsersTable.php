@@ -81,11 +81,6 @@ class UsersTable extends Table
             ->notEmpty('role');
 
         $validator
-            ->scalar('bio')
-            ->requirePresence('bio', 'create')
-            ->allowEmpty('bio');
-
-        $validator
             ->email('email')
             ->requirePresence('email', 'create')
             ->notEmpty('email');
@@ -93,7 +88,13 @@ class UsersTable extends Table
         $validator
             ->scalar('password')
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmpty(['password', 'confirm_password'])
+            ->add('confirm_password', [
+                'compare' => [
+                    'rule' => ['compareWith', 'password'],
+                    'message' => 'Your passwords do not match.'
+                ]
+            ]);
 
         return $validator;
     }
@@ -107,7 +108,9 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['email']), 'uniqueEmail', [
+            'message' => 'There is already a Muncie Events account registered with this email address.'
+        ]);
 
         return $rules;
     }

@@ -37,6 +37,20 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <?php if ($authUser): ?>
+
+                    <?php else: ?>
+                        <?= $this->Html->link(
+                            'Register Account',
+                            [
+                                'controller' => 'Users',
+                                'action' => 'register'
+                            ],
+                            ['class' => 'nav-link']
+                        ) ?>
+                    <?php endif; ?>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/docs/v1/index.html">
                         Docs
                     </a>
