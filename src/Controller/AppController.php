@@ -63,7 +63,8 @@ class AppController extends Controller
                             'username' => 'email',
                             'password' => 'password'
                         ]
-                    ]
+                    ],
+                    'Xety/Cake3CookieAuth.Cookie'
                 ],
                 'authError' => 'You are not authorized to view this page',
                 'authorize' => 'Controller'
@@ -77,6 +78,25 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    /**
+     * beforeFilter method
+     *
+     * @param Event $event CakePHP event object
+     * @return void
+     */
+    public function beforeFilter(Event $event)
+    {
+        if (!$this->Auth->user() && $this->Cookie->read('CookieAuth')) {
+            $this->loadModel('Users');
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+            } else {
+                $this->Cookie->delete('CookieAuth');
+            }
+        }
     }
 
     /**
