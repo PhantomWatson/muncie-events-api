@@ -22,6 +22,116 @@
     "description" : ""
   } ],
   "paths" : {
+    "/events" : {
+      "get" : {
+        "tags" : [ "events" ],
+        "summary" : "Get events on or after the specified date/time",
+        "operationId" : "getEventsFuture",
+        "parameters" : [ {
+          "name" : "start",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "description" : "Return events starting on this date and into the future"
+        }, {
+          "name" : "end",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "description" : "Return events up to and including this date"
+        }, {
+          "name" : true,
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "description" : "Return only events taking place on this date"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "links" : {
+                      "type" : "object",
+                      "properties" : {
+                        "first" : {
+                          "type" : "string",
+                          "description" : "Path to the first page in this result set",
+                          "example" : "/events?on=2099-09-30&page=1"
+                        },
+                        "last" : {
+                          "type" : "string",
+                          "description" : "Path to the last page in this result set",
+                          "example" : "/events?on=2099-09-30&page=4"
+                        },
+                        "prev" : {
+                          "type" : "string",
+                          "description" : "Path to the previous page in this result set, or null if not applicable",
+                          "example" : "/events?on=2099-09-30&page=1",
+                          "nullable" : true
+                        },
+                        "next" : {
+                          "type" : "string",
+                          "description" : "Path to the next page in this result set, or null if not applicable",
+                          "example" : "/events?on=2099-09-30&page=3",
+                          "nullable" : true
+                        }
+                      }
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "errors" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "title" : {
+                            "type" : "string",
+                            "example" : "Missing required parameter"
+                          },
+                          "detail" : {
+                            "type" : "string",
+                            "example" : "Either `on` or `start` are required"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      }
+    },
     "/events/future" : {
       "get" : {
         "tags" : [ "events" ],
@@ -29,21 +139,45 @@
         "operationId" : "getEventsFuture",
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Event"
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Event"
+                  "type" : "object",
+                  "properties" : {
+                    "links" : {
+                      "type" : "object",
+                      "properties" : {
+                        "first" : {
+                          "type" : "string",
+                          "description" : "Path to the first page in this result set",
+                          "example" : "/events/future?page=1"
+                        },
+                        "last" : {
+                          "type" : "string",
+                          "description" : "Path to the last page in this result set",
+                          "example" : "/events/future?page=4"
+                        },
+                        "prev" : {
+                          "type" : "string",
+                          "description" : "Path to the previous page in this result set, or null if not applicable",
+                          "example" : "/events/future?page=1",
+                          "nullable" : true
+                        },
+                        "next" : {
+                          "type" : "string",
+                          "description" : "Path to the next page in this result set, or null if not applicable",
+                          "example" : "/events/future?page=3",
+                          "nullable" : true
+                        }
+                      }
+                    },
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    }
                   }
                 }
               }
@@ -67,7 +201,7 @@
           },
           "name" : {
             "type" : "string",
-            "example" : "General Events"
+            "example" : "Music"
           }
         },
         "xml" : {
@@ -103,7 +237,7 @@
           },
           "name" : {
             "type" : "string",
-            "example" : "roller derby"
+            "example" : "music festivals"
           }
         },
         "xml" : {
@@ -120,7 +254,7 @@
           },
           "title" : {
             "type" : "string",
-            "example" : "Muncie MusicFest"
+            "example" : "Muncie MusicFest 2022"
           },
           "description" : {
             "type" : "string",
@@ -197,7 +331,7 @@
           },
           "title" : {
             "type" : "string",
-            "example" : "First Thursday Art Crawls"
+            "example" : "Muncie MusicFest"
           }
         }
       }
