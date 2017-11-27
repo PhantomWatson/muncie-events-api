@@ -29,6 +29,20 @@ use Cake\View\Exception\MissingTemplateException;
 class PagesController extends AppController
 {
     /**
+     * Initialize method
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        if (! $this->request->is('ssl')) {
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
+        }
+    }
+
+    /**
      * Home page
      *
      * @return void
