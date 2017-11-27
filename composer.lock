@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "644c2e1bf6a1f0af2579c31add255794",
+    "content-hash": "6661f436f1dcda0f3dd04f651cdb696f",
     "packages": [
         {
             "name": "aura/intl",
@@ -287,6 +287,62 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2017-03-21T13:48:47+00:00"
+        },
+        {
+            "name": "crabstudio/recaptcha",
+            "version": "2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/agiletechvn/Recaptcha.git",
+                "reference": "0c12a4065166671c9896b006434c9731f276d417"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/agiletechvn/Recaptcha/zipball/0c12a4065166671c9896b006434c9731f276d417",
+                "reference": "0c12a4065166671c9896b006434c9731f276d417",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.2",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "2.*",
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "crabstudio/authenticate": "Prevent Brute Force Attack",
+                "crabstudio/email-queue": "Allows you to simple send bulk email"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Recaptcha\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "anhtuank7c",
+                    "email": "anhtuank7c@hotmail.com"
+                }
+            ],
+            "description": "Easily use Google Recaptcha in CakePHP 3.2+ projects",
+            "homepage": "https://github.com/crabstudio/recaptcha",
+            "keywords": [
+                "agiletechvn",
+                "anhtuank7c",
+                "bootstrap",
+                "cakephp",
+                "captcha",
+                "crabstudio",
+                "google",
+                "recaptcha"
+            ],
+            "time": "2017-10-06T14:35:42+00:00"
         },
         {
             "name": "josbeir/cakephp-json-api",
