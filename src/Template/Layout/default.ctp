@@ -48,6 +48,11 @@
     <?= $this->Flash->render() ?>
 
     <div class="container clearfix">
+        <?php if ($this->fetch('title')): ?>
+            <h1 id="page-title">
+                <?= $this->fetch('title') ?>
+            </h1>
+        <?php endif; ?>
         <?= $this->fetch('content') ?>
     </div>
     <script>
