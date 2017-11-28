@@ -12,7 +12,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        if (! $this->request->is('ssl')) {
+        if (!$this->request->is('ssl')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
@@ -27,7 +27,7 @@ class UsersController extends AppController
         ]);
 
         $this->Auth->allow([
-            'register'
+            'register', 'login', 'logout'
         ]);
 
         return null;
@@ -74,5 +74,56 @@ class UsersController extends AppController
         }
 
         return null;
+    }
+
+    /**
+     * Method for /users/login
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function login()
+    {
+        $this->set('pageTitle', 'Log in');
+
+        if (!$this->request->is('post')) {
+            $user = $this->Users->newEntity();
+            $user->auto_login = true;
+            $this->set('user', $user);
+
+            return null;
+        }
+
+        $user = $this->Auth->identify();
+        if (!$user) {
+            $this->Flash->error('Email or password is incorrect');
+            $this->request = $this->request->withData('password', '');
+            $this->set('user', $user);
+
+            return null;
+        }
+
+        $this->Auth->setUser($user);
+
+        // Remember login information
+        if ($this->request->getData('auto_login')) {
+            $this->response = $this->response->withCookie('CookieAuth', [
+                'email' => $this->request->getData('email'),
+                'password' => $this->request->getData('password'),
+                'expire' => strtotime('+1 year'),
+                'httpOnly' => true
+            ]);
+        }
+
+        return $this->redirect($this->Auth->redirectUrl());
+    }
+
+    /**
+     * Method for /users/logout
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function logout()
+    {
+        return $this->redirect($this->Auth->logout());
     }
 }

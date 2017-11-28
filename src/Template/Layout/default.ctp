@@ -37,9 +37,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <?php if ($authUser): ?>
-
-                    <?php else: ?>
+                    <a class="nav-link" href="/docs/v1/index.html">
+                        Docs
+                    </a>
+                </li>
+                <?php if ($authUser): ?>
+                    <li class="nav-item">
+                        <?= $this->Html->link(
+                            'Log out',
+                            [
+                                'controller' => 'Users',
+                                'action' => 'logout'
+                            ],
+                            ['class' => 'nav-link']
+                        ) ?>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
                         <?= $this->Html->link(
                             'Register Account',
                             [
@@ -48,13 +62,18 @@
                             ],
                             ['class' => 'nav-link']
                         ) ?>
-                    <?php endif; ?>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/docs/v1/index.html">
-                        Docs
-                    </a>
-                </li>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link(
+                            'Log in',
+                            [
+                                'controller' => 'Users',
+                                'action' => 'login'
+                            ],
+                            ['class' => 'nav-link']
+                        ) ?>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>

@@ -47,6 +47,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
     $routes->redirect('/docs', '/docs/v1/index.html');
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
+    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 
     /**
      * Connect catchall routes for all controllers.
