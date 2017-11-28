@@ -63,7 +63,7 @@ class AppController extends Controller
             if ($user) {
                 $this->Auth->setUser($user);
             } else {
-                $this->response = $this->response->withCookie('CookieAuth', null);
+                $this->response = $this->response->withExpiredCookie('CookieAuth');
             }
         }
     }
