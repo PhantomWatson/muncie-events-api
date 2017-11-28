@@ -30,7 +30,7 @@ class AppController extends Controller
                 'logoutRedirect' => [
                     'prefix' => false,
                     'controller' => 'Pages',
-                    'action' => 'index'
+                    'action' => 'home'
                 ],
                 'authenticate' => [
                     'Form' => [
