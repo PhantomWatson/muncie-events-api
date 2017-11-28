@@ -56,13 +56,13 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
-        if (!$this->Auth->user() && $this->Cookie->read('CookieAuth')) {
+        if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $this->loadModel('Users');
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
             } else {
-                $this->Cookie->delete('CookieAuth');
+                $this->response = $this->response->withCookie('CookieAuth', null);
             }
         }
     }
