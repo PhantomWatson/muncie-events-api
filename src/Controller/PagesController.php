@@ -40,6 +40,8 @@ class PagesController extends AppController
         if (! $this->request->is('ssl')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
+
+        $this->Auth->allow();
     }
 
     /**
