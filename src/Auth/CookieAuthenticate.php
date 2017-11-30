@@ -21,6 +21,10 @@ class CookieAuthenticate extends BaseAuthenticate
         $this->setConfig([
             'cookie' => [
                 'name' => 'CookieAuth'
+            ],
+            'fields' => [
+                'username' => 'username',
+                'password' => 'password'
             ]
         ]);
         parent::__construct($registry, $config);
