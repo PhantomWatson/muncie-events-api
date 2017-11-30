@@ -136,4 +136,26 @@ class UsersTable extends Table
             $data['email'] = mb_strtolower($data['email']);
         }
     }
+
+    /**
+     * Generates a random API key and assigns it to the specified user
+     *
+     * @param int $userId User ID
+     * @return \App\Model\Entity\User|bool
+     */
+    public function setApiKey($userId)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $length = 32;
+        $apiKey = '';
+        for ($i = 0; $i < $length; $i++) {
+            $apiKey .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $user = $this->get($userId);
+        $user = $this->patchEntity($user, ['api_key', $apiKey]);
+
+        return $this->save($user);
+    }
 }
