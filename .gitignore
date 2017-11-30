@@ -35,3 +35,6 @@ nbproject/* # NetBeans
 
 # Node
 node_modules/*
+
+# Migration lock file
+config/Migrations/schema-dump-default.lock
