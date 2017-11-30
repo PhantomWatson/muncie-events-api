@@ -44,6 +44,16 @@
                 <?php if ($authUser): ?>
                     <li class="nav-item">
                         <?= $this->Html->link(
+                            'API Key',
+                            [
+                                'controller' => 'Users',
+                                'action' => 'apiKey'
+                            ],
+                            ['class' => 'nav-link']
+                        ) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link(
                             'Log out',
                             [
                                 'controller' => 'Users',

@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Model\Table\UsersTable;
+use Cake\ORM\TableRegistry;
+
 class UsersController extends AppController
 {
     /**
@@ -128,5 +131,34 @@ class UsersController extends AppController
     public function logout()
     {
         return $this->redirect($this->Auth->logout());
+    }
+
+    /**
+     * Page for displaying or generating an API key
+     *
+     * @return void
+     */
+    public function apiKey()
+    {
+        /** @var UsersTable $usersTable */
+        $usersTable = TableRegistry::get('Users');
+        $userId = $this->Auth->user('id');
+        $apiKey = $usersTable->getApiKey($userId);
+
+        if ($this->request->is('post')) {
+            if ($apiKey) {
+                $this->Flash->error('You already have an API key for your account');
+            } elseif ($usersTable->setApiKey($userId)) {
+                $this->Flash->success('API key generated');
+                $apiKey = $usersTable->getApiKey($userId);
+            } else {
+                $this->Flash->error('There was an error generating your API key');
+            }
+        }
+
+        $this->set([
+            'apiKey' => $apiKey,
+            'pageTitle' => $apiKey ? 'Your API Key' : 'Generate API Key'
+        ]);
     }
 }
