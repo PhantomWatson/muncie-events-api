@@ -2,6 +2,7 @@
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Cake\Utility\Security;
 
 /**
  * UsersFixture
@@ -50,7 +51,7 @@ class UsersFixture extends TestFixture
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             'email' => 'user1@example.com',
-            'password' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', // hash of string 'password'
+            'password' => '',
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => 'KOsc08Hf1cOLUpbt1NHwoTwA2BnCIUSZ',
@@ -63,7 +64,7 @@ class UsersFixture extends TestFixture
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             'email' => 'user2@example.com',
-            'password' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', // hash of string 'password'
+            'password' => '',
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => null,
@@ -71,4 +72,18 @@ class UsersFixture extends TestFixture
             'modified' => '2017-11-20 22:39:17'
         ],
     ];
+
+    /**
+     * Init method
+     *
+     * @return void
+     */
+    public function init()
+    {
+        parent::init();
+
+        foreach ($this->records as &$record) {
+            $record['password'] = Security::hash('password');
+        }
+    }
 }
