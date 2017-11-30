@@ -22,6 +22,19 @@ use Cake\TestSuite\IntegrationTestCase;
 class PagesControllerTest extends IntegrationTestCase
 {
     /**
+     * Sets up this set of tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->configRequest([
+            'environment' => ['HTTPS' => 'on']
+        ]);
+    }
+
+    /**
      * testMultipleGet method
      *
      * @return void
@@ -32,5 +45,22 @@ class PagesControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
         $this->get('/');
         $this->assertResponseOk();
+    }
+
+    /**
+     * Tests HTTP requests being redirected to HTTPS
+     *
+     * @return void
+     */
+    public function testRedirectToHttps()
+    {
+        $this->configRequest([
+            'environment' => ['HTTPS' => 'off']
+        ]);
+        $this->get('/');
+        $this->assertRedirect();
+
+        // Test redirection SPECIFICALLY to HTTPS
+        $this->markTestIncomplete('Not implemented yet.');
     }
 }
