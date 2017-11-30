@@ -88,4 +88,35 @@ class UsersTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Tests UsersTable::setApiKey()
+     *
+     * @return void
+     */
+    public function testSetApiKey()
+    {
+        $userId = 2; // User without API key
+        $user = $this->Users->get($userId);
+        $this->assertNull($user->api_key);
+
+        $this->Users->setApiKey($userId);
+        $user = $this->Users->get($userId);
+        $this->assertNotNull($user->api_key);
+    }
+
+    /**
+     * Tests UsersTable::getApiKey()
+     *
+     * @return void
+     */
+    public function testGetApiKey()
+    {
+        $userId = 1;
+        $user = $this->Users->get($userId);
+        $this->assertNotNull($user->api_key);
+
+        $apiKey = $this->Users->getApiKey($userId);
+        $this->assertEquals($user->api_key, $apiKey);
+    }
 }
