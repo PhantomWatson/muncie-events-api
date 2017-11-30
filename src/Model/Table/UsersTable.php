@@ -155,7 +155,7 @@ class UsersTable extends Table
         }
 
         $user = $this->get($userId);
-        $user = $this->patchEntity($user, ['api_key', $apiKey]);
+        $user = $this->patchEntity($user, ['api_key' => $apiKey]);
 
         return $this->save($user);
     }
