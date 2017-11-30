@@ -4,8 +4,8 @@ namespace App\Auth;
 use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
-use Cake\Http\ServerRequest;
 use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 class CookieAuthenticate extends BaseAuthenticate
 {
