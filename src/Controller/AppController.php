@@ -38,14 +38,12 @@ class AppController extends Controller
                             'username' => 'email',
                             'password' => 'password'
                         ]
-                    ],
-                    'Xety/Cake3CookieAuth.Cookie'
+                    ]
                 ],
                 'authError' => 'You are not authorized to view this page',
                 'authorize' => 'Controller'
             ]
         );
-        $this->loadComponent('Cookie');
         $this->Auth->deny();
     }
 
