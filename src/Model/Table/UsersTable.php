@@ -96,6 +96,13 @@ class UsersTable extends Table
                 ]
             ]);
 
+        $validator
+            ->scalar('api_key')
+            ->allowEmpty('name')
+            ->minLength('api_key', 32)
+            ->maxLength('api_key', 32)
+            ->ascii('api_key');
+
         return $validator;
     }
 
