@@ -38,7 +38,8 @@ class AppController extends Controller
                             'username' => 'email',
                             'password' => 'password'
                         ]
-                    ]
+                    ],
+                    'App\Auth\CookieAuthenticate'
                 ],
                 'authError' => 'You are not authorized to view this page',
                 'authorize' => 'Controller'
