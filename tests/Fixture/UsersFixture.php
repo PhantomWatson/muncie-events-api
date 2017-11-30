@@ -49,7 +49,7 @@ class UsersFixture extends TestFixture
             'name' => 'User',
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'email' => 'Lorem ipsum dolor sit amet',
+            'email' => 'user1@example.com',
             'password' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', // hash of string 'password'
             'mailing_list_id' => 1,
             'facebook_id' => 1,
@@ -62,7 +62,7 @@ class UsersFixture extends TestFixture
             'name' => 'User without API key',
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'email' => 'Lorem ipsum dolor sit amet',
+            'email' => 'user2@example.com',
             'password' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', // hash of string 'password'
             'mailing_list_id' => 1,
             'facebook_id' => 1,
