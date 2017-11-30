@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
@@ -157,5 +158,24 @@ class UsersTable extends Table
         $user = $this->patchEntity($user, ['api_key', $apiKey]);
 
         return $this->save($user);
+    }
+
+    /**
+     * Returns the user's API key, or null if not set
+     *
+     * Throws an exception if the user isn't found
+     *
+     * @param int $userId User ID
+     * @return string|null
+     */
+    public function getApiKey($userId)
+    {
+        /** @var User $result */
+        $result = $this->find()
+            ->select(['api_key'])
+            ->where(['user_id' => $userId])
+            ->firstOrFail();
+
+        return $result->api_key;
     }
 }
