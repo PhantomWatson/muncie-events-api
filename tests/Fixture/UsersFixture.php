@@ -57,5 +57,18 @@ class UsersFixture extends TestFixture
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
+        [
+            'id' => 2,
+            'name' => 'User without API key',
+            'role' => 'Lorem ipsum dolor ',
+            'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+            'email' => 'Lorem ipsum dolor sit amet',
+            'password' => 'Lorem ipsum dolor sit amet',
+            'mailing_list_id' => 1,
+            'facebook_id' => 1,
+            'api_key' => null,
+            'created' => '2017-11-20 22:39:17',
+            'modified' => '2017-11-20 22:39:17'
+        ],
     ];
 }
