@@ -173,7 +173,7 @@ class UsersTable extends Table
         /** @var User $result */
         $result = $this->find()
             ->select(['api_key'])
-            ->where(['user_id' => $userId])
+            ->where(['id' => $userId])
             ->firstOrFail();
 
         return $result->api_key;
