@@ -50,7 +50,8 @@ class User extends Entity
         'event_series' => true,
         'events' => true,
         'images' => true,
-        'tags' => true
+        'tags' => true,
+        'api_key' => true
     ];
 
     /**
