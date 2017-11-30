@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property int $mailing_list_id
  * @property int $facebook_id
+ * @property string $api_key
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
