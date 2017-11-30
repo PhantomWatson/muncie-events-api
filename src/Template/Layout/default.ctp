@@ -4,7 +4,7 @@
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $this->fetch('title') ? 'Muncie Events API: ' . $this->fetch('title') : 'Muncie Events API' ?>
+        <?= isset($pageTitle) ? 'Muncie Events API: ' . $pageTitle : 'Muncie Events API' ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
@@ -81,9 +81,9 @@
     <?= $this->Flash->render() ?>
 
     <div class="container clearfix">
-        <?php if ($this->fetch('title')): ?>
+        <?php if (isset($pageTitle)): ?>
             <h1 id="page-title">
-                <?= $this->fetch('title') ?>
+                <?= $pageTitle ?>
             </h1>
         <?php endif; ?>
         <?= $this->fetch('content') ?>
