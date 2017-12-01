@@ -3,6 +3,17 @@
     website at <a href="https://muncieevents.com">https://MuncieEvents.com</a>.
 </p>
 
+<p>
+    If you already have a Muncie Events account, you can
+    <?= $this->Html->link(
+        'log in with it now',
+        [
+            'controller' => 'Users',
+            'action' => 'login'
+        ]
+    ) ?>.
+</p>
+
 <?= $this->Form->create($user) ?>
 
 <?= $this->Form->control('name') ?>
