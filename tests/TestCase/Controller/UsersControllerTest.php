@@ -54,6 +54,11 @@ class UsersControllerTest extends IntegrationTestCase
         ]);
     }
 
+    /**
+     * Tests an incorrect login
+     *
+     * @return void
+     */
     public function testBadLogin()
     {
         $this->post('/login', [
