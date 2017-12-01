@@ -10,6 +10,12 @@
       pre {
           background: inherit;
       }
+      #swagger-ui div.topbar {
+          display: none;
+      }
+      #swagger-ui .information-container .info {
+          margin-top: 0;
+      }
   </style>
 <?php $this->end(); ?>
 
