@@ -37,9 +37,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/docs/v1/index.html">
-                        Docs
-                    </a>
+                    <?= $this->Html->link(
+                        'Docs',
+                        [
+                            'controller' => 'Pages',
+                            'action' => 'docsV1'
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
                 </li>
                 <?php if ($authUser): ?>
                     <li class="nav-item">
