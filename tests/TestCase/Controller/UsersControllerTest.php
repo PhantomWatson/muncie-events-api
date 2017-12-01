@@ -69,4 +69,35 @@ class UsersControllerTest extends IntegrationTestCase
         $this->assertResponseContains('Email or password is incorrect');
         $this->assertSession(null, 'Auth.User.id');
     }
+
+    /**
+     * Tests logout
+     *
+     * @return void
+     */
+    public function testLogout()
+    {
+        $this->post(
+            [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
+            [
+                'email' => 'user1@example.com',
+                'password' => 'password'
+            ]
+        );
+        $this->assertSession('user1@example.com', 'Auth.User.email');
+
+        $this->get([
+            'controller' => 'Users',
+            'action' => 'logout'
+        ]);
+        $this->assertResponseSuccess();
+        $this->assertRedirect([
+            'controller' => 'Pages',
+            'action' => 'home'
+        ]);
+        $this->assertSession(null, 'Auth.User.email');
+    }
 }
