@@ -1,8 +1,8 @@
 <?php
 namespace App\Test\Fixture;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\TestSuite\Fixture\TestFixture;
-use Cake\Utility\Security;
 
 /**
  * UsersFixture
@@ -82,8 +82,12 @@ class UsersFixture extends TestFixture
     {
         parent::init();
 
+        $password = 'password';
+        $hasher = new DefaultPasswordHasher();
+        $hash = $hasher->hash($password);
+
         foreach ($this->records as &$record) {
-            $record['password'] = Security::hash('password');
+            $record['password'] = $hash;
         }
     }
 }
