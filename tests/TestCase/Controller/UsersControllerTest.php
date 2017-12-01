@@ -38,13 +38,22 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testGoodLogin()
     {
-        $this->get('/login');
+        $this->get([
+            'controller' => 'Users',
+            'action' => 'login'
+        ]);
         $this->assertResponseOk();
 
-        $this->post('/login', [
-            'email' => 'user1@example.com',
-            'password' => 'password'
-        ]);
+        $this->post(
+            [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
+            [
+                'email' => 'user1@example.com',
+                'password' => 'password'
+            ]
+        );
         $this->assertResponseSuccess();
         $this->assertResponseNotContains('Email or password is incorrect');
         $this->assertSession('1', 'Auth.User.id');
@@ -61,10 +70,16 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testBadLogin()
     {
-        $this->post('/login', [
-            'email' => 'wrong@example.com',
-            'password' => 'wrong'
-        ]);
+        $this->post(
+            [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
+            [
+                'email' => 'wrong@example.com',
+                'password' => 'wrong'
+            ]
+        );
         $this->assertResponseOk();
         $this->assertResponseContains('Email or password is incorrect');
         $this->assertSession(null, 'Auth.User.id');
