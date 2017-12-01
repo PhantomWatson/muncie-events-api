@@ -38,17 +38,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testGoodLogin()
     {
-        $this->get([
+        $loginPath = [
             'controller' => 'Users',
             'action' => 'login'
-        ]);
+        ];
+        $this->get($loginPath);
         $this->assertResponseOk();
 
-        $this->post(
-            [
-                'controller' => 'Users',
-                'action' => 'login'
-            ],
+        $this->post($loginPath,
             [
                 'email' => 'user1@example.com',
                 'password' => 'password'
