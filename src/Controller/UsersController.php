@@ -45,7 +45,10 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEntity();
 
-        $this->set('user', $user);
+        $this->set([
+            'pageTitle' => 'Register an Account',
+            'user' => $user
+        ]);
 
         if ($this->request->is('post')) {
             if ($this->Recaptcha->verify()) {
