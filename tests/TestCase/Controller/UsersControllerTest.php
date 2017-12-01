@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -27,7 +28,10 @@ class UsersControllerTest extends IntegrationTestCase
     {
         parent::setUp();
         $this->configRequest([
-            'environment' => ['HTTPS' => 'on']
+            'environment' => [
+                'HTTPS' => 'on',
+                'RECAPTCHA_ENABLED' => false
+            ]
         ]);
     }
 
@@ -38,6 +42,7 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testGoodLogin()
     {
+        $this->_request['environment']['FOO'] = 'bar';
         $loginPath = [
             'controller' => 'Users',
             'action' => 'login'
@@ -111,5 +116,34 @@ class UsersControllerTest extends IntegrationTestCase
             'action' => 'home'
         ]);
         $this->assertSession(null, 'Auth.User.email');
+    }
+
+    /**
+     * Tests register method
+     *
+     * @return void
+     */
+    public function testRegister()
+    {
+        $registerPath = [
+            'controller' => 'Users',
+            'action' => 'register'
+        ];
+        $this->get($registerPath);
+        $this->assertResponseOk();
+
+        $email = 'newuser@example.com';
+        $this->post($registerPath, [
+            'name' => 'New User',
+            'email' => $email,
+            'password' => 'password',
+            'confirm_password' => 'password'
+        ]);
+        $this->assertRedirect();
+        $usersTable = TableRegistry::get('Users');
+        $newUserCount = $usersTable->find()
+            ->where(['email' => $email])
+            ->count();
+        $this->assertEquals(1, $newUserCount);
     }
 }
