@@ -2,15 +2,14 @@
 <?php $this->append('css'); ?>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
   <style>
-    html
-    {
-      box-sizing: border-box;
-      overflow: -moz-scrollbars-vertical;
-      overflow-y: scroll;
-    }
-    pre {
-        background: inherit;
-    }
+      html {
+          box-sizing: border-box;
+          overflow: -moz-scrollbars-vertical;
+          overflow-y: scroll;
+      }
+      pre {
+          background: inherit;
+      }
   </style>
 <?php $this->end(); ?>
 
