@@ -19,3 +19,13 @@
         ['class' => 'btn btn-primary']
     );
     echo $this->Form->end();
+?>
+
+<p>
+    <?= $this->Html->link('Register an account', [
+        'controller' => 'Users',
+        'action' => 'register'
+    ]); ?>
+    <br />
+    <?= $this->Html->link('Forgot password', 'https://muncieevents.com/users/forgot_password'); ?>
+</p>
