@@ -20,7 +20,7 @@ class UsersController extends AppController
         }
 
         $this->loadComponent('Recaptcha.Recaptcha', [
-            'enable' => (bool)env('RECAPTCHA_ENABLED'),
+            'enable' => (bool)env('RECAPTCHA_ENABLED', true),
             'sitekey' => '6LeDpjoUAAAAADAE8vX2DOVuuRYQSmSqRhvxIr5G',
             'secret' => env('RECAPTCHA_SECRET'),
             'type' => 'image',
