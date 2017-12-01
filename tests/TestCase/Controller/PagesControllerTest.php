@@ -63,4 +63,18 @@ class PagesControllerTest extends IntegrationTestCase
         // Test redirection SPECIFICALLY to HTTPS
         $this->markTestIncomplete('Not implemented yet.');
     }
+
+    /**
+     * Tests /docs/v1
+     *
+     * @return void
+     */
+    public function testDocsV1()
+    {
+        $this->get([
+            'controller' => 'Pages',
+            'action' => 'docsV1'
+        ]);
+        $this->assertResponseOk();
+    }
 }
