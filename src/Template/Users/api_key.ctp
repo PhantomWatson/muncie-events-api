@@ -14,7 +14,12 @@
                 Your API key must be included in the query string of every API call. For example:
                 <br />
                 <code>
-                    https://api.muncieevents.com/v1/events/future?apikey=<?= $apiKey ?>
+                    <?= \Cake\Routing\Router::url([
+                        'prefix' => 'v1',
+                        'controller' => 'Events',
+                        'action' => 'future',
+                        '?' => ['apikey' => $apiKey]
+                    ], true) ?>
                 </code>
             </p>
         </div>
