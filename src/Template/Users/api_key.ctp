@@ -14,7 +14,7 @@
                 Your API key must be included in the query string of every API call. For example:
                 <br />
                 <code>
-                    https://api.muncieevents.com/events/future?apikey=<?= $apiKey ?>
+                    https://api.muncieevents.com/v1/events/future?apikey=<?= $apiKey ?>
                 </code>
             </p>
         </div>
