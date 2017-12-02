@@ -178,4 +178,19 @@ class UsersTable extends Table
 
         return $result->api_key;
     }
+
+    /**
+     * Returns whether or not the API key was found in the database
+     *
+     * @param string $apiKey API key
+     * @return bool
+     */
+    public function isValidApiKey($apiKey)
+    {
+        $count = $this->find()
+            ->where(['api_key' => $apiKey])
+            ->count();
+
+        return $count > 0;
+    }
 }
