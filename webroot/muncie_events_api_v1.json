@@ -52,7 +52,7 @@
           "200" : {
             "description" : "Successful operation",
             "content" : {
-              "application/json" : {
+              "application/vnd.api+json" : {
                 "schema" : {
                   "type" : "object",
                   "properties" : {
@@ -97,7 +97,7 @@
           "400" : {
             "description" : "Bad request",
             "content" : {
-              "application/json" : {
+              "application/vnd.api+json" : {
                 "schema" : {
                   "type" : "object",
                   "properties" : {
@@ -137,7 +137,7 @@
           "200" : {
             "description" : "Successful operation",
             "content" : {
-              "application/json" : {
+              "application/vnd.api+json" : {
                 "schema" : {
                   "type" : "object",
                   "properties" : {
@@ -182,7 +182,7 @@
           "400" : {
             "description" : "Bad request",
             "content" : {
-              "application/json" : {
+              "application/vnd.api+json" : {
                 "schema" : {
                   "type" : "object",
                   "properties" : {
