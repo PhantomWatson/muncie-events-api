@@ -1,6 +1,9 @@
 {
   "openapi" : "3.0.0",
   "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/Ball-State-CBER/muncie-events/1.0.0"
+  }, {
     "description" : "Muncie Events API",
     "url" : "https://api.muncieevents.com/v1"
   } ],
@@ -34,7 +37,8 @@
             "type" : "string",
             "format" : "date"
           },
-          "description" : "Return events starting on this date and into the future"
+          "description" : "Return events starting on this date and into the future",
+          "required" : true
         }, {
           "name" : "end",
           "in" : "query",
@@ -43,14 +47,6 @@
             "format" : "date"
           },
           "description" : "Return events up to and including this date"
-        }, {
-          "name" : true,
-          "in" : "query",
-          "schema" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "description" : "Return only events taking place on this date"
         } ],
         "responses" : {
           "200" : {
@@ -116,7 +112,7 @@
                           },
                           "detail" : {
                             "type" : "string",
-                            "example" : "Either `on` or `start` are required"
+                            "example" : "The `start` parameter is required"
                           }
                         }
                       }
