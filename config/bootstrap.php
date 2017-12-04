@@ -215,3 +215,5 @@ if (Configure::read('debug')) {
 }
 
 Plugin::load('Recaptcha');
+
+Plugin::load('JsonApi');
