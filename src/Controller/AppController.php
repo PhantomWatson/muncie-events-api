@@ -39,7 +39,7 @@ class AppController extends Controller
                             'password' => 'password'
                         ]
                     ],
-                    'App\Auth\CookieAuthenticate' => [
+                    'Cookie' => [
                         'fields' => [
                             'username' => 'email',
                             'password' => 'password'
