@@ -28,7 +28,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Category $category
- * @property \App\Model\Entity\EventSeries $series
+ * @property \App\Model\Entity\EventSeries $event_series
  * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Tag[] $tags
  */
@@ -65,7 +65,7 @@ class Event extends Entity
         'modified' => true,
         'user' => true,
         'category' => true,
-        'series' => true,
+        'event_series' => true,
         'images' => true,
         'tags' => true
     ];
