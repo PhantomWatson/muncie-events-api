@@ -81,7 +81,7 @@ class EventsController extends AppController
         if ($end) {
             $query->where(function ($exp) use ($start) {
                 /** @var QueryExpression $exp */
-                return $exp->gte('date', $start);
+                return $exp->lte('date', $start);
             });
         }
 
