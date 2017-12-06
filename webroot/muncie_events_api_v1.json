@@ -56,6 +56,12 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    },
                     "links" : {
                       "type" : "object",
                       "properties" : {
@@ -81,12 +87,6 @@
                           "example" : "/events?on=2099-09-30&page=3",
                           "nullable" : true
                         }
-                      }
-                    },
-                    "data" : {
-                      "type" : "array",
-                      "items" : {
-                        "$ref" : "#/components/schemas/Event"
                       }
                     }
                   }
@@ -141,9 +141,20 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    },
                     "links" : {
                       "type" : "object",
                       "properties" : {
+                        "self" : {
+                          "type" : "string",
+                          "description" : "Path to access this event",
+                          "example" : "/events/future?page=1"
+                        },
                         "first" : {
                           "type" : "string",
                           "description" : "Path to the first page in this result set",
@@ -166,12 +177,6 @@
                           "example" : "/events/future?page=3",
                           "nullable" : true
                         }
-                      }
-                    },
-                    "data" : {
-                      "type" : "array",
-                      "items" : {
-                        "$ref" : "#/components/schemas/Event"
                       }
                     }
                   }
@@ -272,80 +277,180 @@
         "type" : "object",
         "required" : [ "category_id", "date", "description", "location", "start_time", "title" ],
         "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : "events"
+          },
           "id" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "title" : {
-            "type" : "string",
-            "example" : "Muncie MusicFest 2022"
+          "attributes" : {
+            "type" : "object",
+            "properties" : {
+              "title" : {
+                "type" : "string",
+                "example" : "Muncie MusicFest 2022"
+              },
+              "description" : {
+                "type" : "string",
+                "example" : "Muncie's big annual music festival, celebrating the talent of the Muncie music community"
+              },
+              "location" : {
+                "type" : "string",
+                "example" : "Cornerstone Center for the Arts"
+              },
+              "location_details" : {
+                "type" : "string",
+                "example" : "Third floor ballroom",
+                "nullable" : true
+              },
+              "address" : {
+                "type" : "string",
+                "example" : "520 E Main Street",
+                "nullable" : true
+              },
+              "user" : {
+                "$ref" : "#/components/schemas/User",
+                "nullable" : true
+              },
+              "category" : {
+                "$ref" : "#/components/schemas/Category"
+              },
+              "series" : {
+                "$ref" : "#/components/schemas/EventSeries",
+                "nullable" : true
+              },
+              "time_start" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-02-20T20:30:00-04:00",
+                "description" : "Datetime in local (Muncie) time"
+              },
+              "time_end" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-02-20T22:00:00-04:00",
+                "description" : "Datetime in local (Muncie) time",
+                "nullable" : true
+              },
+              "age_restriction" : {
+                "type" : "string",
+                "example" : "21+",
+                "nullable" : true
+              },
+              "cost" : {
+                "type" : "string",
+                "example" : "$10, or $5 w/ student ID",
+                "nullable" : true
+              },
+              "source" : {
+                "type" : "string",
+                "description" : "A link or description of the source of this event information",
+                "example" : "http://munciemusicfest.com",
+                "nullable" : true
+              },
+              "tags" : {
+                "type" : "array",
+                "xml" : {
+                  "name" : "tag",
+                  "wrapped" : true
+                },
+                "items" : {
+                  "$ref" : "#/components/schemas/Tag"
+                }
+              },
+              "images" : {
+                "type" : "array",
+                "xml" : {
+                  "name" : "image",
+                  "wrapped" : true
+                },
+                "items" : {
+                  "$ref" : "#/components/schemas/Image"
+                }
+              },
+              "url" : {
+                "type" : "string",
+                "description" : "The URL for accessing this event outside of the API"
+              }
+            }
           },
-          "description" : {
-            "type" : "string",
-            "example" : "Muncie's big annual music festival, celebrating the talent of the Muncie music community"
-          },
-          "location" : {
-            "type" : "string",
-            "example" : "Cornerstone Center for the Arts"
-          },
-          "location_details" : {
-            "type" : "string",
-            "example" : "Third floor ballroom",
-            "nullable" : true
-          },
-          "address" : {
-            "type" : "string",
-            "example" : "520 E Main Street",
-            "nullable" : true
-          },
-          "user" : {
-            "$ref" : "#/components/schemas/User",
-            "nullable" : true
-          },
-          "category" : {
-            "$ref" : "#/components/schemas/Category"
-          },
-          "series" : {
-            "$ref" : "#/components/schemas/EventSeries",
-            "nullable" : true
-          },
-          "start" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : "2020-02-20T20:30:00-04:00",
-            "description" : "Datetime in local (Muncie) time"
-          },
-          "end" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : "2020-02-20T22:00:00-04:00",
-            "description" : "Datetime in local (Muncie) time",
-            "nullable" : true
-          },
-          "age_restriction" : {
-            "type" : "string",
-            "example" : "21+",
-            "nullable" : true
-          },
-          "cost" : {
-            "type" : "string",
-            "example" : "$10, or $5 w/ student ID",
-            "nullable" : true
-          },
-          "source" : {
-            "type" : "string",
-            "description" : "A link or description of the source of this event information",
-            "example" : "http://munciemusicfest.com",
-            "nullable" : true
-          },
-          "tags" : {
-            "type" : "array",
-            "xml" : {
-              "name" : "tag",
-              "wrapped" : true
-            },
-            "items" : {
-              "$ref" : "#/components/schemas/Tag"
+          "relationships" : {
+            "type" : "object",
+            "properties" : {
+              "category" : {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "object",
+                    "properties" : {
+                      "type" : {
+                        "type" : "string",
+                        "example" : "categories"
+                      },
+                      "id" : {
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "series" : {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "object",
+                    "nullable" : true,
+                    "properties" : {
+                      "type" : {
+                        "type" : "string",
+                        "example" : "series"
+                      },
+                      "id" : {
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "tags" : {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "type" : {
+                          "type" : "string",
+                          "example" : "tags"
+                        },
+                        "id" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "user" : {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "object",
+                    "properties" : {
+                      "type" : {
+                        "type" : "string",
+                        "example" : "users"
+                      },
+                      "id" : {
+                        "type" : "integer"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -361,6 +466,28 @@
           "title" : {
             "type" : "string",
             "example" : "Muncie MusicFest"
+          }
+        }
+      },
+      "Image" : {
+        "type" : "object",
+        "required" : [ "title" ],
+        "properties" : {
+          "tiny_url" : {
+            "type" : "string",
+            "description" : "The URL of the tiny (50px square) thumbnail of the image"
+          },
+          "small_url" : {
+            "type" : "string",
+            "description" : "The URL of the small (200px wide) thumbnail of the image"
+          },
+          "full_url" : {
+            "type" : "string",
+            "description" : "The URL of the full-sized image"
+          },
+          "caption" : {
+            "type" : "string",
+            "example" : "Event flyer"
           }
         }
       }
