@@ -290,11 +290,13 @@
           },
           "location_details" : {
             "type" : "string",
-            "example" : "Third floor ballroom"
+            "example" : "Third floor ballroom",
+            "nullable" : true
           },
           "address" : {
             "type" : "string",
-            "example" : "520 E Main Street"
+            "example" : "520 E Main Street",
+            "nullable" : true
           },
           "user" : {
             "$ref" : "#/components/schemas/User",
@@ -322,16 +324,19 @@
           },
           "age_restriction" : {
             "type" : "string",
-            "example" : "21+"
+            "example" : "21+",
+            "nullable" : true
           },
           "cost" : {
             "type" : "string",
-            "example" : "$10, or $5 w/ student ID"
+            "example" : "$10, or $5 w/ student ID",
+            "nullable" : true
           },
           "source" : {
             "type" : "string",
             "description" : "A link or description of the source of this event information",
-            "example" : "http://munciemusicfest.com"
+            "example" : "http://munciemusicfest.com",
+            "nullable" : true
           },
           "tags" : {
             "type" : "array",
