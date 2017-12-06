@@ -178,7 +178,8 @@ class EventsTable extends Table
             ->contain([
                 'Categories',
                 'Tags',
-                'Users'
+                'Users',
+                'Images'
             ]);
     }
 

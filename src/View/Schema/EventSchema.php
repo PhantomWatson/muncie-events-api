@@ -25,6 +25,7 @@ class EventSchema extends EntitySchema
      */
     public function getAttributes($entity)
     {
+        $baseUrl = 'https://muncieevents.com';
         $attributes = [
             'title' => $entity->title,
             'description' => $entity->description,
@@ -53,13 +54,23 @@ class EventSchema extends EntitySchema
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,
             'tags' => [],
-            'url' => 'https://muncieevents.com/event/' . $entity->id
+            'images' => [],
+            'url' => $baseUrl . '/event/' . $entity->id
         ];
 
         foreach ($entity->tags as $tag) {
             $attributes['tags'][] = [
                 'id' => $tag->id,
                 'name' => $tag->name
+            ];
+        }
+
+        foreach ($entity->images as $image) {
+            $attributes['images'][] = [
+                'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
+                'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
+                'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
+                'caption' => $image->caption
             ];
         }
 
