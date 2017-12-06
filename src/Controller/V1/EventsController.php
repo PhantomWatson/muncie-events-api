@@ -69,4 +69,28 @@ class EventsController extends AppController
             'events' => $results
         ]);
     }
+
+    /**
+     * /events/future endpoint
+     *
+     * @return void
+     */
+    public function future()
+    {
+        $results = $this->Events
+            ->find('forApi')
+            ->find('startingOn', ['date' => date('Y-m-d')])
+            ->all();
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'Tag',
+                'User'
+            ],
+            '_serialize' => ['events'],
+            'events' => $results
+        ]);
+    }
 }
