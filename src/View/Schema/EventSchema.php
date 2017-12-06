@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Schema;
 
+use Cake\Routing\Router;
 use JsonApi\View\Schema\EntitySchema;
 
 class EventSchema extends EntitySchema
@@ -51,7 +52,8 @@ class EventSchema extends EntitySchema
             'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,
-            'tags' => []
+            'tags' => [],
+            'url' => 'https://muncieevents.com/event/' . $entity->id
         ];
 
         foreach ($entity->tags as $tag) {
