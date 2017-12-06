@@ -3,9 +3,7 @@ namespace App\Controller\V1;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
-use Cake\Database\Expression\QueryExpression;
 use Cake\Network\Exception\BadRequestException;
-use Cake\ORM\Query;
 use Cake\Routing\Router;
 
 class EventsController extends AppController
@@ -48,44 +46,17 @@ class EventsController extends AppController
      */
     public function index()
     {
-        $isDate = function ($date) {
-            return preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $date);
-        };
-
         $start = $this->request->getQuery('start');
         $end = $this->request->getQuery('end');
         if (!$start) {
             throw new BadRequestException('The parameter "start" is required');
         }
-        if (!$isDate($start)) {
-            throw new BadRequestException('The "start" parameter must be in the format YYYY-MM-DD');
-        }
-        if ($end && !$isDate($end)) {
-            throw new BadRequestException('The "end" parameter must be in the format YYYY-MM-DD');
-        }
 
-        /** @var Query $query */
-        $query = $this->Events->find()
-            ->where([
-                'published' => true,
-                function ($exp) use ($start) {
-                    /** @var QueryExpression $exp */
-                    return $exp->gte('date', $start);
-                }
-            ])
-            ->contain([
-                'Categories',
-                'Tags',
-                'Users'
-            ]);
-        if ($end) {
-            $query->where(function ($exp) use ($start) {
-                /** @var QueryExpression $exp */
-                return $exp->lte('date', $start);
-            });
-        }
-
-        $results = $query->all();
+        $results = $this->Events
+            ->find('forApi')
+            ->find('startingOn', ['date' => $start])
+            ->find('endingOn', ['date' => $end])
+            ->all();
 
         $this->set([
             '_entities' => [

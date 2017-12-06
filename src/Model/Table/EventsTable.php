@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Database\Expression\QueryExpression;
+use Cake\Network\Exception\BadRequestException;
+use Cake\Network\Exception\InternalErrorException;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -157,5 +161,86 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['series_id'], 'EventSeries'));
 
         return $rules;
+    }
+
+    /**
+     * Applies default parameters to the events query for an API call
+     *
+     * @param Query $query Query
+     * @return $this|array
+     */
+    public function findForApi(Query $query)
+    {
+        return $query
+            ->where([
+                'published' => true
+            ])
+            ->contain([
+                'Categories',
+                'Tags',
+                'Users'
+            ]);
+    }
+
+    /**
+     * Limits the query to events on or after the specified date
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'date' expected
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findStartingOn(Query $query, array $options)
+    {
+        if (!array_key_exists('date', $options)) {
+            throw new InternalErrorException("\$options['date'] unspecified");
+        }
+
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $options['date'])) {
+            throw new BadRequestException('Dates must be in the format YYYY-MM-DD');
+        }
+
+        return $query
+            ->where([
+            function ($exp) use ($options) {
+                /** @var QueryExpression $exp */
+                return $exp->gte('date', $options['date']);
+            }
+        ]);
+    }
+
+    /**
+     * Limits the query to events before or on the specified date
+     *
+     * Allows 'date' to be null, which leaves the query unaffected
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'date' expected
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findEndingOn(Query $query, array $options)
+    {
+        if (!array_key_exists('date', $options)) {
+            throw new InternalErrorException("\$options['date'] unspecified");
+        }
+
+        if (!$options['date']) {
+            return $query;
+        }
+
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $options['date'])) {
+            throw new BadRequestException('Dates must be in the format YYYY-MM-DD');
+        }
+
+        return $query
+            ->where([
+                function ($exp) use ($options) {
+                    /** @var QueryExpression $exp */
+                    return $exp->lte('date', $options['date']);
+                }
+            ]);
     }
 }
