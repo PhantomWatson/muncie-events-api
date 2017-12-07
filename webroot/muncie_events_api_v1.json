@@ -106,9 +106,9 @@
                       "items" : {
                         "type" : "object",
                         "properties" : {
-                          "title" : {
-                            "type" : "string",
-                            "example" : "Missing required parameter"
+                          "code" : {
+                            "type" : "integer",
+                            "example" : 400
                           },
                           "detail" : {
                             "type" : "string",
