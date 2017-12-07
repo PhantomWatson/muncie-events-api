@@ -204,11 +204,12 @@ class EventsTable extends Table
 
         return $query
             ->where([
-            function ($exp) use ($options) {
-                /** @var QueryExpression $exp */
-                return $exp->gte('date', $options['date']);
-            }
-        ]);
+                function ($exp) use ($options) {
+                    /** @var QueryExpression $exp */
+
+                    return $exp->gte('date', $options['date']);
+                }
+            ]);
     }
 
     /**
@@ -240,6 +241,7 @@ class EventsTable extends Table
             ->where([
                 function ($exp) use ($options) {
                     /** @var QueryExpression $exp */
+
                     return $exp->lte('date', $options['date']);
                 }
             ]);
