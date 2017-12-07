@@ -19,7 +19,7 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param \Cake\ORM\Entity $entity
+     * @param \Cake\ORM\Entity $entity Entity
      * @return array
      */
     public function getAttributes($entity)
