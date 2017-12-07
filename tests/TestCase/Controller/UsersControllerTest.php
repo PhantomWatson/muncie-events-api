@@ -50,7 +50,8 @@ class UsersControllerTest extends IntegrationTestCase
         $this->get($loginPath);
         $this->assertResponseOk();
 
-        $this->post($loginPath,
+        $this->post(
+            $loginPath,
             [
                 'email' => 'user1@example.com',
                 'password' => 'password'
