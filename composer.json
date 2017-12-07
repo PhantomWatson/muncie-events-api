@@ -13,7 +13,8 @@
         "josegonzalez/dotenv": "2.*",
         "josbeir/cakephp-json-api": "dev-master",
         "crabstudio/recaptcha": "^2.0",
-        "xety/cake3-cookieauth": "1.*"
+        "xety/cake3-cookieauth": "1.*",
+        "bcrowe/cakephp-api-pagination": "^1.1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
