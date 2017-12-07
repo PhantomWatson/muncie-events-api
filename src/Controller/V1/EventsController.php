@@ -3,6 +3,7 @@ namespace App\Controller\V1;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
+use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\Routing\Router;
 
@@ -24,6 +25,8 @@ class EventsController extends AppController
         $this->viewBuilder()->setClassName('JsonApi.JsonApi');
 
         $this->set('_url', Router::url('/v1', true));
+
+        $this->loadComponent('ApiPagination');
 
         return null;
     }
@@ -52,11 +55,10 @@ class EventsController extends AppController
             throw new BadRequestException('The parameter "start" is required');
         }
 
-        $results = $this->Events
+        $query = $this->Events
             ->find('forApi')
             ->find('startingOn', ['date' => $start])
-            ->find('endingOn', ['date' => $end])
-            ->all();
+            ->find('endingOn', ['date' => $end]);
 
         $this->set([
             '_entities' => [
@@ -66,7 +68,7 @@ class EventsController extends AppController
                 'User'
             ],
             '_serialize' => ['events'],
-            'events' => $results
+            'events' => $this->paginate($query)
         ]);
     }
 
@@ -77,10 +79,9 @@ class EventsController extends AppController
      */
     public function future()
     {
-        $results = $this->Events
+        $query = $this->Events
             ->find('forApi')
-            ->find('startingOn', ['date' => date('Y-m-d')])
-            ->all();
+            ->find('startingOn', ['date' => date('Y-m-d')]);
 
         $this->set([
             '_entities' => [
@@ -89,8 +90,8 @@ class EventsController extends AppController
                 'Tag',
                 'User'
             ],
-            '_serialize' => ['events'],
-            'events' => $results
+            '_serialize' => ['events', 'pagination'],
+            'events' => $this->paginate($query)
         ]);
     }
 }
