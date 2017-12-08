@@ -28,7 +28,7 @@
     "/events" : {
       "get" : {
         "tags" : [ "events" ],
-        "summary" : "Get events on or after the specified date/time",
+        "summary" : "Get events on or after the specified date/time, or in a range of dates",
         "operationId" : "getEventsFuture",
         "parameters" : [ {
           "name" : "start",
@@ -37,7 +37,7 @@
             "type" : "string",
             "format" : "date"
           },
-          "description" : "Return events starting on this date and into the future. Format: YYYY-MM-DD",
+          "description" : "Return events taking place on and after this date. Format: YYYY-MM-DD",
           "required" : true
         }, {
           "name" : "end",
