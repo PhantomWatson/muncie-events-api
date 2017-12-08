@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 function customNotify(message) {
 	return notify({
-        title: 'Tax Calculator',
+        title: 'Muncie Events API',
         message: function(file) {
             return message + ': ' + file.relative;
         }
@@ -77,7 +77,7 @@ gulp.task('js_lint', function () {
  *    LESS    *
  **************/
 var srcLessFiles = [
-    'webroot/less/style.less'
+    'webroot/css/style.less'
 ];
 
 gulp.task('less', function () {
