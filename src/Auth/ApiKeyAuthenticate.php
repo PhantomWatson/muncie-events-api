@@ -6,6 +6,7 @@ use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
@@ -32,6 +33,17 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function authenticate(ServerRequest $request, Response $response)
     {
+        return $this->getUser($request);
+    }
+
+    /**
+     * Get a user based on information in the request
+     *
+     * @param \Cake\Http\ServerRequest $request Request object.
+     * @return mixed Either false or an array of user information
+     */
+    public function getUser(ServerRequest $request)
+    {
         $apiKey = Hash::get($request->getQueryParams(), 'apikey', null);
         if (empty($apiKey)) {
             return false;
@@ -39,8 +51,9 @@ class ApiKeyAuthenticate extends BaseAuthenticate
 
         /** @var UsersTable $usersTable */
         $usersTable = TableRegistry::get('Users');
+        $user = $usersTable->findByApiKey($apiKey)->first();
 
-        return $usersTable->isValidApiKey($apiKey);
+        return $user ? $user->toArray() : false;
     }
 
     /**
@@ -57,6 +70,12 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function unauthenticated(ServerRequest $request, Response $response)
     {
-        parent::unauthenticated($request, $response);
+        $apiKey = $request->getQuery('apikey');
+
+        if ($apiKey) {
+            throw new UnauthorizedException('Api key not recognized');
+        }
+
+        throw new UnauthorizedException('Api key not provided');
     }
 }
