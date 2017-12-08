@@ -1,9 +1,6 @@
 {
   "openapi" : "3.0.0",
   "servers" : [ {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/Ball-State-CBER/muncie-events/1.0.0"
-  }, {
     "description" : "Muncie Events API",
     "url" : "https://api.muncieevents.com/v1"
   } ],
