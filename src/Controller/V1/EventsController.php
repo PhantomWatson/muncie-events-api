@@ -8,6 +8,14 @@ use Cake\Routing\Router;
 
 class EventsController extends ApiController
 {
+    public $paginate = [
+        'limit' => 50,
+        'order' => [
+            'Events.date' => 'asc',
+            'Events.time_start' => 'asc',
+        ]
+    ];
+
     /**
      * Initialize method
      *
