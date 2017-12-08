@@ -1,13 +1,12 @@
 <?php
 namespace App\Controller\V1;
 
-use App\Controller\AppController;
+use App\Controller\ApiController;
 use App\Model\Entity\User;
-use Cake\Event\Event;
 use Cake\Network\Exception\BadRequestException;
 use Cake\Routing\Router;
 
-class EventsController extends AppController
+class EventsController extends ApiController
 {
     /**
      * Initialize method
@@ -17,6 +16,8 @@ class EventsController extends AppController
     public function initialize()
     {
         parent::initialize();
+
+        $this->Auth->deny();
 
         if (!$this->request->is('ssl')) {
             throw new BadRequestException('API calls must be made with HTTPS protocol');
