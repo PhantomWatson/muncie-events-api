@@ -1,4 +1,10 @@
 <?php
     /** @var \Cake\View\View $this */
+    use Cake\Core\Configure;
+
     $this->response = $this->response->withHeader('Content-Type', 'application/vnd.api+json');
-    echo json_encode($errors, JSON_PRETTY_PRINT);
+    if (Configure::read('debug')) {
+        echo json_encode($errors, JSON_PRETTY_PRINT);
+    } else {
+        echo json_encode($errors);
+    }
