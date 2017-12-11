@@ -35,7 +35,8 @@
             "format" : "date"
           },
           "description" : "Return events taking place on and after this date. Format: YYYY-MM-DD",
-          "required" : true
+          "required" : true,
+          "example" : "2017-01-15"
         }, {
           "name" : "end",
           "in" : "query",
@@ -43,7 +44,19 @@
             "type" : "string",
             "format" : "date"
           },
-          "description" : "Return events up to and including this date. Format: YYYY-MM-DD"
+          "description" : "Return events up to and including this date. Format: YYYY-MM-DD",
+          "example" : "2017-12-31"
+        }, {
+          "name" : "withTags[]",
+          "in" : "query",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "description" : "Return events that have any of the specified tags.",
+          "example" : [ "christmas", "halloween" ]
         } ],
         "responses" : {
           "200" : {
@@ -130,6 +143,18 @@
         "tags" : [ "events" ],
         "summary" : "Get events on or after the current date/time",
         "operationId" : "getEventsFuture",
+        "parameters" : [ {
+          "name" : "withTags[]",
+          "in" : "query",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "description" : "Return events that have any of the specified tags.",
+          "example" : [ "christmas", "halloween" ]
+        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation",

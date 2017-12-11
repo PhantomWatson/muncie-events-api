@@ -60,6 +60,7 @@ class EventsController extends ApiController
     {
         $start = $this->request->getQuery('start');
         $end = $this->request->getQuery('end');
+        $tags = $this->request->getQuery('withTags');
         if (!$start) {
             throw new BadRequestException('The parameter "start" is required');
         }
@@ -67,7 +68,8 @@ class EventsController extends ApiController
         $query = $this->Events
             ->find('forApi')
             ->find('startingOn', ['date' => $start])
-            ->find('endingOn', ['date' => $end]);
+            ->find('endingOn', ['date' => $end])
+            ->find('tagged', ['tags' => $tags]);
 
         $this->set([
             '_entities' => [
@@ -88,9 +90,11 @@ class EventsController extends ApiController
      */
     public function future()
     {
+        $tags = $this->request->getQuery('withTags');
         $query = $this->Events
             ->find('forApi')
-            ->find('startingOn', ['date' => date('Y-m-d')]);
+            ->find('startingOn', ['date' => date('Y-m-d')])
+            ->find('tagged', ['tags' => $tags]);
 
         $this->set([
             '_entities' => [

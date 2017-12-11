@@ -246,4 +246,41 @@ class EventsTable extends Table
                 }
             ]);
     }
+
+    /**
+     * Limits the query to events with the supplied tags
+     *
+     * Allows 'tags' to be null, which leaves the query unaffected
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'tags' expected
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findTagged(Query $query, array $options)
+    {
+        if (!array_key_exists('tags', $options)) {
+            throw new InternalErrorException("\$options['tags'] unspecified");
+        }
+
+        $tags = $options['tags'];
+        if (empty($tags)) {
+            return $query;
+        }
+
+        if (!is_array($tags)) {
+            throw new BadRequestException('Tags must be provided as an array');
+        }
+
+        $tags = array_map('strtolower', $tags);
+
+        return $query->matching('Tags', function ($q) use ($tags) {
+            /** @var Query $q */
+            $keys = array_fill(0, count($tags), 'Tags.name');
+            $conditions = array_combine($keys, $tags);
+
+            return $q->where(['OR' => $conditions]);
+        });
+    }
 }
