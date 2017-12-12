@@ -37,6 +37,13 @@ class AppController extends Controller
                         'fields' => [
                             'username' => 'email',
                             'password' => 'password'
+                        ],
+                        'passwordHasher' => [
+                            'className' => 'Fallback',
+                            'hashers' => [
+                                'Default',
+                                'Weak' => ['hashType' => 'sha1']
+                            ]
                         ]
                     ],
                     'Cookie' => [
