@@ -50,7 +50,7 @@ class Application extends BaseApplication
 
             ->add(new EncryptedCookieMiddleware(
                 ['CookieAuth'],
-                env('COOKIE_KEY')
+                Configure::read('cookie_key')
             ));
 
         return $middlewareQueue;
