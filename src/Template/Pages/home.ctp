@@ -64,6 +64,13 @@
     </p>
 
     <h3>
+        Moderation
+    </h3>
+    <p>
+        Only events that have been approved by a Muncie Events moderator will appear in API call results.
+    </p>
+
+    <h3>
         Rate Limit
     </h3>
     <p>
