@@ -343,6 +343,11 @@
                 "$ref" : "#/components/schemas/EventSeries",
                 "nullable" : true
               },
+              "date" : {
+                "type" : "string",
+                "format" : "date",
+                "example" : "2020-02-20"
+              },
               "time_start" : {
                 "type" : "string",
                 "format" : "date-time",
