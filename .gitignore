@@ -38,3 +38,6 @@ node_modules/*
 
 # Migration lock file
 config/Migrations/schema-dump-default.lock
+
+# Other
+notes.txt
