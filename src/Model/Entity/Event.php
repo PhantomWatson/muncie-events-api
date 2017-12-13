@@ -101,11 +101,15 @@ class Event extends Entity
      * correctly interpreted and adds the correct year, month, and day information so a full RFC 3339
      * string can be outputted.
      *
-     * @param FrozenTime $localTime Indiana time mistakenly represented as UTC
-     * @return string
+     * @param FrozenTime|null $localTime Indiana time mistakenly represented as UTC
+     * @return string|null
      */
     private function getCorrectedTime($localTime)
     {
+        if (!$localTime) {
+            return null;
+        }
+
         $timeString = $localTime->toDateTimeString();
         $correctedTime = new Time($timeString);
         $timezone = 'America/Indiana/Indianapolis';
