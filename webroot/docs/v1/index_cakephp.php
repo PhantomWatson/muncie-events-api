@@ -60,8 +60,6 @@
 <?php $this->Html->script('/docs/v1/swagger-ui-standalone-preset.js', ['block' => 'script']); ?>
 
 <?php $this->append('buffered'); ?>
-    window.onload = function() {
-
       // Build a system
       const ui = SwaggerUIBundle({
         url: "/muncie_events_api_v1.json",
@@ -78,5 +76,4 @@
       })
 
       window.ui = ui
-    }
 <?php $this->end(); ?>
