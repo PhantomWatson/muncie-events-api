@@ -344,4 +344,6 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    'cookie_key' => env('COOKIE_KEY', 'cookie key'),
 ];
