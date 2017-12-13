@@ -74,21 +74,21 @@ class Event extends Entity
     ];
 
     /**
-     * Returns the starting time as a full datetime object with correct UTC offset
+     * Transforms the time into a full datetime object with correct UTC offset
      *
      * @return string
      */
-    protected function _getFullTimeStart()
+    protected function _getTimeStart()
     {
         return $this->getCorrectedTime($this->_properties['time_start']);
     }
 
     /**
-     * Returns the ending time as a full datetime object with correct UTC offset
+     * Transforms the time into a full datetime object with correct UTC offset
      *
      * @return string
      */
-    protected function _getFullTimeEnd()
+    protected function _getTimeEnd()
     {
         return $this->getCorrectedTime($this->_properties['time_end']);
     }
