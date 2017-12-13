@@ -48,8 +48,8 @@ class EventSchema extends EntitySchema
                     'title' => $entity->event_series->title
                 ] : null,
             'date' => $entity->date->format('Y-m-d'),
-            'time_start' => $entity->full_time_start,
-            'time_end' => $entity->full_time_end,
+            'time_start' => $entity->time_start,
+            'time_end' => $entity->time_end,
             'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,
