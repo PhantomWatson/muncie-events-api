@@ -1,7 +1,10 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
+use Cake\I18n\Time;
 use Cake\ORM\Entity;
+use DateTime;
 
 /**
  * Event Entity
@@ -69,4 +72,61 @@ class Event extends Entity
         'images' => true,
         'tags' => true
     ];
+
+    /**
+     * Returns the starting time as a full datetime object with correct UTC offset
+     *
+     * @return string
+     */
+    protected function _getFullTimeStart()
+    {
+        return $this->getCorrectedTime($this->_properties['time_start']);
+    }
+
+    /**
+     * Returns the ending time as a full datetime object with correct UTC offset
+     *
+     * @return string
+     */
+    protected function _getFullTimeEnd()
+    {
+        return $this->getCorrectedTime($this->_properties['time_end']);
+    }
+
+    /**
+     * Returns a datetime, corrected for being a local time value stored as UTC
+     *
+     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is interpreted
+     * as "10:00:00+00:00", i.e. 10am in UTC. This returns such a time as "10:00:00+05:00" so that it's
+     * correctly interpreted and adds the correct year, month, and day information so a full RFC 3339
+     * string can be outputted.
+     *
+     * @param FrozenTime $localTime Indiana time mistakenly represented as UTC
+     * @return string
+     */
+    private function getCorrectedTime($localTime)
+    {
+        $timeString = $localTime->toDateTimeString();
+        $correctedTime = new Time($timeString);
+        $timezone = 'America/Indiana/Indianapolis';
+        $correctedTime->timezone($timezone);
+
+        // Fix missing date info
+        $correctedTime
+            ->year($this->_properties['date']->year)
+            ->month($this->_properties['date']->month)
+            ->day($this->_properties['date']->day);
+
+        // Change from Indiana time to UTC time
+        $offset = timezone_offset_get(timezone_open($timezone), new DateTime($localTime));
+        $isNegOffset = stripos($offset, '-') === 0;
+        $modification = str_replace(
+            $isNegOffset ? '-' : '+',
+            $isNegOffset ? '+' : '-',
+            $offset
+        ) . ' seconds';
+        $correctedTime->modify($modification);
+
+        return $correctedTime->toRfc3339String();
+    }
 }
