@@ -110,8 +110,8 @@ class UsersControllerTest extends IntegrationTestCase
         $this->get([
             'controller' => 'Users',
             'action' => 'logout'
-        ]);
-        $this->assertResponseSuccess(); print_r($this->_response->getBody());
+        ]); print_r($this->_response->getBody());
+        $this->assertResponseSuccess();
         $this->assertRedirect([
             'controller' => 'Pages',
             'action' => 'home'
