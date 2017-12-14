@@ -56,7 +56,8 @@ if (!env('APP_NAME')) {
     $dotenv->parse()
         ->putenv()
         ->toEnv()
-        ->toServer();
+        ->toServer()
+        ->expect('APP_NAME');
 }
 
 /*
