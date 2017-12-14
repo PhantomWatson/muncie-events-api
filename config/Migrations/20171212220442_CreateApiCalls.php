@@ -1,9 +1,15 @@
 <?php
+namespace App;
+
 use Migrations\AbstractMigration;
 
 class CreateApiCalls extends AbstractMigration
 {
-
+    /**
+     * Up method
+     *
+     * @return void
+     */
     public function up()
     {
         $this->table('api_calls')
@@ -25,9 +31,13 @@ class CreateApiCalls extends AbstractMigration
             ->create();
     }
 
+    /**
+     * Down method
+     *
+     * @return void
+     */
     public function down()
     {
         $this->dropTable('api_calls');
     }
 }
-

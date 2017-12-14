@@ -1,4 +1,6 @@
 <?php
+namespace App;
+
 use Migrations\AbstractMigration;
 
 class AddApiKeyToUsers extends AbstractMigration
