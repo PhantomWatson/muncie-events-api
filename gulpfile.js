@@ -26,7 +26,7 @@ gulp.task('default', ['php_cs']);
  **************/
 
 gulp.task('php_cs', function (cb) {
-    return gulp.src(['src/**/*.php', 'config/*.php', 'tests/*.php', 'tests/**/*.php'])
+    return gulp.src(['src/**/*.php', 'config/*.php', 'tests/*.php', 'tests/**/*.php', 'config/**/*.php'])
         // Validate files using PHP Code Sniffer
         .pipe(phpcs({
             bin: '.\\vendor\\bin\\phpcs.bat',
