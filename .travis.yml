@@ -8,9 +8,11 @@ php:
   - 7.1
 
 env:
-  - PHPUNIT=1
-  - PHPCS=1
-  - CC_TEST_REPORTER_ID=4cdc3a3034d60f5c73be6db4e69c72912f8af8141911d3d4e382f69c7a7aeb44
+  global:
+    - CC_TEST_REPORTER_ID=4cdc3a3034d60f5c73be6db4e69c72912f8af8141911d3d4e382f69c7a7aeb44
+  matrix:
+    - PHPUNIT=1
+    - PHPCS=1
 
 matrix:
   fast_finish: true
