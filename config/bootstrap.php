@@ -48,8 +48,11 @@ use Cake\Utility\Security;
  * You can remove this block if you do not want to use environment
  * variables for configuration when deploying.
  */
-if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
-    $dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
+if (!env('APP_NAME')) {
+    $dotenv = new \josegonzalez\Dotenv\Loader([
+        CONFIG . '.env',
+        CONFIG . '.env.default'
+    ]);
     $dotenv->parse()
         ->putenv()
         ->toEnv()
