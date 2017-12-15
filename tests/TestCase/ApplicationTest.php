@@ -15,6 +15,7 @@
 namespace App\Test\TestCase;
 
 use App\Application;
+use App\Test\Fixture\UsersFixture;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -26,6 +27,29 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class ApplicationTest extends IntegrationTestCase
 {
+    public $userSession;
+    public $keylessUserSession;
+
+    /**
+     * Sets up this set of tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $usersFixture = new UsersFixture();
+        $this->userSession = [
+            'Auth' => [
+                'User' => $usersFixture->records[0]
+            ]
+        ];
+        $this->keylessUserSession = [
+            'Auth' => [
+                'User' => $usersFixture->records[1]
+            ]
+        ];
+    }
 
     /**
      * testMiddleware

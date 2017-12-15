@@ -1,13 +1,14 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\Fixture\UsersFixture;
+use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
 
 /**
  * UsersControllerTest class
  */
-class UsersControllerTest extends IntegrationTestCase
+class UsersControllerTest extends ApplicationTest
 {
 
     /**
@@ -146,5 +147,24 @@ class UsersControllerTest extends IntegrationTestCase
             ->where(['email' => $email])
             ->count();
         $this->assertEquals(1, $newUserCount);
+    }
+
+    /**
+     * Tests retrieval of a stored API key
+     *
+     * @return void
+     */
+    public function testViewApiKey()
+    {
+        $this->session($this->userSession);
+        $this->get([
+            'controller' => 'Users',
+            'action' => 'apiKey'
+        ]);
+        $this->assertResponseOk();
+
+        $usersFixture = new UsersFixture();
+        $apiKey = $usersFixture->records[0]['api_key'];
+        $this->assertResponseContains($apiKey);
     }
 }
