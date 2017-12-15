@@ -155,7 +155,8 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testViewApiKey()
     {
-        $this->session($this->userSession);
+        $userIdWithKey = 1;
+        $this->session($this->getUserSession($userIdWithKey));
         $this->get([
             'controller' => 'Users',
             'action' => 'apiKey'
@@ -163,7 +164,32 @@ class UsersControllerTest extends ApplicationTest
         $this->assertResponseOk();
 
         $usersFixture = new UsersFixture();
-        $apiKey = $usersFixture->records[0]['api_key'];
+        $apiKey = $usersFixture->records[$userIdWithKey - 1]['api_key'];
         $this->assertResponseContains($apiKey);
+    }
+
+    /**
+     * Tests generation of an API key
+     *
+     * @return void
+     */
+    public function testGenerateApiKey()
+    {
+        $keylessUserId = 2;
+        $usersFixture = new UsersFixture();
+        $this->assertNull($usersFixture->records[$keylessUserId - 1]['api_key']);
+
+        $this->session($this->getUserSession($keylessUserId));
+        $this->post([
+            'controller' => 'Users',
+            'action' => 'apiKey'
+        ]);
+        $this->assertResponseOk();
+
+        $usersTable = TableRegistry::get('Users');
+        $user = $usersTable->get($keylessUserId);
+        $this->assertNotNull($user->api_key);
+
+        $this->assertResponseContains($user->api_key);
     }
 }

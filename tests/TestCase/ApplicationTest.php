@@ -27,9 +27,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class ApplicationTest extends IntegrationTestCase
 {
-    public $userSession;
-    public $keylessUserSession;
-
     /**
      * Sets up this set of tests
      *
@@ -38,17 +35,6 @@ class ApplicationTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
-        $usersFixture = new UsersFixture();
-        $this->userSession = [
-            'Auth' => [
-                'User' => $usersFixture->records[0]
-            ]
-        ];
-        $this->keylessUserSession = [
-            'Auth' => [
-                'User' => $usersFixture->records[1]
-            ]
-        ];
     }
 
     /**
@@ -66,5 +52,22 @@ class ApplicationTest extends IntegrationTestCase
         $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->get(2));
+    }
+
+    /**
+     * Return a session array for the specified user being logged in
+     *
+     * @param int $userId User ID
+     * @return array
+     */
+    public function getUserSession($userId)
+    {
+        $usersFixture = new UsersFixture();
+
+        return [
+            'Auth' => [
+                'User' => $usersFixture->records[$userId - 1]
+            ]
+        ];
     }
 }
