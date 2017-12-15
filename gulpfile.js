@@ -50,7 +50,10 @@ function testNotification(status, pluginName, override) {
 
 gulp.task('php_unit', function() {
     gulp.src('phpunit.xml')
-        .pipe(phpunit('', {notify: true}))
+        .pipe(phpunit('', {
+            notify: true,
+            coverageClover: 'reports/clover.xml'
+        }))
         .on('error', notify.onError(testNotification('fail', 'phpunit')))
         .pipe(notify(testNotification('pass', 'php_unit')));
 });
