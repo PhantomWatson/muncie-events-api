@@ -43,7 +43,6 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testGoodLogin()
     {
-        $this->_request['environment']['FOO'] = 'bar';
         $loginPath = [
             'controller' => 'Users',
             'action' => 'login'
