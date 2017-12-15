@@ -33,6 +33,7 @@ script:
   - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config ./webroot; fi
 
 after_script:
+  - if [[ $PHPUNIT = 1 ]]; then ./cc-test-reporter format-coverage --input-type clover; fi
   - if [[ $PHPUNIT = 1 ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 notifications:
