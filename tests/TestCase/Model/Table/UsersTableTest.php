@@ -119,4 +119,18 @@ class UsersTableTest extends TestCase
         $apiKey = $this->Users->getApiKey($userId);
         $this->assertEquals($user->api_key, $apiKey);
     }
+
+    /**
+     * Tests if generated Api keys are unique
+     *
+     * @return void
+     */
+    public function testUniqueApiKeys()
+    {
+        /** @var UsersTable $usersTable */
+        $usersTable = TableRegistry::get('Users');
+        $apiKey1 = $usersTable->generateApiKey();
+        $apiKey2 = $usersTable->generateApiKey();
+        $this->assertNotEquals($apiKey1, $apiKey2);
+    }
 }
