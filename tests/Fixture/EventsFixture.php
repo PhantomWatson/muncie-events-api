@@ -2,6 +2,7 @@
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Cake\Utility\Hash;
 
 /**
  * EventsFixture
@@ -55,27 +56,49 @@ class EventsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
+    public $records = [];
+
+    public function init()
+    {
+        $defaultEvent = [
             'id' => 1,
-            'title' => 'Lorem ipsum dolor sit amet',
-            'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'location' => 'Lorem ipsum dolor sit amet',
-            'location_details' => 'Lorem ipsum dolor sit amet',
-            'address' => 'Lorem ipsum dolor sit amet',
+            'title' => 'Event title',
+            'description' => 'Event description.',
+            'location' => 'Location name',
+            'location_details' => 'Location details',
+            'address' => 'Location address',
             'user_id' => 1,
             'category_id' => 1,
             'series_id' => 1,
-            'date' => '2017-11-20',
+            'date' => '2018-01-01',
             'time_start' => '22:38:43',
             'time_end' => '22:38:43',
-            'age_restriction' => 'Lorem ipsum dolor sit amet',
-            'cost' => 'Lorem ipsum dolor sit amet',
-            'source' => 'Lorem ipsum dolor sit amet',
+            'age_restriction' => null,
+            'cost' => null,
+            'source' => 'Event info source',
             'published' => 1,
             'approved_by' => 1,
             'created' => '2017-11-20 22:38:43',
             'modified' => '2017-11-20 22:38:43'
-        ],
-    ];
+        ];
+
+        $categoriesFixture = new CategoriesFixture();
+        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+
+        $id = 1;
+        $dates = ['yesterday', 'today', 'tomorrow'];
+        foreach ($dates as $date) {
+            foreach ($categories as $categoryId => $categoryName) {
+                $this->records[] = array_merge($defaultEvent, [
+                    'id' => $id,
+                    'date' => date('Y-m-d', strtotime($date)),
+                    'title' => $categoryName . ' event ' . $date,
+                    'category_id' => $categoryId
+                ]);
+                $id++;
+            }
+        }
+
+        parent::init();
+    }
 }
