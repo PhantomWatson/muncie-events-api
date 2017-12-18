@@ -147,6 +147,20 @@ class UsersTable extends Table
      */
     public function setApiKey($userId)
     {
+        $apiKey = $this->generateApiKey();
+        $user = $this->get($userId);
+        $user = $this->patchEntity($user, ['api_key' => $apiKey]);
+
+        return $this->save($user);
+    }
+
+    /**
+     * Returns a random 32-character string
+     *
+     * @return string
+     */
+    public function generateApiKey()
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $length = 32;
@@ -155,10 +169,7 @@ class UsersTable extends Table
             $apiKey .= $characters[rand(0, $charactersLength - 1)];
         }
 
-        $user = $this->get($userId);
-        $user = $this->patchEntity($user, ['api_key' => $apiKey]);
-
-        return $this->save($user);
+        return $apiKey;
     }
 
     /**
