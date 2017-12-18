@@ -61,4 +61,29 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseContains('event tomorrow');
         $this->assertResponseNotContains('event yesterday');
     }
+
+    /**
+     * Tests that /v1/events?start={date}&end={date} returns only events on the specified date
+     *
+     * @return void
+     */
+    public function testSpecificDate()
+    {
+        $usersFixture = new UsersFixture();
+        $apiKey = $usersFixture->records[0]['api_key'];
+        $date = date('Y-m-d', strtotime('yesterday'));
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'index',
+            '?' => [
+                'apikey' => $apiKey,
+                'start' => $date,
+                'end' => $date
+            ]
+        ]);
+        $this->assertResponseContains('event yesterday');
+        $this->assertResponseNotContains('event today');
+        $this->assertResponseNotContains('event tomorrow');
+    }
 }
