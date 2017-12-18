@@ -86,4 +86,20 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseNotContains('event today');
         $this->assertResponseNotContains('event tomorrow');
     }
+
+    /**
+     * Tests that requests with invalid API keys are rejected
+     *
+     * @return void
+     */
+    public function testInvalidApiKey()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => ['apikey' => 'invalid key']
+        ]);
+        $this->assertResponseError();
+    }
 }
