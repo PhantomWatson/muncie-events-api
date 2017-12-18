@@ -102,4 +102,14 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $this->assertResponseError();
     }
+
+    /**
+     * Tests filtering in events by tag name
+     *
+     * @return void
+     */
+    public function testWithTagName()
+    {
+        $this->markTestIncomplete();
+    }
 }
