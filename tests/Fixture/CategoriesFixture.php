@@ -38,10 +38,64 @@ class CategoriesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
-            'name' => 'Lorem ipsum dolor sit amet',
-            'slug' => 'Lorem ipsum dolor sit amet',
+            'id' => 8,
+            'name' => 'Music',
+            'slug' => '',
             'weight' => 1
         ],
+        [
+            'id' => 9,
+            'name' => 'Art',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 10,
+            'name' => 'Theater',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 11,
+            'name' => 'Film',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 12,
+            'name' => 'Activism',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 13,
+            'name' => 'General Events',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 24,
+            'name' => 'Education',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 25,
+            'name' => 'Government',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 26,
+            'name' => 'Sports',
+            'slug' => '',
+            'weight' => 1
+        ],
+        [
+            'id' => 27,
+            'name' => 'Religion',
+            'slug' => '',
+            'weight' => 1
+        ]
     ];
 }
