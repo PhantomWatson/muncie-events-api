@@ -58,6 +58,8 @@ class EventsFixture extends TestFixture
      */
     public $records = [];
 
+    const EVENT_WITH_TAG = 100;
+
     public function init()
     {
         $categoriesFixture = new CategoriesFixture();
@@ -85,21 +87,21 @@ class EventsFixture extends TestFixture
             'modified' => '2017-11-20 22:38:43'
         ];
 
-        $id = 1;
+        $eventId = 1;
         $dates = ['yesterday', 'today', 'tomorrow'];
         foreach ($dates as $date) {
             foreach ($categories as $categoryId => $categoryName) {
                 $this->records[] = array_merge($defaultEvent, [
-                    'id' => $id,
+                    'id' => $eventId,
                     'date' => date('Y-m-d', strtotime($date)),
                     'title' => $categoryName . ' event ' . $date,
                     'category_id' => $categoryId
                 ]);
-                $id++;
+                $eventId++;
             }
         }
 
-        $eventId = 100;
+        $eventId = self::EVENT_WITH_TAG;
         $this->records[] = array_merge($defaultEvent, [
             'id' => $eventId,
             'date' => date('Y-m-d', strtotime('tomorrow')),
