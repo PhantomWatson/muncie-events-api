@@ -58,14 +58,32 @@ class EventsFixture extends TestFixture
      */
     public $records = [];
 
+    /**
+     * The event ID that is associated with a tag
+     *
+     * @var int
+     */
     const EVENT_WITH_TAG = 100;
 
     public function init()
     {
-        $categoriesFixture = new CategoriesFixture();
-        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+        $this->addEventsByCategory();
+        $this->addEventsByTag();
 
-        $defaultEvent = [
+        parent::init();
+    }
+
+    /**
+     * Returns a set of arbitrary default data for events
+     *
+     * @return array
+     */
+    private function getDefaultEventData()
+    {
+        $categoriesFixture = new CategoriesFixture();
+        $categories = $categoriesFixture->getCategories();
+
+        return [
             'id' => 1,
             'title' => 'Event title',
             'description' => 'Event description.',
@@ -86,6 +104,41 @@ class EventsFixture extends TestFixture
             'created' => '2017-11-20 22:38:43',
             'modified' => '2017-11-20 22:38:43'
         ];
+    }
+
+    /**
+     * Adds events in different tag states (with and without tags)
+     *
+     * @return void
+     */
+    private function addEventsByTag()
+    {
+        $defaultEvent = $this->getDefaultEventData();
+        $eventId = self::EVENT_WITH_TAG;
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => $eventId,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => 'event with tag'
+        ]);
+
+        $eventId++;
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => $eventId,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => 'event without tag',
+        ]);
+    }
+
+    /**
+     * Adds events in all categories, dated yesterday, today, and tomorrow
+     *
+     * @return void
+     */
+    private function addEventsByCategory()
+    {
+        $categoriesFixture = new CategoriesFixture();
+        $categories = $categoriesFixture->getCategories();
+        $defaultEvent = $this->getDefaultEventData();
 
         $eventId = 1;
         $dates = ['yesterday', 'today', 'tomorrow'];
@@ -100,20 +153,5 @@ class EventsFixture extends TestFixture
                 $eventId++;
             }
         }
-
-        $eventId = self::EVENT_WITH_TAG;
-        $this->records[] = array_merge($defaultEvent, [
-            'id' => $eventId,
-            'date' => date('Y-m-d', strtotime('tomorrow')),
-            'title' => 'event with tag'
-        ]);
-        $eventId++;
-        $this->records[] = array_merge($defaultEvent, [
-            'id' => $eventId,
-            'date' => date('Y-m-d', strtotime('tomorrow')),
-            'title' => 'event without tag',
-        ]);
-
-        parent::init();
     }
 }

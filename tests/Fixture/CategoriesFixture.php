@@ -2,6 +2,7 @@
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Cake\Utility\Hash;
 
 /**
  * CategoriesFixture
@@ -98,4 +99,14 @@ class CategoriesFixture extends TestFixture
             'weight' => 1
         ]
     ];
+
+    /**
+     * Returns a one-dimensional array of category names, keyed with category IDs
+     *
+     * @return array
+     */
+    public function getCategories()
+    {
+        return Hash::combine($this->records, '{n}.id', '{n}.name');
+    }
 }
