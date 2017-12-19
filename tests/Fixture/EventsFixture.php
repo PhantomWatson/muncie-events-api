@@ -60,6 +60,9 @@ class EventsFixture extends TestFixture
 
     public function init()
     {
+        $categoriesFixture = new CategoriesFixture();
+        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+
         $defaultEvent = [
             'id' => 1,
             'title' => 'Event title',
@@ -68,7 +71,7 @@ class EventsFixture extends TestFixture
             'location_details' => 'Location details',
             'address' => 'Location address',
             'user_id' => 1,
-            'category_id' => 1,
+            'category_id' => array_keys($categories)[0],
             'series_id' => 1,
             'date' => '2018-01-01',
             'time_start' => '22:38:43',
@@ -81,9 +84,6 @@ class EventsFixture extends TestFixture
             'created' => '2017-11-20 22:38:43',
             'modified' => '2017-11-20 22:38:43'
         ];
-
-        $categoriesFixture = new CategoriesFixture();
-        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
 
         $id = 1;
         $dates = ['yesterday', 'today', 'tomorrow'];
@@ -98,6 +98,19 @@ class EventsFixture extends TestFixture
                 $id++;
             }
         }
+
+        $eventId = 100;
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => $eventId,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => 'event with tag'
+        ]);
+        $eventId++;
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => $eventId,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => 'event without tag',
+        ]);
 
         parent::init();
     }

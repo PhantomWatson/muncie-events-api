@@ -47,7 +47,7 @@ class TagsFixture extends TestFixture
             'parent_id' => 1,
             'lft' => 1,
             'rght' => 1,
-            'name' => 'Lorem ipsum dolor sit amet',
+            'name' => 'test tag',
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,

@@ -38,7 +38,7 @@ class EventsTagsFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'event_id' => 1,
+            'event_id' => 100,
             'tag_id' => 1
         ],
     ];

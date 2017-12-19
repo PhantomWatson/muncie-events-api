@@ -110,6 +110,18 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testWithTagName()
     {
-        $this->markTestIncomplete();
+        $usersFixture = new UsersFixture();
+        $apiKey = $usersFixture->records[0]['api_key'];
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => [
+                'apikey' => $apiKey,
+                'withTags' => ['test tag']
+            ]
+        ]);
+        $this->assertResponseContains('event with tag');
+        $this->assertResponseNotContains('event without tag');
     }
 }
