@@ -104,11 +104,11 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests filtering in events by tag name
+     * Tests filtering in events by a single tag name
      *
      * @return void
      */
-    public function testWithTagName()
+    public function testWithOneTagName()
     {
         $usersFixture = new UsersFixture();
         $apiKey = $usersFixture->records[0]['api_key'];
@@ -122,6 +122,29 @@ class EventsControllerTest extends ApplicationTest
             ]
         ]);
         $this->assertResponseContains('event with tag');
+        $this->assertResponseNotContains('event without tag');
+    }
+
+    /**
+     * Tests filtering in events by multiple tag names
+     *
+     * @return void
+     */
+    public function testWithMultipleTagNames()
+    {
+        $usersFixture = new UsersFixture();
+        $apiKey = $usersFixture->records[0]['api_key'];
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => [
+                'apikey' => $apiKey,
+                'withTags' => ['test tag', 'another tag']
+            ]
+        ]);
+        $this->assertResponseContains('event with tag');
+        $this->assertResponseContains('event with different tag');
         $this->assertResponseNotContains('event without tag');
     }
 }

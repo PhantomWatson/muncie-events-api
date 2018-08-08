@@ -65,6 +65,13 @@ class EventsFixture extends TestFixture
      */
     const EVENT_WITH_TAG = 100;
 
+    /**
+     * The event ID that is associated with another tag
+     *
+     * @var int
+     */
+    const EVENT_WITH_DIFFERENT_TAG = 101;
+
     public function init()
     {
         $this->addEventsByCategory();
@@ -119,6 +126,13 @@ class EventsFixture extends TestFixture
             'id' => $eventId,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'title' => 'event with tag'
+        ]);
+
+        $eventId = self::EVENT_WITH_DIFFERENT_TAG;
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => $eventId,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => 'event with different tag'
         ]);
 
         $eventId++;
