@@ -278,6 +278,7 @@ class EventsTable extends Table
         foreach ($tags as $tag) {
             $conditions[] = ['Tags.name' => $tag];
         }
+
         return $query
             ->leftJoinWith('Tags')
             ->where(['OR' => $conditions]);
