@@ -274,13 +274,12 @@ class EventsTable extends Table
         }
 
         $tags = array_map('strtolower', $tags);
-
-        return $query->matching('Tags', function ($q) use ($tags) {
-            /** @var Query $q */
-            $keys = array_fill(0, count($tags), 'Tags.name');
-            $conditions = array_combine($keys, $tags);
-
-            return $q->where(['OR' => $conditions]);
-        });
+        $conditions = [];
+        foreach ($tags as $tag) {
+            $conditions[] = ['Tags.name' => $tag];
+        }
+        return $query
+            ->leftJoinWith('Tags')
+            ->where(['OR' => $conditions]);
     }
 }
