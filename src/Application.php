@@ -30,6 +30,23 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 class Application extends BaseApplication
 {
     /**
+     * Application bootstrap method
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        $this->addPlugin('Recaptcha');
+        $this->addPlugin('JsonApi');
+
+        if (Configure::read('debug')) {
+            $this->addPlugin('DebugKit');
+        }
+    }
+
+    /**
      * Setup the middleware queue your application will use.
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to setup.
