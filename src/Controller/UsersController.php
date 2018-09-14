@@ -53,7 +53,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             if ($this->Recaptcha->verify()) {
                 $user = $this->Users->patchEntity($user, $this->request->getData(), [
-                    'fieldList' => ['name', 'email', 'password']
+                    'fields' => ['name', 'email', 'password']
                 ]);
                 $user->role = 'user';
 

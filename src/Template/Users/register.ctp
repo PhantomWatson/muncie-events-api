@@ -18,7 +18,7 @@
 
 <?= $this->Form->control('name') ?>
 
-<?= $this->Form->input('email') ?>
+<?= $this->Form->control('email') ?>
 
 <?= $this->Form->control('password') ?>
 

@@ -24,7 +24,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
     {
         /** @var Controller $subject */
         $subject = $event->getSubject();
-        $this->pagingInfo = $subject->request->getParam('paging')[$subject->name];
+        $this->pagingInfo = $subject->request->getParam('paging')[$subject->getName()];
         $config = $this->getConfig();
 
         if (!empty($config['aliases'])) {
@@ -65,7 +65,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getLastPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->name];
+        $paging = $controller->request->getParam('paging')[$controller->getName()];
         $lastPage = $paging['pageCount'];
 
         return $this->getLink($this->getPageUrl($controller, $lastPage));
@@ -79,7 +79,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getPrevPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->name];
+        $paging = $controller->request->getParam('paging')[$controller->getName()];
         if ($paging['page'] > 1) {
             $prevPage = $paging['page'] - 1;
 
@@ -97,7 +97,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getNextPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->name];
+        $paging = $controller->request->getParam('paging')[$controller->getName()];
         if ($paging['page'] < $paging['pageCount']) {
             $nextPage = $paging['page'] + 1;
 

@@ -5,9 +5,9 @@
 
 <?php
     echo $this->Form->create($user);
-    echo $this->Form->input('email');
-    echo $this->Form->input('password');
-    echo $this->Form->input(
+    echo $this->Form->control('email');
+    echo $this->Form->control('password');
+    echo $this->Form->control(
         'auto_login',
         [
             'label' => 'Keep me logged in on this computer',
