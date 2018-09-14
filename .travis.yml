@@ -23,7 +23,6 @@ before_script:
   - if [[ $PHPUNIT = 1 ]]; then chmod +x ./cc-test-reporter; fi
   - if [[ $PHPUNIT = 1 ]]; then ./cc-test-reporter before-build; fi
   - if [[ $PHPUNIT = 1 ]]; then composer install; fi
-  - if [[ $PHPUNIT = 1 ]]; then composer require phpunit/phpunit:"^5.7|^6.0"; fi
   - if [[ $PHPUNIT = 1 ]]; then composer run-script post-install-cmd --no-interaction; fi
   - if [[ $PHPUNIT = 1 ]]; then sh -c "mysql -e 'CREATE DATABASE IF NOT EXISTS test_myapp;'"; fi
   - phpenv rehash
