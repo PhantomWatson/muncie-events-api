@@ -8,7 +8,7 @@
         "php": ">=7.1",
         "cakephp/cakephp": "^3.6",
         "mobiledetect/mobiledetectlib": "2.*",
-        "cakephp/migrations": "~1.0",
+        "cakephp/migrations": "~2.0",
         "cakephp/plugin-installer": "~1.0",
         "josegonzalez/dotenv": "3.*",
         "josbeir/cakephp-json-api": "dev-master",
