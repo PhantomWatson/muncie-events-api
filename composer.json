@@ -16,7 +16,8 @@
         "xety/cake3-cookieauth": "1.*",
         "bcrowe/cakephp-api-pagination": "^1.1",
         "ext-xdebug": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "friendsofcake/search": "^5.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",

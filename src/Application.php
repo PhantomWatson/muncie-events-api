@@ -40,6 +40,7 @@ class Application extends BaseApplication
 
         $this->addPlugin('Recaptcha');
         $this->addPlugin('JsonApi');
+        $this->addPlugin('Search');
 
         if (PHP_SAPI === 'cli') {
             try {
