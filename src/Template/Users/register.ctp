@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User $user
+ */
+?>
 <p>
     After you create an account, you'll be able to use it to log in to both the API website <em>and</em> the main
     website at <a href="https://muncieevents.com">https://MuncieEvents.com</a>.

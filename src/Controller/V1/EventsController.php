@@ -3,9 +3,15 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\User;
+use App\Model\Table\EventsTable;
 use Cake\Network\Exception\BadRequestException;
 use Cake\Routing\Router;
 
+/**
+ * Class EventsController
+ * @package App\Controller\V1
+ * @property EventsTable $Events
+ */
 class EventsController extends ApiController
 {
     public $paginate = [
@@ -20,6 +26,7 @@ class EventsController extends ApiController
      * Initialize method
      *
      * @return \Cake\Http\Response|null
+     * @throws \Exception
      */
     public function initialize()
     {

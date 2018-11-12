@@ -16,13 +16,13 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ImagesTable|\Cake\ORM\Association\HasMany $Images
  * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\HasMany $Tags
  *
- * @method \App\Model\Entity\User get($primaryKey, $options = [])
- * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
+ * @method User get($primaryKey, $options = [])
+ * @method User newEntity($data = null, array $options = [])
+ * @method User[] newEntities(array $data, array $options = [])
+ * @method User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method User[] patchEntities($entities, array $data, array $options = [])
+ * @method User findOrCreate($search, callable $callback = null, $options = [])
  * @method \Cake\ORM\Query findByApiKey($apiKey)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
@@ -143,7 +143,7 @@ class UsersTable extends Table
      * Generates a random API key and assigns it to the specified user
      *
      * @param int $userId User ID
-     * @return \App\Model\Entity\User|bool
+     * @return User|bool
      */
     public function setApiKey($userId)
     {

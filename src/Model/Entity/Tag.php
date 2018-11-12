@@ -16,9 +16,9 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property \Cake\I18n\FrozenTime $created
  *
- * @property \App\Model\Entity\ParentTag $parent_tag
+ * @property \App\Model\Entity\Tag $parent_tag
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\ChildTag[] $child_tags
+ * @property \App\Model\Entity\Tag[] $child_tags
  * @property \App\Model\Entity\Event[] $events
  */
 class Tag extends Entity

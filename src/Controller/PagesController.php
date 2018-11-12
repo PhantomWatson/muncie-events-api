@@ -14,11 +14,6 @@
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-
 /**
  * Static content controller
  *
@@ -32,6 +27,7 @@ class PagesController extends AppController
      * Initialize method
      *
      * @return \Cake\Http\Response|null
+     * @throws \Exception
      */
     public function initialize()
     {
@@ -42,6 +38,8 @@ class PagesController extends AppController
         if (! $this->request->is('ssl')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
+
+        return null;
     }
 
     /**

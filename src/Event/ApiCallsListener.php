@@ -26,7 +26,7 @@ class ApiCallsListener implements EventListenerInterface
      */
     public function recordApiCall(Event $event, array $meta = null)
     {
-        $apiCallsTable = TableRegistry::get('ApiCalls');
+        $apiCallsTable = TableRegistry::getTableLocator()->get('ApiCalls');
         $apiCall = $apiCallsTable->newEntity([
             'user_id' => $meta['userId'],
             'url' => $meta['url']

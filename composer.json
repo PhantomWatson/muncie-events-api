@@ -14,7 +14,9 @@
         "josbeir/cakephp-json-api": "dev-master",
         "crabstudio/recaptcha": "^2.0",
         "xety/cake3-cookieauth": "1.*",
-        "bcrowe/cakephp-api-pagination": "^1.1"
+        "bcrowe/cakephp-api-pagination": "^1.1",
+        "ext-xdebug": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",

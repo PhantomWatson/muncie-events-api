@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var array $authUser
+ */
+?>
 <!DOCTYPE html>
 <html>
 <head>

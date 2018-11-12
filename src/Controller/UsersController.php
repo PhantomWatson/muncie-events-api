@@ -4,12 +4,18 @@ namespace App\Controller;
 use App\Model\Table\UsersTable;
 use Cake\ORM\TableRegistry;
 
+/**
+ * Class UsersController
+ * @package App\Controller
+ * @property UsersTable $Users
+ */
 class UsersController extends AppController
 {
     /**
      * Initialize method
      *
      * @return \Cake\Http\Response|null
+     * @throws \Exception
      */
     public function initialize()
     {
@@ -144,7 +150,7 @@ class UsersController extends AppController
     public function apiKey()
     {
         /** @var UsersTable $usersTable */
-        $usersTable = TableRegistry::get('Users');
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
         $userId = $this->Auth->user('id');
         $apiKey = $usersTable->getApiKey($userId);
 

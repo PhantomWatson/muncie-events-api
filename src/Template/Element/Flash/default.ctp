@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var string $message
+ */
 $class = 'message';
 if (!empty($params['class'])) {
     $class .= ' ' . $params['class'];

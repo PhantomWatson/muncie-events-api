@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property int $weight
  *
  * @property \App\Model\Entity\Event[] $events
- * @property \App\Model\Entity\MailingList[] $mailing_list
  */
 class Category extends Entity
 {

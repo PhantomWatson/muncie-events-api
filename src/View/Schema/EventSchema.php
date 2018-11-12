@@ -1,7 +1,6 @@
 <?php
 namespace App\View\Schema;
 
-use Cake\Routing\Router;
 use JsonApi\View\Schema\EntitySchema;
 
 class EventSchema extends EntitySchema

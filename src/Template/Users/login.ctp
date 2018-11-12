@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User $user
+ */
+?>
 <p>
     Here, you can log in using the same information that you use to log in to the main website at
     <a href="https://muncieevents.com">MuncieEvents.com</a>.

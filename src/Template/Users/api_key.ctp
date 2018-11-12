@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var string $apiKey
+ * @var \App\View\AppView $this
+ */
+?>
 <?php if ($apiKey): ?>
     <div class="card">
         <div class="card-body">

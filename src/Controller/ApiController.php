@@ -14,6 +14,7 @@ class ApiController extends Controller
      * Initialization hook method
      *
      * @return void
+     * @throws \Exception
      */
     public function initialize()
     {

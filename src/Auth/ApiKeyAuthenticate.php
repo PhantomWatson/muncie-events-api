@@ -50,7 +50,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         /** @var UsersTable $usersTable */
-        $usersTable = TableRegistry::get('Users');
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
         $user = $usersTable->findByApiKey($apiKey)->first();
 
         return $user ? $user->toArray() : false;
