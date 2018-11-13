@@ -26,7 +26,7 @@
       "get" : {
         "tags" : [ "events" ],
         "summary" : "Get events on or after the specified date/time, or in a range of dates",
-        "operationId" : "getEventsFuture",
+        "operationId" : "getEvents",
         "parameters" : [ {
           "name" : "start",
           "in" : "query",
