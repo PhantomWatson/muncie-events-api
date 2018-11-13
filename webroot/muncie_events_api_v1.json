@@ -253,6 +253,128 @@
           "api_key" : [ ]
         } ]
       }
+    },
+    "/events/search" : {
+      "get" : {
+        "tags" : [ "events" ],
+        "summary" : "Get upcoming events whose titles, descriptions, locations, or tags match the provided search term",
+        "operationId" : "getEventsSearch",
+        "parameters" : [ {
+          "name" : "q",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "Search term",
+          "example" : "music festivals"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    },
+                    "links" : {
+                      "type" : "object",
+                      "properties" : {
+                        "self" : {
+                          "type" : "string",
+                          "description" : "Path to access this event",
+                          "example" : "/events/search?page=1"
+                        },
+                        "first" : {
+                          "type" : "string",
+                          "description" : "Path to the first page in this result set",
+                          "example" : "/events/search?page=1"
+                        },
+                        "last" : {
+                          "type" : "string",
+                          "description" : "Path to the last page in this result set",
+                          "example" : "/events/search?page=4"
+                        },
+                        "prev" : {
+                          "type" : "string",
+                          "description" : "Path to the previous page in this result set, or null if not applicable",
+                          "example" : "/events/search?page=1",
+                          "nullable" : true
+                        },
+                        "next" : {
+                          "type" : "string",
+                          "description" : "Path to the next page in this result set, or null if not applicable",
+                          "example" : "/events/search?page=3",
+                          "nullable" : true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "code" : {
+                              "type" : "integer",
+                              "example" : 400
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "The `start` parameter is required"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "title" : {
+                              "type" : "string",
+                              "example" : "Invalid protocol"
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "The API must be used over HTTPS"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      }
     }
   },
   "components" : {
