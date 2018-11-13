@@ -109,25 +109,29 @@
             "content" : {
               "application/vnd.api+json" : {
                 "schema" : {
-                  "type" : "object",
-                  "properties" : {
-                    "errors" : {
-                      "type" : "array",
-                      "items" : {
-                        "type" : "object",
-                        "properties" : {
-                          "code" : {
-                            "type" : "integer",
-                            "example" : 400
-                          },
-                          "detail" : {
-                            "type" : "string",
-                            "example" : "The `start` parameter is required"
+                  "oneOf" : [ {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "code" : {
+                              "type" : "integer",
+                              "example" : 400
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "The `start` parameter is required"
+                            }
                           }
                         }
                       }
                     }
-                  }
+                  }, {
+                    "$ref" : "#/components/schemas/invalidProtocolError"
+                  } ]
                 }
               }
             }
@@ -515,6 +519,27 @@
           "caption" : {
             "type" : "string",
             "example" : "Event flyer"
+          }
+        }
+      },
+      "invalidProtocolError" : {
+        "type" : "object",
+        "properties" : {
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "title" : {
+                  "type" : "string",
+                  "example" : "Invalid protocol"
+                },
+                "detail" : {
+                  "type" : "string",
+                  "example" : "The API must be used over HTTPS"
+                }
+              }
+            }
           }
         }
       }
