@@ -130,7 +130,17 @@
                       }
                     }
                   }, {
-                    "$ref" : "#/components/schemas/invalidProtocolError"
+                    "type" : "object",
+                    "properties" : {
+                      "title" : {
+                        "type" : "string",
+                        "example" : "Invalid protocol"
+                      },
+                      "detail" : {
+                        "type" : "string",
+                        "example" : "The API must be used over HTTPS"
+                      }
+                    }
                   } ]
                 }
               }
@@ -519,27 +529,6 @@
           "caption" : {
             "type" : "string",
             "example" : "Event flyer"
-          }
-        }
-      },
-      "invalidProtocolError" : {
-        "type" : "object",
-        "properties" : {
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object",
-              "properties" : {
-                "title" : {
-                  "type" : "string",
-                  "example" : "Invalid protocol"
-                },
-                "detail" : {
-                  "type" : "string",
-                  "example" : "The API must be used over HTTPS"
-                }
-              }
-            }
           }
         }
       }
