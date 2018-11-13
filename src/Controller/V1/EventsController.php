@@ -114,4 +114,38 @@ class EventsController extends ApiController
             'events' => $this->paginate($query)
         ]);
     }
+
+    /**
+     * /events/search endpoint
+     *
+     * @return void
+     */
+    public function search()
+    {
+        $search = $this->request->getQuery('q');
+        $search = trim($search);
+        if (!$search) {
+            throw new BadRequestException('The parameter "q" is required');
+        }
+
+        $baseQuery = $this->Events
+            ->find('forApi')
+            ->find('startingOn', ['date' => date('Y-m-d')]);
+        $matchesEventDetails = $baseQuery->cleanCopy()
+            ->find('search', ['search' => $this->request->getQueryParams()]);
+        $matchesTag = $baseQuery->cleanCopy()
+            ->find('tagged', ['tags' => [$search]]);
+        $finalQuery = $matchesEventDetails->union($matchesTag);
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'Tag',
+                'User'
+            ],
+            '_serialize' => ['events', 'pagination'],
+            'events' => $this->paginate($finalQuery)
+        ]);
+    }
 }
