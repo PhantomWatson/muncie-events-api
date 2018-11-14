@@ -72,10 +72,18 @@ class EventsFixture extends TestFixture
      */
     const EVENT_WITH_DIFFERENT_TAG = 101;
 
+    const EVENT_WITH_SEARCHABLE_TITLE = 110;
+    const SEARCHABLE_TITLE = 'Searchable title';
+    const EVENT_WITH_SEARCHABLE_DESCRIPTION = 111;
+    const SEARCHABLE_DESCRIPTION = 'Searchable description';
+    const EVENT_WITH_SEARCHABLE_LOCATION = 112;
+    const SEARCHABLE_LOCATION = 'Searchable location';
+
     public function init()
     {
         $this->addEventsByCategory();
         $this->addEventsByTag();
+        $this->addSearchableEvents();
 
         parent::init();
     }
@@ -167,5 +175,33 @@ class EventsFixture extends TestFixture
                 $eventId++;
             }
         }
+    }
+
+    /**
+     * Adds events with unique strings in their title, description, and location fields to test search functionality
+     *
+     * @return void
+     */
+    private function addSearchableEvents()
+    {
+        $defaultEvent = $this->getDefaultEventData();
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_TITLE,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => self::SEARCHABLE_TITLE
+        ]);
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'description' => self::SEARCHABLE_DESCRIPTION
+        ]);
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_LOCATION,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'location' => self::SEARCHABLE_LOCATION
+        ]);
     }
 }

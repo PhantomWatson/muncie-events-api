@@ -1,8 +1,10 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
+use Cake\Utility\Hash;
 
 /**
  * EventsControllerTest class
@@ -40,6 +42,30 @@ class EventsControllerTest extends ApplicationTest
                 'HTTPS' => 'on'
             ]
         ]);
+    }
+
+    /**
+     * Returns a simple array of the IDs of all events returned in the JSON response to the last request
+     *
+     * @return array|\ArrayAccess
+     */
+    private function getResponseEventIds()
+    {
+        $response = (array)json_decode($this->_response->getBody());
+
+        return Hash::extract($response['data'], '{n}.id');
+    }
+
+    /**
+     * Returns a valid API key
+     *
+     * @return mixed
+     */
+    private function getApiKey()
+    {
+        $usersFixture = new UsersFixture();
+
+        return $usersFixture->records[0]['api_key'];
     }
 
     /**
@@ -146,5 +172,118 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseContains('event with tag');
         $this->assertResponseContains('event with different tag');
         $this->assertResponseNotContains('event without tag');
+    }
+
+    /**
+     * Tests that an event is returned from /events/search if the search term is found in the event's title
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testSearchInTitleSuccess()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'q' => EventsFixture::SEARCHABLE_TITLE
+            ]
+        ]);
+        $this->assertResponseOk();
+        $eventIds = $this->getResponseEventIds();
+        $this->assertContains(
+            EventsFixture::EVENT_WITH_SEARCHABLE_TITLE,
+            $eventIds,
+            'Event with searchable title not in results'
+        );
+        $this->assertCount(
+            1,
+            $eventIds,
+            'Results contain more than one event'
+        );
+    }
+
+    /**
+     * Tests that an event is returned from /events/search if the search term is found in the event's description
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testSearchInDescriptionSuccess()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'q' => EventsFixture::SEARCHABLE_DESCRIPTION
+            ]
+        ]);
+        $this->assertResponseOk();
+        $eventIds = $this->getResponseEventIds();
+        $this->assertContains(
+            EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            $eventIds,
+            'Event with searchable description not in results'
+        );
+        $this->assertCount(
+            1,
+            $eventIds,
+            'Results contain more than one event'
+        );
+    }
+
+    /**
+     * Tests that an event is returned from /events/search if the search term is found in the event's location
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testSearchInLocationSuccess()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'q' => EventsFixture::SEARCHABLE_LOCATION
+            ]
+        ]);
+        $this->assertResponseOk();
+        $eventIds = $this->getResponseEventIds();
+        $this->assertContains(
+            EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION,
+            $eventIds,
+            'Event with searchable location not in results'
+        );
+        $this->assertCount(
+            1,
+            $eventIds,
+            'Results contain more than one event'
+        );
+    }
+
+    /**
+     * Tests that an error is thrown if the search term is empty
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testSearchFailMissingParam()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => [
+                'apikey' => $this->getApiKey()
+            ]
+        ]);
+        $this->assertResponseError();
+        $this->assertResponseContains('The parameter \"q\" is required');
     }
 }
