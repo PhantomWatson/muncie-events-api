@@ -30,6 +30,11 @@ class EventsControllerTest extends ApplicationTest
     ];
 
     /**
+     * @var UsersFixture
+     */
+    private $usersFixture;
+
+    /**
      * Sets up this set of tests
      *
      * @return void
@@ -42,6 +47,7 @@ class EventsControllerTest extends ApplicationTest
                 'HTTPS' => 'on'
             ]
         ]);
+        $this->usersFixture = new UsersFixture();
     }
 
     /**
@@ -63,9 +69,7 @@ class EventsControllerTest extends ApplicationTest
      */
     private function getApiKey()
     {
-        $usersFixture = new UsersFixture();
-
-        return $usersFixture->records[0]['api_key'];
+        return $this->usersFixture->records[0]['api_key'];
     }
 
     /**
@@ -76,13 +80,11 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFuture()
     {
-        $usersFixture = new UsersFixture();
-        $apiKey = $usersFixture->records[0]['api_key'];
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'future',
-            '?' => ['apikey' => $apiKey]
+            '?' => ['apikey' => $this->getApiKey()]
         ]);
         $this->assertResponseContains('event today');
         $this->assertResponseContains('event tomorrow');
@@ -97,15 +99,13 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSpecificDate()
     {
-        $usersFixture = new UsersFixture();
-        $apiKey = $usersFixture->records[0]['api_key'];
         $date = date('Y-m-d', strtotime('yesterday'));
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'index',
             '?' => [
-                'apikey' => $apiKey,
+                'apikey' => $this->getApiKey(),
                 'start' => $date,
                 'end' => $date
             ]
@@ -140,14 +140,12 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testWithOneTagName()
     {
-        $usersFixture = new UsersFixture();
-        $apiKey = $usersFixture->records[0]['api_key'];
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'future',
             '?' => [
-                'apikey' => $apiKey,
+                'apikey' => $this->getApiKey(),
                 'withTags' => ['test tag']
             ]
         ]);
@@ -163,14 +161,12 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testWithMultipleTagNames()
     {
-        $usersFixture = new UsersFixture();
-        $apiKey = $usersFixture->records[0]['api_key'];
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'future',
             '?' => [
-                'apikey' => $apiKey,
+                'apikey' => $this->getApiKey(),
                 'withTags' => ['test tag', 'another tag']
             ]
         ]);
@@ -284,9 +280,7 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'search',
-            '?' => [
-                'apikey' => $this->getApiKey()
-            ]
+            '?' => ['apikey' => $this->getApiKey()]
         ]);
         $this->assertResponseError();
         $this->assertResponseContains('The parameter \"q\" is required');
