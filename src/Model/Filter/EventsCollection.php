@@ -5,6 +5,11 @@ use Search\Model\Filter\FilterCollection;
 
 class EventsCollection extends FilterCollection
 {
+    /**
+     * Initialize method
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
