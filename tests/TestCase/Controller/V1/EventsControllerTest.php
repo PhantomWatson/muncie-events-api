@@ -72,6 +72,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events/future returns only future events
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testFuture()
     {
@@ -92,6 +93,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events?start={date}&end={date} returns only events on the specified date
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testSpecificDate()
     {
@@ -117,6 +119,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that requests with invalid API keys are rejected
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testInvalidApiKey()
     {
@@ -133,6 +136,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests filtering in events by a single tag name
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testWithOneTagName()
     {
@@ -155,6 +159,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests filtering in events by multiple tag names
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testWithMultipleTagNames()
     {
