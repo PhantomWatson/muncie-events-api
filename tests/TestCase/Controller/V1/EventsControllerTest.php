@@ -3,6 +3,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
+use App\Test\Fixture\TagsFixture;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
@@ -147,7 +148,7 @@ class EventsControllerTest extends ApplicationTest
             'action' => 'future',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'withTags' => ['test tag']
+                'withTags' => [TagsFixture::TAG_NAME]
             ]
         ]);
         $this->assertResponseContains('event with tag');
@@ -168,7 +169,7 @@ class EventsControllerTest extends ApplicationTest
             'action' => 'future',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'withTags' => ['test tag', 'another tag']
+                'withTags' => [TagsFixture::TAG_NAME, TagsFixture::TAG_NAME_ALTERNATE]
             ]
         ]);
         $this->assertResponseContains('event with tag');

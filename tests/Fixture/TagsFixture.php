@@ -36,6 +36,9 @@ class TagsFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
+    const TAG_NAME = 'test tag';
+    const TAG_NAME_ALTERNATE = 'another tag';
+
     /**
      * Records
      *
@@ -47,7 +50,7 @@ class TagsFixture extends TestFixture
             'parent_id' => 1,
             'lft' => 1,
             'rght' => 2,
-            'name' => 'test tag',
+            'name' => self::TAG_NAME,
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
@@ -58,7 +61,7 @@ class TagsFixture extends TestFixture
             'parent_id' => 1,
             'lft' => 3,
             'rght' => 4,
-            'name' => 'another tag',
+            'name' => self::TAG_NAME_ALTERNATE,
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
