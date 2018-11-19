@@ -5,6 +5,7 @@ use App\Controller\ApiController;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Http\Exception\BadRequestException;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 /**
@@ -149,6 +150,45 @@ class EventsController extends ApiController
             ],
             '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($finalQuery)
+        ]);
+    }
+
+    /**
+     * /events/category endpoint
+     *
+     * @param int|null $categoryId Category ID
+     * @return void
+     * @throws BadRequestException
+     */
+    public function category($categoryId = null)
+    {
+        if (!$categoryId) {
+            throw new BadRequestException('Category ID is required');
+        }
+
+        $categoryExists = TableRegistry::getTableLocator()
+            ->get('Categories')
+            ->exists(['id' => $categoryId]);
+        if (!$categoryExists) {
+            throw new BadRequestException("Category with ID $categoryId not found");
+        }
+
+        $tags = $this->request->getQuery('withTags');
+        $query = $this->Events
+            ->find('forApi')
+            ->find('future')
+            ->find('inCategory', ['categoryId' => $categoryId])
+            ->find('tagged', ['tags' => $tags]);
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'Tag',
+                'User'
+            ],
+            '_serialize' => ['events', 'pagination'],
+            'events' => $this->paginate($query)
         ]);
     }
 }
