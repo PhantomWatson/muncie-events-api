@@ -302,4 +302,22 @@ class EventsTable extends Table
 
         return $query->where(['category_id' => $options['categoryId']]);
     }
+
+    /**
+     * Limits the query to events on or after today's date
+     *
+     * @param Query $query Query
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findFuture(Query $query)
+    {
+        return $query
+            ->where([
+                function (QueryExpression $exp) {
+                    return $exp->gte('date', date('Y-m-d'));
+                }
+            ]);
+    }
 }

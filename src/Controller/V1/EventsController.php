@@ -102,7 +102,7 @@ class EventsController extends ApiController
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
             ->find('forApi')
-            ->find('startingOn', ['date' => date('Y-m-d')])
+            ->find('future')
             ->find('tagged', ['tags' => $tags]);
 
         $this->set([
@@ -133,7 +133,7 @@ class EventsController extends ApiController
 
         $baseQuery = $this->Events
             ->find('forApi')
-            ->find('startingOn', ['date' => date('Y-m-d')]);
+            ->find('future');
         $matchesEventDetails = $baseQuery->cleanCopy()
             ->find('search', ['search' => $this->request->getQueryParams()]);
         $matchesTag = $baseQuery->cleanCopy()
