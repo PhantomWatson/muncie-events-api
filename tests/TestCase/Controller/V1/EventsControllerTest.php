@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
@@ -284,5 +285,34 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $this->assertResponseError();
         $this->assertResponseContains('The parameter \"q\" is required');
+    }
+
+    /**
+     * Tests that the correct events are returned from /events/category
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testCategorySuccess()
+    {
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'category',
+            $categoryId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $responseCategoryIds = Hash::extract($response['data'], '{n}.attributes.category.id');
+        $responseCategoryIds = array_unique($responseCategoryIds);
+        $this->assertEquals(
+            [$categoryId],
+            $responseCategoryIds,
+            'Returned events were not limited to the specified category'
+        );
     }
 }
