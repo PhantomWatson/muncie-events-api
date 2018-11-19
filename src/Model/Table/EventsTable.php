@@ -284,4 +284,22 @@ class EventsTable extends Table
             ->leftJoinWith('Tags')
             ->where(['OR' => $conditions]);
     }
+
+    /**
+     * Limits the query to events in the specified category
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'categoryId' expected
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findInCategory(Query $query, array $options)
+    {
+        if (!array_key_exists('categoryId', $options)) {
+            throw new InternalErrorException("\$options['categoryId'] unspecified");
+        }
+
+        return $query->where(['category_id' => $options['categoryId']]);
+    }
 }
