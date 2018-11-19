@@ -152,6 +152,149 @@
         } ]
       }
     },
+    "/events/category/{categoryId}" : {
+      "get" : {
+        "tags" : [ "events" ],
+        "summary" : "Get upcoming events in the specified category",
+        "operationId" : "getEventsCategory",
+        "parameters" : [ {
+          "name" : "categoryId",
+          "in" : "path",
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1
+          },
+          "required" : true,
+          "description" : "Category ID",
+          "example" : "13"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Event"
+                      }
+                    },
+                    "links" : {
+                      "type" : "object",
+                      "properties" : {
+                        "self" : {
+                          "type" : "string",
+                          "description" : "Path to access this page",
+                          "example" : "/events/category/13?page=1"
+                        },
+                        "first" : {
+                          "type" : "string",
+                          "description" : "Path to the first page in this result set",
+                          "example" : "/events/category/13?page=1"
+                        },
+                        "last" : {
+                          "type" : "string",
+                          "description" : "Path to the last page in this result set",
+                          "example" : "/events/category/13?page=4"
+                        },
+                        "prev" : {
+                          "type" : "string",
+                          "description" : "Path to the previous page in this result set, or null if not applicable",
+                          "example" : "/events/category/13?page=1",
+                          "nullable" : true
+                        },
+                        "next" : {
+                          "type" : "string",
+                          "description" : "Path to the next page in this result set, or null if not applicable",
+                          "example" : "/events/search?page=3",
+                          "nullable" : true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "code" : {
+                              "type" : "integer",
+                              "example" : 400
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "Category ID is required"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "code" : {
+                              "type" : "integer",
+                              "example" : 400
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "Category with ID {categoryId} not found"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "title" : {
+                              "type" : "string",
+                              "example" : "Invalid protocol"
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "The API must be used over HTTPS"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      }
+    },
     "/events/future" : {
       "get" : {
         "tags" : [ "events" ],
@@ -188,7 +331,7 @@
                       "properties" : {
                         "self" : {
                           "type" : "string",
-                          "description" : "Path to access this event",
+                          "description" : "Path to access this page",
                           "example" : "/events/future?page=1"
                         },
                         "first" : {
@@ -288,7 +431,7 @@
                       "properties" : {
                         "self" : {
                           "type" : "string",
-                          "description" : "Path to access this event",
+                          "description" : "Path to access this page",
                           "example" : "/events/search?page=1"
                         },
                         "first" : {
