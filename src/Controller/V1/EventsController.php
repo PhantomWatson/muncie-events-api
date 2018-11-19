@@ -27,6 +27,7 @@ class EventsController extends ApiController
      *
      * @return \Cake\Http\Response|null
      * @throws \Exception
+     * @throws BadRequestException
      */
     public function initialize()
     {
@@ -62,6 +63,7 @@ class EventsController extends ApiController
      * /events endpoint
      *
      * @return void
+     * @throws BadRequestException
      */
     public function index()
     {
@@ -119,6 +121,7 @@ class EventsController extends ApiController
      * /events/search endpoint
      *
      * @return void
+     * @throws BadRequestException
      */
     public function search()
     {
