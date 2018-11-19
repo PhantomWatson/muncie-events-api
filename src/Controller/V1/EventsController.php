@@ -4,7 +4,7 @@ namespace App\Controller\V1;
 use App\Controller\ApiController;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
-use Cake\Network\Exception\BadRequestException;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Routing\Router;
 
 /**
