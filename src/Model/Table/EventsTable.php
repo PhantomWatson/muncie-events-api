@@ -296,7 +296,12 @@ class EventsTable extends Table
             throw new InternalErrorException("\$options['categoryId'] unspecified");
         }
 
-        return $query->where(['category_id' => $options['categoryId']]);
+        $categoryId = $options['categoryId'];
+        if (empty($categoryId)) {
+            return $query;
+        }
+
+        return $query->where(['category_id' => $categoryId]);
     }
 
     /**
