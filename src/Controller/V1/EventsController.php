@@ -6,7 +6,6 @@ use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 
 /**
  * Class EventsController
@@ -34,30 +33,9 @@ class EventsController extends ApiController
     {
         parent::initialize();
 
-        $this->Auth->deny();
-
-        if (!$this->request->is('ssl')) {
-            throw new BadRequestException('API calls must be made with HTTPS protocol');
-        }
-
-        $this->viewBuilder()->setClassName('JsonApi.JsonApi');
-
-        $this->set('_url', Router::url('/v1', true));
-
         $this->loadComponent('ApiPagination');
 
         return null;
-    }
-
-    /**
-     * isAuthorized method
-     *
-     * @param User $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user)
-    {
-        return true;
     }
 
     /**

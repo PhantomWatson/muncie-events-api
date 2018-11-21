@@ -6,6 +6,8 @@ use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Routing\Router;
 
 class ApiController extends Controller
 {
@@ -23,12 +25,14 @@ class ApiController extends Controller
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false
         ]);
+        if (!$this->request->is('ssl')) {
+            throw new BadRequestException('API calls must be made with HTTPS protocol');
+        }
+
         $this->loadComponent(
             'Auth',
             [
-                'authenticate' => [
-                    'ApiKey'
-                ],
+                'authenticate' => ['ApiKey'],
                 'authError' => 'You are not authorized to view this page',
                 'authorize' => 'Controller'
             ]
@@ -37,6 +41,10 @@ class ApiController extends Controller
 
         $apiCallsListener = new ApiCallsListener();
         EventManager::instance()->on($apiCallsListener);
+
+        $this->viewBuilder()->setClassName('JsonApi.JsonApi');
+
+        $this->set('_url', Router::url('/v1', true));
     }
 
     /**
