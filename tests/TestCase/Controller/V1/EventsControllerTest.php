@@ -4,7 +4,6 @@ namespace App\Test\TestCase\Controller;
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
-use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
 
@@ -13,7 +12,6 @@ use Cake\Utility\Hash;
  */
 class EventsControllerTest extends ApplicationTest
 {
-
     /**
      * Fixtures
      *
@@ -32,11 +30,6 @@ class EventsControllerTest extends ApplicationTest
     ];
 
     /**
-     * @var UsersFixture
-     */
-    private $usersFixture;
-
-    /**
      * Sets up this set of tests
      *
      * @return void
@@ -44,34 +37,6 @@ class EventsControllerTest extends ApplicationTest
     public function setUp()
     {
         parent::setUp();
-        $this->configRequest([
-            'environment' => [
-                'HTTPS' => 'on'
-            ]
-        ]);
-        $this->usersFixture = new UsersFixture();
-    }
-
-    /**
-     * Returns a simple array of the IDs of all events returned in the JSON response to the last request
-     *
-     * @return array|\ArrayAccess
-     */
-    private function getResponseEventIds()
-    {
-        $response = (array)json_decode($this->_response->getBody());
-
-        return Hash::extract($response['data'], '{n}.id');
-    }
-
-    /**
-     * Returns a valid API key
-     *
-     * @return mixed
-     */
-    private function getApiKey()
-    {
-        return $this->usersFixture->records[0]['api_key'];
     }
 
     /**

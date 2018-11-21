@@ -21,12 +21,18 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\Utility\Hash;
 
 /**
  * ApplicationTest class
  */
 class ApplicationTest extends IntegrationTestCase
 {
+    /**
+     * @var UsersFixture
+     */
+    protected $usersFixture;
+
     /**
      * Sets up this set of tests
      *
@@ -35,6 +41,13 @@ class ApplicationTest extends IntegrationTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->configRequest([
+            'environment' => [
+                'HTTPS' => 'on'
+            ]
+        ]);
+
+        $this->usersFixture = new UsersFixture();
     }
 
     /**
@@ -69,5 +82,27 @@ class ApplicationTest extends IntegrationTestCase
                 'User' => $usersFixture->records[$userId - 1]
             ]
         ];
+    }
+
+    /**
+     * Returns a valid API key
+     *
+     * @return mixed
+     */
+    protected function getApiKey()
+    {
+        return $this->usersFixture->records[0]['api_key'];
+    }
+
+    /**
+     * Returns a simple array of the IDs of all events returned in the JSON response to the last request
+     *
+     * @return array|\ArrayAccess
+     */
+    protected function getResponseEventIds()
+    {
+        $response = (array)json_decode($this->_response->getBody());
+
+        return Hash::extract($response['data'], '{n}.id');
     }
 }
