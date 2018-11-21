@@ -346,4 +346,5 @@ return [
     ],
 
     'cookie_key' => env('COOKIE_KEY', 'cookie key'),
+    'mainSiteBaseUrl' => 'https://muncieevents.com'
 ];

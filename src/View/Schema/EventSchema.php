@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Schema;
 
+use Cake\Core\Configure;
 use JsonApi\View\Schema\EntitySchema;
 
 class EventSchema extends EntitySchema
@@ -24,7 +25,7 @@ class EventSchema extends EntitySchema
      */
     public function getAttributes($entity)
     {
-        $baseUrl = 'https://muncieevents.com';
+        $baseUrl = Configure::read('mainSiteBaseUrl');
         $attributes = [
             'title' => $entity->title,
             'description' => $entity->description,
