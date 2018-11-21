@@ -321,4 +321,18 @@ class EventsTable extends Table
                 }
             ]);
     }
+
+    /**
+     * Returns the count of upcoming events in the specified category
+     *
+     * @param int $categoryId Category ID
+     * @return int
+     */
+    public function getCategoryUpcomingEventCount($categoryId)
+    {
+        return $this
+            ->find('future')
+            ->find('inCategory', ['categoryId' => $categoryId])
+            ->count();
+    }
 }
