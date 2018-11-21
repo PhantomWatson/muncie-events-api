@@ -316,4 +316,39 @@ class EventsControllerTest extends ApplicationTest
             'Returned events were not limited to the specified category'
         );
     }
+
+    /**
+     * Tests that the correct events are returned from /events/category?withTags[]=...
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testCategoryWithTagSuccess()
+    {
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'category',
+            $categoryId,
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'withTags' => [TagsFixture::TAG_NAME]
+            ]
+        ]);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $responseCategoryIds = Hash::extract($response['data'], '{n}.attributes.category.id');
+        $responseCategoryIds = array_unique($responseCategoryIds);
+        $this->assertEquals(
+            [$categoryId],
+            $responseCategoryIds,
+            'Returned events were not limited to the specified category'
+        );
+
+        $responseTags = Hash::extract($response['data'], '{n}.attributes.tags.{n}.name');
+        $this->assertContains(TagsFixture::TAG_NAME, $responseTags);
+    }
 }
