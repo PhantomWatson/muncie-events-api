@@ -167,6 +167,17 @@
           "required" : true,
           "description" : "Category ID",
           "example" : "13"
+        }, {
+          "name" : "withTags[]",
+          "in" : "query",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "description" : "Return events that have any of the specified tags.",
+          "example" : [ "free concerts", "watercolor" ]
         } ],
         "responses" : {
           "200" : {
