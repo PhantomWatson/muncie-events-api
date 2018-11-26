@@ -98,6 +98,113 @@
         } ]
       }
     },
+    "/event/{eventId}" : {
+      "get" : {
+        "tags" : [ "events" ],
+        "summary" : "Get a specific event by its ID",
+        "operationId" : "getEvent",
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "schema" : {
+            "type" : "integer",
+            "minimum" : 1
+          },
+          "required" : true,
+          "example" : 123
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "data" : {
+                      "$ref" : "#/components/schemas/Event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/vnd.api+json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "title" : {
+                              "type" : "string",
+                              "example" : "Invalid protocol"
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "The API must be used over HTTPS"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "title" : {
+                              "type" : "string",
+                              "example" : "Missing event ID"
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "Event ID is required"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "type" : "object",
+                    "properties" : {
+                      "errors" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "title" : {
+                              "type" : "string",
+                              "example" : "Invalid event ID"
+                            },
+                            "detail" : {
+                              "type" : "string",
+                              "example" : "Event with ID 123 not found"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      }
+    },
     "/events" : {
       "get" : {
         "tags" : [ "events" ],
