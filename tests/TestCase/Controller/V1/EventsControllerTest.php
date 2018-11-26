@@ -316,4 +316,70 @@ class EventsControllerTest extends ApplicationTest
         $responseTags = Hash::extract($response['data'], '{n}.attributes.tags.{n}.name');
         $this->assertContains(TagsFixture::TAG_NAME, $responseTags);
     }
+
+    /**
+     * Tests that the correct event is returned from /event/{eventID}
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventSuccess()
+    {
+        $event = (new EventsFixture())->records[0];
+        $eventId = $event['id'];
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'view',
+            $eventId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $eventCount = count($response['data']);
+        $this->assertEquals(1, $eventCount, "Expected one event to be returned, got $eventCount");
+
+        $this->assertEquals($eventId, $response['data']->id, 'Unexpected event ID returned');
+    }
+
+    /**
+     * Tests that /event fails with missing event ID
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventFailIdMissing()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'view',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /event/{eventID} fails with invalid event ID
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventFailInvalidId()
+    {
+        $events = (new EventsFixture())->records;
+        $eventIds = Hash::extract($events, '{n}.id');
+        sort($eventIds);
+        $outOfRangeId = array_pop($eventIds) + 1;
+
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'view',
+            $outOfRangeId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseError();
+    }
 }
