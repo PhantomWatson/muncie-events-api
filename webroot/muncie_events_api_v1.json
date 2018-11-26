@@ -386,6 +386,7 @@
       "get" : {
         "tags" : [ "events" ],
         "summary" : "Get events on or after the current date/time",
+        "description" : "A convenience endpoint equivalent to using /events?start={today}",
         "operationId" : "getEventsFuture",
         "parameters" : [ {
           "name" : "withTags[]",
