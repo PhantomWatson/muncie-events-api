@@ -169,4 +169,38 @@ class EventsController extends ApiController
             'events' => $this->paginate($query)
         ]);
     }
+
+    /**
+     * /event/{eventID} endpoint
+     *
+     * @param int|null $eventId Event ID
+     * @return void
+     */
+    public function view($eventId = null)
+    {
+        if (!$eventId) {
+            throw new BadRequestException('Event ID is required');
+        }
+
+        $eventExists = $this->Events->exists(['id' => $eventId]);
+        if (!$eventExists) {
+            throw new BadRequestException("Event with ID $eventId not found");
+        }
+
+        $event = $this->Events
+            ->find('forApi')
+            ->where(['Events.id' => $eventId])
+            ->first();
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'Tag',
+                'User'
+            ],
+            '_serialize' => ['event'],
+            'event' => $event
+        ]);
+    }
 }

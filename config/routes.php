@@ -73,4 +73,5 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
+    $routes->connect('/event/*', ['controller' => 'Events', 'action' => 'view']);
 });
