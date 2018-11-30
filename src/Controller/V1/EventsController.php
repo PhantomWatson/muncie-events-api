@@ -53,7 +53,7 @@ class EventsController extends ApiController
         }
 
         $query = $this->Events
-            ->find('forApi')
+            ->find('forApi', $this->getFinderOptions())
             ->find('startingOn', ['date' => $start])
             ->find('endingOn', ['date' => $end])
             ->find('tagged', ['tags' => $tags]);
@@ -79,7 +79,7 @@ class EventsController extends ApiController
     {
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
-            ->find('forApi')
+            ->find('forApi', $this->getFinderOptions())
             ->find('future')
             ->find('tagged', ['tags' => $tags]);
 
@@ -110,7 +110,7 @@ class EventsController extends ApiController
         }
 
         $baseQuery = $this->Events
-            ->find('forApi')
+            ->find('forApi', $this->getFinderOptions())
             ->find('future');
         $matchesEventDetails = $baseQuery->cleanCopy()
             ->find('search', ['search' => $this->request->getQueryParams()]);
@@ -152,7 +152,7 @@ class EventsController extends ApiController
 
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
-            ->find('forApi')
+            ->find('forApi', $this->getFinderOptions())
             ->find('future')
             ->find('inCategory', ['categoryId' => $categoryId])
             ->find('tagged', ['tags' => $tags]);
@@ -187,7 +187,7 @@ class EventsController extends ApiController
         }
 
         $event = $this->Events
-            ->find('forApi')
+            ->find('forApi', $this->getFinderOptions())
             ->where(['Events.id' => $eventId])
             ->first();
 
@@ -201,5 +201,17 @@ class EventsController extends ApiController
             '_serialize' => ['event'],
             'event' => $event
         ]);
+    }
+
+    /**
+     * Returns an array of options for the main 'forApi' finder, based on request data
+     *
+     * @return array
+     */
+    private function getFinderOptions()
+    {
+        return [
+            'minimal' => $this->request->getQuery('minimal') == '1'
+        ];
     }
 }

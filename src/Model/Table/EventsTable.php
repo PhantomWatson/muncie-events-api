@@ -168,20 +168,38 @@ class EventsTable extends Table
      * Applies default parameters to the events query for an API call
      *
      * @param Query $query Query
-     * @return $this|array
+     * @param array $options Array of options
+     * @return Query
      */
-    public function findForApi(Query $query)
+    public function findForApi(Query $query, array $options = [])
     {
-        return $query
-            ->where([
-                'published' => true
-            ])
-            ->contain([
+        $query->where(['published' => true]);
+
+        // Minimal set of data
+        if ($options['minimal'] ?? false) {
+            $query
+                ->select([
+                    'id',
+                    'title',
+                    'time_start',
+                    'time_end',
+                    'date',
+                    'location',
+                    'category_id'
+                ])
+                ->contain(['Categories']);
+
+        // Full set of data
+        } else {
+            $query->contain([
                 'Categories',
                 'Tags',
                 'Users',
                 'Images'
             ]);
+        }
+
+        return $query;
     }
 
     /**
