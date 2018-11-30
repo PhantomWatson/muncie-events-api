@@ -382,4 +382,87 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $this->assertResponseError();
     }
+
+    /**
+     * Returns an array of fields excluded in the 'minimal' version of event results
+     *
+     * @return array
+     */
+    private function getFieldsExcludedInMinimal()
+    {
+        return [
+            'age_restriction',
+            'cost',
+            'source',
+            'user',
+            'tags',
+            'images'
+        ];
+    }
+
+    /**
+     * Tests that /v1/events/future returns the full set of event data
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testFutureFull()
+    {
+        $excludedInMinimal = $this->getFieldsExcludedInMinimal();
+
+        // 'minimal' flag not set
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $response = json_decode($this->_response->getBody(), true);
+        $event = $response['data'][0]['attributes'];
+        foreach ($excludedInMinimal as $field) {
+            $this->assertArrayHasKey($field, $event);
+        }
+
+        // 'minimal' flag is falsy
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'minimal' => '0'
+            ]
+        ]);
+        $response = json_decode($this->_response->getBody(), true);
+        $event = $response['data'][0]['attributes'];
+        foreach ($excludedInMinimal as $field) {
+            $this->assertArrayHasKey($field, $event);
+        }
+    }
+
+    /**
+     * Tests that /v1/events/future?minimal=1 returns the minimal set of event data
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testFutureMinimal()
+    {
+        $excludedInMinimal = $this->getFieldsExcludedInMinimal();
+
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'minimal' => '1'
+            ]
+        ]);
+        $response = json_decode($this->_response->getBody(), true);
+        $event = $response['data'][0]['attributes'];
+        foreach ($excludedInMinimal as $field) {
+            $this->assertArrayNotHasKey($field, $event);
+        }
+    }
 }
