@@ -11,13 +11,13 @@
         "cakephp/migrations": "~2.0",
         "cakephp/plugin-installer": "~1.0",
         "josegonzalez/dotenv": "3.*",
-        "josbeir/cakephp-json-api": "dev-master",
         "crabstudio/recaptcha": "^2.0",
         "xety/cake3-cookieauth": "1.*",
         "bcrowe/cakephp-api-pagination": "^1.1",
         "ext-xdebug": "*",
         "ext-json": "*",
-        "friendsofcake/search": "^5.0"
+        "friendsofcake/search": "^5.0",
+        "phantomwatson/cakephp-json-api": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",
