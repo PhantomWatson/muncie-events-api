@@ -7,6 +7,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -190,17 +191,15 @@ class EventsTable extends Table
 
         // Minimal set of data
         if ($options['minimal'] ?? false) {
+            $allFields = $this->getAllColumns('Events');
+            $minimalFields = array_diff($allFields, self::FIELDS_EXCLUDED_IN_MINIMAL);
             $query
-                ->select([
-                    'id',
-                    'title',
-                    'time_start',
-                    'time_end',
-                    'date',
-                    'location',
-                    'category_id'
-                ])
-                ->contain(['Categories']);
+                ->select($minimalFields)
+                ->contain([
+                    'Categories' => [
+                        'fields' => $this->getAllColumns('Categories')
+                    ]
+                ]);
 
         // Full set of data
         } else {
@@ -213,6 +212,17 @@ class EventsTable extends Table
         }
 
         return $query;
+    }
+
+    /**
+     * Returns an array of all column names for the specified table
+     *
+     * @param string $tableName Table name, e.g. 'Events'
+     * @return array
+     */
+    private function getAllColumns($tableName)
+    {
+        return TableRegistry::getTableLocator()->get($tableName)->getSchema()->columns();
     }
 
     /**
