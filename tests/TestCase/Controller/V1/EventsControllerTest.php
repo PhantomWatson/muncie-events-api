@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Table\EventsTable;
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
@@ -384,23 +385,6 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Returns an array of fields excluded in the 'minimal' version of event results
-     *
-     * @return array
-     */
-    private function getFieldsExcludedInMinimal()
-    {
-        return [
-            'age_restriction',
-            'cost',
-            'source',
-            'user',
-            'tags',
-            'images'
-        ];
-    }
-
-    /**
      * Tests that /v1/events/future returns the full set of event data
      *
      * @return void
@@ -408,8 +392,6 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFutureFull()
     {
-        $excludedInMinimal = $this->getFieldsExcludedInMinimal();
-
         // 'minimal' flag not set
         $this->get([
             'prefix' => 'v1',
@@ -419,7 +401,7 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $response = json_decode($this->_response->getBody(), true);
         $event = $response['data'][0]['attributes'];
-        foreach ($excludedInMinimal as $field) {
+        foreach (EventsTable::FIELDS_EXCLUDED_IN_MINIMAL as $field) {
             $this->assertArrayHasKey($field, $event);
         }
 
@@ -435,7 +417,7 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $response = json_decode($this->_response->getBody(), true);
         $event = $response['data'][0]['attributes'];
-        foreach ($excludedInMinimal as $field) {
+        foreach (EventsTable::FIELDS_EXCLUDED_IN_MINIMAL as $field) {
             $this->assertArrayHasKey($field, $event);
         }
     }
@@ -448,8 +430,6 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFutureMinimal()
     {
-        $excludedInMinimal = $this->getFieldsExcludedInMinimal();
-
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
@@ -461,7 +441,7 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $response = json_decode($this->_response->getBody(), true);
         $event = $response['data'][0]['attributes'];
-        foreach ($excludedInMinimal as $field) {
+        foreach (EventsTable::FIELDS_EXCLUDED_IN_MINIMAL as $field) {
             $this->assertArrayNotHasKey($field, $event);
         }
     }

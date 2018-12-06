@@ -30,6 +30,19 @@ use Cake\Validation\Validator;
  */
 class EventsTable extends Table
 {
+    /**
+     * An array of fields excluded in the 'minimal' version of event results
+     *
+     * @var array
+     */
+    const FIELDS_EXCLUDED_IN_MINIMAL = [
+        'age_restriction',
+        'cost',
+        'source',
+        'user',
+        'tags',
+        'images'
+    ];
 
     /**
      * Initialize method
