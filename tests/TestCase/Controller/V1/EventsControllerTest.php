@@ -1,7 +1,6 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Model\Table\EventsTable;
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
