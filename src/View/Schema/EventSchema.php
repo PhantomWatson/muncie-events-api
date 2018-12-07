@@ -54,12 +54,12 @@ class EventSchema extends EntitySchema
             'source'
         ];
         foreach ($simpleAttributes as $field) {
-            if (property_exists($entity, $field)) {
+            if (isset($entity->$field)) {
                 $attributes[$field] = $entity->$field ? $entity->$field : null;
             }
         }
 
-        if (property_exists($entity, 'user')) {
+        if (isset($entity->user)) {
             $attributes['user'] = $entity->user ?
                 [
                     'id' => $entity->user->id,
@@ -68,7 +68,7 @@ class EventSchema extends EntitySchema
                 ] : null;
         }
 
-        if (property_exists($entity, 'tags')) {
+        if (isset($entity->tags)) {
             $attributes['tags'] = [];
             foreach ($entity->tags as $tag) {
                 $attributes['tags'][] = [
@@ -78,7 +78,7 @@ class EventSchema extends EntitySchema
             }
         }
 
-        if (property_exists($entity, 'images')) {
+        if (isset($entity->images)) {
             $attributes['images'] = [];
             foreach ($entity->images as $image) {
                 $attributes['images'][] = [
