@@ -382,4 +382,40 @@ class EventsControllerTest extends ApplicationTest
         ]);
         $this->assertResponseError();
     }
+
+    /**
+     * Tests that all expected fields are included in events
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testFutureEventFields()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+
+        $response = json_decode($this->_response->getBody(), true);
+        $event = $response['data'][0]['attributes'];
+        $eventsFixture = new EventsFixture();
+        $excludedFields = [
+            'published',
+            'approved_by',
+            'created',
+            'modified'
+        ];
+        $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
+        foreach ($expectedFields as $field) {
+            if (
+                $field == 'id'
+                || stripos($field, '_id') !== false
+                || strpos($field, '_') === 0
+            ) {
+                continue;
+            }
+            $this->assertArrayHasKey($field, $event);
+        }
+    }
 }
