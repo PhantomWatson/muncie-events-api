@@ -32,20 +32,6 @@ use Cake\Validation\Validator;
 class EventsTable extends Table
 {
     /**
-     * An array of fields excluded in the 'minimal' version of event results
-     *
-     * @var array
-     */
-    const FIELDS_EXCLUDED_IN_MINIMAL = [
-        'age_restriction',
-        'cost',
-        'source',
-        'user',
-        'tags',
-        'images'
-    ];
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -187,29 +173,14 @@ class EventsTable extends Table
      */
     public function findForApi(Query $query, array $options = [])
     {
-        $query->where(['published' => true]);
-
-        // Minimal set of data
-        if ($options['minimal'] ?? false) {
-            $allFields = $this->getAllColumns('Events');
-            $minimalFields = array_diff($allFields, self::FIELDS_EXCLUDED_IN_MINIMAL);
-            $query
-                ->select($minimalFields)
-                ->contain([
-                    'Categories' => [
-                        'fields' => $this->getAllColumns('Categories')
-                    ]
-                ]);
-
-        // Full set of data
-        } else {
-            $query->contain([
+        $query
+            ->where(['published' => true])
+            ->contain([
                 'Categories',
                 'Tags',
                 'Users',
                 'Images'
             ]);
-        }
 
         return $query;
     }

@@ -210,8 +210,6 @@ class EventsController extends ApiController
      */
     private function getFinderOptions()
     {
-        return [
-            'minimal' => $this->request->getQuery('minimal') == '1'
-        ];
+        return [];
     }
 }

@@ -28,6 +28,17 @@ class EventSchema extends EntitySchema
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $attributes = [
+            'title' => $entity->title,
+            'description' => $entity->description,
+            'location' => $entity->location,
+            'location_details' => $entity->location_details ? $entity->location_details : null,
+            'address' => $entity->address ? $entity->address : null,
+            'user' => $entity->user ?
+                [
+                    'id' => $entity->user->id,
+                    'name' => $entity->user->name,
+                    'email' => $entity->user->email
+                ] : null,
             'category' => [
                 'id' => $entity->category->id,
                 'name' => $entity->category->name
@@ -38,59 +49,31 @@ class EventSchema extends EntitySchema
                     'title' => $entity->event_series->title
                 ] : null,
             'date' => $entity->date->format('Y-m-d'),
+            'time_start' => $entity->time_start,
+            'time_end' => $entity->time_end,
+            'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
+            'cost' => $entity->cost ? $entity->cost : null,
+            'source' => $entity->source ? $entity->source : null,
+            'tags' => [],
+            'images' => [],
             'url' => $baseUrl . '/event/' . $entity->id
         ];
 
-        $simpleAttributes = [
-            'title',
-            'description',
-            'location',
-            'location_details',
-            'address',
-            'time_start',
-            'time_end',
-            'age_restriction',
-            'cost',
-            'source'
-        ];
-        foreach ($simpleAttributes as $field) {
-            if (isset($entity->$field)) {
-                $attributes[$field] = $entity->$field ? $entity->$field : null;
-            }
+        foreach ($entity->tags as $tag) {
+            $attributes['tags'][] = [
+                'id' => $tag->id,
+                'name' => $tag->name
+            ];
         }
 
-        if (isset($entity->user)) {
-            $attributes['user'] = $entity->user ?
-                [
-                    'id' => $entity->user->id,
-                    'name' => $entity->user->name,
-                    'email' => $entity->user->email
-                ] : null;
+        foreach ($entity->images as $image) {
+            $attributes['images'][] = [
+                'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
+                'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
+                'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
+                'caption' => $image->caption
+            ];
         }
-
-        if (isset($entity->tags)) {
-            $attributes['tags'] = [];
-            foreach ($entity->tags as $tag) {
-                $attributes['tags'][] = [
-                    'id' => $tag->id,
-                    'name' => $tag->name
-                ];
-            }
-        }
-
-        if (isset($entity->images)) {
-            $attributes['images'] = [];
-            foreach ($entity->images as $image) {
-                $attributes['images'][] = [
-                    'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
-                    'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
-                    'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
-                    'caption' => $image->caption
-                ];
-            }
-        }
-
-        ksort($attributes);
 
         return $attributes;
     }
