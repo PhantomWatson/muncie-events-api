@@ -45,10 +45,37 @@ class PagesControllerTest extends ApplicationTest
             'action' => 'about',
             '?' => ['apikey' => $this->getApiKey()]
         ]);
+        $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Asserts that a response from a /pages endpoint contains a title and body
+     *
+     * @return void
+     */
+    private function assertPageHasTitleAndBody()
+    {
         $this->assertResponseOk();
         $response = (array)json_decode($this->_response->getBody());
         $page = $response['data']->attributes;
         $this->assertTrue(isset($page->title), 'About page is missing a title');
         $this->assertTrue(isset($page->body), 'About page is missing a body');
+    }
+
+    /**
+     * Tests /pages/rules-events endpoint
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesEvents()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesEvents',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertPageHasTitleAndBody();
     }
 }

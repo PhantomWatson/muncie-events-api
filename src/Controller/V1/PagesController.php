@@ -52,4 +52,23 @@ class PagesController extends ApiController
 
         return $contents;
     }
+
+    /**
+     * /pages/rules-events endpoint
+     *
+     * @return void
+     */
+    public function rulesEvents()
+    {
+        $page = new Page();
+        $page->id = 'rules-events';
+        $page->title = 'Rules for Posting Events';
+        $page->body = $this->getElement('Pages/rules_events');
+
+        $this->set([
+            '_entities' => ['Page'],
+            '_serialize' => ['page'],
+            'page' => $page
+        ]);
+    }
 }
