@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
