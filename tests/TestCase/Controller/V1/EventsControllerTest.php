@@ -408,8 +408,7 @@ class EventsControllerTest extends ApplicationTest
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {
-            if (
-                $field == 'id'
+            if ($field == 'id'
                 || stripos($field, '_id') !== false
                 || strpos($field, '_') === 0
             ) {
