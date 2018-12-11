@@ -90,4 +90,23 @@ class PagesController extends ApiController
             'page' => $page
         ]);
     }
+
+    /**
+     * /pages/rules-images endpoint
+     *
+     * @return void
+     */
+    public function rulesImages()
+    {
+        $page = new Page();
+        $page->id = 'rules-images';
+        $page->title = 'Rules for Images';
+        $page->body = $this->getElement('Pages/rules_images');
+
+        $this->set([
+            '_entities' => ['Page'],
+            '_serialize' => ['page'],
+            'page' => $page
+        ]);
+    }
 }

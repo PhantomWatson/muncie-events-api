@@ -97,4 +97,21 @@ class PagesControllerTest extends ApplicationTest
         ]);
         $this->assertPageHasTitleAndBody();
     }
+
+    /**
+     * Tests /pages/rules-images endpoint
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesImages()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesImages',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertPageHasTitleAndBody();
+    }
 }
