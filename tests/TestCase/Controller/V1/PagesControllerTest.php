@@ -58,8 +58,10 @@ class PagesControllerTest extends ApplicationTest
         $this->assertResponseOk();
         $response = (array)json_decode($this->_response->getBody());
         $page = $response['data']->attributes;
-        $this->assertTrue(isset($page->title), 'About page is missing a title');
-        $this->assertTrue(isset($page->body), 'About page is missing a body');
+        $this->assertTrue(isset($page->title), 'Page is missing a title attribute');
+        $this->assertTrue(isset($page->body), 'Page is missing a body attribute');
+        $this->assertNotEmpty($page->title, 'Page has a blank title');
+        $this->assertNotEmpty($page->title, 'Page has a blank body');
     }
 
     /**
