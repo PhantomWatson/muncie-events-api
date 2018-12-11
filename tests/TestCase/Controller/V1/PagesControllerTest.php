@@ -78,4 +78,21 @@ class PagesControllerTest extends ApplicationTest
         ]);
         $this->assertPageHasTitleAndBody();
     }
+
+    /**
+     * Tests /pages/rules-tags endpoint
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesTags()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesTags',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertPageHasTitleAndBody();
+    }
 }

@@ -71,4 +71,23 @@ class PagesController extends ApiController
             'page' => $page
         ]);
     }
+
+    /**
+     * /pages/rules-tags endpoint
+     *
+     * @return void
+     */
+    public function rulesTags()
+    {
+        $page = new Page();
+        $page->id = 'rules-tags';
+        $page->title = 'Rules for New Tags';
+        $page->body = $this->getElement('Pages/rules_tags');
+
+        $this->set([
+            '_entities' => ['Page'],
+            '_serialize' => ['page'],
+            'page' => $page
+        ]);
+    }
 }
