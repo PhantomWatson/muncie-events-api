@@ -42,12 +42,6 @@ class EventSeriesSchema extends EntitySchema
             'events' => [
                 self::DATA => $entity->events
             ],
-            'series' => [
-                self::DATA => $entity->event_series
-            ],
-            'tags' => [
-                self::DATA => $entity->tags
-            ],
             'user' => [
                 self::DATA => $entity->user
             ]
