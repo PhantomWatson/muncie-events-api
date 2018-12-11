@@ -62,7 +62,7 @@
 <?php $this->append('buffered'); ?>
       // Build a system
       const ui = SwaggerUIBundle({
-        url: "/muncie_events_api_v1.json",
+        url: "/muncie_events_api_v1.yaml",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
