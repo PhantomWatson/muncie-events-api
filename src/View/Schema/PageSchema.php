@@ -42,9 +42,4 @@ class PageSchema extends EntitySchema
     {
         return [];
     }
-
-    public function getSelfSubUrl()
-    {
-        return 'foo';
-    }
 }
