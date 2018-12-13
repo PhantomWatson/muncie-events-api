@@ -8,7 +8,6 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -169,10 +168,9 @@ class EventsTable extends Table
      * Applies default parameters to the events query for an API call
      *
      * @param Query $query Query
-     * @param array $options Array of options
      * @return Query
      */
-    public function findForApi(Query $query, array $options = [])
+    public function findForApi(Query $query)
     {
         $query
             ->where(['published' => true])
