@@ -38,7 +38,8 @@ class TagsFixture extends TestFixture
 
     const TAG_NAME = 'test tag';
     const TAG_NAME_ALTERNATE = 'another tag';
-    const CHILD_TAG_NAME = 'child tag';
+    const TAG_NAME_CHILD = 'child tag';
+    const TAG_NAME_UNLISTED = 'unlisted tag';
 
     /**
      * Records
@@ -73,8 +74,19 @@ class TagsFixture extends TestFixture
             'parent_id' => 1,
             'lft' => 2,
             'rght' => 3,
-            'name' => self::CHILD_TAG_NAME,
+            'name' => self::TAG_NAME_CHILD,
             'listed' => 1,
+            'selectable' => 1,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12'
+        ],
+        [
+            'id' => 4,
+            'parent_id' => null,
+            'lft' => 7,
+            'rght' => 8,
+            'name' => self::TAG_NAME_UNLISTED,
+            'listed' => 0,
             'selectable' => 1,
             'user_id' => 1,
             'created' => '2017-11-20 22:39:12'
