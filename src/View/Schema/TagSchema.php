@@ -31,7 +31,7 @@ class TagSchema extends EntitySchema
         ];
 
         if (isset($tag->count)) {
-            $retval['count'] = $tag->count;
+            $retval['upcomingEventCount'] = $tag->count;
         }
 
         return $retval;
