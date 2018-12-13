@@ -187,17 +187,6 @@ class EventsTable extends Table
     }
 
     /**
-     * Returns an array of all column names for the specified table
-     *
-     * @param string $tableName Table name, e.g. 'Events'
-     * @return array
-     */
-    private function getAllColumns($tableName)
-    {
-        return TableRegistry::getTableLocator()->get($tableName)->getSchema()->columns();
-    }
-
-    /**
      * Limits the query to events on or after the specified date
      *
      * @param Query $query Query
