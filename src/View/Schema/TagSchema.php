@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Schema;
 
+use App\Model\Entity\Tag;
 use JsonApi\View\Schema\EntitySchema;
 
 class TagSchema extends EntitySchema
@@ -19,25 +20,28 @@ class TagSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param Tag $tag Tag entity
      * @return array
      */
-    public function getAttributes($entity)
+    public function getAttributes($tag)
     {
         return [
-            'name' => $entity->name
+            'name' => $tag->name,
+            'selectable' => $tag->selectable
         ];
     }
 
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param Tag $tag Tag entity
      * @param array $includeRelationships Names of relationships to include
      * @return array
      */
-    public function getRelationships($entity, array $includeRelationships = [])
+    public function getRelationships($tag, array $includeRelationships = [])
     {
-        return [];
+        return [
+            'children' => [self::DATA => $tag->children]
+        ];
     }
 }
