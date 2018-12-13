@@ -38,6 +38,7 @@ class TagsFixture extends TestFixture
 
     const TAG_NAME = 'test tag';
     const TAG_NAME_ALTERNATE = 'another tag';
+    const CHILD_TAG_NAME = 'child tag';
 
     /**
      * Records
@@ -47,9 +48,9 @@ class TagsFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'parent_id' => 1,
+            'parent_id' => null,
             'lft' => 1,
-            'rght' => 2,
+            'rght' => 4,
             'name' => self::TAG_NAME,
             'listed' => 1,
             'selectable' => 1,
@@ -58,10 +59,21 @@ class TagsFixture extends TestFixture
         ],
         [
             'id' => 2,
-            'parent_id' => 1,
-            'lft' => 3,
-            'rght' => 4,
+            'parent_id' => null,
+            'lft' => 5,
+            'rght' => 6,
             'name' => self::TAG_NAME_ALTERNATE,
+            'listed' => 1,
+            'selectable' => 1,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12'
+        ],
+        [
+            'id' => 3,
+            'parent_id' => 1,
+            'lft' => 2,
+            'rght' => 3,
+            'name' => self::CHILD_TAG_NAME,
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
