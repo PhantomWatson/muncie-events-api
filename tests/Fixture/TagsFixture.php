@@ -92,4 +92,38 @@ class TagsFixture extends TestFixture
             'created' => '2017-11-20 22:39:12'
         ],
     ];
+
+    /**
+     * Returns only the tags that are in the tag tree root (i.e. have a null parent)
+     *
+     * @return array
+     */
+    public function getRootTags()
+    {
+        $retval = [];
+        foreach ($this->records as $tag) {
+            if ($tag['parent_id'] === null) {
+                $retval[] = $tag;
+            }
+        }
+
+        return $retval;
+    }
+
+    /**
+     * Returns only the tags that are NOT in the tag tree root (i.e. have a non-null parent)
+     *
+     * @return array
+     */
+    public function getNonRootTags()
+    {
+        $retval = [];
+        foreach ($this->records as $tag) {
+            if ($tag['parent_id'] !== null) {
+                $retval[] = $tag;
+            }
+        }
+
+        return $retval;
+    }
 }
