@@ -1,7 +1,6 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
-use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\TagsFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
