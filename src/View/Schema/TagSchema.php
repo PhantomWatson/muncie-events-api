@@ -25,10 +25,16 @@ class TagSchema extends EntitySchema
      */
     public function getAttributes($tag)
     {
-        return [
+        $retval = [
             'name' => $tag->name,
             'selectable' => $tag->selectable
         ];
+
+        if (isset($tag->count)) {
+            $retval['count'] = $tag->count;
+        }
+
+        return $retval;
     }
 
     /**

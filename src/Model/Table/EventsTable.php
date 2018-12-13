@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Tag;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
@@ -346,5 +347,39 @@ class EventsTable extends Table
             ->find('future')
             ->find('inCategory', ['categoryId' => $categoryId])
             ->count();
+    }
+
+    /**
+     * Returns an alphabetized array of tags associated with upcoming events,
+     * plus the count of how many events each is associated with
+     *
+     * @return Tag[]
+     */
+    public function getUpcomingEventTags()
+    {
+        $events = $this->find('future')
+            ->select(['id'])
+            ->contain([
+                'Tags' => function (Query $query) {
+                    return $query->select(['id', 'name']);
+                }
+            ])
+            ->all();
+
+        $tags = [];
+        foreach ($events as $event) {
+            foreach ($event->tags as $tag) {
+                if (isset($tags[$tag->name])) {
+                    $tags[$tag->name]->count++;
+                    continue;
+                }
+                $tag->count = 1;
+                $tags[$tag->name] = $tag;
+            }
+        }
+
+        ksort($tags);
+
+        return $tags;
     }
 }

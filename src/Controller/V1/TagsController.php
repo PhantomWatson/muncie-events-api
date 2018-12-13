@@ -2,7 +2,11 @@
 namespace App\Controller\V1;
 
 use App\Controller\ApiController;
+use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
+use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 
 /**
  * Class TagsController
@@ -49,5 +53,23 @@ class TagsController extends ApiController
             }
         }
         return $tags;
+    }
+
+    /**
+     * /tags/upcoming endpoint
+     *
+     * @return void
+     */
+    public function upcoming()
+    {
+        /** @var EventsTable $eventsTable */
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $tags = $eventsTable->getUpcomingEventTags();
+
+        $this->set([
+            '_entities' => ['Tag'],
+            '_serialize' => ['tags'],
+            'tags' => $tags
+        ]);
     }
 }
