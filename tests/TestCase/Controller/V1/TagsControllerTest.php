@@ -78,4 +78,28 @@ class TagsControllerTest extends ApplicationTest
             $this->assertContains($tag['name'], $responseNonrootTagNames, 'Nonroot tag not found in "included"');
         }
     }
+
+    /**
+     * Tests that /tags/upcoming returns the correct results
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpcoming()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'upcoming',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $this->assertNotEmpty($response['data']);
+
+        $counts = Hash::extract($response['data'], '{n}.attributes.upcomingEventCount');
+        $lowestCount = min($counts);
+        $this->assertTrue($lowestCount > 0, 'Tag returned with upcomingEventCount <= 0');
+    }
 }
