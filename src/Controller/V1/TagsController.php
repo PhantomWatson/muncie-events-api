@@ -4,8 +4,6 @@ namespace App\Controller\V1;
 use App\Controller\ApiController;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
-use Cake\Database\Expression\QueryExpression;
-use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -56,11 +54,11 @@ class TagsController extends ApiController
     }
 
     /**
-     * /tags/upcoming endpoint
+     * /tags/future endpoint
      *
      * @return void
      */
-    public function upcoming()
+    public function future()
     {
         /** @var EventsTable $eventsTable */
         $eventsTable = TableRegistry::getTableLocator()->get('Events');

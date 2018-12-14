@@ -80,17 +80,17 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /tags/upcoming returns the correct results
+     * Tests that /tags/future returns the correct results
      *
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testUpcoming()
+    public function testFuture()
     {
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Tags',
-            'action' => 'upcoming',
+            'action' => 'future',
             '?' => ['apikey' => $this->getApiKey()]
         ]);
         $this->assertResponseOk();
