@@ -50,6 +50,10 @@ class TagSchema extends EntitySchema
             return ['children' => [self::DATA => $tag->children]];
         }
 
+        if (isset($tag->events)) {
+            return ['events' => [self::DATA => $tag->events]];
+        }
+
         return [];
     }
 }

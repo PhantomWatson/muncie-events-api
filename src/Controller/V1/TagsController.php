@@ -4,6 +4,8 @@ namespace App\Controller\V1;
 use App\Controller\ApiController;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
+use Cake\Http\Exception\BadRequestException;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -68,6 +70,47 @@ class TagsController extends ApiController
             '_entities' => ['Tag'],
             '_serialize' => ['tags'],
             'tags' => $tags
+        ]);
+    }
+
+    /**
+     * /tag/{tagId} endpoint
+     *
+     * @param null $tagId
+     * @return void
+     * @throws BadRequestException
+     */
+    public function view($tagId = null)
+    {
+        if (!$tagId) {
+            throw new BadRequestException('Required tag ID is missing');
+        }
+
+        $tag = $this->Tags->find()
+            ->where(['id' => $tagId])
+            ->contain([
+                'Events' => function (Query $q) {
+                    return $q
+                        ->find('forApi')
+                        ->find('future');
+                }
+            ])
+            ->first();
+        if (!$tag) {
+            throw new BadRequestException('Invalid tag ID: ' . $tagId);
+        }
+
+        $this->set([
+            '_entities' => [
+                'Event',
+                'Category',
+                'Tag',
+                'User',
+                'Image'
+            ],
+            '_serialize' => ['tag'],
+            '_include' => ['events'],
+            'tag' => $tag
         ]);
     }
 }
