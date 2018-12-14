@@ -337,7 +337,7 @@ class EventsTable extends Table
     }
 
     /**
-     * Returns an alphabetized array of tags associated with upcoming events,
+     * Returns an alphabetized array of tags associated with upcoming published events,
      * plus the count of how many events each is associated with
      *
      * @return Tag[]
@@ -346,6 +346,7 @@ class EventsTable extends Table
     {
         $events = $this->find('future')
             ->select(['id'])
+            ->where(['published' => true])
             ->contain([
                 'Tags' => function (Query $query) {
                     return $query->select(['id', 'name']);
