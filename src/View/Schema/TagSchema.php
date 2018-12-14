@@ -46,8 +46,10 @@ class TagSchema extends EntitySchema
      */
     public function getRelationships($tag, array $includeRelationships = [])
     {
-        return [
-            'children' => [self::DATA => $tag->children]
-        ];
+        if (isset($tag->children)) {
+            return ['children' => [self::DATA => $tag->children]];
+        }
+
+        return [];
     }
 }
