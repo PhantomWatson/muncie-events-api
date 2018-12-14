@@ -784,6 +784,58 @@ paths:
                     example: The API must be used over HTTPS
       security:
         - api_key: []
+  /tags/future:
+    get:
+      tags:
+        - tags
+      summary: Returns a list of tags associated with upcoming events and the counts of upcoming events for each
+      operationId: getTagsFuture
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: tags
+                        id:
+                          type: integer
+                          format: int64
+                        attributes:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: downtown
+                            selectable:
+                              type: boolean
+                              example: true
+                            upcomingEventCount:
+                              type: integer
+                              example: 10
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: Invalid protocol
+                  detail:
+                    type: string
+                    example: The API must be used over HTTPS
+      security:
+        - api_key: []
 components:
   schemas:
     Category:
