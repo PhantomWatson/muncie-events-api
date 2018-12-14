@@ -40,6 +40,8 @@ class TagsFixture extends TestFixture
     const TAG_NAME_ALTERNATE = 'another tag';
     const TAG_NAME_CHILD = 'child tag';
     const TAG_NAME_UNLISTED = 'unlisted tag';
+    const TAG_WITH_EVENT = 1;
+    const TAG_WITH_DIFFERENT_EVENT = 2;
 
     /**
      * Records
@@ -48,7 +50,7 @@ class TagsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
+            'id' => self::TAG_WITH_EVENT,
             'parent_id' => null,
             'lft' => 1,
             'rght' => 4,
@@ -59,7 +61,7 @@ class TagsFixture extends TestFixture
             'created' => '2017-11-20 22:39:12'
         ],
         [
-            'id' => 2,
+            'id' => self::TAG_WITH_DIFFERENT_EVENT,
             'parent_id' => null,
             'lft' => 5,
             'rght' => 6,

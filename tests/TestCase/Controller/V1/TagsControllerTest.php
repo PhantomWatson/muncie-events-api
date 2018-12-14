@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
@@ -101,5 +102,38 @@ class TagsControllerTest extends ApplicationTest
         $counts = Hash::extract($response['data'], '{n}.attributes.upcomingEventCount');
         $lowestCount = min($counts);
         $this->assertTrue($lowestCount > 0, 'Tag returned with upcomingEventCount <= 0');
+    }
+
+    /**
+     * Tests that /tags/future returns the correct results
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testViewSuccess()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'view',
+            TagsFixture::TAG_WITH_EVENT,
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertResponseOk();
+
+        // Test tag data
+        $response = (array)json_decode($this->_response->getBody());
+        $responseTagId = $response['data']->id;
+        $this->assertEquals(TagsFixture::TAG_WITH_EVENT, $responseTagId);
+
+        // Test tag 'relationships'
+        $responseEventIds = Hash::extract($response['data']->relationships->events->data, '{n}.id');
+        $this->assertContains(EventsFixture::EVENT_WITH_TAG, $responseEventIds);
+        $this->assertNotContains(EventsFixture::EVENT_WITH_DIFFERENT_TAG, $responseEventIds);
+
+        // Test 'included' data
+        $responseEventIds = Hash::extract($response['included'], '{n}.id');
+        $this->assertContains(EventsFixture::EVENT_WITH_TAG, $responseEventIds);
+        $this->assertNotContains(EventsFixture::EVENT_WITH_DIFFERENT_TAG, $responseEventIds);
     }
 }
