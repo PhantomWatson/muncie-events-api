@@ -1,5 +1,5 @@
 <?php
-return [
+$config = [
     /**
      * Debug Level:
      *
@@ -189,6 +189,18 @@ return [
             'tls' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+
+        'Debug' => [
+            'className' => 'Debug',
+            'host' => 'localhost',
+            'port' => 25,
+            'timeout' => 30,
+            'username' => null,
+            'password' => null,
+            'client' => null,
+            'tls' => false,
+            'url' => null
+        ],
     ],
 
     /**
@@ -300,6 +312,12 @@ return [
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
             'url' => env('LOG_ERROR_URL', null),
         ],
+        'email' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'email',
+            'levels' => ['info'],
+        ],
     ],
 
     /**
@@ -346,5 +364,17 @@ return [
     ],
 
     'cookie_key' => env('COOKIE_KEY', 'cookie key'),
-    'mainSiteBaseUrl' => 'https://muncieevents.com'
+    'mainSiteBaseUrl' => 'https://muncieevents.com',
+    'adminEmail' => 'graham@phantomwatson.com'
 ];
+
+// Use Debug EmailTransport in debug mode
+if ($config['debug']) {
+    $config['EmailTransport']['default']['className'] = 'Debug';
+    $config['Email']['default']['log'] = [
+        'level' => 'info',
+        'scope' => 'email'
+    ];
+}
+
+return $config;
