@@ -172,20 +172,20 @@ paths:
                       first:
                         type: string
                         description: Path to the first page in this result set
-                        example: '/events?on=2099-09-30&page=1'
+                        example: 'https://api.muncieevents.com/events?on=2099-09-30&page=1'
                       last:
                         type: string
                         description: Path to the last page in this result set
-                        example: '/events?on=2099-09-30&page=4'
+                        example: 'https://api.muncieevents.com/events?on=2099-09-30&page=4'
                       prev:
                         type: string
                         description: Path to the previous page in this result set, or null if not applicable
-                        example: '/events?on=2099-09-30&page=1'
+                        example: 'https://api.muncieevents.com/events?on=2099-09-30&page=1'
                         nullable: true
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: '/events?on=2099-09-30&page=3'
+                        example: 'https://api.muncieevents.com/events?on=2099-09-30&page=3'
                         nullable: true
         '400':
           description: Bad request
@@ -250,24 +250,24 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/events/category/13?page=1'
+                        example: 'https://api.muncieevents.com/events/category/13?page=1'
                       first:
                         type: string
                         description: Path to the first page in this result set
-                        example: '/events/category/13?page=1'
+                        example: 'https://api.muncieevents.com/events/category/13?page=1'
                       last:
                         type: string
                         description: Path to the last page in this result set
-                        example: '/events/category/13?page=4'
+                        example: 'https://api.muncieevents.com/events/category/13?page=4'
                       prev:
                         type: string
                         description: Path to the previous page in this result set, or null if not applicable
-                        example: '/events/category/13?page=1'
+                        example: 'https://api.muncieevents.com/events/category/13?page=1'
                         nullable: true
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: '/events/search?page=3'
+                        example: 'https://api.muncieevents.com/events/search?page=3'
                         nullable: true
         '400':
           description: Bad request
@@ -343,24 +343,24 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/events/future?page=1'
+                        example: 'https://api.muncieevents.com/events/future?page=1'
                       first:
                         type: string
                         description: Path to the first page in this result set
-                        example: '/events/future?page=1'
+                        example: 'https://api.muncieevents.com/events/future?page=1'
                       last:
                         type: string
                         description: Path to the last page in this result set
-                        example: '/events/future?page=4'
+                        example: 'https://api.muncieevents.com/events/future?page=4'
                       prev:
                         type: string
                         description: Path to the previous page in this result set, or null if not applicable
-                        example: '/events/future?page=1'
+                        example: 'https://api.muncieevents.com/events/future?page=1'
                         nullable: true
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: '/events/future?page=3'
+                        example: 'https://api.muncieevents.com/events/future?page=3'
                         nullable: true
         '400':
           description: Bad request
@@ -407,24 +407,24 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/events/search?page=1'
+                        example: 'https://api.muncieevents.com/events/search?page=1'
                       first:
                         type: string
                         description: Path to the first page in this result set
-                        example: '/events/search?page=1'
+                        example: 'https://api.muncieevents.com/events/search?page=1'
                       last:
                         type: string
                         description: Path to the last page in this result set
-                        example: '/events/search?page=4'
+                        example: 'https://api.muncieevents.com/events/search?page=4'
                       prev:
                         type: string
                         description: Path to the previous page in this result set, or null if not applicable
-                        example: '/events/search?page=1'
+                        example: 'https://api.muncieevents.com/events/search?page=1'
                         nullable: true
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: '/events/search?page=3'
+                        example: 'https://api.muncieevents.com/events/search?page=3'
                         nullable: true
         '400':
           description: Bad request
