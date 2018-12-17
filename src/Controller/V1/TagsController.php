@@ -52,6 +52,7 @@ class TagsController extends ApiController
                 $tag['children'] = $this->filterOutHiddenTags($tag['children']);
             }
         }
+
         return $tags;
     }
 
@@ -76,7 +77,7 @@ class TagsController extends ApiController
     /**
      * /tag/{tagId} endpoint
      *
-     * @param null $tagId
+     * @param null $tagId Tag ID
      * @return void
      * @throws BadRequestException
      */
