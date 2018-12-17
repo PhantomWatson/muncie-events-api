@@ -961,6 +961,7 @@ components:
         name: Category
     User:
       type: object
+      nullable: true
       properties:
         id:
           type: integer
@@ -1022,12 +1023,10 @@ components:
               nullable: true
             user:
               $ref: '#/components/schemas/User'
-              nullable: true
             category:
               $ref: '#/components/schemas/Category'
             series:
               $ref: '#/components/schemas/EventSeries'
-              nullable: true
             date:
               type: string
               format: date
@@ -1125,6 +1124,7 @@ components:
                       type: integer
     EventSeries:
       type: object
+      nullable: true
       required:
         - title
       properties:
