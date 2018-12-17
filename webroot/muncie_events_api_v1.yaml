@@ -7,9 +7,9 @@ info:
   description: |
     The API for 
     [MuncieEvents.com](https://muncieevents.com).
-  version: "1.0.0"
+  version: '1.0.0'
   title: Muncie Events API
-  termsOfService: ""
+  termsOfService: ''
   contact:
     email: gtwatson@bsu.edu
   license:
