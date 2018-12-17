@@ -465,7 +465,7 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: /pages/about
+                        example: 'https://api.muncieevents.com/v1/pages/about'
         '400':
           description: Bad request
           content:
@@ -503,7 +503,7 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/pages/rules-events'
+                        example: 'https://api.muncieevents.com/v1/pages/rules-events'
         '400':
           description: Bad request
           content:
@@ -541,7 +541,7 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/pages/rules-images'
+                        example: 'https://api.muncieevents.com/v1/pages/rules-images'
         '400':
           description: Bad request
           content:
@@ -579,7 +579,7 @@ paths:
                       self:
                         type: string
                         description: Path to access this page
-                        example: '/pages/rules-tags'
+                        example: 'https://api.muncieevents.com/v1/pages/rules-tags'
         '400':
           description: Bad request
           content:
