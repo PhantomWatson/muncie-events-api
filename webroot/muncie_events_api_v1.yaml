@@ -58,14 +58,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  title:
-                    type: string
-                    example: Invalid protocol
-                  detail:
-                    type: string
-                    example: The API must be used over HTTPS
+                $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /event/{eventId}:
@@ -103,14 +96,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          type: object
-                          properties:
-                            title:
-                              type: string
-                              example: Invalid protocol
-                            detail:
-                              type: string
-                              example: The API must be used over HTTPS
+                          $ref: '#/components/schemas/ErrorInvalidProtocol'
                   - type: object
                     properties:
                       errors:
@@ -221,14 +207,7 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
-                  - type: object
-                    properties:
-                      title:
-                        type: string
-                        example: Invalid protocol
-                      detail:
-                        type: string
-                        example: The API must be used over HTTPS
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /events/category/{categoryId}:
@@ -328,14 +307,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          type: object
-                          properties:
-                            title:
-                              type: string
-                              example: Invalid protocol
-                            detail:
-                              type: string
-                              example: The API must be used over HTTPS
+                          $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /events/future:
@@ -401,14 +373,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Invalid protocol
-                        detail:
-                          type: string
-                          example: The API must be used over HTTPS
+                      $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /events/search:
@@ -486,14 +451,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          type: object
-                          properties:
-                            title:
-                              type: string
-                              example: Invalid protocol
-                            detail:
-                              type: string
-                              example: The API must be used over HTTPS
+                          $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /pages/about:
@@ -531,14 +489,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Invalid protocol
-                        detail:
-                          type: string
-                          example: The API must be used over HTTPS
+                      $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /pages/rules-events:
@@ -576,14 +527,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Invalid protocol
-                        detail:
-                          type: string
-                          example: The API must be used over HTTPS
+                      $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /pages/rules-images:
@@ -621,14 +565,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Invalid protocol
-                        detail:
-                          type: string
-                          example: The API must be used over HTTPS
+                      $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /pages/rules-tags:
@@ -666,14 +603,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        title:
-                          type: string
-                          example: Invalid protocol
-                        detail:
-                          type: string
-                          example: The API must be used over HTTPS
+                      $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /tag/{tagId}:
@@ -776,14 +706,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          type: object
-                          properties:
-                            title:
-                              type: string
-                              example: Invalid protocol
-                            detail:
-                              type: string
-                              example: The API must be used over HTTPS
+                          $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /tags/future:
@@ -828,14 +751,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  title:
-                    type: string
-                    example: Invalid protocol
-                  detail:
-                    type: string
-                    example: The API must be used over HTTPS
+                $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
   /tags/tree:
@@ -934,14 +850,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  title:
-                    type: string
-                    example: Invalid protocol
-                  detail:
-                    type: string
-                    example: The API must be used over HTTPS
+                $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
 components:
@@ -1155,6 +1064,15 @@ components:
             body:
               type: string
               example: Muncie Events is a comprehensive event promotion tool provided to the city of...
+    ErrorInvalidProtocol:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Invalid protocol
+        detail:
+          type: string
+          example: The API must be used over HTTPS
   securitySchemes:
     api_key:
       type: apiKey
