@@ -53,8 +53,6 @@ paths:
                             url:
                               type: string
                               example: https://muncieevents.com/category/music
-                      xml:
-                        name: Category
         '400':
           description: Bad request
           content:
@@ -957,8 +955,6 @@ components:
         name:
           type: string
           example: Music
-      xml:
-        name: Category
     User:
       type: object
       nullable: true
@@ -972,8 +968,6 @@ components:
         email:
           type: string
           example: 'alfred@example.com'
-      xml:
-        name: User
     Tag:
       type: object
       properties:
@@ -983,8 +977,6 @@ components:
         name:
           type: string
           example: music festivals
-      xml:
-        name: Tag
     Event:
       type: object
       required:
@@ -1057,16 +1049,10 @@ components:
               nullable: true
             tags:
               type: array
-              xml:
-                name: tag
-                wrapped: true
               items:
                 $ref: '#/components/schemas/Tag'
             images:
               type: array
-              xml:
-                name: image
-                wrapped: true
               items:
                 $ref: '#/components/schemas/Image'
             url:
