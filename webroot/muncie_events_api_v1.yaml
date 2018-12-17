@@ -1,6 +1,5 @@
 openapi: 3.0.0
 servers:
-  # Added by API Auto Mocking Plugin
   - description: Muncie Events API
     url: https://api.muncieevents.com/v1
 info:
