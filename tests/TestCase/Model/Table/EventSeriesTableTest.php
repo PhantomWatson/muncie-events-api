@@ -24,8 +24,8 @@ class EventSeriesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.event_series',
-        'app.users'
+        'app.EventSeries',
+        'app.Users'
     ];
 
     /**

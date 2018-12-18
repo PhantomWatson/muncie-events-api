@@ -24,8 +24,8 @@ class ApiCallsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.api_calls',
-        'app.users'
+        'app.ApiCalls',
+        'app.Users'
     ];
 
     /**

@@ -24,14 +24,14 @@ class TagsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.tags',
-        'app.users',
-        'app.events',
-        'app.categories',
-        'app.event_series',
-        'app.images',
-        'app.events_images',
-        'app.events_tags'
+        'app.Tags',
+        'app.Users',
+        'app.Events',
+        'app.Categories',
+        'app.EventSeries',
+        'app.Images',
+        'app.EventsImages',
+        'app.EventsTags'
     ];
 
     /**

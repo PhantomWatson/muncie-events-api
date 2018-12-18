@@ -17,15 +17,15 @@ class CategoriesControllerTest extends ApplicationTest
      * @var array
      */
     public $fixtures = [
-        'app.api_calls',
-        'app.categories',
-        'app.event_series',
-        'app.events',
-        'app.events_images',
-        'app.events_tags',
-        'app.images',
-        'app.tags',
-        'app.users'
+        'app.ApiCalls',
+        'app.Categories',
+        'app.EventSeries',
+        'app.Events',
+        'app.EventsImages',
+        'app.EventsTags',
+        'app.Images',
+        'app.Tags',
+        'app.Users'
     ];
 
     /**

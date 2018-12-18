@@ -17,7 +17,7 @@ class UsersControllerTest extends ApplicationTest
      * @var array
      */
     public $fixtures = [
-        'app.users'
+        'app.Users'
     ];
 
     /**
