@@ -41,6 +41,7 @@ class PagesControllerTest extends TestCase
      * testMultipleGet method
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testMultipleGet()
     {
@@ -54,6 +55,7 @@ class PagesControllerTest extends TestCase
      * Tests HTTP requests being redirected to HTTPS
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testRedirectToHttps()
     {
@@ -71,6 +73,7 @@ class PagesControllerTest extends TestCase
      * Tests /docs/v1
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
     public function testDocsV1()
     {
