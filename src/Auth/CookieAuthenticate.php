@@ -3,7 +3,6 @@ namespace App\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -79,18 +78,23 @@ class CookieAuthenticate extends BaseAuthenticate
     }
 
     /**
-     * Delete cookies when an user logout.
+     * Delete cookies when a user logs out.
      *
-     * @param \Cake\Event\Event  $event The logout Event.
-     * @param array $user The user about to be logged out.
      * @return void
      */
-    public function logout(Event $event, array $user)
+    public function logout()
     {
-        $modifiedResponse = $this->_registry
-            ->getController()
+        $controller = $this->_registry->getController();
+        $cookieCollection = $controller->request->getCookieCollection();
+        $cookie = $cookieCollection->get($this->_config['cookie']['name']);
+
+        if (!$cookie) {
+            return;
+        }
+
+        $modifiedResponse = $controller
             ->response
-            ->withExpiredCookie($this->_config['cookie']['name']);
+            ->withExpiredCookie($cookie);
         $this->_registry->getController()->response = $modifiedResponse;
     }
 }
