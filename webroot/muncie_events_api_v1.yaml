@@ -60,6 +60,59 @@ paths:
                 $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
+  /contact:
+    get:
+      tags:
+        - contact
+      summary: Send a message to the Muncie Events staff
+      operationId: postContact
+      parameters:
+        - in: header
+          name: name
+          schema:
+            type: string
+            example: Sender Name
+          required: true
+          description: Name of user sending message
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: sender@example.com
+          required: true
+          description: Email address of sender
+        - in: header
+          name: body
+          schema:
+            type: string
+            example: Message body
+          required: true
+          description: Body of message
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: The `name`/`email`/`body` parameter is required
+      security:
+        - api_key: []
   /event/{eventId}:
     get:
       tags:
