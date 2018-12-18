@@ -23,12 +23,13 @@ class ContactMailer extends Mailer
             }
         }
 
+        $this->viewBuilder()->setTemplate('contact');
+
         return $this
             ->setTo(Configure::read('adminEmail'))
             ->setFrom($data['email'], $data['name'])
             ->setSubject('Muncie Events contact form')
             ->setViewVars(['body' => $data['body']])
-            ->setTemplate('contact')
             ->setDomain('api.muncieevents.com');
     }
 }
