@@ -2,12 +2,15 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\TestCase\ApplicationTest;
+use Cake\TestSuite\EmailTrait;
+use Cake\TestSuite\TestEmailTransport;
 
 /**
  * ContactControllerTest class
  */
 class ContactControllerTest extends ApplicationTest
 {
+    use EmailTrait;
 
     /**
      * Fixtures
@@ -18,6 +21,19 @@ class ContactControllerTest extends ApplicationTest
         'app.ApiCalls',
         'app.Users'
     ];
+
+    /**
+     * Method for cleaning up after each test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        // Clean up previously sent emails for the next test
+        TestEmailTransport::clearEmails();
+    }
 
     /**
      * Tests that /v1/contact returns the correct success status code
