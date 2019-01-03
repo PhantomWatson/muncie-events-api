@@ -20,7 +20,7 @@ use DateTime;
  * @property int $series_id
  * @property \Cake\I18n\FrozenDate $date
  * @property \Cake\I18n\FrozenTime $time_start
- * @property \Cake\I18n\FrozenTime $time_end
+ * @property \Cake\I18n\FrozenTime|null $time_end
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
