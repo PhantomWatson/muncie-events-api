@@ -77,6 +77,7 @@ class Event extends Entity
      * Transforms the time into a full datetime object with correct UTC offset
      *
      * @return string
+     * @throws \Exception
      */
     protected function _getTimeStart()
     {
@@ -87,6 +88,7 @@ class Event extends Entity
      * Transforms the time into a full datetime object with correct UTC offset
      *
      * @return string
+     * @throws \Exception
      */
     protected function _getTimeEnd()
     {
@@ -103,6 +105,7 @@ class Event extends Entity
      *
      * @param FrozenTime|null $localTime Indiana time mistakenly represented as UTC
      * @return string|null
+     * @throws \Exception
      */
     private function getCorrectedTime($localTime)
     {
