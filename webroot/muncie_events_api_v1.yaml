@@ -61,7 +61,7 @@ paths:
       security:
         - api_key: []
   /contact:
-    get:
+    post:
       tags:
         - contact
       summary: Send a message to the Muncie Events staff
