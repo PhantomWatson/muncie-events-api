@@ -15,7 +15,8 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property int $mailing_list_id
  * @property int $facebook_id
- * @property string $api_key
+ * @property string|null $api_key
+ * @property string|null $token
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -52,7 +53,8 @@ class User extends Entity
         'events' => true,
         'images' => true,
         'tags' => true,
-        'api_key' => true
+        'api_key' => true,
+        'token' => true
     ];
 
     /**
