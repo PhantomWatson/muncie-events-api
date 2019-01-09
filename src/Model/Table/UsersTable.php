@@ -4,8 +4,6 @@ namespace App\Model\Table;
 use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
-use Cake\Http\Exception\InternalErrorException;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -226,20 +224,19 @@ class UsersTable extends Table
     }
 
     /**
-     * Custom finder that finds the first user with a matching token
+     * Returns a user with a matching token or NULL if none was found
      *
-     * @param Query $query Query object
-     * @param array $options Array of options including 'token'
-     * @return Query
+     * @param string $token User token
+     * @return User|null
      */
-    public function findByToken(Query $query, array $options)
+    public function getByToken($token)
     {
-        if (!array_key_exists('token', $options)) {
-            throw new InternalErrorException("\$options['token'] unspecified");
-        }
+        /** @var User $user */
+        $user = $this
+            ->find()
+            ->where(['token' => $token])
+            ->first();
 
-        return $query
-            ->where(['token' => $options['token']])
-            ->limit(1);
+        return $user;
     }
 }
