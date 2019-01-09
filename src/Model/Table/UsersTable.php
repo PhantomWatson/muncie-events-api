@@ -209,4 +209,17 @@ class UsersTable extends Table
 
         return $count > 0;
     }
+
+    /**
+     * Generates a string token for the Users.token field
+     *
+     * The user token is used to authorize the API end-user to perform an action tied to record ownership, e.g.
+     * adding events or updating user contact information
+     *
+     * @return string
+     */
+    public function generateToken()
+    {
+        return $this->generateApiKey();
+    }
 }
