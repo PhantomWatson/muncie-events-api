@@ -4,6 +4,8 @@ namespace App\Model\Table;
 use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -221,5 +223,23 @@ class UsersTable extends Table
     public function generateToken()
     {
         return $this->generateApiKey();
+    }
+
+    /**
+     * Custom finder that finds the first user with a matching token
+     *
+     * @param Query $query Query object
+     * @param array $options Array of options including 'token'
+     * @return Query
+     */
+    public function findByToken(Query $query, array $options)
+    {
+        if (!array_key_exists('token', $options)) {
+            throw new InternalErrorException("\$options['token'] unspecified");
+        }
+
+        return $query
+            ->where(['token' => $options['token']])
+            ->limit(1);
     }
 }
