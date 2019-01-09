@@ -69,28 +69,27 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('name')
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->minLength('name', 1);
 
         $validator
             ->scalar('role')
             ->requirePresence('role', 'create')
-            ->notEmpty('role');
+            ->minLength('role', 1);
 
         $validator
             ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
+            ->requirePresence('email', 'create');
 
         $validator
             ->scalar('password')
             ->requirePresence('password', 'create')
-            ->notEmpty(['password', 'confirm_password'])
+            ->minLength('password', 1)
+            ->minLength('confirm_password', 1)
             ->add('confirm_password', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
@@ -100,10 +99,13 @@ class UsersTable extends Table
 
         $validator
             ->scalar('api_key')
-            ->allowEmpty('name')
-            ->minLength('api_key', 32)
-            ->maxLength('api_key', 32)
+            ->lengthBetween('api_key', [32, 32])
             ->ascii('api_key');
+
+        $validator
+            ->scalar('token')
+            ->lengthBetween('token', [32, 32])
+            ->ascii('token');
 
         return $validator;
     }
@@ -155,7 +157,9 @@ class UsersTable extends Table
     }
 
     /**
-     * Returns a random 32-character string
+     * Generates a string token for the Users.api_key field
+     *
+     * The API key is used to authorize the user or application to make any API call
      *
      * @return string
      */
