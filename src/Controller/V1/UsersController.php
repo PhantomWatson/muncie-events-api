@@ -55,7 +55,7 @@ class UsersController extends ApiController
             }
         }
 
-        $user = $this->Auth->identify();
+        $user = $this->getUserFromLoginCredentials();
         if (!$user) {
             throw new BadRequestException('Email or password is incorrect');
         }
@@ -72,5 +72,25 @@ class UsersController extends ApiController
             '_serialize' => ['user'],
             'user' => $user
         ]);
+    }
+
+    /**
+     * Identifies a user based on email and password by temporarily circumventing API key authentication
+     *
+     * @return array|bool
+     */
+    private function getUserFromLoginCredentials()
+    {
+        $this->Auth->setConfig('authenticate', [
+            'Form' => [
+                'fields' => ['username' => 'email']
+            ]
+        ]);
+        $queryParams = $this->request->getQueryParams();
+        $this->request = $this->request->withQueryParams(['apikey' => null]);
+        $user = $this->Auth->identify();
+        $this->request = $this->request->withQueryParams($queryParams);
+
+        return $user;
     }
 }
