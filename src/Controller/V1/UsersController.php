@@ -90,15 +90,26 @@ class UsersController extends ApiController
      */
     private function getUserFromLoginCredentials()
     {
+        // Remember query parameters
+        $queryParams = $this->request->getQueryParams();
+
+        // Identify user via post/put/patch data
         $this->Auth->setConfig('authenticate', [
             'Form' => [
-                'fields' => ['username' => 'email']
+                'fields' => ['username' => 'email'],
+                'passwordHasher' => [
+                    'className' => 'Fallback',
+                    'hashers' => ['Default', 'Legacy']
+                ]
             ]
         ]);
-        $queryParams = $this->request->getQueryParams();
+        $this->request = $this->request->withParam('?', ['apikey' => null]);
         $this->request = $this->request->withQueryParams(['apikey' => null]);
         $user = $this->Auth->identify();
+
+        // Restore query parameters
         $this->request = $this->request->withQueryParams($queryParams);
+        $this->request = $this->request->withParam('?', $queryParams);
 
         return $user;
     }
