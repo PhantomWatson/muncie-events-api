@@ -56,10 +56,10 @@ class UsersController extends ApiController
      */
     public function login()
     {
-        $this->request->allowMethod('get');
+        $this->request->allowMethod('post');
 
         foreach (['email', 'password'] as $field) {
-            if (!$this->request->getQuery($field)) {
+            if (!$this->request->getData($field)) {
                 throw new BadRequestException('The parameter "' . $field . '" is required');
             }
         }
