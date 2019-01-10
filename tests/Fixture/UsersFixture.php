@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\Fixture;
 
+use App\Auth\LegacyPasswordHasher;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -74,6 +75,20 @@ class UsersFixture extends TestFixture
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
+        [
+            'id' => 3,
+            'name' => 'User with old-style password hash',
+            'role' => 'user',
+            'bio' => '',
+            'email' => 'user3@example.com',
+            'password' => '',
+            'mailing_list_id' => 1,
+            'facebook_id' => 1,
+            'api_key' => null,
+            'token' => null,
+            'created' => '2017-11-20 22:39:17',
+            'modified' => '2017-11-20 22:39:17'
+        ],
     ];
 
     /**
@@ -86,11 +101,17 @@ class UsersFixture extends TestFixture
         parent::init();
 
         $password = 'password';
+
+        // Add default-style password hashes
         $hasher = new DefaultPasswordHasher();
         $hash = $hasher->hash($password);
-
-        foreach ($this->records as &$record) {
-            $record['password'] = $hash;
+        for ($n = 0; $n <= 1; $n++) {
+            $this->records[$n]['password'] = $hash;
         }
+
+        // Add old-style password hash
+        $hasher = new LegacyPasswordHasher();
+        $hash = $hasher->hash($password);
+        $this->records[2]['password'] = $hash;
     }
 }
