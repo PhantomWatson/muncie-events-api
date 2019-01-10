@@ -59,7 +59,7 @@ class UsersController extends ApiController
         $this->request->allowMethod('get');
 
         foreach (['email', 'password'] as $field) {
-            if (!$this->request->getData($field)) {
+            if (!$this->request->getQuery($field)) {
                 throw new BadRequestException('The parameter "' . $field . '" is required');
             }
         }
