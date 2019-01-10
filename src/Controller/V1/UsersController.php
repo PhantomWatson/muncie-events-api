@@ -34,6 +34,13 @@ class UsersController extends ApiController
             );
         }
 
+        // Recreate entity so that only specific fields are visible
+        $user = $this->Users
+            ->find()
+            ->select(['id', 'name', 'email', 'token'])
+            ->where(['id' => $user->id])
+            ->first();
+
         $this->set([
             '_entities' => ['User'],
             '_serialize' => ['user'],
