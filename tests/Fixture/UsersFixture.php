@@ -27,6 +27,7 @@ class UsersFixture extends TestFixture
         'mailing_list_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'facebook_id' => ['type' => 'biginteger', 'length' => 20, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'api_key' => ['type' => 'string', 'length' => 32, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'token' => ['type' => 'string', 'length' => 32, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         '_constraints' => [
@@ -55,6 +56,7 @@ class UsersFixture extends TestFixture
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => 'KOsc08Hf1cOLUpbt1NHwoTwA2BnCIUSZ',
+            'token' => null,
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
@@ -68,6 +70,7 @@ class UsersFixture extends TestFixture
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => null,
+            'token' => null,
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
