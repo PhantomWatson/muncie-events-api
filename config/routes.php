@@ -18,7 +18,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -75,4 +74,6 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
     $routes->connect('/event/*', ['controller' => 'Events', 'action' => 'view']);
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
+    $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
+    $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
 });
