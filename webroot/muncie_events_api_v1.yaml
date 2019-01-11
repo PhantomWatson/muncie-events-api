@@ -893,6 +893,65 @@ paths:
                 $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
+  /user/{userId}:
+    get:
+      tags:
+        - user
+      summary: Returns the name and email address of a specified user
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          example: 123
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: User Name
+                          email:
+                            type: string
+                            example: 'user@example.com'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: User not found
+      security:
+        - api_key: []
   /user/login:
     post:
       tags:
