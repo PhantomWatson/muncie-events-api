@@ -108,4 +108,31 @@ class UsersController extends ApiController
         $auth = new FormAuthenticate($registry, $config);
         return $auth->authenticate($this->getRequest(), $this->response);
     }
+
+    /**
+     * /user/{userId} endpoint
+     *
+     * @param int $userId User ID
+     * @return void
+     * @throws BadRequestException
+     */
+    public function view($userId)
+    {
+        $this->request->allowMethod('get');
+
+        $user = $this->Users
+            ->find()
+            ->select(['id', 'name', 'email'])
+            ->where(['id' => $userId])
+            ->first();
+        if (!$user) {
+            throw new BadRequestException('User not found');
+        }
+
+        $this->set([
+            '_entities' => ['User'],
+            '_serialize' => ['user'],
+            'user' => $user
+        ]);
+    }
 }

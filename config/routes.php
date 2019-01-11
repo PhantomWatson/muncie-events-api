@@ -76,4 +76,8 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
     $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
     $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/user/:id', ['controller' => 'Users', 'action' => 'view'])
+        ->setPass(['id'])
+        ->setPatterns(['id' => '[0-9]+']);
+    $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
 });
