@@ -230,4 +230,94 @@ class UsersControllerTest extends ApplicationTest
         $this->delete($url);
         $this->assertResponseError();
     }
+
+    /**
+     * Tests successful use of /user/{userId}
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testViewSuccess()
+    {
+        $userId = 1;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'view',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $expectedFields = ['name', 'email'];
+        $response = json_decode($this->_response->getBody())->data;
+        $this->assertNotEmpty($response->id);
+        foreach ($expectedFields as $expectedField) {
+            $this->assertNotEmpty($response->attributes->$expectedField, ucwords($expectedField) . ' is empty');
+        }
+    }
+
+    /**
+     * Tests that /user/{userId} fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testViewFailBadMethod()
+    {
+        $userId = 1;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'view',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->post($url);
+        $this->assertResponseError();
+
+        $this->put($url);
+        $this->assertResponseError();
+
+        $this->patch($url);
+        $this->assertResponseError();
+
+        $this->delete($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /user/{userId} fails for invalid or missing user IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testViewFailInvalidUser()
+    {
+        $userId = 999;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'view',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->get($url);
+        $this->assertResponseError();
+
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'view',
+            null,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->get($url);
+        $this->assertResponseError();
+    }
 }
