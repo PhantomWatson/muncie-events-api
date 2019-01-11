@@ -106,6 +106,7 @@ class UsersController extends ApiController
             ]
         ];
         $auth = new FormAuthenticate($registry, $config);
+
         return $auth->authenticate($this->getRequest(), $this->response);
     }
 
