@@ -3,14 +3,23 @@ namespace App\Controller;
 
 use App\Event\ApiCallsListener;
 use App\Model\Entity\User;
+use App\Model\Table\UsersTable;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 class ApiController extends Controller
 {
+    /**
+     * An array of user information for the user identified by the user token provided in request data
+     * (distinct from the user identified by the API key)
+     *
+     * @var User|null
+     */
+    protected $tokenUser;
 
     /**
      * Initialization hook method
@@ -56,6 +65,10 @@ class ApiController extends Controller
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
+
+        if ($this->request->getQuery('userToken')) {
+            $this->tokenUser = $this->getTokenUser();
+        }
     }
 
     /**
@@ -95,5 +108,25 @@ class ApiController extends Controller
     public function isAuthorized($user)
     {
         return true;
+    }
+
+    /**
+     * Returns the user identified by the token provided in the query string
+     *
+     * @return User
+     * @throws BadRequestException
+     */
+    private function getTokenUser()
+    {
+        $token = $this->request->getQuery('userToken');
+        /** @var UsersTable $usersTable */
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->getByToken($token);
+
+        if (!$user) {
+            throw new BadRequestException('User token invalid');
+        }
+
+        return $user;
     }
 }
