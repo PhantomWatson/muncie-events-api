@@ -2,6 +2,7 @@
 namespace App\Controller\V1;
 
 use App\Controller\ApiController;
+use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
 use Cake\Auth\FormAuthenticate;
 use Cake\Controller\ComponentRegistry;
@@ -72,11 +73,15 @@ class UsersController extends ApiController
         }
 
         // Convert user array into user entity, as required by JsonApi view
+        /** @var User $user */
         $user = $this->Users
             ->find()
             ->select(['id', 'name', 'email', 'token'])
             ->where(['id' => $user['id']])
             ->first();
+        if (!$user->token) {
+            $user = $this->Users->addToken($user);
+        }
 
         $this->set([
             '_entities' => ['User'],

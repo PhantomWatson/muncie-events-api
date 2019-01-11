@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -236,6 +237,31 @@ class UsersTable extends Table
             ->find()
             ->where(['token' => $token])
             ->first();
+
+        return $user;
+    }
+
+    /**
+     * Saves a new (or updated) token for this user and returns the user
+     *
+     * @param User $user User entity
+     * @return User
+     */
+    public function addToken($user)
+    {
+        $token = $this->generateToken();
+
+        // Generate and save a NEW user entity so that any other dirty fields aren't saved as a side-effect
+        $tempUser = $this->get($user->id);
+        $tempUser = $this->patchEntity($tempUser, compact('token'));
+        if (!$this->save($tempUser)) {
+            throw new InternalErrorException(
+                'Error creating new user token. Details: ' . print_r($tempUser->getErrors(), true)
+            );
+        }
+
+        // Return the provided user with an updated token field
+        $user = $this->patchEntity($user, compact('token'));
 
         return $user;
     }
