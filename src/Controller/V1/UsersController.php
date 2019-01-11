@@ -3,6 +3,8 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Table\UsersTable;
+use Cake\Auth\FormAuthenticate;
+use Cake\Controller\ComponentRegistry;
 use Cake\Http\Exception\BadRequestException;
 
 /**
@@ -84,33 +86,21 @@ class UsersController extends ApiController
     }
 
     /**
-     * Identifies a user based on email and password by temporarily circumventing API key authentication
+     * Identifies a user based on email and password
      *
      * @return array|bool
      */
     private function getUserFromLoginCredentials()
     {
-        // Remember query parameters
-        $queryParams = $this->request->getQueryParams();
-
-        // Identify user via post/put/patch data
-        $this->Auth->setConfig('authenticate', [
-            'Form' => [
-                'fields' => ['username' => 'email'],
-                'passwordHasher' => [
-                    'className' => 'Fallback',
-                    'hashers' => ['Default', 'Legacy']
-                ]
+        $registry = new ComponentRegistry();
+        $config = [
+            'fields' => ['username' => 'email'],
+            'passwordHasher' => [
+                'className' => 'Fallback',
+                'hashers' => ['Default', 'Legacy']
             ]
-        ]);
-        $this->request = $this->request->withParam('?', ['apikey' => null]);
-        $this->request = $this->request->withQueryParams(['apikey' => null]);
-        $user = $this->Auth->identify();
-
-        // Restore query parameters
-        $this->request = $this->request->withQueryParams($queryParams);
-        $this->request = $this->request->withParam('?', $queryParams);
-
-        return $user;
+        ];
+        $auth = new FormAuthenticate($registry, $config);
+        return $auth->authenticate($this->getRequest(), $this->response);
     }
 }
