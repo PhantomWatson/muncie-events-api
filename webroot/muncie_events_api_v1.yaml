@@ -78,7 +78,7 @@ paths:
           name: email
           schema:
             type: string
-            example: sender@example.com
+            example: 'sender@example.com'
           required: true
           description: Email address of sender
         - in: header
@@ -893,6 +893,179 @@ paths:
                 $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: "Takes the user's email address and password and returns their access token and other account info"
+      description: "This does not create a session, but returns a token to be included as the `userToken`
+        query string parameter in other requests that require it"
+      operationId: postUserLogin
+      parameters:
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: 'user@example.com'
+          required: true
+          description: "User's email address"
+        - in: header
+          name: password
+          schema:
+            type: string
+            example: passwordexample
+          required: true
+          description: "User's password"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: User Name
+                          email:
+                            type: string
+                            example: 'user@example.com'
+                          token:
+                            type: string
+                            example: randomStringOf32Characters
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: The `email`/`password` parameter is required
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: Email or password is incorrect
+      security:
+        - api_key: []
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Adds a user account
+      operationId: postUserRegister
+      parameters:
+        - in: header
+          name: name
+          schema:
+            type: string
+            example: User Name
+          required: true
+          description: "User's name"
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: user@example.com
+          required: true
+          description: "User's email address"
+        - in: header
+          name: password
+          schema:
+            type: string
+            example: passwordexample
+          required: true
+          description: "User's password"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                      attributes:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: User Name
+                          email:
+                            type: string
+                            example: user@example.com
+                          token:
+                            type: string
+                            example: randomStringOf32Characters
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: The `name`/`email`/`password` parameter is required
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: This email address is already registered
+      security:
+        - api_key: []
 components:
   schemas:
     Category:
@@ -913,10 +1086,10 @@ components:
           format: int64
         name:
           type: string
-          example: Alfred E. Neuman
+          example: User Name
         email:
           type: string
-          example: 'alfred@example.com'
+          example: 'user@example.com'
     Tag:
       type: object
       properties:
