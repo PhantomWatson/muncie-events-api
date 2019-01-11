@@ -116,7 +116,7 @@ class UsersController extends ApiController
      * @return void
      * @throws BadRequestException
      */
-    public function view($userId)
+    public function view($userId = null)
     {
         $this->request->allowMethod('get');
 
