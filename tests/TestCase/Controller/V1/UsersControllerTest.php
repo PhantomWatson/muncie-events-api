@@ -58,7 +58,7 @@ class UsersControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /user/register fails for GET requests
+     * Tests that /user/register fails for non-POST requests
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -135,6 +135,99 @@ class UsersControllerTest extends ApplicationTest
             'password' => 'password'
         ];
         $this->post($url, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests successful response from /user/login
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testLoginSuccess()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'login',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $usersFixture = new UsersFixture();
+
+        $users = [
+            'with new password hash' => $usersFixture->records[0],
+            'with legacy password hash' => $usersFixture->records[2]
+        ];
+
+        $expectedFields = ['name', 'email', 'token'];
+        foreach ($users as $type => $user) {
+            $data = [
+                'email' => $user['email'],
+                'password' => 'password'
+            ];
+            $this->post($url, $data);
+            $response = json_decode($this->_response->getBody())->data;
+            $this->assertNotEmpty($response->id);
+            foreach ($expectedFields as $expectedField) {
+                $this->assertNotEmpty($response->attributes->$expectedField, ucwords($expectedField) . ' is empty');
+            }
+            $this->assertResponseOk();
+        }
+    }
+
+    /**
+     * Tests error response from /user/login with bad login credentials
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testLoginFailBadCredentials()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'login',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $usersFixture = new UsersFixture();
+
+        $data = [
+            'email' => $usersFixture->records[0]['email'],
+            'password' => 'password'
+        ];
+        foreach ($data as $field => $val) {
+            $wrongData = $data;
+            $wrongData[$field] .= 'bad data';
+            $this->post($url, $wrongData);
+            $this->assertResponseError();
+        }
+    }
+
+    /**
+     * Tests that /user/login fails for non-POST requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testLoginFailBadMethod()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'login',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->get($url);
+        $this->assertResponseError();
+
+        $this->put($url);
+        $this->assertResponseError();
+
+        $this->patch($url);
+        $this->assertResponseError();
+
+        $this->delete($url);
         $this->assertResponseError();
     }
 }
