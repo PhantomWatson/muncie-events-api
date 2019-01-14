@@ -80,6 +80,7 @@ class ContactControllerTest extends ApplicationTest
         $this->get($url);
 
         $this->assertResponseError();
+        $this->assertNoMailSent();
     }
 
     /**
@@ -106,6 +107,7 @@ class ContactControllerTest extends ApplicationTest
             $incompleteData[$field] = '';
             $this->post($url, $incompleteData);
             $this->assertResponseError();
+            $this->assertNoMailSent();
         }
     }
 }

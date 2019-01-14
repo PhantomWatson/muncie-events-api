@@ -1,8 +1,11 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Model\Entity\User;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
+use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestEmailTransport;
 
@@ -351,10 +354,20 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'forgotPassword',
             '?' => ['apikey' => $this->getApiKey()]
         ];
-        $user = (new UsersFixture())->records[0];
-        $this->post($url, ['email' => $user['email']]);
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable->find()->first();
+        $this->post($url, ['email' => $user->email]);
 
         $this->assertResponseCode(204);
+        $this->assertMailSentFrom(Configure::read('automailer_address'));
+        $this->assertMailSentTo($user->email);
+        $resetUrl = 'https://muncieevents.com/reset_password/' . $user->id . '/' . $user->getResetPasswordHash();
+
+        // Slashes need to be escaped because $resetUrl is used as pattern in preg_match("/$resetUrl/")
+        $resetUrl = str_replace('/', '\/', $resetUrl);
+
+        $this->assertMailContains($resetUrl);
     }
 
     /**
@@ -375,6 +388,7 @@ class UsersControllerTest extends ApplicationTest
         $this->post($url, ['email' => 'invalid' . $user['email']]);
 
         $this->assertResponseError();
+        $this->assertNoMailSent();
     }
 
     /**
@@ -393,8 +407,10 @@ class UsersControllerTest extends ApplicationTest
         ];
         $this->post($url, ['email' => '']);
         $this->assertResponseError();
+        $this->assertNoMailSent();
 
         $this->post($url, []);
         $this->assertResponseError();
+        $this->assertNoMailSent();
     }
 }
