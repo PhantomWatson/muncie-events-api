@@ -162,7 +162,7 @@ class UsersController extends ApiController
             ->where(['email' => $email])
             ->first();
         if (!$user) {
-            throw new BadRequestException('User not found');
+            throw new BadRequestException('No account was found matching that email address');
         }
 
         $this->getMailer('Users')->send('forgotPassword', [$user]);
