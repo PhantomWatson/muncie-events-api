@@ -29,7 +29,7 @@ class UsersController extends ApiController
             'fields' => ['name', 'email', 'password']
         ]);
         $user->role = 'user';
-        $user->token = $this->Users->generateToken();
+        $user->token = User::generateToken();
 
         if (!$this->Users->save($user)) {
             throw new BadRequestException(

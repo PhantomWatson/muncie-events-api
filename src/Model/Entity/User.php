@@ -62,4 +62,37 @@ class User extends Entity
     {
         return (new LegacyPasswordHasher)->hash($password);
     }
+
+    /**
+     * Generates a string token for the Users.api_key field
+     *
+     * The API key is used to authorize the user or application to make any API call
+     *
+     * @return string
+     */
+    public static function generateApiKey()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $length = 32;
+        $apiKey = '';
+        for ($i = 0; $i < $length; $i++) {
+            $apiKey .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $apiKey;
+    }
+
+    /**
+     * Generates a string token for the Users.token field
+     *
+     * The user token is used to authorize the API end-user to perform an action tied to record ownership, e.g.
+     * adding events or updating user contact information
+     *
+     * @return string
+     */
+    public static function generateToken()
+    {
+        return self::generateApiKey();
+    }
 }

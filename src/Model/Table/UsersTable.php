@@ -155,31 +155,11 @@ class UsersTable extends Table
      */
     public function setApiKey($userId)
     {
-        $apiKey = $this->generateApiKey();
+        $apiKey = User::generateApiKey();
         $user = $this->get($userId);
         $user = $this->patchEntity($user, ['api_key' => $apiKey]);
 
         return $this->save($user);
-    }
-
-    /**
-     * Generates a string token for the Users.api_key field
-     *
-     * The API key is used to authorize the user or application to make any API call
-     *
-     * @return string
-     */
-    public function generateApiKey()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $length = 32;
-        $apiKey = '';
-        for ($i = 0; $i < $length; $i++) {
-            $apiKey .= $characters[rand(0, $charactersLength - 1)];
-        }
-
-        return $apiKey;
     }
 
     /**
@@ -217,19 +197,6 @@ class UsersTable extends Table
     }
 
     /**
-     * Generates a string token for the Users.token field
-     *
-     * The user token is used to authorize the API end-user to perform an action tied to record ownership, e.g.
-     * adding events or updating user contact information
-     *
-     * @return string
-     */
-    public function generateToken()
-    {
-        return $this->generateApiKey();
-    }
-
-    /**
      * Returns a user with a matching token or NULL if none was found
      *
      * @param string $token User token
@@ -254,7 +221,7 @@ class UsersTable extends Table
      */
     public function addToken($user)
     {
-        $token = $this->generateToken();
+        $token = User::generateToken();
 
         // Generate and save a NEW user entity so that any other dirty fields aren't saved as a side-effect
         $tempUser = $this->get($user->id);
