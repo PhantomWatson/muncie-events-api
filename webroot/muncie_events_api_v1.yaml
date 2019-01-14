@@ -952,6 +952,58 @@ paths:
                               example: User not found
       security:
         - api_key: []
+  /user/forgot-password:
+    post:
+      tags:
+        - user
+      summary: "Accepts an email address and sends an email with a link to reset the user's password"
+      operationId: postUserForgotPassword
+      parameters:
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: 'user@example.com'
+          required: true
+          description: "User's email address"
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: No account was found matching that email address
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: Please provide an email address
+      security:
+        - api_key: []
   /user/login:
     post:
       tags:
