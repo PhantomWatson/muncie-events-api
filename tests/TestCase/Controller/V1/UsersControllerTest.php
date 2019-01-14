@@ -3,12 +3,15 @@ namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
+use Cake\TestSuite\EmailTrait;
+use Cake\TestSuite\TestEmailTransport;
 
 /**
  * UsersControllerTest class
  */
 class UsersControllerTest extends ApplicationTest
 {
+    use EmailTrait;
 
     /**
      * Fixtures
@@ -26,6 +29,19 @@ class UsersControllerTest extends ApplicationTest
         'app.Tags',
         'app.Users'
     ];
+
+    /**
+     * Method for cleaning up after each test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        // Clean up previously sent emails for the next test
+        TestEmailTransport::clearEmails();
+    }
 
     /**
      * Tests that /user/register succeeds with valid data
@@ -318,6 +334,67 @@ class UsersControllerTest extends ApplicationTest
         ];
 
         $this->get($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /v1/users/forgot-password returns the correct success status code
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testForgotPasswordSuccess()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'forgotPassword',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $user = (new UsersFixture())->records[0];
+        $this->post($url, ['email' => $user['email']]);
+
+        $this->assertResponseCode(204);
+    }
+
+    /**
+     * Tests that /v1/users/forgot-password fails for invalid email addresses
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testForgotPasswordFailUnknownUser()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'forgotPassword',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $user = (new UsersFixture())->records[0];
+        $this->post($url, ['email' => 'invalid' . $user['email']]);
+
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /v1/users/forgot-password fails if email address is missing or blank
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testForgotPasswordFailMissingEmail()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'forgotPassword',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->post($url, ['email' => '']);
+        $this->assertResponseError();
+
+        $this->post($url, []);
         $this->assertResponseError();
     }
 }
