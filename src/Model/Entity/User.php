@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property int $facebook_id
  * @property string|null $api_key
  * @property string|null $token
+ * @property string|null $reset_password_hash
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

@@ -108,6 +108,11 @@ class UsersTable extends Table
             ->lengthBetween('token', [32, 32])
             ->ascii('token');
 
+        $validator
+            ->scalar('reset_password_hash')
+            ->lengthBetween('reset_password_hash', [32, 32])
+            ->ascii('reset_password_hash');
+
         return $validator;
     }
 
