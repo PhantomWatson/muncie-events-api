@@ -7,6 +7,7 @@ use App\Model\Table\UsersTable;
 use Cake\Auth\FormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Class UsersController
@@ -15,6 +16,8 @@ use Cake\Http\Exception\BadRequestException;
  */
 class UsersController extends ApiController
 {
+    use MailerAwareTrait;
+
     /**
      * /user/register endpoint
      *
@@ -135,5 +138,40 @@ class UsersController extends ApiController
             '_serialize' => ['user'],
             'user' => $user
         ]);
+    }
+
+    /**
+     * /user/forgot-password endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     */
+    public function forgotPassword()
+    {
+        $this->request->allowMethod('post');
+
+        $email = $this->request->getData('email');
+        $email = trim($email);
+        $email = mb_strtolower($email);
+        if (empty($email)) {
+            throw new BadRequestException('Please provide an email address');
+        }
+
+        $user = $this->Users
+            ->find()
+            ->where(['email' => $email])
+            ->first();
+        if (!$user) {
+            throw new BadRequestException('User not found');
+        }
+
+        $this->getMailer('Users')->send('forgotPassword', [$user]);
+
+        $this->response = $this->response->withStatus(204, 'No Content');
+
+        /* Bypass JsonApi plugin to render blank response,
+         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
+        $this->viewBuilder()->setClassName('Json');
+        $this->set('_serialize', true);
     }
 }

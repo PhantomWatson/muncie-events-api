@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use App\Auth\LegacyPasswordHasher;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -94,5 +95,18 @@ class User extends Entity
     public static function generateToken()
     {
         return self::generateApiKey();
+    }
+
+    /**
+     * Returns a security code for a password reset for this user
+     *
+     * @return string
+     */
+    public function getResetPasswordHash()
+    {
+        $salt = Configure::read('password_reset_salt');
+        $month = date('my');
+
+        return md5($this->id . $this->email . $salt . $month);
     }
 }

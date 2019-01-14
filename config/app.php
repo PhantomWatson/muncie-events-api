@@ -183,8 +183,8 @@ $config = [
             'host' => 'localhost',
             'port' => 25,
             'timeout' => 30,
-            'username' => 'user',
-            'password' => 'secret',
+            'username' => 'automailer@muncieevents.com',
+            'password' => env('AUTOMAILER_PASSWORD'),
             'client' => null,
             'tls' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
@@ -365,7 +365,9 @@ $config = [
 
     'cookie_key' => env('COOKIE_KEY', 'cookie key'),
     'mainSiteBaseUrl' => 'https://muncieevents.com',
-    'adminEmail' => 'graham@phantomwatson.com'
+    'adminEmail' => 'admin@muncieevents.com',
+    'password_reset_salt' => env('PASSWORD_RESET_SALT'),
+    'automailer_address' => 'automailer@MuncieEvents.com'
 ];
 
 // Use Debug EmailTransport in debug mode
