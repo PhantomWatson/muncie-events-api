@@ -685,20 +685,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhantomWatson/cakephp-json-api.git",
-                "reference": "37916bed35f0fdbe38201800e4232d0df96d96a5"
+                "reference": "ec51554c70906c9007e348aa4723df4e464d02ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/37916bed35f0fdbe38201800e4232d0df96d96a5",
-                "reference": "37916bed35f0fdbe38201800e4232d0df96d96a5",
+                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/ec51554c70906c9007e348aa4723df4e464d02ae",
+                "reference": "ec51554c70906c9007e348aa4723df4e464d02ae",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "~3.0",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "neomerx/json-api": "^0.6.5",
-                "php": ">=5.4.16"
+                "neomerx/json-api": "^2.0",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "cakephp/cakephp-codesniffer": "2.*",
