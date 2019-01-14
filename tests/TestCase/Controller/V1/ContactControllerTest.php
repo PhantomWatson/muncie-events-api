@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\TestCase\ApplicationTest;
+use Cake\Core\Configure;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestEmailTransport;
 
@@ -57,6 +58,9 @@ class ContactControllerTest extends ApplicationTest
         $this->post($url, $data);
 
         $this->assertResponseCode(204);
+        $this->assertMailSentTo(Configure::read('adminEmail'));
+        $this->assertMailSentFrom($data['email']);
+        $this->assertMailContains($data['body']);
     }
 
     /**
