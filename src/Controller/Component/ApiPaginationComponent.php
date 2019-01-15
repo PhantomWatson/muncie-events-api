@@ -4,7 +4,7 @@ namespace App\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Routing\Router;
-use Neomerx\JsonApi\Schema\Link;
+use Neomerx\JsonApi\Document\Link;
 
 /**
  * This is a simple component that injects pagination info into responses when
@@ -40,12 +40,21 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
         $viewVars['_serialize'][] = $config['key'];
         $subject->set('_serialize', $viewVars['_serialize']);
 
-        $subject->set('_links', [
-            Link::FIRST => $this->getFirstPage($subject),
-            Link::LAST => $this->getLastPage($subject),
-            Link::PREV => $this->getPrevPage($subject),
-            Link::NEXT => $this->getNextPage($subject),
-        ]);
+        $links = [
+            'first' => $this->getFirstPage($subject),
+            'last' => $this->getLastPage($subject),
+            'prev' => $this->getPrevPage($subject),
+            'next' => $this->getNextPage($subject),
+        ];
+
+        // Remove null links (which would cause errors)
+        foreach ($links as $label => $link) {
+            if (!$link) {
+                unset($links[$label]);
+            }
+        }
+
+        $subject->set('_links', $links);
     }
 
     /**
@@ -125,13 +134,13 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
     }
 
     /**
-     * Returns a Neomerx\JsonApi\Schema\Link object
+     * Returns a Neomerx\JsonApi\Document\Link object
      *
      * @param string $url Full URL
      * @return Link
      */
     public function getLink($url)
     {
-        return new Link($url, null, true);
+        return new Link($url);
     }
 }
