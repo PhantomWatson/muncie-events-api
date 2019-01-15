@@ -41,8 +41,16 @@ class ImagesFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'filename' => 'Lorem ipsum dolor sit amet',
-            'is_flyer' => 1,
+            'filename' => 'filename1.png',
+            'is_flyer' => 0,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:02',
+            'modified' => '2017-11-20 22:39:02'
+        ],
+        [
+            'id' => 2,
+            'filename' => 'filename2.png',
+            'is_flyer' => 0,
             'user_id' => 1,
             'created' => '2017-11-20 22:39:02',
             'modified' => '2017-11-20 22:39:02'

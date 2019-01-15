@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestEmailTransport;
+use Cake\Utility\Hash;
 
 /**
  * UsersControllerTest class
@@ -412,5 +413,115 @@ class UsersControllerTest extends ApplicationTest
         $this->post($url, []);
         $this->assertResponseError();
         $this->assertNoMailSent();
+    }
+
+    /**
+     * Tests that /user/images returns the user's associated images
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testImagesSuccess()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'images',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
+        $this->get($url);
+        $response = json_decode($this->_response->getBody());
+
+        $expectedImageIds = [1, 2];
+        $actualImageIds = Hash::extract($response->data, '{n}.id');
+        sort($actualImageIds);
+        $this->assertEquals($expectedImageIds, $actualImageIds);
+
+        $expectedAttributeNames = ['full_url', 'small_url', 'tiny_url'];
+        $actualAttributeNames = array_keys(get_object_vars($response->data[0]->attributes));
+        sort($actualAttributeNames);
+        $this->assertEquals($expectedAttributeNames, $actualAttributeNames);
+    }
+
+    /**
+     * Tests that /user/images returns an empty array if the user has no associated images
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testImagesEmpty()
+    {
+        $userId = 2;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'images',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken($userId)
+            ]
+        ];
+        $this->get($url);
+        $response = json_decode($this->_response->getBody());
+        $this->assertEmpty($response->data);
+    }
+
+    /**
+     * Tests that /user/images fails when user token is missing or invalid
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testImagesFailBadToken()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'images',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken() . 'invalid'
+            ]
+        ];
+        $this->get($url);
+        $this->assertResponseError();
+
+        unset($url['?']['userToken']);
+        $this->get($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /user/images fails for non-get requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testImagesFailBadMethod()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'images',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
+
+        $this->post($url);
+        $this->assertResponseError();
+
+        $this->put($url);
+        $this->assertResponseError();
+
+        $this->patch($url);
+        $this->assertResponseError();
+
+        $this->delete($url);
+        $this->assertResponseError();
     }
 }

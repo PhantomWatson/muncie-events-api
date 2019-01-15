@@ -4,6 +4,7 @@ namespace App\Test\TestCase;
 use App\Application;
 use App\Test\Fixture\UsersFixture;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -94,5 +95,23 @@ class ApplicationTest extends TestCase
         $response = (array)json_decode($this->_response->getBody());
 
         return Hash::extract($response['data'], '{n}.id');
+    }
+
+    /**
+     * Returns the token associated with the specified user
+     *
+     * @param int $userId User ID
+     * @return string
+     * @throws InternalErrorException
+     */
+    protected function getUserToken($userId = 1)
+    {
+        foreach ($this->usersFixture->records as $user) {
+            if ($user['id'] == $userId) {
+                return $user['token'];
+            }
+        }
+
+        throw new InternalErrorException("User with ID $userId not found in fixture");
     }
 }

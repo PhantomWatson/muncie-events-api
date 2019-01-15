@@ -57,7 +57,7 @@ class UsersFixture extends TestFixture
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => 'KOsc08Hf1cOLUpbt1NHwoTwA2BnCIUSZ',
-            'token' => null,
+            'token' => 'xl0iV04yK5gtabGX4v9es6eWR93BxkTg',
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
@@ -71,7 +71,7 @@ class UsersFixture extends TestFixture
             'mailing_list_id' => 1,
             'facebook_id' => 1,
             'api_key' => null,
-            'token' => null,
+            'token' => '7xVY2FVjrf3v3TJMVS2u1ROajFTxfMIZ',
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
