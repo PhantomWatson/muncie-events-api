@@ -35,11 +35,6 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
             $this->setVisibility();
         }
 
-        $subject->set($config['key'], $this->pagingInfo);
-        $viewVars = $subject->viewBuilder()->getVars();
-        $viewVars['_serialize'][] = $config['key'];
-        $subject->set('_serialize', $viewVars['_serialize']);
-
         $links = [
             'first' => $this->getFirstPage($subject),
             'last' => $this->getLastPage($subject),
