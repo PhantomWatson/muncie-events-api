@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -127,10 +128,8 @@ class UsersTableTest extends TestCase
      */
     public function testUniqueApiKeys()
     {
-        /** @var UsersTable $usersTable */
-        $usersTable = TableRegistry::get('Users');
-        $apiKey1 = $usersTable->generateApiKey();
-        $apiKey2 = $usersTable->generateApiKey();
+        $apiKey1 = User::generateApiKey();
+        $apiKey2 = User::generateApiKey();
         $this->assertNotEquals($apiKey1, $apiKey2);
     }
 }
