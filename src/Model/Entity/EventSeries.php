@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Event[] $events
  */
 class EventSeries extends Entity
 {
