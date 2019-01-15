@@ -7,7 +7,9 @@ use App\Model\Table\UsersTable;
 use Cake\Auth\FormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\ORM\TableRegistry;
 
 /**
  * Class UsersController
@@ -23,6 +25,7 @@ class UsersController extends ApiController
      *
      * @return void
      * @throws BadRequestException
+     * @throws MethodNotAllowedException
      */
     public function register()
     {
@@ -59,6 +62,7 @@ class UsersController extends ApiController
      *
      * @return void
      * @throws BadRequestException
+     * @throws MethodNotAllowedException
      */
     public function login()
     {
@@ -119,6 +123,7 @@ class UsersController extends ApiController
      * @param int $userId User ID
      * @return void
      * @throws BadRequestException
+     * @throws MethodNotAllowedException
      */
     public function view($userId = null)
     {
@@ -145,6 +150,7 @@ class UsersController extends ApiController
      *
      * @return void
      * @throws BadRequestException
+     * @throws MethodNotAllowedException
      */
     public function forgotPassword()
     {
@@ -173,5 +179,32 @@ class UsersController extends ApiController
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
         $this->viewBuilder()->setClassName('Json');
         $this->set('_serialize', true);
+    }
+
+    /**
+     * /user/images endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     * @throws MethodNotAllowedException
+     */
+    public function images()
+    {
+        $this->request->allowMethod('get');
+        if (!$this->tokenUser) {
+            throw new BadRequestException('User token missing');
+        }
+        $imagesTable = TableRegistry::getTableLocator()->get('Images');
+        $images = $imagesTable
+            ->find()
+            ->where(['user_id' => $this->tokenUser->id])
+            ->orderDesc('created')
+            ->all();
+
+        $this->set([
+            '_entities' => ['Image'],
+            '_serialize' => ['images'],
+            'images' => $images
+        ]);
     }
 }
