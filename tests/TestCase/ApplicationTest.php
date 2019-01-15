@@ -114,4 +114,38 @@ class ApplicationTest extends TestCase
 
         throw new InternalErrorException("User with ID $userId not found in fixture");
     }
+
+    /**
+     * Asserts that $methods result in an error when requesting $url
+     *
+     * @param string|array $url URL of request
+     * @param array $methods Array of lowercase request types, e.g. ['get', 'post']
+     * @throws \PHPUnit\Exception
+     * @throws InternalErrorException
+     */
+    protected function assertDisallowedMethods($url, $methods)
+    {
+        foreach ($methods as $method) {
+            switch ($method) {
+                case 'get':
+                    $this->get($url);
+                    break;
+                case 'post':
+                    $this->post($url);
+                    break;
+                case 'put':
+                    $this->put($url);
+                    break;
+                case 'patch':
+                    $this->patch($url);
+                    break;
+                case 'delete':
+                    $this->delete($url);
+                    break;
+                default:
+                    throw new InternalErrorException('Unrecognized method: ' . $method);
+            }
+            $this->assertResponseError();
+        }
+    }
 }

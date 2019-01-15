@@ -92,17 +92,7 @@ class UsersControllerTest extends ApplicationTest
             '?' => ['apikey' => $this->getApiKey()]
         ];
 
-        $this->get($url);
-        $this->assertResponseError();
-
-        $this->put($url);
-        $this->assertResponseError();
-
-        $this->patch($url);
-        $this->assertResponseError();
-
-        $this->delete($url);
-        $this->assertResponseError();
+        $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -238,17 +228,7 @@ class UsersControllerTest extends ApplicationTest
             '?' => ['apikey' => $this->getApiKey()]
         ];
 
-        $this->get($url);
-        $this->assertResponseError();
-
-        $this->put($url);
-        $this->assertResponseError();
-
-        $this->patch($url);
-        $this->assertResponseError();
-
-        $this->delete($url);
-        $this->assertResponseError();
+        $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -296,17 +276,7 @@ class UsersControllerTest extends ApplicationTest
             '?' => ['apikey' => $this->getApiKey()]
         ];
 
-        $this->post($url);
-        $this->assertResponseError();
-
-        $this->put($url);
-        $this->assertResponseError();
-
-        $this->patch($url);
-        $this->assertResponseError();
-
-        $this->delete($url);
-        $this->assertResponseError();
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -512,16 +482,6 @@ class UsersControllerTest extends ApplicationTest
             ]
         ];
 
-        $this->post($url);
-        $this->assertResponseError();
-
-        $this->put($url);
-        $this->assertResponseError();
-
-        $this->patch($url);
-        $this->assertResponseError();
-
-        $this->delete($url);
-        $this->assertResponseError();
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
     }
 }
