@@ -624,38 +624,38 @@
         },
         {
             "name": "neomerx/json-api",
-            "version": "v0.6.6",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neomerx/json-api.git",
-                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c"
+                "reference": "fbe87b5d27958d3cd137dad1dff26f747ae885f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neomerx/json-api/zipball/53468c0a5addf76e2d863fe967614546a2305e3c",
-                "reference": "53468c0a5addf76e2d863fe967614546a2305e3c",
+                "url": "https://api.github.com/repos/neomerx/json-api/zipball/fbe87b5d27958d3cd137dad1dff26f747ae885f7",
+                "reference": "fbe87b5d27958d3cd137dad1dff26f747ae885f7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=7.1.0",
+                "psr/log": "^1.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.4",
-                "phpunit/phpunit": "~4.6 || ^5.0",
-                "psr/http-message": "^1.0",
-                "scrutinizer/ocular": "~1.1",
-                "squizlabs/php_codesniffer": "2.*"
+                "mockery/mockery": "^1.0",
+                "monolog/monolog": "^1.23",
+                "phpmd/phpmd": "^2.6",
+                "phpunit/phpunit": "^7.0",
+                "scrutinizer/ocular": "^1.4",
+                "squizlabs/php_codesniffer": "^2.9"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.6.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Neomerx\\JsonApi\\": "src/"
-                }
+                },
+                "files": [
+                    "src/I18n/translate.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -677,7 +677,7 @@
                 "jsonapi.org",
                 "neomerx"
             ],
-            "time": "2016-02-06T11:58:12+00:00"
+            "time": "2018-10-23T10:40:06+00:00"
         },
         {
             "name": "phantomwatson/cakephp-json-api",
@@ -729,7 +729,7 @@
                 "json",
                 "jsonapi"
             ],
-            "time": "2018-12-05T22:18:26+00:00"
+            "time": "2019-01-12T00:14:23+00:00"
         },
         {
             "name": "psr/http-message",
@@ -2522,16 +2522,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.1.1",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "8aae5b59b83bb4d0dbf07b0a835f2680a658f610"
+                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8aae5b59b83bb4d0dbf07b0a835f2680a658f610",
-                "reference": "8aae5b59b83bb4d0dbf07b0a835f2680a658f610",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
+                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
                 "shasum": ""
             },
             "require": {
@@ -2547,7 +2547,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -2569,7 +2569,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-12-26T11:32:39+00:00"
+            "time": "2019-01-12T16:31:37+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4328,20 +4328,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.36.0",
+            "version": "v1.37.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "730c9c4471b5152d23061feb02b03382264c8a15"
+                "reference": "66be9366c76cbf23e82e7171d47cbfa54a057a62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/730c9c4471b5152d23061feb02b03382264c8a15",
-                "reference": "730c9c4471b5152d23061feb02b03382264c8a15",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/66be9366c76cbf23e82e7171d47cbfa54a057a62",
+                "reference": "66be9366c76cbf23e82e7171d47cbfa54a057a62",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": ">=5.4.0",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "require-dev": {
@@ -4352,7 +4352,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.36-dev"
+                    "dev-master": "1.37-dev"
                 }
             },
             "autoload": {
@@ -4390,7 +4390,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-12-16T10:34:11+00:00"
+            "time": "2019-01-14T14:59:29+00:00"
         },
         {
             "name": "umpirsky/twig-php-function",
