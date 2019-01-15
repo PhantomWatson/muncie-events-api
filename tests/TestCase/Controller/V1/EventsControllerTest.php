@@ -250,7 +250,9 @@ class EventsControllerTest extends ApplicationTest
             '?' => ['apikey' => $this->getApiKey()]
         ]);
         $this->assertResponseError();
-        $this->assertResponseContains('The parameter &quot;q&quot; is required');
+        $response = json_decode($this->_response->getBody());
+        $errorMsg = $response->errors[0]->detail;
+        $this->assertEquals('The parameter "q" is required', $errorMsg);
     }
 
     /**
