@@ -9,25 +9,26 @@ class PageSchema extends EntitySchema
     /**
      * Returns the title of the page, which is effectively an ID
      *
-     * @param Page $page Page entity
-     * @return int
+     * @param Page $entity Page entity
+     * @return string
      */
-    public function getId($page)
+    public function getId($entity): string
     {
-        return $page->id;
+        return (string)$entity->id;
     }
 
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Page $page Entity
+     * @param Page $entity Page entity
+     * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($page)
+    public function getAttributes($entity, array $fieldKeysFilter = null): array
     {
         return [
-            'title' => $page->title,
-            'body' => $page->body
+            'title' => $entity->title,
+            'body' => $entity->body
         ];
     }
 
@@ -35,10 +36,11 @@ class PageSchema extends EntitySchema
      * Returns the relationships that this entity has with any other API-gettable entities
      *
      * @param \Cake\ORM\Entity $entity Entity
+     * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array
      */
-    public function getRelationships($entity, array $includeRelationships = [])
+    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
     {
         return [];
     }

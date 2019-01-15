@@ -11,20 +11,21 @@ class EventSchema extends EntitySchema
      * Returns the event's ID
      *
      * @param \Cake\ORM\Entity $entity Event entity
-     * @return int
+     * @return string
      */
-    public function getId($entity)
+    public function getId($entity): string
     {
-        return $entity->get('id');
+        return (string)$entity->get('id');
     }
 
     /**
      * Returns the attributes for this entity for API output, setting any falsy values to NULL
      *
      * @param Event $entity Entity
+     * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($entity)
+    public function getAttributes($entity, array $fieldKeysFilter = null): array
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $attributes = [
@@ -81,11 +82,12 @@ class EventSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param Event $entity Entity
+     * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array
      */
-    public function getRelationships($entity, array $includeRelationships = [])
+    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
     {
         return [
             'category' => [

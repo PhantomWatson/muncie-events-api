@@ -10,20 +10,21 @@ class TagSchema extends EntitySchema
      * Returns the tag's ID
      *
      * @param \Cake\ORM\Entity $entity Tag entity
-     * @return int
+     * @return string
      */
-    public function getId($entity)
+    public function getId($entity): string
     {
-        return $entity->get('id');
+        return (string)$entity->get('id');
     }
 
     /**
      * Returns the attributes for this entity for API output
      *
      * @param Tag $tag Tag entity
+     * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($tag)
+    public function getAttributes($tag, array $fieldKeysFilter = null): array
     {
         $retval = [
             'name' => $tag->name,
@@ -41,10 +42,11 @@ class TagSchema extends EntitySchema
      * Returns the relationships that this entity has with any other API-gettable entities
      *
      * @param Tag $tag Tag entity
+     * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array
      */
-    public function getRelationships($tag, array $includeRelationships = [])
+    public function getRelationships($tag, bool $isPrimary, array $includeRelationships): ?array
     {
         if (isset($tag->children)) {
             return ['children' => [self::DATA => $tag->children]];
