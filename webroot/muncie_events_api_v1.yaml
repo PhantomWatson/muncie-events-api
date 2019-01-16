@@ -1004,6 +1004,90 @@ paths:
                               example: Please provide an email address
       security:
         - api_key: []
+  /user/images:
+    get:
+      tags:
+        - image
+      summary: Returns an array of images associated with the user
+      description: These images will be ordered from newest to oldest
+      operationId: getUserImages
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: images
+                        id:
+                          type: integer
+                          format: int64
+                          example: 123
+                        attributes:
+                          type: object
+                          properties:
+                            tiny_url:
+                              type: string
+                              description: The URL of the tiny (50px square) thumbnail of the image
+                              example: "https://muncieevents.com/img/events/tiny/123.jpg"
+                            small_url:
+                              type: string
+                              description: The URL of the small (200px wide) thumbnail of the image
+                              example: "https://muncieevents.com/img/events/small/123.jpg"
+                            full_url:
+                              type: string
+                              description: The URL of the full-sized image
+                              example: "https://muncieevents.com/img/events/full/123.jpg"
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: User token missing
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: User token invalid
+      security:
+        - api_key: []
   /user/login:
     post:
       tags:
@@ -1355,18 +1439,19 @@ components:
           example: Muncie MusicFest
     Image:
       type: object
-      required:
-        - title
       properties:
         tiny_url:
           type: string
           description: The URL of the tiny (50px square) thumbnail of the image
+          example: "https://muncieevents.com/img/events/tiny/123.jpg"
         small_url:
           type: string
           description: The URL of the small (200px wide) thumbnail of the image
+          example: "https://muncieevents.com/img/events/small/123.jpg"
         full_url:
           type: string
           description: The URL of the full-sized image
+          example: "https://muncieevents.com/img/events/full/123.jpg"
         caption:
           type: string
           example: Event flyer
