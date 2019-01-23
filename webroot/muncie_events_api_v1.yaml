@@ -494,6 +494,124 @@ paths:
                           $ref: '#/components/schemas/ErrorInvalidProtocol'
       security:
         - api_key: []
+  /image:
+    post:
+      tags:
+        - images
+      summary: Upload an image
+      description: Accepts images in JPEG, GIF, or PNG formats
+      operationId: postImage
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                  file:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: images
+                      id:
+                        type: integer
+                        format: int64
+                      attributes:
+                        type: object
+                        properties:
+                          tiny_url:
+                            type: string
+                            example: "https://muncieevents.com/img/events/tiny/1636.jpg"
+                          small_url:
+                            type: string
+                            example: "https://muncieevents.com/img/events/small/1636.jpg"
+                          full_url:
+                            type: string
+                            example: "https://muncieevents.com/img/events/full/1636.jpg"
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: User token missing
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: User token invalid
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: No image received. Did you forget to select a file to upload?
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: There was an error uploading your image
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+      security:
+        - api_key: []
   /pages/about:
     get:
       tags:
@@ -896,7 +1014,7 @@ paths:
   /user/{userId}:
     get:
       tags:
-        - user
+        - users
       summary: Returns the name and email address of a specified user
       operationId: getUser
       parameters:
@@ -955,7 +1073,7 @@ paths:
   /user/forgot-password:
     post:
       tags:
-        - user
+        - users
       summary: "Accepts an email address and sends an email with a link to reset the user's password"
       operationId: postUserForgotPassword
       parameters:
@@ -1007,7 +1125,7 @@ paths:
   /user/images:
     get:
       tags:
-        - image
+        - images
       summary: Returns an array of images associated with the user
       description: These images will be ordered from newest to oldest
       operationId: getUserImages
@@ -1091,7 +1209,7 @@ paths:
   /user/login:
     post:
       tags:
-        - user
+        - users
       summary: "Takes the user's email address and password and returns their access token and other account info"
       description: "This does not create a session, but returns a token to be included as the `userToken`
         query string parameter in other requests that require it"
@@ -1175,7 +1293,7 @@ paths:
   /user/register:
     post:
       tags:
-        - user
+        - users
       summary: Adds a user account
       operationId: postUserRegister
       parameters:
