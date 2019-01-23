@@ -367,7 +367,9 @@ $config = [
     'mainSiteBaseUrl' => 'https://muncieevents.com',
     'adminEmail' => 'admin@muncieevents.com',
     'password_reset_salt' => env('PASSWORD_RESET_SALT'),
-    'automailer_address' => 'automailer@MuncieEvents.com'
+    'automailer_address' => 'automailer@MuncieEvents.com',
+    'eventImageBaseUrl' => env('EVENT_IMG_BASE_URL'),
+    'eventImagePath' => env('EVENT_IMG_PATH')
 ];
 
 // Use Debug EmailTransport in debug mode

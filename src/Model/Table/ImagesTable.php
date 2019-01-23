@@ -1,6 +1,11 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Image;
+use Cake\Event\Event;
+use Cake\Filesystem\File;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -11,13 +16,13 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsToMany $Events
  *
- * @method \App\Model\Entity\Image get($primaryKey, $options = [])
- * @method \App\Model\Entity\Image newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Image|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Image patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Image[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Image findOrCreate($search, callable $callback = null, $options = [])
+ * @method Image get($primaryKey, $options = [])
+ * @method Image newEntity($data = null, array $options = [])
+ * @method Image[] newEntities(array $data, array $options = [])
+ * @method Image|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method Image patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method Image[] patchEntities($entities, array $data, array $options = [])
+ * @method Image findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -60,18 +65,11 @@ class ImagesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('filename')
-            ->requirePresence('filename', 'create')
-            ->notEmpty('filename');
-
-        $validator
-            ->boolean('is_flyer')
-            ->requirePresence('is_flyer', 'create')
-            ->notEmpty('is_flyer');
+            ->allowEmptyString('filename', false);
 
         return $validator;
     }
@@ -88,5 +86,74 @@ class ImagesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    /**
+     * Adds an image to the database and saves full and thumbnail versions under /webroot/img
+     *
+     * @param int $userId User ID
+     * @param array $fileInfo Array of image file info (name, type, tmp_name, error, size)
+     * @return Image
+     */
+    public function processUpload(int $userId, $fileInfo)
+    {
+        // Create record in database
+        $image = $this->newEntity(['user_id' => $userId]);
+        if (!$this->save($image)) {
+            throw new BadRequestException('Error saving image to database');
+        }
+
+        // Set and save filename, which must happen after the initial save in order to use the image's ID
+        $image->setExtension($fileInfo['name']);
+        $image->setNewFilename();
+        if (!$this->save($image)) {
+            throw new BadRequestException('Error updating image in database');
+        }
+
+        // Create the three resized versions of the uploaded image
+        try {
+            $image->setSourceFile($fileInfo['tmp_name']);
+            $image->createFull();
+            $image->createSmall();
+            $image->createTiny();
+        } catch (InternalErrorException $e) {
+            $this->delete($image);
+            throw new InternalErrorException($e->getMessage());
+        } catch (BadRequestException $e) {
+            $this->delete($image);
+            throw new BadRequestException($e->getMessage());
+        }
+
+        return $image;
+    }
+
+    /**
+     * Deletes the associated files for this image after the image's database record is deleted
+     *
+     * @param Event $event CakePHP event object
+     * @param Image $image Image entity
+     * @param \ArrayObject $options
+     * @return void
+     */
+    public function afterDelete(Event $event, Image $image, \ArrayObject $options)
+    {
+        if (!$image->filename) {
+            return;
+        }
+
+        $filesToDelete = [
+            $image->getFullPath('full'),
+            $image->getFullPath('small'),
+            $image->getFullPath('tiny'),
+        ];
+        foreach ($filesToDelete as $filePath) {
+            if (!file_exists($filePath)) {
+                continue;
+            }
+
+            $file = new File($filePath);
+            $file->delete();
+            $file->close();
+        }
     }
 }

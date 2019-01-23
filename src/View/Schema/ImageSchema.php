@@ -28,12 +28,12 @@ class ImageSchema extends EntitySchema
      */
     public function getAttributes($image, array $fieldKeysFilter = null): array
     {
-        $baseUrl = Configure::read('mainSiteBaseUrl');
+        $baseUrl = Configure::read('eventImageBaseUrl');
 
         return [
-            'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
-            'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
-            'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
+            'tiny_url' => $baseUrl . 'tiny/' . $image->filename,
+            'small_url' => $baseUrl . 'small/' . $image->filename,
+            'full_url' => $baseUrl . 'full/' . $image->filename,
         ];
     }
 

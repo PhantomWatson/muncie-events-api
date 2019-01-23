@@ -17,7 +17,8 @@
         "ext-xdebug": "*",
         "ext-json": "*",
         "friendsofcake/search": "^5.0",
-        "phantomwatson/cakephp-json-api": "dev-master"
+        "phantomwatson/cakephp-json-api": "dev-master",
+        "ext-gd": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",

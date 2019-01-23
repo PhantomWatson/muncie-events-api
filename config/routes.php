@@ -81,4 +81,5 @@ Router::prefix('v1', function (RouteBuilder $routes) {
         ->setPatterns(['id' => '[0-9]+']);
     $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
     $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null]);
+    $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
 });
