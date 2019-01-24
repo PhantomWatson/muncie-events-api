@@ -27,7 +27,9 @@ class ImagesControllerTest extends ApplicationTest
         'app.Users'
     ];
 
-    private $imageToUpload = TESTS . 'Files' . DS . 'UploadSource' . DS . 'MuncieEventsLogo.png';
+    // File extension is deliberately absent
+    private $imageToUpload = TESTS . 'Files' . DS . 'UploadSource' . DS . 'MuncieEventsLogo';
+
     private $imagesDestination = TESTS . 'Files' . DS . 'UploadDestination';
 
     /**
@@ -65,14 +67,29 @@ class ImagesControllerTest extends ApplicationTest
      */
     public function testAddSuccess()
     {
+        foreach (['.jpg', '.gif', '.png'] as $extension) {
+            $this->checkUploadByExtension($extension);
+        }
+    }
+
+    /**
+     * Uploads an image specified by file type and asserts a successful result
+     *
+     * @param string $extension Extension with dot, e.g. '.jpg'
+     * @throws \PHPUnit\Exception
+     */
+    public function checkUploadByExtension($extension)
+    {
+        $imagePath = $this->imageToUpload . $extension;
+
         // Manually set the contents of $_FILES instead of passing data into post() method
-        $filename = array_reverse(explode(DS, $this->imageToUpload))[0];
+        $filename = array_reverse(explode(DS, $imagePath))[0];
         $_FILES = [
             'file' => [
                 'error' => UPLOAD_ERR_OK,
                 'name' => $filename,
-                'size' => filesize($this->imageToUpload),
-                'tmp_name' => $this->imageToUpload,
+                'size' => filesize($imagePath),
+                'tmp_name' => $imagePath,
                 'type' => 'image/png'
             ]
         ];
@@ -94,8 +111,7 @@ class ImagesControllerTest extends ApplicationTest
         $this->assertNotEmpty($response->data->id);
 
         // Assert that image URLs are correct
-        $extension = strtolower(array_reverse(explode('.', $filename))[0]);
-        $expectedFilename = $response->data->id . '.' . $extension;
+        $expectedFilename = $response->data->id . $extension;
         foreach (['full', 'small', 'tiny'] as $size) {
             $expectedPath = Configure::read('eventImageBaseUrl') . $size . '/';
             $this->assertEquals(
