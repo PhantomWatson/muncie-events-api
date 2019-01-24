@@ -79,71 +79,63 @@ class EventsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->notEmpty('title');
+            ->allowEmptyString('title', false);
 
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->notEmpty('description');
+            ->allowEmptyString('description', false);
 
         $validator
             ->scalar('location')
             ->requirePresence('location', 'create')
-            ->notEmpty('location');
+            ->allowEmptyString('location', false);
 
         $validator
             ->scalar('location_details')
-            ->requirePresence('location_details', 'create')
-            ->notEmpty('location_details');
+            ->allowEmptyString('location_details');
 
         $validator
             ->scalar('address')
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->allowEmptyString('address');
 
         $validator
             ->date('date')
             ->requirePresence('date', 'create')
-            ->notEmpty('date');
+            ->allowEmptyDate('date', false);
 
         $validator
             ->time('time_start')
             ->requirePresence('time_start', 'create')
-            ->notEmpty('time_start');
+            ->allowEmptyTime('time_start', false);
 
         $validator
             ->time('time_end')
-            ->allowEmpty('time_end');
+            ->allowEmptyTime('time_end');
 
         $validator
             ->scalar('age_restriction')
-            ->requirePresence('age_restriction', 'create')
-            ->notEmpty('age_restriction');
+            ->allowEmptyString('age_restriction');
 
         $validator
             ->scalar('cost')
-            ->requirePresence('cost', 'create')
-            ->notEmpty('cost');
+            ->allowEmptyString('cost');
 
         $validator
             ->scalar('source')
-            ->requirePresence('source', 'create')
-            ->notEmpty('source');
+            ->allowEmptyString('source');
 
         $validator
             ->boolean('published')
-            ->requirePresence('published', 'create')
-            ->notEmpty('published');
+            ->requirePresence('published', 'create');
 
         $validator
-            ->integer('approved_by')
-            ->allowEmpty('approved_by');
+            ->integer('approved_by');
 
         return $validator;
     }
