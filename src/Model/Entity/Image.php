@@ -42,11 +42,11 @@ class Image extends Entity
     ];
 
     // Dimensions in pixels
-    public $maxHeight = 2000;
-    public $maxWidth = 2000;
-    public $tinyHeight = 50;
-    public $tinyWidth = 50;
-    public $smallWidth = 200;
+    const maxHeight = 2000;
+    const maxWidth = 2000;
+    const tinyHeight = 50;
+    const tinyWidth = 50;
+    const smallWidth = 200;
 
     public $tinyQuality = 90;
     public $smallQuality = 90;
@@ -69,13 +69,13 @@ class Image extends Entity
         }
 
         list($width, $height) = getimagesize($this->sourceFile);
-        if ($width < $this->maxWidth && $height < $this->maxHeight) {
+        if ($width < self::maxWidth && $height < self::maxHeight) {
             return true;
         }
 
         // Make longest side fit inside the maximum dimensions
-        $newWidth = $width >= $height ? $this->maxWidth : null;
-        $newHeight = $width >= $height ? null : $this->maxHeight;
+        $newWidth = $width >= $height ? self::maxWidth : null;
+        $newHeight = $width >= $height ? null : self::maxHeight;
 
         // Modify the existing file instead of saving a new one
         $outputFile = $this->sourceFile;
@@ -393,14 +393,20 @@ class Image extends Entity
         list($width, $height) = getimagesize($this->sourceFile);
 
         // The SHORTER side gets resized to fit into the max dimensions, and the LONGER side gets cropped
-        $newWidth = ($width >= $height) ? null : $this->tinyWidth;
-        $newHeight = ($width >= $height) ? $this->tinyHeight : null;
+        $newWidth = ($width >= $height) ? null : self::tinyWidth;
+        $newHeight = ($width >= $height) ? self::tinyHeight : null;
 
         $destinationFile = $this->getFullPath('tiny');
         $this->makeResizedCopy($destinationFile, $newWidth, $newHeight, $this->tinyQuality);
 
         $sourceFile = $destinationFile;
-        $this->cropCenter($sourceFile, $destinationFile, $this->tinyWidth, $this->tinyHeight, $this->tinyQuality);
+        $this->cropCenter(
+            $sourceFile,
+            $destinationFile,
+            self::tinyWidth,
+            self::tinyHeight,
+            $this->tinyQuality
+        );
     }
 
     /**
@@ -416,7 +422,7 @@ class Image extends Entity
         }
 
         $destinationFile = $this->getFullPath('small');
-        $newWidth = $this->smallWidth;
+        $newWidth = self::smallWidth;
         $newHeight = null; // Automatically set
         $this->makeResizedCopy($destinationFile, $newWidth, $newHeight, $this->smallQuality);
     }

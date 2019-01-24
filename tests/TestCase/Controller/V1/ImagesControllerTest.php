@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Model\Entity\Image;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 
@@ -94,14 +95,29 @@ class ImagesControllerTest extends ApplicationTest
 
         // Assert that image URLs are correct
         $extension = strtolower(array_reverse(explode('.', $filename))[0]);
+        $expectedFilename = $response->data->id . '.' . $extension;
         foreach (['full', 'small', 'tiny'] as $size) {
             $expectedPath = Configure::read('eventImageBaseUrl') . $size . '/';
-            $expectedFilename = $response->data->id . '.' . $extension;
             $this->assertEquals(
                 $expectedPath . $expectedFilename,
                 $response->data->attributes->{$size . '_url'}
             );
         }
+
+        // Assert that images are within allowed dimensions
+        $path = $this->imagesDestination . DS . 'full' . DS . $expectedFilename;
+        list($width, $height) = getimagesize($path);
+        $this->assertLessThanOrEqual(Image::maxHeight, $height);
+        $this->assertLessThanOrEqual(Image::maxWidth, $width);
+
+        $path = $this->imagesDestination . DS . 'small' . DS . $expectedFilename;
+        list($width) = getimagesize($path);
+        $this->assertLessThanOrEqual(Image::smallWidth, $width);
+
+        $path = $this->imagesDestination . DS . 'tiny' . DS . $expectedFilename;
+        list($width, $height) = getimagesize($path);
+        $this->assertLessThanOrEqual(Image::tinyHeight, $height);
+        $this->assertLessThanOrEqual(Image::tinyWidth, $width);
     }
 
     /**
