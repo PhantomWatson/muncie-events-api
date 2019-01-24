@@ -27,6 +27,8 @@ class ImagesControllerTest extends ApplicationTest
         'app.Users'
     ];
 
+    private $addUrl;
+
     // File extension is deliberately absent
     private $imageToUpload = TESTS . 'Files' . DS . 'UploadSource' . DS . 'MuncieEventsLogo';
 
@@ -43,6 +45,16 @@ class ImagesControllerTest extends ApplicationTest
 
         // Change the destination directory for uploaded files
         Configure::write('eventImagePath', $this->imagesDestination);
+
+        $this->addUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Images',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
 
         $this->createUploadDirectories();
     }
@@ -83,27 +95,9 @@ class ImagesControllerTest extends ApplicationTest
         $imagePath = $this->imageToUpload . $extension;
 
         // Manually set the contents of $_FILES instead of passing data into post() method
-        $filename = array_reverse(explode(DS, $imagePath))[0];
-        $_FILES = [
-            'file' => [
-                'error' => UPLOAD_ERR_OK,
-                'name' => $filename,
-                'size' => filesize($imagePath),
-                'tmp_name' => $imagePath,
-                'type' => mime_content_type($imagePath)
-            ]
-        ];
+        $_FILES = $this->getFilesGlobalForUpload($imagePath);
 
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Images',
-            'action' => 'add',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
-        ];
-        $this->post($url);
+        $this->post($this->addUrl);
         $this->assertResponseOk();
 
         // Assert that an image ID gets returned
@@ -179,20 +173,13 @@ class ImagesControllerTest extends ApplicationTest
      */
     public function testAddFailBadToken()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Images',
-            'action' => 'add',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken() . 'invalid'
-            ]
-        ];
-        $this->get($url);
+        $url = $this->addUrl;
+        $url['?']['userToken'] .= 'invalid';
+        $this->post($url);
         $this->assertResponseError();
 
         unset($url['?']['userToken']);
-        $this->get($url);
+        $this->post($url);
         $this->assertResponseError();
     }
 
@@ -204,17 +191,7 @@ class ImagesControllerTest extends ApplicationTest
      */
     public function testAddFailBadMethod()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Images',
-            'action' => 'add',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
-        ];
-
-        $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->addUrl, ['get', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -228,27 +205,9 @@ class ImagesControllerTest extends ApplicationTest
         $imagePath = TESTS . 'Files' . DS . 'UploadSource' . DS . 'not_an_image.txt';
 
         // Manually set the contents of $_FILES instead of passing data into post() method
-        $filename = array_reverse(explode(DS, $imagePath))[0];
-        $_FILES = [
-            'file' => [
-                'error' => UPLOAD_ERR_OK,
-                'name' => $filename,
-                'size' => filesize($imagePath),
-                'tmp_name' => $imagePath,
-                'type' => mime_content_type($imagePath)
-            ]
-        ];
+        $_FILES = $this->getFilesGlobalForUpload($imagePath);
 
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Images',
-            'action' => 'add',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
-        ];
-        $this->post($url);
+        $this->post($this->addUrl);
         $this->assertResponseError();
     }
 
@@ -260,16 +219,28 @@ class ImagesControllerTest extends ApplicationTest
      */
     public function testAddFailNoImage()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Images',
-            'action' => 'add',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
+        $this->post($this->addUrl);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Returns the value that should be assigned to the $_FILES global variable to simulate an upload
+     *
+     * @param string $imagePath Full path to source image for upload
+     * @return array
+     */
+    private function getFilesGlobalForUpload(string $imagePath)
+    {
+        $filename = array_reverse(explode(DS, $imagePath))[0];
+
+        return [
+            'file' => [
+                'error' => UPLOAD_ERR_OK,
+                'name' => $filename,
+                'size' => filesize($imagePath),
+                'tmp_name' => $imagePath,
+                'type' => mime_content_type($imagePath)
             ]
         ];
-        $this->post($url);
-        $this->assertResponseError();
     }
 }
