@@ -14,4 +14,6 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 
 $_SERVER['PHP_SELF'] = '/';
 
+define('PHPUNIT_RUNNING', true);
+
 TestEmailTransport::replaceAllTransports();

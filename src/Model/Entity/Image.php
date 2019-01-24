@@ -366,8 +366,8 @@ class Image extends Entity
 
         // Move and rename original image
         $targetFile = $this->getFullPath('full');
-        if (!move_uploaded_file($this->sourceFile, $targetFile)) {
-            throw new InternalErrorException('Error uploading image (move_uploaded_file() failed)');
+        if (!$this->moveUploadedFile($this->sourceFile, $targetFile)) {
+            throw new InternalErrorException('Error uploading image (move_uploaded_file() from ' . $this->sourceFile . ' to ' . $targetFile . ' failed)');
         }
         $this->sourceFile = $targetFile;
     }
@@ -511,5 +511,23 @@ class Image extends Entity
 
         imagedestroy($sourceImage);
         imagedestroy($destinationImage);
+    }
+
+    /**
+     * A wrapper for PHP's native move_uplaoded_file() method
+     *
+     * Used so that the native method is easier to mock
+     *
+     * @param $sourceFile
+     * @param string $targetFile
+     * @return bool
+     */
+    private function moveUploadedFile($sourceFile, string $targetFile)
+    {
+        if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING === true) {
+            return copy($sourceFile, $targetFile);
+        }
+
+        return move_uploaded_file($sourceFile, $targetFile);
     }
 }
