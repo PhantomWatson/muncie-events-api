@@ -5,7 +5,6 @@ use App\Controller\ApiController;
 use App\Model\Table\ImagesTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
-use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Class ImagesController
@@ -14,8 +13,6 @@ use Cake\Mailer\MailerAwareTrait;
  */
 class ImagesController extends ApiController
 {
-    use MailerAwareTrait;
-
     /**
      * /image endpoint
      *
