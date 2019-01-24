@@ -82,6 +82,10 @@ class EventsTable extends Table
             ->integer('id');
 
         $validator
+            ->integer('category_id')
+            ->requirePresence('category_id', 'create');
+
+        $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
             ->allowEmptyString('title', false);
