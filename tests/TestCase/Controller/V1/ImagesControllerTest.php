@@ -68,11 +68,11 @@ class ImagesControllerTest extends ApplicationTest
         $filename = array_reverse(explode(DS, $this->imageToUpload))[0];
         $_FILES = [
             'file' => [
-                'error'    => UPLOAD_ERR_OK,
-                'name'     => $filename,
-                'size'     => filesize($this->imageToUpload),
+                'error' => UPLOAD_ERR_OK,
+                'name' => $filename,
+                'size' => filesize($this->imageToUpload),
                 'tmp_name' => $this->imageToUpload,
-                'type'     => 'image/png'
+                'type' => 'image/png'
             ]
         ];
 
@@ -113,7 +113,7 @@ class ImagesControllerTest extends ApplicationTest
     {
         foreach (['full', 'small', 'tiny'] as $subdir) {
             $files = glob($this->imagesDestination . DS . $subdir . DS . '*');
-            foreach($files as $file){
+            foreach ($files as $file) {
                 if (is_file($file)) {
                     unlink($file);
                 }

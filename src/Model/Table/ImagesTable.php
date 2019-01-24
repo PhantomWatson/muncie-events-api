@@ -132,7 +132,7 @@ class ImagesTable extends Table
      *
      * @param Event $event CakePHP event object
      * @param Image $image Image entity
-     * @param \ArrayObject $options
+     * @param \ArrayObject $options Options array
      * @return void
      */
     public function afterDelete(Event $event, Image $image, \ArrayObject $options)

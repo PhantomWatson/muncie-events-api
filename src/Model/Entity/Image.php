@@ -319,7 +319,7 @@ class Image extends Entity
      * Sets the extension property of this image, based on the original image filename
      *
      * @param string $originalFilename The filename of the original uploaded image
-     * @retun void
+     * @return void
      */
     public function setExtension($originalFilename)
     {
@@ -342,6 +342,12 @@ class Image extends Entity
         return Configure::read('eventImagePath') . DS . $size . DS . $this->filename;
     }
 
+    /**
+     * Sets the sourceFile property of this class
+     *
+     * @param string $sourceFile Full path to source file for image copying
+     * @return void
+     */
     public function setSourceFile($sourceFile)
     {
         $this->sourceFile = $sourceFile;
@@ -423,7 +429,7 @@ class Image extends Entity
      * @param int $width Width in pixels
      * @param int $height Height in pixels
      * @param int $quality Quality level of resulting image
-     * @return bool
+     * @return void
      */
     public function cropCenter($sourceFile, $destinationFile, $width, $height, $quality)
     {
@@ -435,7 +441,7 @@ class Image extends Entity
         $xPosition = max(0, ($centerX - $halfNewWidth));
         $yPosition = max(0, ($centerY - $halfNewHeight));
 
-        return $this->crop($sourceFile, $destinationFile, $width, $height, $xPosition, $yPosition, $quality);
+        $this->crop($sourceFile, $destinationFile, $width, $height, $xPosition, $yPosition, $quality);
     }
 
     /**
@@ -448,6 +454,7 @@ class Image extends Entity
      * @param int $xPosition Position to start cropping along the x-axis
      * @param int $yPosition Position to start cropping along the y-axis
      * @param int $quality Quality level of resulting image
+     * @return void
      * @throws InternalErrorException
      */
     public function crop($sourceFile, $destinationFile, $width, $height, $xPosition, $yPosition, $quality)
@@ -518,8 +525,8 @@ class Image extends Entity
      *
      * Used so that the native method is easier to mock
      *
-     * @param $sourceFile
-     * @param string $targetFile
+     * @param string $sourceFile Full path to source file
+     * @param string $targetFile Full path to destination
      * @return bool
      */
     private function moveUploadedFile($sourceFile, string $targetFile)
