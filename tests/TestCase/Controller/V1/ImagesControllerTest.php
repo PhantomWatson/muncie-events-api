@@ -170,4 +170,106 @@ class ImagesControllerTest extends ApplicationTest
             }
         }
     }
+
+    /**
+     * Tests that /image fails when user token is missing or invalid
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailBadToken()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Images',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken() . 'invalid'
+            ]
+        ];
+        $this->get($url);
+        $this->assertResponseError();
+
+        unset($url['?']['userToken']);
+        $this->get($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /image fails for non-post requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailBadMethod()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Images',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
+
+        $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that an upload fails if the file isn't an image
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailNotImage()
+    {
+        $imagePath = TESTS . 'Files' . DS . 'UploadSource' . DS . 'not_an_image.txt';
+
+        // Manually set the contents of $_FILES instead of passing data into post() method
+        $filename = array_reverse(explode(DS, $imagePath))[0];
+        $_FILES = [
+            'file' => [
+                'error' => UPLOAD_ERR_OK,
+                'name' => $filename,
+                'size' => filesize($imagePath),
+                'tmp_name' => $imagePath,
+                'type' => mime_content_type($imagePath)
+            ]
+        ];
+
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Images',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
+        $this->post($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that an upload fails if no image is uploaded
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailNoImage()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Images',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
+            ]
+        ];
+        $this->post($url);
+        $this->assertResponseError();
+    }
 }
