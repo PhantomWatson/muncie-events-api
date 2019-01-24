@@ -90,7 +90,7 @@ class ImagesControllerTest extends ApplicationTest
                 'name' => $filename,
                 'size' => filesize($imagePath),
                 'tmp_name' => $imagePath,
-                'type' => 'image/png'
+                'type' => mime_content_type($imagePath)
             ]
         ];
 
