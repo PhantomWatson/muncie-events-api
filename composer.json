@@ -18,7 +18,9 @@
         "ext-json": "*",
         "friendsofcake/search": "^5.0",
         "phantomwatson/cakephp-json-api": "dev-master",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "ext-curl": "*",
+        "maknz/slack": "1.7"
     },
     "require-dev": {
         "psy/psysh": "@stable",

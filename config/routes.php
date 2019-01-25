@@ -72,6 +72,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
+    $routes->connect('/event', ['controller' => 'Events', 'action' => 'add']);
     $routes->connect('/event/*', ['controller' => 'Events', 'action' => 'view']);
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
     $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);

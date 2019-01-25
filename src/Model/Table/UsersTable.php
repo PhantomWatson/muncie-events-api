@@ -237,4 +237,35 @@ class UsersTable extends Table
 
         return $user;
     }
+
+    /**
+     * Returns true if the user's events should be automatically published
+     *
+     * This is the case for admins or anyone who has previously submitted an event that has been published/approved
+     *
+     * @param int $userId of user
+     * @return bool
+     */
+    public function getAutoPublish($userId)
+    {
+        if (!$userId) {
+            return false;
+        }
+
+        $isAdmin = $this->exists([
+            'id' => $userId,
+            'role' => 'admin'
+        ]);
+        if ($isAdmin) {
+            return true;
+        }
+
+        $count = $this->Events->find()
+            ->where(['user_id' => $userId])
+            ->andWhere(['published' => 1])
+            ->andwhere(['approved_by IS NOT' => null])
+            ->count();
+
+        return $count > 1;
+    }
 }

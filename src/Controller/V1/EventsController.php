@@ -2,8 +2,14 @@
 namespace App\Controller\V1;
 
 use App\Controller\ApiController;
+use App\Model\Entity\Event;
+use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
+use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -22,29 +28,15 @@ class EventsController extends ApiController
     ];
 
     /**
-     * Initialize method
-     *
-     * @return \Cake\Http\Response|null
-     * @throws \Exception
-     * @throws BadRequestException
-     */
-    public function initialize()
-    {
-        parent::initialize();
-
-        $this->loadComponent('ApiPagination');
-
-        return null;
-    }
-
-    /**
      * /events endpoint
      *
      * @return void
      * @throws BadRequestException
+     * @throws \Exception
      */
     public function index()
     {
+        $this->loadComponent('ApiPagination');
         $start = $this->request->getQuery('start');
         $end = $this->request->getQuery('end');
         $tags = $this->request->getQuery('withTags');
@@ -74,9 +66,11 @@ class EventsController extends ApiController
      * /events/future endpoint
      *
      * @return void
+     * @throws \Exception
      */
     public function future()
     {
+        $this->loadComponent('ApiPagination');
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
@@ -100,9 +94,11 @@ class EventsController extends ApiController
      *
      * @return void
      * @throws BadRequestException
+     * @throws \Exception
      */
     public function search()
     {
+        $this->loadComponent('ApiPagination');
         $search = $this->request->getQuery('q');
         $search = trim($search);
         if (!$search) {
@@ -136,9 +132,11 @@ class EventsController extends ApiController
      * @param int|null $categoryId Category ID
      * @return void
      * @throws BadRequestException
+     * @throws \Exception
      */
     public function category($categoryId = null)
     {
+        $this->loadComponent('ApiPagination');
         if (!$categoryId) {
             throw new BadRequestException('Category ID is required');
         }
@@ -211,5 +209,171 @@ class EventsController extends ApiController
     private function getFinderOptions()
     {
         return [];
+    }
+
+    /**
+     * POST /event endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     */
+    public function add()
+    {
+        $this->request->allowMethod('post');
+
+        if (!$this->tokenUser) {
+            throw new BadRequestException('User token missing');
+        }
+
+        // Format / override request data
+        $data = $this->request->getData() + [
+            'tag_ids' => [],
+            'tag_names' => [],
+            'image_ids' => []
+        ];
+        $data['user_id'] = $this->tokenUser->id;
+        $data['tags'] = ['_ids' => $data['tag_ids']];
+        $data['images'] = ['_ids' => $data['image_ids']];
+        $data['published'] = false;
+        $data['approved_by'] = null;
+
+        // Normalize 'date' string/array to an array
+        $dates = $this->request->getData('date');
+        if (!is_array($dates)) {
+            $dates = [$dates];
+        }
+
+        if (!$dates) {
+            throw new BadRequestException('No date specified');
+        }
+
+        // Add event(s)
+        $addedEvents = [];
+        sort($dates);
+        foreach ($dates as $date) {
+            $addedEvents[] = $this->addSingleEvent($data, $date, $this->tokenUser);
+        }
+
+        // Associate events with a series, if applicable
+        if (count($dates) > 1) {
+            $addedEvents = $this->addEventSeries($addedEvents);
+        }
+
+        // Send Slack notification
+        (new \App\Slack\Slack())->sendNewEventAlert($addedEvents[0]->title);
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'EventSeries',
+                'Image',
+                'Tag',
+                'User'
+            ],
+            '_links' => [],
+            '_serialize' => ['event'],
+            'event' => $addedEvents[0]
+        ]);
+    }
+
+    /**
+     * Processes request data and adds a single event (not connected to a series)
+     *
+     * @param array $data Request data
+     * @param string $date A strtotime parsable date
+     * @param User|null $user A user entity, or null if user is anonymous
+     * @return Event
+     * @throws BadRequestException
+     */
+    private function addSingleEvent(array $data, $date, $user)
+    {
+        $data['date'] = new FrozenDate($date);
+        foreach (['time_start', 'time_end'] as $timeField) {
+            if (!isset($data[$timeField])) {
+                continue;
+            }
+            $data[$timeField] = new FrozenTime($date . ' ' . $data[$timeField], Event::TIMEZONE);
+        }
+        $event = $this->Events->newEntity($data);
+        $event->autoApprove($user);
+        $event->autoPublish($user);
+        $event->processCustomTags($data['tag_names']);
+        $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
+        $event->category = $categoriesTable->get($event->category_id);
+        $saved = $this->Events->save($event, [
+            'associated' => ['Images', 'Tags']
+        ]);
+        if (!$saved) {
+            $msg = $this->getEventErrorMessage($event);
+            throw new BadRequestException($msg);
+        }
+
+        return $saved;
+    }
+
+    /**
+     * Takes an array of events and creates a series to associate them with
+     *
+     * @param Event[] $events An array of events in this series
+     * @return Event[]
+     * @throws BadRequestException
+     */
+    private function addEventSeries(array $events)
+    {
+        // Create series
+        $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
+        $arbitraryEvent = $events[0];
+        $series = $seriesTable->newEntity([
+            'title' => $arbitraryEvent->title,
+            'user_id' => $arbitraryEvent->user_id,
+            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent)
+        ]);
+        if (!$seriesTable->save($series)) {
+            $adminEmail = Configure::read('adminEmail');
+            $msg = 'The event could not be submitted. Please correct any errors and try again. If you need ' .
+                'assistance, please contact an administrator at ' . $adminEmail . '.';
+            throw new BadRequestException($msg);
+        }
+
+        // Associate events with the new series
+        foreach ($events as &$event) {
+            $this->Events->patchEntity($event, ['series_id' => $series->id]);
+            $event->event_series = $series;
+            if (!$this->Events->save($event)) {
+                throw new InternalErrorException('Temporary: Error associating series');
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Returns a message to be output to the user for an event with one or more errors
+     *
+     * @param Event $event Event entity
+     * @return string
+     */
+    private function getEventErrorMessage(Event $event)
+    {
+        $errors = $event->getErrors();
+        if ($errors) {
+            $msg = sprintf(
+                'Please correct the following %s and try again. ',
+                __n('error', 'errors', count($errors))
+            );
+            foreach ($errors as $field => $fieldErrors) {
+                $field = ucwords(str_replace('_', ' ', $field));
+                $msg .= "$field: " . implode('; ', $fieldErrors) . '. ';
+            }
+        } else {
+            $msg = 'There was an error submitting this event. ';
+        }
+        $msg .= sprintf(
+            'If you need assistance, please contact an administrator at %s.',
+            Configure::read('adminEmail')
+        );
+
+        return $msg;
     }
 }

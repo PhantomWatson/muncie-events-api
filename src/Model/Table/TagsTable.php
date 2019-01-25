@@ -28,6 +28,7 @@ use Cake\Validation\Validator;
  */
 class TagsTable extends Table
 {
+    const UNLISTED_GROUP_ID = 1012;
 
     /**
      * Initialize method
