@@ -61,7 +61,8 @@ class EventsTable extends Table
         $this->belongsToMany('Images', [
             'foreignKey' => 'event_id',
             'targetForeignKey' => 'image_id',
-            'joinTable' => 'events_images'
+            'joinTable' => 'events_images',
+            'saveStrategy' => 'replace'
         ]);
         $this->belongsToMany('Tags', [
             'foreignKey' => 'event_id',
