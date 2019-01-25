@@ -34,7 +34,7 @@ class CategorySchema extends EntitySchema
         $iconFilename = strtolower(str_replace(' ', '_', $category->name)) . '.svg';
         $retval = [
             'name' => $category->name,
-            'url' => $siteBaseUrl . '/category/' . $category->slug,
+            'url' => $siteBaseUrl . '/' . $category->slug,
             'icon' => [
                 'svg' => $iconBaseUrl . $iconFilename
             ]
