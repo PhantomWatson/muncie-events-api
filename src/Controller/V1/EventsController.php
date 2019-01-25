@@ -301,6 +301,8 @@ class EventsController extends ApiController
         $event->processCustomTags($data['tag_names']);
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
         $event->category = $categoriesTable->get($event->category_id);
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $event->user = $usersTable->get($event->user_id);
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags']
         ]);
