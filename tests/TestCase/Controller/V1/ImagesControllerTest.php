@@ -117,17 +117,17 @@ class ImagesControllerTest extends ApplicationTest
         // Assert that images are within allowed dimensions
         $path = $this->imagesDestination . DS . 'full' . DS . $expectedFilename;
         list($width, $height) = getimagesize($path);
-        $this->assertLessThanOrEqual(Image::maxHeight, $height);
-        $this->assertLessThanOrEqual(Image::maxWidth, $width);
+        $this->assertLessThanOrEqual(Image::MAX_HEIGHT, $height);
+        $this->assertLessThanOrEqual(Image::MAX_WIDTH, $width);
 
         $path = $this->imagesDestination . DS . 'small' . DS . $expectedFilename;
         list($width) = getimagesize($path);
-        $this->assertLessThanOrEqual(Image::smallWidth, $width);
+        $this->assertLessThanOrEqual(Image::SMALL_WIDTH, $width);
 
         $path = $this->imagesDestination . DS . 'tiny' . DS . $expectedFilename;
         list($width, $height) = getimagesize($path);
-        $this->assertLessThanOrEqual(Image::tinyHeight, $height);
-        $this->assertLessThanOrEqual(Image::tinyWidth, $width);
+        $this->assertLessThanOrEqual(Image::TINY_HEIGHT, $height);
+        $this->assertLessThanOrEqual(Image::TINY_WIDTH, $width);
     }
 
     /**
