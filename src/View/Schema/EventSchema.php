@@ -7,6 +7,8 @@ use JsonApi\View\Schema\EntitySchema;
 
 class EventSchema extends EntitySchema
 {
+    protected $selfSubUrl = '/event';
+
     /**
      * Returns the event's ID
      *
