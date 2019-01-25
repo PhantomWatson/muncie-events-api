@@ -113,6 +113,145 @@ paths:
                               example: The `name`/`email`/`body` parameter is required
       security:
         - api_key: []
+  /event:
+    post:
+      tags:
+        - events
+      summary: Adds an event
+      description: Note that images must be added separately, and image IDs are then included in this request
+      operationId: postEvent
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+        - in: header
+          name: category_id
+          description: Category ID
+          required: true
+          schema:
+            type: int
+            example: 123
+        - in: header
+          name: title
+          description: Event title
+          schema:
+            type: string
+            example: Event Title
+          required: true
+        - in: header
+          name: date
+          description: "Array of dates for this event (format: YYYY-MM-DD)"
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              example: 2020-02-20
+        - in: header
+          name: time_start
+          description: "Starting time of event (valid formats: 2:30pm, 14:30)"
+          required: true
+          schema:
+            type: string
+            example: "2:30pm"
+        - in: header
+          name: time_end
+          description: Optional end time of event
+          schema:
+            type: string
+            example: "3:30pm"
+        - in: header
+          name: description
+          description: Full event description
+          schema:
+            type: string
+            example: Full event description
+          required: true
+        - in: header
+          name: location
+          description: Location name
+          schema:
+            type: string
+            example: Location name
+          required: true
+        - in: header
+          name: location_details
+          description: Location details (e.g. upstairs, Room 149, etc.)
+          schema:
+            type: string
+            example: Location details (e.g. upstairs, Room 149, etc.)
+        - in: header
+          name: address
+          description: Street address of event
+          schema:
+            type: string
+            example: Street address of event
+        - in: header
+          name: cost
+          description: Cost of event
+          schema:
+            type: string
+            example: "$5"
+        - in: header
+          name: age_restriction
+          description: Age restriction
+          schema:
+            type: string
+            example: 21+
+        - in: header
+          name: source
+          description: Description of where the user got this information
+          schema:
+            type: string
+            example: URL of Facebook event
+        - in: header
+          name: image_ids
+          description: Array of image IDs
+          schema:
+            type: array
+            items:
+              type: int
+              example: 123
+        - in: header
+          name: tag_ids
+          description: Array of tag IDs
+          schema:
+            type: array
+            items:
+              type: int
+              example: 123
+        - in: header
+          name: tag_names
+          description: Array of new or existing tag names, or a comma-delimited string
+          schema:
+            oneOf:
+              - type: array
+                items:
+                  type: string
+                  example: tag name
+              - type: string
+                example: first tag, second tag, third tag
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+      security:
+        - api_key: []
   /event/{eventId}:
     get:
       tags:
