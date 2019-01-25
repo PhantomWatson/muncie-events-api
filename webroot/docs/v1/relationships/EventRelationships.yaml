@@ -1,0 +1,49 @@
+type: object
+properties:
+  category:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          type:
+            type: string
+            example: categories
+          id:
+            type: integer
+  series:
+    type: object
+    properties:
+      data:
+        type: object
+        nullable: true
+        properties:
+          type:
+            type: string
+            example: series
+          id:
+            type: integer
+  tags:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              example: tags
+            id:
+              type: integer
+  user:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          type:
+            type: string
+            example: users
+          id:
+            type: integer

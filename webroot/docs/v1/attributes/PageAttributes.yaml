@@ -1,0 +1,8 @@
+type: object
+properties:
+  title:
+    type: string
+    example: About Muncie Events
+  body:
+    type: string
+    example: Muncie Events is a comprehensive event promotion tool provided to the city of...

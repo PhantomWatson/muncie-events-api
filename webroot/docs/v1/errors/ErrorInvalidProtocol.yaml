@@ -1,0 +1,8 @@
+type: object
+properties:
+  title:
+    type: string
+    example: Invalid protocol
+  detail:
+    type: string
+    example: The API must be used over HTTPS

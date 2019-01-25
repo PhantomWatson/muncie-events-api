@@ -51,13 +51,13 @@ paths:
                               example: 42
                             url:
                               type: string
-                              example: https://muncieevents.com/category/music
+                              example: "https://muncieevents.com/category/music"
         '400':
           description: Bad request
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/ErrorInvalidProtocol'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /contact:
@@ -97,7 +97,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -148,7 +148,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -259,7 +259,7 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/category/{categoryId}:
@@ -355,7 +355,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/future:
@@ -417,7 +417,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ErrorInvalidProtocol'
+                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/search:
@@ -491,7 +491,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /image:
@@ -552,32 +552,8 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: integer
-                              example: 400
-                            detail:
-                              type: string
-                              example: User token missing
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: integer
-                              example: 400
-                            detail:
-                              type: string
-                              example: User token invalid
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
                   - type: object
                     properties:
                       errors:
@@ -609,7 +585,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/about:
@@ -647,7 +623,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ErrorInvalidProtocol'
+                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-events:
@@ -685,7 +661,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ErrorInvalidProtocol'
+                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-images:
@@ -723,7 +699,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ErrorInvalidProtocol'
+                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-tags:
@@ -761,7 +737,7 @@ paths:
                   errors:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ErrorInvalidProtocol'
+                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /tag/{tagId}:
@@ -864,7 +840,7 @@ paths:
                       errors:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ErrorInvalidProtocol'
+                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /tags/future:
@@ -909,7 +885,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/ErrorInvalidProtocol'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /tags/tree:
@@ -1008,7 +984,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/ErrorInvalidProtocol'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /user/{userId}:
@@ -1054,7 +1030,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -1093,7 +1069,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -1177,33 +1153,9 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: integer
-                              example: 400
-                            detail:
-                              type: string
-                              example: User token missing
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: integer
-                              example: 400
-                            detail:
-                              type: string
-                              example: User token invalid
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
       security:
         - api_key: []
   /user/login:
@@ -1261,7 +1213,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -1350,7 +1302,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorInvalidProtocol'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -1382,36 +1334,11 @@ paths:
 components:
   schemas:
     Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: Music
+      $ref: './docs/v1/attributes/CategoryAttributes.yaml'
     User:
-      type: object
-      nullable: true
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: User Name
-        email:
-          type: string
-          example: 'user@example.com'
+      $ref: './docs/v1/attributes/UserAttributes.yaml'
     Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: music festivals
+      $ref: './docs/v1/attributes/TagAttributes.yaml'
     Event:
       type: object
       properties:
@@ -1422,161 +1349,13 @@ components:
           type: integer
           format: int64
         attributes:
-          type: object
-          properties:
-            title:
-              type: string
-              example: Muncie MusicFest 2022
-            description:
-              type: string
-              example: "Muncie's big annual music festival, celebrating the talent of the Muncie music community"
-            location:
-              type: string
-              example: Cornerstone Center for the Arts
-            location_details:
-              type: string
-              example: Third floor ballroom
-              nullable: true
-            address:
-              type: string
-              example: 520 E Main Street
-              nullable: true
-            user:
-              $ref: '#/components/schemas/User'
-            category:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: General Events
-                url:
-                  type: string
-                  example: "https://muncieevents.com/general"
-                icon:
-                  type: object
-                  properties:
-                    svg:
-                      type: string
-                      example: "https://muncieevents.localhost/img/icons/categories/general_events.svg"
-            series:
-              $ref: '#/components/schemas/EventSeries'
-            date:
-              type: string
-              format: date
-              example: '2020-02-20'
-            time_start:
-              type: string
-              format: date-time
-              example: '2020-02-20T20:30:00-04:00'
-              description: 'Datetime in local (Muncie) time'
-            time_end:
-              type: string
-              format: date-time
-              example: '2020-02-20T22:00:00-04:00'
-              description: 'Datetime in local (Muncie) time'
-              nullable: true
-            age_restriction:
-              type: string
-              example: 21+
-              nullable: true
-            cost:
-              type: string
-              example: $10, or $5 w/ student ID
-              nullable: true
-            source:
-              type: string
-              description: A link or description of the source of this event information
-              example: 'http://munciemusicfest.com'
-              nullable: true
-            tags:
-              type: array
-              items:
-                $ref: '#/components/schemas/Tag'
-            images:
-              type: array
-              items:
-                $ref: '#/components/schemas/Image'
-            url:
-              type: string
-              description: The URL for accessing this event outside of the API
+          $ref: './docs/v1/attributes/EventAttributes.yaml'
         relationships:
-          type: object
-          properties:
-            category:
-              type: object
-              properties:
-                data:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      example: categories
-                    id:
-                      type: integer
-            series:
-              type: object
-              properties:
-                data:
-                  type: object
-                  nullable: true
-                  properties:
-                    type:
-                      type: string
-                      example: series
-                    id:
-                      type: integer
-            tags:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      type:
-                        type: string
-                        example: tags
-                      id:
-                        type: integer
-            user:
-              type: object
-              properties:
-                data:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      example: users
-                    id:
-                      type: integer
+          $ref: './docs/v1/relationships/EventRelationships.yaml'
     EventSeries:
-      type: object
-      nullable: true
-      properties:
-        title:
-          type: string
-          example: Muncie MusicFest
-        url:
-          type: string
-          example: "https://muncieevents.com/event_series/317"
+      $ref: './docs/v1/attributes/EventSeriesAttributes.yaml'
     Image:
-      type: object
-      properties:
-        tiny_url:
-          type: string
-          description: The URL of the tiny (50px square) thumbnail of the image
-          example: "https://muncieevents.com/img/events/tiny/123.jpg"
-        small_url:
-          type: string
-          description: The URL of the small (200px wide) thumbnail of the image
-          example: "https://muncieevents.com/img/events/small/123.jpg"
-        full_url:
-          type: string
-          description: The URL of the full-sized image
-          example: "https://muncieevents.com/img/events/full/123.jpg"
-        caption:
-          type: string
-          example: Event flyer
+      $ref: './docs/v1/attributes/ImageAttributes.yaml'
     Page:
       type: object
       properties:
@@ -1587,23 +1366,7 @@ components:
           type: string
           example: about
         attributes:
-          type: object
-          properties:
-            title:
-              type: string
-              example: About Muncie Events
-            body:
-              type: string
-              example: Muncie Events is a comprehensive event promotion tool provided to the city of...
-    ErrorInvalidProtocol:
-      type: object
-      properties:
-        title:
-          type: string
-          example: Invalid protocol
-        detail:
-          type: string
-          example: The API must be used over HTTPS
+          $ref: './docs/v1/attributes/PageAttributes.yaml'
   securitySchemes:
     api_key:
       type: apiKey

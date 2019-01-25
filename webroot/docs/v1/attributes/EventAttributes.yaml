@@ -1,0 +1,77 @@
+type: object
+properties:
+  title:
+    type: string
+    example: Muncie MusicFest 2022
+  description:
+    type: string
+    example: "Muncie's big annual music festival, celebrating the talent of the Muncie music community"
+  location:
+    type: string
+    example: Cornerstone Center for the Arts
+  location_details:
+    type: string
+    example: Third floor ballroom
+    nullable: true
+  address:
+    type: string
+    example: 520 E Main Street
+    nullable: true
+  user:
+    $ref: './UserAttributes.yaml'
+  category:
+    type: object
+    properties:
+      name:
+        type: string
+        example: General Events
+      url:
+        type: string
+        example: "https://muncieevents.com/general"
+      icon:
+        type: object
+        properties:
+          svg:
+            type: string
+            example: "https://muncieevents.localhost/img/icons/categories/general_events.svg"
+  series:
+    $ref: './EventSeriesAttributes.yaml'
+  date:
+    type: string
+    format: date
+    example: '2020-02-20'
+  time_start:
+    type: string
+    format: date-time
+    example: '2020-02-20T20:30:00-04:00'
+    description: 'Datetime in local (Muncie) time'
+  time_end:
+    type: string
+    format: date-time
+    example: '2020-02-20T22:00:00-04:00'
+    description: 'Datetime in local (Muncie) time'
+    nullable: true
+  age_restriction:
+    type: string
+    example: 21+
+    nullable: true
+  cost:
+    type: string
+    example: $10, or $5 w/ student ID
+    nullable: true
+  source:
+    type: string
+    description: A link or description of the source of this event information
+    example: 'http://munciemusicfest.com'
+    nullable: true
+  tags:
+    type: array
+    items:
+      $ref: './TagAttributes.yaml'
+  images:
+    type: array
+    items:
+      $ref: './ImageAttributes.yaml'
+  url:
+    type: string
+    description: The URL for accessing this event outside of the API

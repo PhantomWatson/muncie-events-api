@@ -1,0 +1,9 @@
+type: object
+nullable: true
+properties:
+  title:
+    type: string
+    example: Muncie MusicFest
+  url:
+    type: string
+    example: "https://muncieevents.com/event_series/317"

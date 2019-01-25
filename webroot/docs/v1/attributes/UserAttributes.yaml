@@ -1,0 +1,9 @@
+type: object
+nullable: true
+properties:
+  name:
+    type: string
+    example: User Name
+  email:
+    type: string
+    example: 'user@example.com'
