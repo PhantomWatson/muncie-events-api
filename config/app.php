@@ -368,6 +368,7 @@ $config = [
     'adminEmail' => 'admin@muncieevents.com',
     'password_reset_salt' => env('PASSWORD_RESET_SALT'),
     'automailer_address' => 'automailer@MuncieEvents.com',
+    'categoryIconBaseUrl' => env('CATEGORY_ICON_BASE_URL'),
     'eventImageBaseUrl' => env('EVENT_IMG_BASE_URL'),
     'eventImagePath' => env('EVENT_IMG_PATH'),
     'slackWebhook' => env('SLACK_WEBHOOK')

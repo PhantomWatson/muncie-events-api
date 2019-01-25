@@ -12,34 +12,42 @@ class CategorySchema extends EntitySchema
     /**
      * Returns the category's ID
      *
-     * @param \Cake\ORM\Entity $entity Category entity
+     * @param \Cake\ORM\Entity $category Category entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($category): string
     {
-        return (string)$entity->get('id');
+        return (string)$category->get('id');
     }
 
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Category $entity Entity
+     * @param Category $category Category entity
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($category, array $fieldKeysFilter = null): array
     {
-        /** @var EventsTable $eventsTable */
-        $eventsTable = TableRegistry::getTableLocator()->get('Events');
-        $categoryId = $entity->id;
-        $upcomingEventCount = $eventsTable->getCategoryUpcomingEventCount($categoryId);
-        $baseUrl = Configure::read('mainSiteBaseUrl');
-
-        return [
-            'name' => $entity->name,
-            'upcomingEventCount' => $upcomingEventCount,
-            'url' => $baseUrl . '/category/' . $entity->slug
+        $siteBaseUrl = Configure::read('mainSiteBaseUrl');
+        $iconBaseUrl = Configure::read('categoryIconBaseUrl');
+        $iconFilename = strtolower(str_replace(' ', '_', $category->name)) . '.svg';
+        $retval = [
+            'name' => $category->name,
+            'url' => $siteBaseUrl . '/category/' . $category->slug,
+            'icon' => [
+                'svg' => $iconBaseUrl . $iconFilename
+            ]
         ];
+
+        if (!$category->noEventCount) {
+            /** @var EventsTable $eventsTable */
+            $eventsTable = TableRegistry::getTableLocator()->get('Events');
+            $upcomingEventCount = $eventsTable->getCategoryUpcomingEventCount($category->id);
+            $retval['upcomingEventCount'] = $upcomingEventCount;
+        }
+
+        return $retval;
     }
 
     /**
