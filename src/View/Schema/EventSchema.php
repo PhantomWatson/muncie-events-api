@@ -4,6 +4,7 @@ namespace App\View\Schema;
 use App\Model\Entity\Event;
 use Cake\Core\Configure;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Factories\Factory;
 
 class EventSchema extends EntitySchema
 {
@@ -30,6 +31,9 @@ class EventSchema extends EntitySchema
     public function getAttributes($entity, array $fieldKeysFilter = null): array
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
+        $entity->category->noEventCount = true;
+        $categorySchema = new CategorySchema(new Factory(), $this->_view, 'Category');
+
         $attributes = [
             'title' => $entity->title,
             'description' => $entity->description,
@@ -42,10 +46,7 @@ class EventSchema extends EntitySchema
                     'name' => $entity->user->name,
                     'email' => $entity->user->email
                 ] : null,
-            'category' => [
-                'id' => $entity->category->id,
-                'name' => $entity->category->name
-            ],
+            'category' => $categorySchema->getAttributes($entity->category),
             'series' => $entity->event_series ?
                 [
                     'id' => $entity->event_series->id,
