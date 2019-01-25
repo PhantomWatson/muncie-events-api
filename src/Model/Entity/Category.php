@@ -15,6 +15,11 @@ use Cake\ORM\Entity;
  */
 class Category extends Entity
 {
+    /**
+     * A flag used to suppress a lookup in CategorySchema of the number of upcoming events in this category
+     * @var bool
+     */
+    public $noEventCount = false;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
