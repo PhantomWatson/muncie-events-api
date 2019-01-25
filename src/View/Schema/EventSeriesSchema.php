@@ -2,6 +2,7 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\EventSeries;
+use Cake\Core\Configure;
 use JsonApi\View\Schema\EntitySchema;
 
 class EventSeriesSchema extends EntitySchema
@@ -9,44 +10,47 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the event series's ID
      *
-     * @param \Cake\ORM\Entity $entity EventSeries entity
+     * @param EventSeries $series EventSeries entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($series): string
     {
-        return (string)$entity->get('id');
+        return (string)$series->get('id');
     }
 
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param EventSeries $series EventSeries entity
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($series, array $fieldKeysFilter = null): array
     {
+        $baseUrl = Configure::read('mainSiteBaseUrl');
+
         return [
-            'title' => $entity->title
+            'title' => $series->title,
+            'url' => $baseUrl . '/event_series/' . $series->id
         ];
     }
 
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param EventSeries $entity Entity
+     * @param EventSeries $series Entity
      * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array
      */
-    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($series, bool $isPrimary, array $includeRelationships): ?array
     {
         return [
             'events' => [
-                self::DATA => $entity->events
+                self::DATA => $series->events
             ],
             'user' => [
-                self::DATA => $entity->user
+                self::DATA => $series->user
             ]
         ];
     }
