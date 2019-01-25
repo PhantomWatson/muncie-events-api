@@ -1414,13 +1414,6 @@ components:
           example: music festivals
     Event:
       type: object
-      required:
-        - category_id
-        - date
-        - description
-        - location
-        - start_time
-        - title
       properties:
         type:
           type: string
@@ -1559,8 +1552,6 @@ components:
     EventSeries:
       type: object
       nullable: true
-      required:
-        - title
       properties:
         title:
           type: string
