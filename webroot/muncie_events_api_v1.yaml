@@ -1562,9 +1562,6 @@ components:
       required:
         - title
       properties:
-        id:
-          type: integer
-          format: int64
         title:
           type: string
           example: Muncie MusicFest
