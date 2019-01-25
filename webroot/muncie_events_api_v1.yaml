@@ -1451,7 +1451,20 @@ components:
             user:
               $ref: '#/components/schemas/User'
             category:
-              $ref: '#/components/schemas/Category'
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: General Events
+                url:
+                  type: string
+                  example: "https://muncieevents.com/general"
+                icon:
+                  type: object
+                  properties:
+                    svg:
+                      type: string
+                      example: "https://muncieevents.localhost/img/icons/categories/general_events.svg"
             series:
               $ref: '#/components/schemas/EventSeries'
             date:
