@@ -79,6 +79,26 @@ class Event extends Entity
     ];
 
     /**
+     * Takes an array of image data and sets proper join data for the next save operation
+     *
+     * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] arrays
+     * @return void
+     */
+    public function setImageJoinData($imagesData)
+    {
+        $this->images = [];
+        $imagesTable = TableRegistry::getTableLocator()->get('Images');
+        foreach ($imagesData as $i => $imageData) {
+            $image = $imagesTable->get($imageData['id']);
+            $image->_joinData = new Entity([
+                'weight' => $i + 1,
+                'caption' => $imageData['caption']
+            ]);
+            $this->images[] = $image;
+        }
+    }
+
+    /**
      * Transforms the time into a full datetime object with correct UTC offset
      *
      * @return string

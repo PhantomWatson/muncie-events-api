@@ -208,13 +208,22 @@ paths:
             type: string
             example: URL of Facebook event
         - in: header
-          name: image_ids
-          description: Array of image IDs
+          name: images
+          description: "Array of image objects, each containing `id` and `caption` properties, in the order the images
+            should be displayed"
           schema:
             type: array
             items:
-              type: int
-              example: 123
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Image ID
+                  example: 123
+                caption:
+                  type: string
+                  description: Optional image caption
+                  example: Image caption
         - in: header
           name: tag_ids
           description: Array of tag IDs
