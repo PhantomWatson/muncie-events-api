@@ -275,7 +275,7 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
-        $responseCategoryIds = Hash::extract($response['data'], '{n}.attributes.category.id');
+        $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
         $this->assertEquals(
             [$categoryId],
@@ -307,7 +307,7 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
-        $responseCategoryIds = Hash::extract($response['data'], '{n}.attributes.category.id');
+        $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
         $this->assertEquals(
             [$categoryId],
