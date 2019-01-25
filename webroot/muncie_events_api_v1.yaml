@@ -143,12 +143,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -246,6 +241,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -259,7 +255,6 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
-                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/category/{categoryId}:
@@ -324,6 +319,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -350,12 +346,6 @@ paths:
                             detail:
                               type: string
                               example: 'Category with ID {categoryId} not found'
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/future:
@@ -412,12 +402,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /events/search:
@@ -473,6 +458,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -486,12 +472,6 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /image:
@@ -554,6 +534,7 @@ paths:
                 oneOf:
                   - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
                   - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -580,12 +561,6 @@ paths:
                             detail:
                               type: string
                               example: There was an error uploading your image
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/about:
@@ -618,12 +593,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-events:
@@ -656,12 +626,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-images:
@@ -694,12 +659,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /pages/rules-tags:
@@ -732,12 +692,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /tag/{tagId}:
@@ -809,6 +764,7 @@ paths:
             application/vnd.api+json:
               schema:
                 oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
                   - type: object
                     properties:
                       errors:
@@ -835,12 +791,6 @@ paths:
                             detail:
                               type: string
                               example: 'Invalid tag ID: {tagId}'
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
   /tags/future:

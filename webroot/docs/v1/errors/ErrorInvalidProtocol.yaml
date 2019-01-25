@@ -1,8 +1,13 @@
 type: object
 properties:
-  title:
-    type: string
-    example: Invalid protocol
-  detail:
-    type: string
-    example: The API must be used over HTTPS
+  errors:
+    type: array
+    items:
+      type: object
+      properties:
+        status:
+          type: int
+          example: 400
+        detail:
+          type: string
+          example: API calls must be made with HTTPS protocol
