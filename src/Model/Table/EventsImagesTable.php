@@ -64,13 +64,11 @@ class EventsImagesTable extends Table
 
         $validator
             ->integer('weight')
-            ->requirePresence('weight', 'create')
-            ->notEmpty('weight');
+            ->requirePresence('weight', 'create');
 
         $validator
             ->scalar('caption')
-            ->requirePresence('caption', 'create')
-            ->notEmpty('caption');
+            ->allowEmptyString('caption');
 
         return $validator;
     }
