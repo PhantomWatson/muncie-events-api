@@ -3,8 +3,11 @@ namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
+use App\Test\Fixture\ImagesFixture;
 use App\Test\Fixture\TagsFixture;
+use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
+use Cake\Core\Configure;
 use Cake\Utility\Hash;
 
 /**
@@ -29,6 +32,9 @@ class EventsControllerTest extends ApplicationTest
         'app.Users'
     ];
 
+    private $addingUserId = 1;
+    private $addUrl;
+
     /**
      * Sets up this set of tests
      *
@@ -37,6 +43,16 @@ class EventsControllerTest extends ApplicationTest
     public function setUp()
     {
         parent::setUp();
+
+        $this->addUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'add',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken($this->addingUserId)
+            ]
+        ];
     }
 
     /**
@@ -418,5 +434,128 @@ class EventsControllerTest extends ApplicationTest
             }
             $this->assertArrayHasKey($field, $event);
         }
+    }
+
+    private function getAddSingleEventData()
+    {
+        $categoriesFixture = new CategoriesFixture();
+        $category = $categoriesFixture->records[0];
+        $imagesFixture = new ImagesFixture();
+        return [
+            'category_id' => $category['id'],
+            'title' => 'Test Event Title',
+            'description' => 'Test event description',
+            'location' => 'Test location name',
+            'location_details' => 'Test location details',
+            'address' => 'Test address',
+            'age_restriction' => '21+',
+            'source' => 'Test info source',
+            'cost' => 'Test cost',
+            'date' => [
+                date('Y-m-d', strtotime('tomorrow'))
+            ],
+            'time_start' => '02:00PM',
+            'time_end' => '03:00PM',
+            'tag_names' => [
+                ' new tag 1 ',
+                'NEW TAG 2'
+            ],
+            'tag_ids' => [
+                TagsFixture::TAG_WITH_EVENT,
+                TagsFixture::TAG_WITH_DIFFERENT_EVENT
+            ],
+            'images' => [
+                [
+                    'id' => $imagesFixture->records[1]['id'],
+                    'caption' => 'Caption for first image'
+                ],
+                [
+                    'id' => $imagesFixture->records[0]['id'],
+                    'caption' => 'Caption for second image'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Tests that a POST request to /event with full data for a single event succeeds
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSingleEventSuccess()
+    {
+        $data = $this->getAddSingleEventData();
+        $this->post($this->addUrl, $data);
+        $this->assertResponseOk();
+
+        // Check misc. attributes
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+        $fields = [
+            'title',
+            'description',
+            'location',
+            'location_details',
+            'address',
+            'age_restriction',
+            'source',
+            'cost',
+        ];
+        foreach ($fields as $field) {
+            $this->assertEquals($data[$field], $returnedEvent->$field);
+        }
+        $this->assertEquals($data['date'][0], $returnedEvent->date);
+        $this->assertEmpty($returnedEvent->series);
+        $baseUrl = Configure::read('mainSiteBaseUrl');
+        $this->assertEquals($baseUrl . '/event/' . $response->data->id, $returnedEvent->url);
+
+        // Check user
+        $usersFixture = new UsersFixture();
+        $user = $usersFixture->records[$this->addingUserId - 1];
+        $this->assertEquals($user['name'], $returnedEvent->user->name);
+        $this->assertEquals($user['email'], $returnedEvent->user->email);
+
+        // Check category
+        $categoriesFixture = new CategoriesFixture();
+        $category = $categoriesFixture->records[0];
+        $this->assertEquals($category['name'], $returnedEvent->category->name);
+        $this->assertNotEmpty($returnedEvent->category->url);
+        $this->assertStringStartsWith('https://', $returnedEvent->category->url);
+        $this->assertStringStartsWith($baseUrl, $returnedEvent->category->url);
+        $this->assertStringStartsWith('https://', $returnedEvent->category->icon->svg);
+
+        // Check tag names
+        $expectedTagNames = $data['tag_names'];
+        $expectedTagNames = array_map('strtolower', $expectedTagNames);
+        $expectedTagNames = array_map('trim', $expectedTagNames);
+        $expectedTagNames[] = TagsFixture::TAG_NAME;
+        $expectedTagNames[] = TagsFixture::TAG_NAME_ALTERNATE;
+        $actualTagNames = Hash::extract($returnedEvent->tags, '{n}.name');
+        sort($actualTagNames);
+        sort($expectedTagNames);
+        $this->assertEquals($expectedTagNames, $actualTagNames);
+
+        // Check images
+        $imagesFixture = new ImagesFixture();
+        $filenames = Hash::combine($imagesFixture->records, '{n}.id', '{n}.filename');
+        for ($n = 0; $n < count($data['images']); $n++) {
+            $this->assertEquals($data['images'][$n]['caption'], $returnedEvent->images[$n]->caption);
+            foreach (['full', 'small', 'tiny'] as $size) {
+                $imageId = $data['images'][$n]['id'];
+                $filename = $filenames[$imageId];
+                $imgUrl = $returnedEvent->images[$n]->{$size . '_url'};
+                $this->assertStringEndsWith("$size/$filename", $imgUrl);
+            }
+        }
+
+        // Check relationships
+        $relationships = $response->data->relationships;
+        $this->assertEquals($relationships->category->data->id, $data['category_id']);
+        $this->assertEmpty($relationships->series->data);
+        $returnedTagIds = Hash::extract($relationships->tags->data, '{n}.id');
+        $this->assertContains(TagsFixture::TAG_WITH_EVENT, $returnedTagIds);
+        $this->assertContains(TagsFixture::TAG_WITH_DIFFERENT_EVENT, $returnedTagIds);
+        $this->assertEquals($relationships->user->data->id, $this->addingUserId);
     }
 }
