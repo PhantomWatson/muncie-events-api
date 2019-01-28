@@ -259,7 +259,9 @@ class EventsController extends ApiController
         }
 
         // Send Slack notification
-        (new \App\Slack\Slack())->sendNewEventAlert($addedEvents[0]->title);
+        if (!defined('PHPUNIT_RUNNING') || !PHPUNIT_RUNNING) {
+            (new \App\Slack\Slack())->sendNewEventAlert($addedEvents[0]->title);
+        }
 
         $this->set([
             '_entities' => [
