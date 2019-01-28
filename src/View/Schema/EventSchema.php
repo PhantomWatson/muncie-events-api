@@ -43,7 +43,6 @@ class EventSchema extends EntitySchema
             'address' => $entity->address ? $entity->address : null,
             'user' => $entity->user ?
                 [
-                    'id' => $entity->user->id,
                     'name' => $entity->user->name,
                     'email' => $entity->user->email
                 ] : null,
