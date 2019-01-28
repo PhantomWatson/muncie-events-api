@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\Fixture;
 
+use App\Model\Table\TagsTable;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -93,6 +94,17 @@ class TagsFixture extends TestFixture
             'user_id' => 1,
             'created' => '2017-11-20 22:39:12'
         ],
+        [
+            'id' => TagsTable::UNLISTED_GROUP_ID,
+            'parent_id' => null,
+            'lft' => 9,
+            'rght' => 10,
+            'name' => 'unlisted',
+            'listed' => 0,
+            'selectable' => 0,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12'
+        ]
     ];
 
     /**
