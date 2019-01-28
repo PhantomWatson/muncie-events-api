@@ -237,12 +237,11 @@ class EventsController extends ApiController
 
         // Normalize 'date' string/array to an array
         $dates = $this->request->getData('date');
-        if (!is_array($dates)) {
-            $dates = [$dates];
-        }
-
         if (!$dates) {
             throw new BadRequestException('No date specified');
+        }
+        if (!is_array($dates)) {
+            $dates = [$dates];
         }
 
         // Add event(s)
