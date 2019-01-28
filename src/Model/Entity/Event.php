@@ -112,12 +112,16 @@ class Event extends Entity
     /**
      * Transforms the time into a full datetime object with correct UTC offset
      *
-     * @return string
+     * @return string|null
      * @throws \Exception
      */
     protected function _getTimeEnd()
     {
-        return $this->getCorrectedTime($this->_properties['time_end']);
+        if (isset($this->_properties['time_end'])) {
+            return $this->getCorrectedTime($this->_properties['time_end']);
+        }
+
+        return null;
     }
 
     /**
