@@ -235,14 +235,21 @@ class Event extends Entity
     }
 
     /**
-     * Takes a list of tags, adds tags if they don't already exist, and adds them to this event entity
+     * Adds tag entities to this event entity, creating new records if necessary
      *
-     * @param string|array $tagNames An array of tag names or a comma-delimited string
+     * @param int[] $tagIds An array of tag IDs
+     * @param string|string[] $tagNames An array of tag names or a comma-delimited string
      * @return void
      * @throws BadRequestException
      */
-    public function processCustomTags($tagNames)
+    public function processTags($tagIds, $tagNames)
     {
+        $tagsTable = TableRegistry::getTableLocator()->get('Tags');
+        $this->tags = $this->tags ?? [];
+        foreach ($tagIds as $tagId) {
+            $this->tags[] = $tagsTable->get($tagId);
+        }
+
         if (!is_array($tagNames)) {
             $tagNames = explode(',', $tagNames);
         }
@@ -250,7 +257,6 @@ class Event extends Entity
         $tagNames = array_map('strtolower', $tagNames);
         $tagNames = array_unique($tagNames);
 
-        $tagsTable = TableRegistry::getTableLocator()->get('Tags');
         foreach ($tagNames as $tagName) {
             if ($tagName == '') {
                 continue;

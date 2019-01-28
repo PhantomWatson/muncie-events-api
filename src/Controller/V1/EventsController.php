@@ -232,7 +232,6 @@ class EventsController extends ApiController
             'images' => []
         ];
         $data['user_id'] = $this->tokenUser->id;
-        $data['tags'] = ['_ids' => $data['tag_ids']];
         $data['published'] = false;
         $data['approved_by'] = null;
 
@@ -299,7 +298,7 @@ class EventsController extends ApiController
         $event = $this->Events->newEntity($data);
         $event->autoApprove($user);
         $event->autoPublish($user);
-        $event->processCustomTags($data['tag_names']);
+        $event->processTags($data['tag_ids'], $data['tag_names']);
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
         $event->user = $this->Events->Users->get($event->user_id);
