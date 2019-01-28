@@ -125,7 +125,6 @@ paths:
           in: query
           schema:
             type: string
-          required: true
           example: randomStringOf32Characters
         - in: header
           name: category_id
