@@ -70,7 +70,7 @@ class EventSchema extends EntitySchema
                 'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
                 'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
                 'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
-                'caption' => $image->caption
+                'caption' => $image->_joinData->caption
             ];
         }
 

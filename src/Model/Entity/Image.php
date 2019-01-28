@@ -16,6 +16,7 @@ use Cake\ORM\TableRegistry;
  * @property int $user_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property EventsImage $_joinData
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Event[] $events
