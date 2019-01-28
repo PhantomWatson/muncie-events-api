@@ -61,7 +61,6 @@ class EventSchema extends EntitySchema
 
         foreach ($entity->tags as $tag) {
             $attributes['tags'][] = [
-                'id' => $tag->id,
                 'name' => $tag->name
             ];
         }
