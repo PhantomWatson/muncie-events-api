@@ -10,6 +10,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 /**
  * Class UsersController
@@ -206,5 +207,46 @@ class UsersController extends ApiController
             '_serialize' => ['images'],
             'images' => $images
         ]);
+    }
+
+    /**
+     * /user/profile endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     * @throws MethodNotAllowedException
+     */
+    public function profile()
+    {
+        $this->request->allowMethod('patch');
+        if (!$this->tokenUser) {
+            throw new BadRequestException('User token missing');
+        }
+
+        $updatedName = $this->request->getData('name');
+        $updatedEmail = $this->request->getData('email');
+        if ($updatedName === null && $updatedEmail === null) {
+            throw new BadRequestException('Either \'name\' or \'email\' parameters must be provided');
+        }
+
+        $user = $this->tokenUser;
+        $data = [];
+        if ($updatedName !== null) {
+            $data['name'] = $updatedName;
+        }
+        if ($updatedEmail !== null) {
+            $data['email'] = $updatedEmail;
+        }
+        $this->Users->patchEntity($user, $data);
+        if (!$this->Users->save($user)) {
+            $errors = $user->getErrors();
+            $messages = Hash::extract($errors, '{s}.{s}');
+            throw new BadRequestException('There was an error updating your profile. Details: ' . implode('; ', $messages));
+        }
+
+        /* Bypass JsonApi plugin to render blank response,
+         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
+        $this->viewBuilder()->setClassName('Json');
+        $this->set('_serialize', true);
     }
 }
