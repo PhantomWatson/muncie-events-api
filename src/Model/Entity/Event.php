@@ -4,6 +4,7 @@ namespace App\Model\Entity;
 use App\Model\Table\TagsTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
@@ -106,7 +107,7 @@ class Event extends Entity
      */
     protected function _getTimeStart()
     {
-        return $this->getCorrectedTime($this->_properties['time_start']);
+        return self::getCorrectedTime($this->_properties['date'], $this->_properties['time_start']);
     }
 
     /**
@@ -118,7 +119,7 @@ class Event extends Entity
     protected function _getTimeEnd()
     {
         if (isset($this->_properties['time_end'])) {
-            return $this->getCorrectedTime($this->_properties['time_end']);
+            return self::getCorrectedTime($this->_properties['date'], $this->_properties['time_end']);
         }
 
         return null;
@@ -132,11 +133,12 @@ class Event extends Entity
      * correctly interpreted and adds the correct year, month, and day information so a full RFC 3339
      * string can be outputted.
      *
+     * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Indiana time mistakenly represented as UTC
      * @return string|null
      * @throws \Exception
      */
-    private function getCorrectedTime($localTime)
+    public static function getCorrectedTime($date, $localTime)
     {
         if (!$localTime) {
             return null;
@@ -148,9 +150,9 @@ class Event extends Entity
 
         // Fix missing date info
         $correctedTime
-            ->year($this->_properties['date']->year)
-            ->month($this->_properties['date']->month)
-            ->day($this->_properties['date']->day);
+            ->year($date->year)
+            ->month($date->month)
+            ->day($date->day);
 
         // Change from Indiana time to UTC time
         $offset = timezone_offset_get(timezone_open(self::TIMEZONE), new DateTime($localTime));
