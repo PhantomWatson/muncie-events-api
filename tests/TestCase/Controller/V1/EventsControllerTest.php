@@ -491,6 +491,7 @@ class EventsControllerTest extends ApplicationTest
      *
      * @return void
      * @throws \PHPUnit\Exception
+     * @throws \Exception
      */
     public function testAddSingleEventSuccess()
     {
@@ -518,6 +519,12 @@ class EventsControllerTest extends ApplicationTest
         $this->assertEmpty($returnedEvent->series);
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $this->assertEquals($baseUrl . '/event/' . $response->data->id, $returnedEvent->url);
+        $date = new FrozenDate($data['date'][0]);
+        foreach (['start', 'end'] as $whichTime) {
+            $expected = Event::getCorrectedTime($date, new FrozenTime($data["time_$whichTime"]));
+            $actual = $returnedEvent->{"time_$whichTime"};
+            $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
+        }
 
         // Check user
         $usersFixture = new UsersFixture();
