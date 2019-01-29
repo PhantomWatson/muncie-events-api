@@ -34,6 +34,29 @@ class UsersControllerTest extends ApplicationTest
         'app.Users'
     ];
 
+    private $updatingUserId = 1;
+    private $updateProfileUrl;
+
+    /**
+     * Sets up test object before each test
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->updateProfileUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'profile',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken($this->updatingUserId)
+            ]
+        ];
+    }
+
     /**
      * Method for cleaning up after each test
      *
@@ -483,5 +506,108 @@ class UsersControllerTest extends ApplicationTest
         ];
 
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that PATCH /user/profile succeeds with valid parameters
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileSuccess()
+    {
+        $data = [
+            'name' => 'Updated Name',
+            'email' => 'updated.email@example.com'
+        ];
+        $this->patch($this->updateProfileUrl, $data);
+        $this->assertResponseOk();
+
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->get($this->updatingUserId);
+        $this->assertEquals($data['name'], $user->name);
+        $this->assertEquals($data['email'], $user->email);
+    }
+
+    /**
+     * Tests that PATCH /user/profile still succeeds with partial parameters
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testPartialUpdateProfileSuccess()
+    {
+        $data = [
+            'name' => 'Updated Name',
+            'email' => 'updated.email@example.com'
+        ];
+
+        foreach ($data as $param => $value) {
+            $alteredData = $data;
+            unset($alteredData[$param]);
+            $this->patch($this->updateProfileUrl, $alteredData);
+            $this->assertResponseOk();
+        }
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->get($this->updatingUserId);
+        $this->assertEquals($data['name'], $user->name);
+        $this->assertEquals($data['email'], $user->email);
+    }
+
+    /**
+     * Tests that /user/profile fails for invalid methods
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->updateProfileUrl, ['get', 'put', 'post', 'delete']);
+    }
+
+    /**
+     * Tests that PATCH /user/profile fails with no name/email data
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileFailNoParams()
+    {
+        $this->patch($this->updateProfileUrl, []);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/profile fails with blank name/email
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileFailBlankParams()
+    {
+        $data = [
+            'name' => 'Updated Name',
+            'email' => 'updated.email@example.com'
+        ];
+
+        foreach ($data as $param => $value) {
+            $alteredData = $data;
+            $alteredData[$param] = '';
+            $this->patch($this->updateProfileUrl, $alteredData);
+            $this->assertResponseError();
+        }
+    }
+
+    /**
+     * Tests that PATCH /user/profile fails with non-unique email
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileFailNonuniqueEmail()
+    {
+        $usersFixture = new UsersFixture();
+        $lastUser = end($usersFixture->records);
+        $data = [
+            'name' => 'Updated Name',
+            'email' => $lastUser['email']
+        ];
+        $this->patch($this->updateProfileUrl, $data);
+        $this->assertResponseError();
     }
 }
