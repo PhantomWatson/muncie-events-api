@@ -151,7 +151,7 @@ paths:
               example: 2020-02-20
         - in: header
           name: time_start
-          description: "Starting time of event (valid formats: 2:30pm, 14:30)"
+          description: "Starting time of event (valid formats include: 2:30pm, 02:30 PM, 14:30, etc.)"
           required: true
           schema:
             type: string
