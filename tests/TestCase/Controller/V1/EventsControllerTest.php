@@ -758,4 +758,29 @@ class EventsControllerTest extends ApplicationTest
         $this->post($url, $data);
         $this->assertResponseOk("Error triggered when posting event anonymously");
     }
+
+    /**
+     * Tests that POST /event still succeeds when passing tag_names as a comma-delimited string
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessCommaDelimitedTags()
+    {
+        $data = $this->getAddSingleEventData();
+        $expectedTagNames = $data['tag_names'];
+        $expectedTagNames = array_map('strtolower', $expectedTagNames);
+        $expectedTagNames = array_map('trim', $expectedTagNames);
+
+        $data['tag_names'] = implode(', ', $data['tag_names']);
+        $this->post($this->addUrl, $data);
+        $this->assertResponseOk("Error triggered when posting event with comma-delimited tag names");
+
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+        $actualTagNames = Hash::extract($returnedEvent->tags, '{n}.name');
+        foreach ($expectedTagNames as $expectedTagName) {
+            $this->assertContains($expectedTagName, $actualTagNames);
+        }
+    }
 }
