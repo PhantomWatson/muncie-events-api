@@ -277,7 +277,6 @@ class Event extends Entity
 
             /** @var Tag $existingTag */
             $existingTag = $tagsTable->find()
-                ->select(['id', 'selectable'])
                 ->where(['name' => $tagName])
                 ->first();
 
