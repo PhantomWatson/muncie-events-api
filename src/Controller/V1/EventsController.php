@@ -225,15 +225,27 @@ class EventsController extends ApiController
             throw new BadRequestException('User token missing');
         }
 
-        // Format / override request data
-        $data = $this->request->getData() + [
+        $data = $this->request->getData();
+        $data['user_id'] = $this->tokenUser->id;
+        $data['published'] = false;
+        $data['approved_by'] = null;
+
+        // Add blank values for missing keys
+        $optionalFields = [
+            'location_details' => '',
+            'address' => '',
+            'cost' => '',
+            'age_restriction' => '',
+            'source' => '',
             'tag_ids' => [],
             'tag_names' => [],
             'images' => []
         ];
-        $data['user_id'] = $this->tokenUser->id;
-        $data['published'] = false;
-        $data['approved_by'] = null;
+        foreach ($optionalFields as $optionalField => $blankValue) {
+            if (!isset($data[$optionalField])) {
+                $data[$optionalField] = $blankValue;
+            }
+        }
 
         // Normalize 'date' string/array to an array
         $dates = $this->request->getData('date');
