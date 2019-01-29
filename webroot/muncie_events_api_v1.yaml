@@ -1340,6 +1340,73 @@ paths:
                               example: Email or password is incorrect
       security:
         - api_key: []
+  /user/profile:
+    patch:
+      tags:
+        - users
+      summary: "Used for updating a user's name and/or email address"
+      description: "It is not necessary to provide both the `name` and `email` parameters, but at least one must be present"
+      operationId: patchUserProfile
+      parameters:
+        - name: userToken
+          in: query
+          description: User token
+          schema:
+            type: string
+            example: randomStringOf32Characters
+          required: true
+        - in: header
+          name: name
+          schema:
+            type: string
+            example: Updated User Name
+          required: true
+          description: "User's name"
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: 'user@example.com'
+          required: true
+          description: "User's email address"
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: Either `name` or `email` parameters must be provided
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: "There was an error updating your profile. Details: ..."
+      security:
+        - api_key: []
   /user/register:
     post:
       tags:
