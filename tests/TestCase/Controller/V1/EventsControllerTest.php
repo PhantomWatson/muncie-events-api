@@ -526,6 +526,10 @@ class EventsControllerTest extends ApplicationTest
             $actual = $returnedEvent->{"time_$whichTime"};
             $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
         }
+        $this->assertTrue(
+            $returnedEvent->published,
+            'Event not auto-published for user with previous published events'
+        );
 
         // Check user
         $usersFixture = new UsersFixture();
@@ -826,5 +830,42 @@ class EventsControllerTest extends ApplicationTest
         foreach ($data['date'] as $date) {
             $this->assertContains($date, $savedDates, "Expected event with date $date not saved to database");
         }
+    }
+
+    /**
+     * Tests that POST /event does NOT auto-publish events for non-qualifying users
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddNotAutoPublished()
+    {
+        $usersFixture = new UsersFixture();
+        $userTokens = Hash::combine($usersFixture->records, '{n}.id', '{n}.token');
+        $userTokenWithoutEvents = $userTokens[UsersFixture::USER_WITHOUT_EVENTS];
+
+        $url = $this->addUrl;
+        $url['?']['userToken'] = $userTokenWithoutEvents;
+        $data = $this->getAddSingleEventData();
+        $this->post($url, $data);
+        $this->assertResponseOk();
+
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+        $this->assertFalse(
+            $returnedEvent->published,
+            'Event auto-published for non-qualifying user'
+        );
+
+        unset($url['?']['userToken']);
+        $this->post($url, $data);
+        $this->assertResponseOk();
+
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+        $this->assertFalse(
+            $returnedEvent->published,
+            'Event auto-published for non-qualifying user'
+        );
     }
 }
