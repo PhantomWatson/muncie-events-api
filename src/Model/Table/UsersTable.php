@@ -75,7 +75,7 @@ class UsersTable extends Table
         $validator
             ->scalar('name')
             ->requirePresence('name', 'create')
-            ->minLength('name', 1);
+            ->allowEmptyString('name', false, 'User name cannot be blank');
 
         $validator
             ->scalar('role')
@@ -84,7 +84,8 @@ class UsersTable extends Table
 
         $validator
             ->email('email')
-            ->requirePresence('email', 'create');
+            ->requirePresence('email', 'create')
+            ->allowEmptyString('email', false, 'Email address cannot be blank');
 
         $validator
             ->scalar('password')
