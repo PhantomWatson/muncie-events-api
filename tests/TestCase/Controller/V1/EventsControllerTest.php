@@ -742,4 +742,20 @@ class EventsControllerTest extends ApplicationTest
             }
         }
     }
+
+    /**
+     * Tests that POST /event still succeeds when using alternate time formats listed in the API docs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     * @throws \Exception
+     */
+    public function testAddSuccessAnonUser()
+    {
+        $url = $this->addUrl;
+        unset($url['?']['userToken']);
+        $data = $this->getAddSingleEventData();
+        $this->post($url, $data);
+        $this->assertResponseOk("Error triggered when posting event anonymously");
+    }
 }
