@@ -558,4 +558,128 @@ class EventsControllerTest extends ApplicationTest
         $this->assertContains(TagsFixture::TAG_WITH_DIFFERENT_EVENT, $returnedTagIds);
         $this->assertEquals($relationships->user->data->id, $this->addingUserId);
     }
+
+    /**
+     * Tests that /event fails for non-post requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->addUrl, ['get', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that POST /event fails for invalid category IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailInvalidCategoryId()
+    {
+        $invalidId = 999;
+        $data = $this->getAddSingleEventData();
+        $data['category_id'] = $invalidId;
+        $this->post($this->addUrl, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that POST /event fails for invalid image IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailInvalidImageId()
+    {
+        $invalidId = 999;
+        $data = $this->getAddSingleEventData();
+        $data['images'] = [['id' => $invalidId]];
+        $this->post($this->addUrl, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that POST /event fails for invalid tag IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailInvalidTagId()
+    {
+        $invalidId = 999;
+        $data = $this->getAddSingleEventData();
+        $data['tag_ids'] = [$invalidId];
+        $this->post($this->addUrl, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that POST /event fails for missing or blank required data
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailMissingRequiredData()
+    {
+        $requiredFields = [
+            'category_id',
+            'title',
+            'description',
+            'location',
+            'date',
+            'time_start'
+        ];
+        $validData = $this->getAddSingleEventData();
+        foreach ($requiredFields as $requiredField) {
+            $invalidData = $validData;
+
+            $invalidData[$requiredField] = null;
+            $this->post($this->addUrl, $invalidData);
+            $this->assertResponseError("Error not triggered for blank $requiredField");
+
+            unset($invalidData[$requiredField]);
+            $this->post($this->addUrl, $invalidData);
+            $this->assertResponseError("Error not triggered for missing $requiredField");
+        }
+
+        $invalidData = $validData;
+        $invalidData['date'] = [];
+        $this->post($this->addUrl, $invalidData);
+        $this->assertResponseError("Error not triggered for empty date array");
+    }
+
+    /**
+     * Tests that POST /event still succeeds when optional data is blank or missing
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessMissingOptionalData()
+    {
+        $optionalFields = [
+            'time_end' => '',
+            'location_details' => '',
+            'address' => '',
+            'cost' => '',
+            'age_restriction' => '',
+            'source' => '',
+            'images' => [],
+            'tag_ids' => [],
+            'tag_names' => []
+        ];
+        $validData = $this->getAddSingleEventData();
+        foreach ($optionalFields as $optionalField => $blankValue) {
+            $partialData = $validData;
+
+            $partialData[$optionalField] = $blankValue;
+            $this->post($this->addUrl, $partialData);
+            $this->assertResponseOk("Error triggered for blank optional field $optionalField");
+
+            unset($partialData[$optionalField]);
+            $this->post($this->addUrl, $partialData);
+            $this->assertResponseOk("Error triggered for missing blank optional field $optionalField");
+        }
+    }
 }
