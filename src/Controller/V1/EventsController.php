@@ -221,12 +221,8 @@ class EventsController extends ApiController
     {
         $this->request->allowMethod('post');
 
-        if (!$this->tokenUser) {
-            throw new BadRequestException('User token missing');
-        }
-
         $data = $this->request->getData();
-        $data['user_id'] = $this->tokenUser->id;
+        $data['user_id'] = $this->tokenUser ? $this->tokenUser->id : null;
         $data['published'] = false;
         $data['approved_by'] = null;
 
@@ -312,7 +308,7 @@ class EventsController extends ApiController
         $event->processTags($data['tag_ids'], $data['tag_names']);
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
-        $event->user = $this->Events->Users->get($event->user_id);
+        $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags']
         ]);

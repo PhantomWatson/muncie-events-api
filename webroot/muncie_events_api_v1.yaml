@@ -123,6 +123,7 @@ paths:
       parameters:
         - name: userToken
           in: query
+          description: User token (not included if user is submitting an event anonymously)
           schema:
             type: string
           example: randomStringOf32Characters

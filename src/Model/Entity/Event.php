@@ -170,12 +170,15 @@ class Event extends Entity
     /**
      * Sets the event to approved if $user (the user submitting the form) is an administrator
      *
-     * @param array|User $user The user submitting the form (not necessarily the original event author)
+     * @param array|User|null $user The user submitting the form (not necessarily the original event author)
      * @return void
      * @throws InternalErrorException
      */
     public function autoApprove($user)
     {
+        if (!$user) {
+            return;
+        }
         if (!is_array($user)) {
             $user = $user->toArray();
         }
@@ -190,7 +193,7 @@ class Event extends Entity
     /**
      * Sets the event to approved and published if $user (the user submitting the form) is an administrator
      *
-     * @param array|User $user The user submitting the form (not necessarily the original event author)
+     * @param array|User|null $user The user submitting the form (not necessarily the original event author)
      * @return void
      * @throws InternalErrorException
      */
@@ -204,11 +207,15 @@ class Event extends Entity
     /**
      * Returns TRUE if the specified user should have their events automatically published
      *
-     * @param array|User $user Array of user record info, empty for anonymous users
+     * @param array|User|null $user Array of user record info, empty for anonymous users
      * @return bool
      */
     public function userIsAutoPublishable($user)
     {
+        if (!$user) {
+            return false;
+        }
+
         if (!is_array($user)) {
             $user = $user->toArray();
         }
