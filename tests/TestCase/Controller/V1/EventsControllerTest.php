@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Model\Entity\Event;
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\ImagesFixture;
@@ -8,6 +9,8 @@ use App\Test\Fixture\TagsFixture;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\Utility\Hash;
 
 /**
@@ -687,6 +690,49 @@ class EventsControllerTest extends ApplicationTest
             unset($partialData[$optionalField]);
             $this->post($this->addUrl, $partialData);
             $this->assertResponseOk("Error triggered for missing blank optional field $optionalField");
+        }
+    }
+
+    /**
+     * Tests that POST /event still succeeds when using alternate time formats listed in the API docs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     * @throws \Exception
+     */
+    public function testAddSuccessAlternateTimeFormats()
+    {
+        $data = $this->getAddSingleEventData();
+        $times = [
+            '2:30pm' => '3:30pm',
+            '02:30pm' => '03:30pm',
+            '2:30PM' => '3:30PM',
+            '02:30PM' => '03:30PM',
+            '2:30 pm' => '3:30 pm',
+            '02:30 pm' => '03:30 pm',
+            '2:30 PM' => '3:30 PM',
+            '02:30 PM' => '03:30 PM',
+            '14:30' => '15:30',
+            '2:30' => '3:30' // AM
+        ];
+        $date = new FrozenDate($data['date'][0]);
+
+        foreach ($times as $startTime => $endTime) {
+            $data['time_start'] = $startTime;
+            $data['time_end'] = $endTime;
+            $this->post($this->addUrl, $data);
+            $this->assertResponseOk("Error triggered for times $startTime to $endTime");
+
+            $response = json_decode($this->_response->getBody());
+            $event = $response->data->attributes;
+
+            $meridian = $startTime == '2:30' ? 'am' : 'pm';
+            foreach (['start', 'end'] as $whichTime) {
+                $time = $whichTime == 'start' ? "2:30$meridian" : "3:30$meridian";
+                $expected = Event::getCorrectedTime($date, new FrozenTime($time));
+                $actual = $event->{"time_$whichTime"};
+                $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
+            }
         }
     }
 }
