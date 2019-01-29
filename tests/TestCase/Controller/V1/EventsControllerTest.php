@@ -436,11 +436,17 @@ class EventsControllerTest extends ApplicationTest
         }
     }
 
+    /**
+     * Returns an array of data to be passed along with a POST request to /event
+     *
+     * @return array
+     */
     private function getAddSingleEventData()
     {
         $categoriesFixture = new CategoriesFixture();
         $category = $categoriesFixture->records[0];
         $imagesFixture = new ImagesFixture();
+
         return [
             'category_id' => $category['id'],
             'title' => 'Test Event Title',
@@ -539,7 +545,8 @@ class EventsControllerTest extends ApplicationTest
         // Check images
         $imagesFixture = new ImagesFixture();
         $filenames = Hash::combine($imagesFixture->records, '{n}.id', '{n}.filename');
-        for ($n = 0; $n < count($data['images']); $n++) {
+        $count = count($data['images']);
+        for ($n = 0; $n < $count; $n++) {
             $this->assertEquals($data['images'][$n]['caption'], $returnedEvent->images[$n]->caption);
             foreach (['full', 'small', 'tiny'] as $size) {
                 $imageId = $data['images'][$n]['id'];
