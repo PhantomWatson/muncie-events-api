@@ -56,7 +56,8 @@ class EventSchema extends EntitySchema
             'source' => $entity->source ? $entity->source : null,
             'tags' => [],
             'images' => [],
-            'url' => $baseUrl . '/event/' . $entity->id
+            'url' => $baseUrl . '/event/' . $entity->id,
+            'published' => $entity->published
         ];
 
         foreach ($entity->tags as $tag) {
