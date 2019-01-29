@@ -11,6 +11,7 @@ use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
 /**
@@ -781,6 +782,49 @@ class EventsControllerTest extends ApplicationTest
         $actualTagNames = Hash::extract($returnedEvent->tags, '{n}.name');
         foreach ($expectedTagNames as $expectedTagName) {
             $this->assertContains($expectedTagName, $actualTagNames);
+        }
+    }
+
+    /**
+     * Tests that POST /event succeeds when passing multiple dates
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessMultipleDates()
+    {
+        $data = $this->getAddSingleEventData();
+        $data['date'][] = date('Y-m-d', strtotime($data['date'][0] . ' + 1 day'));
+        $this->post($this->addUrl, $data);
+        $this->assertResponseOk("Error triggered when posting event with multiple days");
+
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+
+        // Check that series info is returned
+        $this->assertNotEmpty($returnedEvent->series);
+        $this->assertEquals($data['title'], $returnedEvent->series->title);
+        $baseUrl = Configure::read('mainSiteBaseUrl');
+        $seriesId = $response->data->relationships->series->data->id;
+        $this->assertEquals(
+            $baseUrl . '/event_series/' . $seriesId,
+            $returnedEvent->series->url
+        );
+
+        // Check added events
+        $expectedEventsCount = count($data['date']);
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $events = $eventsTable->find()
+            ->where(['series_id' => $seriesId])
+            ->all();
+        $actualEventsCount = $events->count();
+        $this->assertEquals($expectedEventsCount, $actualEventsCount);
+        $savedDates = [];
+        foreach ($events as $event) {
+            $savedDates[] = $event->date->format('Y-m-d');
+        }
+        foreach ($data['date'] as $date) {
+            $this->assertContains($date, $savedDates, "Expected event with date $date not saved to database");
         }
     }
 }
