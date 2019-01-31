@@ -274,7 +274,9 @@ class UsersController extends ApiController
         if (!$this->Users->save($user)) {
             $errors = $user->getErrors();
             $messages = Hash::extract($errors, '{s}.{s}');
-            throw new BadRequestException('There was an error updating your profile. Details: ' . implode('; ', $messages));
+            throw new BadRequestException(
+                'There was an error updating your password. Details: ' . implode('; ', $messages)
+            );
         }
 
         /* Bypass JsonApi plugin to render blank response,
