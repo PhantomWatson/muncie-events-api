@@ -7,6 +7,7 @@ use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
@@ -176,13 +177,15 @@ class EventsController extends ApiController
     }
 
     /**
-     * /event/{eventID} endpoint
+     * GET /event/{eventID} endpoint
      *
      * @param int|null $eventId Event ID
      * @return void
      */
     public function view($eventId = null)
     {
+        $this->request->allowMethod('get');
+
         if (!$eventId) {
             throw new BadRequestException('Event ID is required');
         }
@@ -393,5 +396,80 @@ class EventsController extends ApiController
         );
 
         return $msg;
+    }
+
+    /**
+     * PATCH /event/{eventId} endpoint
+     *
+     * @param int|null $eventId Event ID
+     * @return void
+     * @throws BadRequestException
+     * @throws ForbiddenException
+     */
+    public function edit($eventId = null)
+    {
+        $this->request->allowMethod('patch');
+
+        // Get event
+        $eventExists = $this->Events->exists(['id' => $eventId]);
+        if (!$eventExists) {
+            throw new BadRequestException("Event with ID $eventId not found");
+        }
+        $event = $this->Events->get($eventId);
+
+        // Check user permission
+        if ($event->user_id != $this->tokenUser->id) {
+            throw new ForbiddenException('You don\'t have permission to edit that event');
+        }
+
+        // Update event
+        $data = $this->request->getData();
+        $data['date'] = new FrozenDate($data['date']);
+        foreach (['time_start', 'time_end'] as $timeField) {
+            if (!isset($data[$timeField])) {
+                continue;
+            }
+            $data[$timeField] = new FrozenTime($data['date'] . ' ' . $data[$timeField], Event::TIMEZONE);
+        }
+        $this->Events->patchEntity($event, $data, [
+            'fieldList' => [
+                'title',
+                'description',
+                'location',
+                'location_details',
+                'address',
+                'category_id',
+                'date',
+                'time_start',
+                'time_end',
+                'age_restriction',
+                'cost',
+                'source',
+            ]
+        ]);
+        $event->processTags($data['tag_ids'], $data['tag_names']);
+        $event->setImageJoinData($data['images']);
+        $event->category = $this->Events->Categories->get($event->category_id);
+        $saved = $this->Events->save($event, [
+            'associated' => ['Images', 'Tags']
+        ]);
+        if (!$saved) {
+            $msg = $this->getEventErrorMessage($event);
+            throw new BadRequestException($msg);
+        }
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'EventSeries',
+                'Image',
+                'Tag',
+                'User'
+            ],
+            '_links' => [],
+            '_serialize' => ['event'],
+            'event' => $event
+        ]);
     }
 }
