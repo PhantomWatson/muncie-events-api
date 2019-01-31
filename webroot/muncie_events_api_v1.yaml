@@ -1144,6 +1144,76 @@ paths:
                               example: User not found
       security:
         - api_key: []
+  /user/{userId}/events:
+    get:
+      tags:
+        - events
+      summary: Get all events posted by the specified user
+      description: Returned events are ordered from most recent to least recent
+      operationId: getUserEvents
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          example: 123
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        description: Path to the first page in this result set
+                        example: 'https://api.muncieevents.com/v1/user/123/events?page=1'
+                      last:
+                        type: string
+                        description: Path to the last page in this result set
+                        example: 'https://api.muncieevents.com/v1/user/123/events?page=4'
+                      prev:
+                        type: string
+                        description: Path to the previous page in this result set, or null if not applicable
+                        example: 'https://api.muncieevents.com/v1/user/123/events?page=1'
+                        nullable: true
+                      next:
+                        type: string
+                        description: Path to the next page in this result set, or null if not applicable
+                        example: 'https://api.muncieevents.com/v1/user/123/events?page=3'
+                        nullable: true
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: "Error: User not found"
+      security:
+        - api_key: []
   /user/forgot-password:
     post:
       tags:
