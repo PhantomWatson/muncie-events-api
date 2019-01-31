@@ -325,7 +325,7 @@ class Image extends Entity
     public function setExtension($originalFilename)
     {
         $filenameParts = explode('.', $originalFilename);
-        $this->extension = strtolower(end($filenameParts));
+        $this->extension = mb_strtolower(end($filenameParts));
     }
 
     /**

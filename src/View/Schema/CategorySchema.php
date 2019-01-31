@@ -31,7 +31,7 @@ class CategorySchema extends EntitySchema
     {
         $siteBaseUrl = Configure::read('mainSiteBaseUrl');
         $iconBaseUrl = Configure::read('categoryIconBaseUrl');
-        $iconFilename = strtolower(str_replace(' ', '_', $category->name)) . '.svg';
+        $iconFilename = mb_strtolower(str_replace(' ', '_', $category->name)) . '.svg';
         $retval = [
             'name' => $category->name,
             'url' => $siteBaseUrl . '/' . $category->slug,

@@ -265,7 +265,7 @@ class EventsTable extends Table
             throw new BadRequestException('Tags must be provided as an array');
         }
 
-        $tags = array_map('strtolower', $tags);
+        $tags = array_map('mb_strtolower', $tags);
         $conditions = [];
         foreach ($tags as $tag) {
             $conditions[] = ['Tags.name' => $tag];

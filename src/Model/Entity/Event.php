@@ -267,7 +267,7 @@ class Event extends Entity
             $tagNames = explode(',', $tagNames);
         }
         $tagNames = array_map('trim', $tagNames);
-        $tagNames = array_map('strtolower', $tagNames);
+        $tagNames = array_map('mb_strtolower', $tagNames);
         $tagNames = array_unique($tagNames);
 
         foreach ($tagNames as $tagName) {
