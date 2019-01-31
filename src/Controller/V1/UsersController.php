@@ -21,6 +21,17 @@ class UsersController extends ApiController
 {
     use MailerAwareTrait;
 
+    public $paginate = [
+        'Events' => [
+            'limit' => 50,
+            'order' => [
+                'Events.date' => 'desc',
+                'Events.time_start' => 'desc',
+            ],
+            'scope' => 'event'
+        ]
+    ];
+
     /**
      * /user/register endpoint
      *
@@ -283,5 +294,43 @@ class UsersController extends ApiController
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
         $this->viewBuilder()->setClassName('Json');
         $this->set('_serialize', true);
+    }
+
+    /**
+     * /user/{userId}/events endpoint
+     *
+     * @param int $userId User ID
+     * @return void
+     * @throws BadRequestException
+     * @throws MethodNotAllowedException
+     * @throws \Exception
+     */
+    public function events($userId)
+    {
+        $this->loadComponent('ApiPagination', ['model' => 'Events']);
+
+        $this->request->allowMethod('get');
+
+        $userExists = $this->Users->exists(['id' => $userId]);
+        if (!$userExists) {
+            throw new BadRequestException('Error: User not found');
+        }
+
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $query = $eventsTable
+            ->find('forApi')
+            ->where(['user_id' => $userId]);
+
+        $this->set([
+            '_entities' => [
+                'Category',
+                'Event',
+                'Image',
+                'Tag',
+                'User'
+            ],
+            '_serialize' => ['events', 'pagination'],
+            'events' => $this->paginate($query, ['scope' => 'event'])
+        ]);
     }
 }
