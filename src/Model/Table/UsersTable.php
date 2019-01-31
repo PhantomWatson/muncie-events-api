@@ -90,8 +90,8 @@ class UsersTable extends Table
         $validator
             ->scalar('password')
             ->requirePresence('password', 'create')
-            ->minLength('password', 1)
-            ->minLength('confirm_password', 1)
+            ->allowEmptyString('password', false)
+            ->allowEmptyString('confirm_password', false)
             ->add('confirm_password', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
