@@ -418,7 +418,7 @@ class EventsController extends ApiController
         $event = $this->Events->get($eventId);
 
         // Check user permission
-        if ($event->user_id != $this->tokenUser->id) {
+        if (!$this->tokenUser || $event->user_id != $this->tokenUser->id) {
             throw new ForbiddenException('You don\'t have permission to edit that event');
         }
 
