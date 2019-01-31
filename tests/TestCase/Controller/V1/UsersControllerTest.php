@@ -735,4 +735,71 @@ class UsersControllerTest extends ApplicationTest
         $this->patch($url, ['password' => 'new password']);
         $this->assertResponseError();
     }
+
+    /**
+     * Tests that GET /user/{userId}/events succeeds
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventsSuccess()
+    {
+        $userId = 1;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'events',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $response = json_decode($this->_response->getBody());
+        $this->assertNotEmpty($response->links->first);
+        $this->assertNotEmpty($response->links->last);
+        $this->assertNotEmpty($response->data);
+        $userIds = Hash::extract($response->data, '{n}.relationships.user.data.id');
+        $userIds = array_unique($userIds);
+        $this->assertEquals([$userId], $userIds);
+    }
+
+    /**
+     * Tests that GET /user/{userId}/events fails for invalid methods
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventsFailBadMethod()
+    {
+        $userId = 1;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'events',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->assertDisallowedMethods($url, ['patch', 'put', 'post', 'delete']);
+    }
+
+    /**
+     * Tests that GET /user/{userId}/events fails for invalid user IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testEventsFailBadUserId()
+    {
+        $userId = 999;
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'events',
+            $userId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->get($url);
+        $this->assertResponseError();
+    }
 }
