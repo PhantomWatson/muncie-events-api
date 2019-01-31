@@ -1440,6 +1440,8 @@ paths:
               schema:
                 oneOf:
                   - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
                   - type: object
                     properties:
                       errors:
