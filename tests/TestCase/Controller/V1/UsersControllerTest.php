@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Auth\LegacyPasswordHasher;
 use App\Model\Entity\User;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
@@ -36,6 +37,7 @@ class UsersControllerTest extends ApplicationTest
 
     private $updatingUserId = 1;
     private $updateProfileUrl;
+    private $updatePasswordUrl;
 
     /**
      * Sets up test object before each test
@@ -50,6 +52,16 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'profile',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken($this->updatingUserId)
+            ]
+        ];
+
+        $this->updatePasswordUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'password',
             '?' => [
                 'apikey' => $this->getApiKey(),
                 'userToken' => $this->getUserToken($this->updatingUserId)
@@ -558,7 +570,7 @@ class UsersControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testAddFailBadMethod()
+    public function testUpdateProfileFailBadMethod()
     {
         $this->assertDisallowedMethods($this->updateProfileUrl, ['get', 'put', 'post', 'delete']);
     }
@@ -595,6 +607,40 @@ class UsersControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that PATCH /user/profile fails with no user token
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileFailNoUser()
+    {
+        $url = $this->updateProfileUrl;
+        unset($url['?']['userToken']);
+        $data = [
+            'name' => 'Updated Name',
+            'email' => 'updated.email@example.com'
+        ];
+        $this->patch($url, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/profile fails with an invalid user token
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateProfileFailInvalidUser()
+    {
+        $url = $this->updateProfileUrl;
+        $url['?']['userToken'] .= 'invalid';
+        $data = [
+            'name' => 'Updated Name',
+            'email' => 'updated.email@example.com'
+        ];
+        $this->patch($url, $data);
+        $this->assertResponseError();
+    }
+
+    /**
      * Tests that PATCH /user/profile fails with non-unique email
      *
      * @throws \PHPUnit\Exception
@@ -608,6 +654,85 @@ class UsersControllerTest extends ApplicationTest
             'email' => $lastUser['email']
         ];
         $this->patch($this->updateProfileUrl, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/password succeeds with valid parameters
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordSuccess()
+    {
+        $data = ['password' => 'new password'];
+        $this->patch($this->updatePasswordUrl, $data);
+        $this->assertResponseOk();
+
+        $passwordHash = (new LegacyPasswordHasher)->hash($data['password']);
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $userIsUpdated = $usersTable->exists([
+            'id' => $this->updatingUserId,
+            'password' => $passwordHash
+        ]);
+        $this->assertTrue($userIsUpdated, 'Password was not updated.');
+    }
+
+    /**
+     * Tests that /user/password fails for invalid methods
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->updatePasswordUrl, ['get', 'put', 'post', 'delete']);
+    }
+
+    /**
+     * Tests that PATCH /user/password fails with no password data
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordFailNoParams()
+    {
+        $this->patch($this->updatePasswordUrl, []);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/password fails with blank password
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordFailBlankPassword()
+    {
+        $this->patch($this->updatePasswordUrl, ['password' => '']);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/password fails with no user token
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordFailNoUser()
+    {
+        $url = $this->updatePasswordUrl;
+        unset($url['?']['userToken']);
+        $this->patch($url, ['password' => 'new password']);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that PATCH /user/password fails with an invalid user token
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdatePasswordFailInvalidUser()
+    {
+        $url = $this->updatePasswordUrl;
+        $url['?']['userToken'] .= 'invalid';
+        $this->patch($url, ['password' => 'new password']);
         $this->assertResponseError();
     }
 }
