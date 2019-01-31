@@ -73,6 +73,7 @@ class EventsControllerTest extends ApplicationTest
             'action' => 'future',
             '?' => ['apikey' => $this->getApiKey()]
         ]);
+        $this->assertResponseOk();
         $this->assertResponseContains('event today');
         $this->assertResponseContains('event tomorrow');
         $this->assertResponseNotContains('event yesterday');
@@ -97,6 +98,7 @@ class EventsControllerTest extends ApplicationTest
                 'end' => $date
             ]
         ]);
+        $this->assertResponseOk();
         $this->assertResponseContains('event yesterday');
         $this->assertResponseNotContains('event today');
         $this->assertResponseNotContains('event tomorrow');
@@ -136,6 +138,7 @@ class EventsControllerTest extends ApplicationTest
                 'withTags' => [TagsFixture::TAG_NAME]
             ]
         ]);
+        $this->assertResponseOk();
         $this->assertResponseContains('event with tag');
         $this->assertResponseNotContains('event without tag');
     }
@@ -157,6 +160,7 @@ class EventsControllerTest extends ApplicationTest
                 'withTags' => [TagsFixture::TAG_NAME, TagsFixture::TAG_NAME_ALTERNATE]
             ]
         ]);
+        $this->assertResponseOk();
         $this->assertResponseContains('event with tag');
         $this->assertResponseContains('event with different tag');
         $this->assertResponseNotContains('event without tag');
