@@ -150,9 +150,9 @@ class Event extends Entity
 
         // Fix missing date info
         $correctedTime
-            ->year($date->year)
+            ->day($date->day)
             ->month($date->month)
-            ->day($date->day);
+            ->year($date->year);
 
         // Change from Indiana time to UTC time
         $offset = timezone_offset_get(timezone_open(self::TIMEZONE), new DateTime($localTime));
