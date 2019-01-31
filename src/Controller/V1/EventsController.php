@@ -54,6 +54,7 @@ class EventsController extends ApiController
             '_entities' => [
                 'Category',
                 'Event',
+                'Image',
                 'Tag',
                 'User'
             ],
@@ -81,6 +82,7 @@ class EventsController extends ApiController
             '_entities' => [
                 'Category',
                 'Event',
+                'Image',
                 'Tag',
                 'User'
             ],
@@ -118,6 +120,7 @@ class EventsController extends ApiController
             '_entities' => [
                 'Category',
                 'Event',
+                'Image',
                 'Tag',
                 'User'
             ],
@@ -159,6 +162,7 @@ class EventsController extends ApiController
             '_entities' => [
                 'Category',
                 'Event',
+                'Image',
                 'Tag',
                 'User'
             ],
@@ -193,6 +197,7 @@ class EventsController extends ApiController
             '_entities' => [
                 'Category',
                 'Event',
+                'Image',
                 'Tag',
                 'User'
             ],
