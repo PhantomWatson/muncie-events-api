@@ -20,7 +20,7 @@ properties:
         properties:
           type:
             type: string
-            example: series
+            example: eventseries
           id:
             type: integer
   tags:
