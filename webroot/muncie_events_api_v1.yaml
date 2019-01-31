@@ -459,7 +459,7 @@ paths:
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: 'https://api.muncieevents.com/v1/events/search?page=3'
+                        example: 'https://api.muncieevents.com/v1/events/category/13?page=3'
                         nullable: true
         '400':
           description: Bad request
@@ -620,6 +620,90 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
+      security:
+        - api_key: []
+  /event-series/{eventSeriesId}:
+    get:
+      tags:
+        - events
+      summary: Get upcoming events in the specified category
+      description: Returned events are ordered in descending chronological order (most recent to least recent)
+      operationId: getEventSeries
+      parameters:
+        - name: eventSeriesId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Event series ID
+          example: 123
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Event'
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        description: Path to the first page in this result set
+                        example: 'https://api.muncieevents.com/v1/event-series/123?page=1'
+                      last:
+                        type: string
+                        description: Path to the last page in this result set
+                        example: 'https://api.muncieevents.com/v1/event-series/123?page=4'
+                      prev:
+                        type: string
+                        description: Path to the previous page in this result set, or null if not applicable
+                        example: 'https://api.muncieevents.com/v1/event-series/123?page=1'
+                        nullable: true
+                      next:
+                        type: string
+                        description: Path to the next page in this result set, or null if not applicable
+                        example: 'https://api.muncieevents.com/v1/event-series/123?page=3'
+                        nullable: true
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: Event series ID is required
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: 'Series with ID {eventSeriesId} not found'
       security:
         - api_key: []
   /image:
@@ -1149,7 +1233,7 @@ paths:
       tags:
         - events
       summary: Get all events posted by the specified user
-      description: Returned events are ordered from most recent to least recent
+      description: Returned events are ordered in descending chronological order (most recent to least recent)
       operationId: getUserEvents
       parameters:
         - name: userId
