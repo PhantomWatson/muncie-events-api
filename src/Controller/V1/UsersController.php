@@ -249,4 +249,37 @@ class UsersController extends ApiController
         $this->viewBuilder()->setClassName('Json');
         $this->set('_serialize', true);
     }
+
+    /**
+     * /user/password endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     * @throws MethodNotAllowedException
+     */
+    public function password()
+    {
+        $this->request->allowMethod('patch');
+        if (!$this->tokenUser) {
+            throw new BadRequestException('User token missing');
+        }
+
+        $newPassword = $this->request->getData('password');
+        if ($newPassword === null) {
+            throw new BadRequestException('No password provided');
+        }
+
+        $user = $this->tokenUser;
+        $this->Users->patchEntity($user, ['password' => $newPassword]);
+        if (!$this->Users->save($user)) {
+            $errors = $user->getErrors();
+            $messages = Hash::extract($errors, '{s}.{s}');
+            throw new BadRequestException('There was an error updating your profile. Details: ' . implode('; ', $messages));
+        }
+
+        /* Bypass JsonApi plugin to render blank response,
+         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
+        $this->viewBuilder()->setClassName('Json');
+        $this->set('_serialize', true);
+    }
 }
