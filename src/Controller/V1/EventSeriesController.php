@@ -37,6 +37,8 @@ class EventSeriesController extends ApiController
             throw new BadRequestException('Event series ID is required');
         }
 
+        $this->request->allowMethod('get');
+
         $seriesExists = $this->EventSeries->exists(['id' => $seriesId]);
         if (!$seriesExists) {
             throw new BadRequestException("Series with ID $seriesId not found");
