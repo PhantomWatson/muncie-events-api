@@ -168,12 +168,13 @@ class EventsTable extends Table
     public function findForApi(Query $query)
     {
         $query
-            ->where(['published' => true])
+            ->where(['Events.published' => true])
             ->contain([
                 'Categories',
+                'EventSeries',
+                'Images',
                 'Tags',
-                'Users',
-                'Images'
+                'Users'
             ]);
 
         return $query;

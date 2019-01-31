@@ -103,11 +103,12 @@ class TagsController extends ApiController
 
         $this->set([
             '_entities' => [
-                'Event',
                 'Category',
+                'Event',
+                'EventSeries',
+                'Image',
                 'Tag',
-                'User',
-                'Image'
+                'User'
             ],
             '_serialize' => ['tag'],
             '_include' => ['events'],

@@ -319,12 +319,13 @@ class UsersController extends ApiController
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         $query = $eventsTable
             ->find('forApi')
-            ->where(['user_id' => $userId]);
+            ->where(['Events.user_id' => $userId]);
 
         $this->set([
             '_entities' => [
                 'Category',
                 'Event',
+                'EventSeries',
                 'Image',
                 'Tag',
                 'User'
