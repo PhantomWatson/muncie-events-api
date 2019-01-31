@@ -1340,6 +1340,67 @@ paths:
                               example: Email or password is incorrect
       security:
         - api_key: []
+  /user/password:
+    patch:
+      tags:
+        - users
+      summary: "Used for updating a user's password"
+      operationId: patchUserPassword
+      parameters:
+        - name: userToken
+          in: query
+          description: User token
+          schema:
+            type: string
+            example: randomStringOf32Characters
+          required: true
+        - in: header
+          name: password
+          schema:
+            type: string
+            example: newPassword123
+          required: true
+          description: "New password"
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: No password provided
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: "There was an error updating your password. Details: ..."
+      security:
+        - api_key: []
   /user/profile:
     patch:
       tags:
