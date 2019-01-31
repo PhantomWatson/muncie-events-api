@@ -24,8 +24,9 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
     {
         /** @var Controller $subject */
         $subject = $event->getSubject();
-        $this->pagingInfo = $subject->request->getParam('paging')[$subject->getName()];
         $config = $this->getConfig();
+        $modelName = $config['model'] ?? $subject->getName();
+        $this->pagingInfo = $subject->request->getParam('paging')[$modelName];
 
         if (!empty($config['aliases'])) {
             $this->setAliases();
@@ -71,7 +72,8 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getLastPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->getName()];
+        $modelName = $this->getConfig('model') ?? $controller->getName();
+        $paging = $controller->request->getParam('paging')[$modelName];
         $lastPage = $paging['pageCount'];
 
         return $this->getLink($this->getPageUrl($controller, $lastPage));
@@ -85,7 +87,8 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getPrevPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->getName()];
+        $modelName = $this->getConfig('model') ?? $controller->getName();
+        $paging = $controller->request->getParam('paging')[$modelName];
         if ($paging['page'] > 1) {
             $prevPage = $paging['page'] - 1;
 
@@ -103,7 +106,8 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getNextPage(Controller $controller)
     {
-        $paging = $controller->request->getParam('paging')[$controller->getName()];
+        $modelName = $this->getConfig('model') ?? $controller->getName();
+        $paging = $controller->request->getParam('paging')[$modelName];
         if ($paging['page'] < $paging['pageCount']) {
             $nextPage = $paging['page'] + 1;
 
