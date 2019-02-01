@@ -80,6 +80,24 @@ class Event extends Entity
     ];
 
     /**
+     * Fields that API users are not allowed to directly update
+     *
+     * @var array
+     */
+    public $updateProtectedFields = [
+        'published',
+        'approved_by',
+        'created',
+        'modified',
+        'user_id',
+        'series_id',
+        'user',
+        'category',
+        'event_series',
+        'tags'
+    ];
+
+    /**
      * Takes an array of image data and sets proper join data for the next save operation
      *
      * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] arrays

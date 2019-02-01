@@ -415,6 +415,7 @@ class EventsController extends ApiController
         if (!$eventExists) {
             throw new BadRequestException("Event with ID $eventId not found");
         }
+        /** @var Event $event */
         $event = $this->Events->get($eventId, [
             'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users']
         ]);
@@ -424,8 +425,15 @@ class EventsController extends ApiController
             throw new ForbiddenException('You don\'t have permission to edit that event');
         }
 
-        // Update event
+        // Throw exception if any protected fields are in request data
         $data = $this->request->getData();
+        foreach ($event->updateProtectedFields as $protectedField) {
+            if (isset($data[$protectedField])) {
+                throw new BadRequestException("The $protectedField field is not allowed");
+            }
+        }
+
+        // Update event
         if (isset($data['date'])) {
             $data['date'] = new FrozenDate($data['date']);
         }
