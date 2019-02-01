@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Model\Entity\Event;
@@ -11,6 +12,7 @@ use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
@@ -38,6 +40,17 @@ class EventsControllerTest extends ApplicationTest
 
     private $addingUserId = 1;
     private $addUrl;
+    private $updateUrl;
+    private $eventStringFields = [
+        'title',
+        'description',
+        'location',
+        'location_details',
+        'address',
+        'age_restriction',
+        'cost',
+        'source'
+    ];
 
     /**
      * Sets up this set of tests
@@ -55,6 +68,16 @@ class EventsControllerTest extends ApplicationTest
             '?' => [
                 'apikey' => $this->getApiKey(),
                 'userToken' => $this->getUserToken($this->addingUserId)
+            ]
+        ];
+        $this->updateUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'edit',
+            1,
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken()
             ]
         ];
     }
@@ -507,29 +530,14 @@ class EventsControllerTest extends ApplicationTest
         // Check misc. attributes
         $response = json_decode($this->_response->getBody());
         $returnedEvent = $response->data->attributes;
-        $fields = [
-            'title',
-            'description',
-            'location',
-            'location_details',
-            'address',
-            'age_restriction',
-            'source',
-            'cost',
-        ];
-        foreach ($fields as $field) {
+        foreach ($this->eventStringFields as $field) {
             $this->assertEquals($data[$field], $returnedEvent->$field);
         }
         $this->assertEquals($data['date'][0], $returnedEvent->date);
         $this->assertEmpty($returnedEvent->series);
-        $baseUrl = Configure::read('mainSiteBaseUrl');
-        $this->assertEquals($baseUrl . '/event/' . $response->data->id, $returnedEvent->url);
+        $this->checkUrl($response);
         $date = new FrozenDate($data['date'][0]);
-        foreach (['start', 'end'] as $whichTime) {
-            $expected = Event::getCorrectedTime($date, new FrozenTime($data["time_$whichTime"]));
-            $actual = $returnedEvent->{"time_$whichTime"};
-            $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
-        }
+        $this->checkTimes($date, $data, $returnedEvent);
         $this->assertTrue(
             $returnedEvent->published,
             'Event not auto-published for user with previous published events'
@@ -543,37 +551,16 @@ class EventsControllerTest extends ApplicationTest
 
         // Check category
         $categoriesFixture = new CategoriesFixture();
-        $category = $categoriesFixture->records[0];
-        $this->assertEquals($category['name'], $returnedEvent->category->name);
-        $this->assertNotEmpty($returnedEvent->category->url);
-        $this->assertStringStartsWith('https://', $returnedEvent->category->url);
-        $this->assertStringStartsWith($baseUrl, $returnedEvent->category->url);
-        $this->assertStringStartsWith('https://', $returnedEvent->category->icon->svg);
+        $expectedCategoryName = $categoriesFixture->records[0]['name'];
+        $this->checkCategory($expectedCategoryName, $returnedEvent);
 
         // Check tag names
-        $expectedTagNames = $data['tag_names'];
-        $expectedTagNames = array_map('strtolower', $expectedTagNames);
-        $expectedTagNames = array_map('trim', $expectedTagNames);
+        $expectedTagNames = $this->cleanTagNames($data['tag_names']);
         $expectedTagNames[] = TagsFixture::TAG_NAME;
         $expectedTagNames[] = TagsFixture::TAG_NAME_ALTERNATE;
-        $actualTagNames = Hash::extract($returnedEvent->tags, '{n}.name');
-        sort($actualTagNames);
-        sort($expectedTagNames);
-        $this->assertEquals($expectedTagNames, $actualTagNames);
+        $this->checkTagNames($expectedTagNames, $returnedEvent);
 
-        // Check images
-        $imagesFixture = new ImagesFixture();
-        $filenames = Hash::combine($imagesFixture->records, '{n}.id', '{n}.filename');
-        $count = count($data['images']);
-        for ($n = 0; $n < $count; $n++) {
-            $this->assertEquals($data['images'][$n]['caption'], $returnedEvent->images[$n]->caption);
-            foreach (['full', 'small', 'tiny'] as $size) {
-                $imageId = $data['images'][$n]['id'];
-                $filename = $filenames[$imageId];
-                $imgUrl = $returnedEvent->images[$n]->{$size . '_url'};
-                $this->assertStringEndsWith("$size/$filename", $imgUrl);
-            }
-        }
+        $this->checkImages($data, $returnedEvent);
 
         // Check relationships
         $relationships = $response->data->relationships;
@@ -777,9 +764,7 @@ class EventsControllerTest extends ApplicationTest
     public function testAddSuccessCommaDelimitedTags()
     {
         $data = $this->getAddSingleEventData();
-        $expectedTagNames = $data['tag_names'];
-        $expectedTagNames = array_map('strtolower', $expectedTagNames);
-        $expectedTagNames = array_map('trim', $expectedTagNames);
+        $expectedTagNames = $this->cleanTagNames($data['tag_names']);
 
         $data['tag_names'] = implode(', ', $data['tag_names']);
         $this->post($this->addUrl, $data);
@@ -871,5 +856,181 @@ class EventsControllerTest extends ApplicationTest
             $returnedEvent->published,
             'Event auto-published for non-qualifying user'
         );
+    }
+
+    /**
+     * Tests that a PATCH request to /event/{eventId} with full, valid data succeeds
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     * @throws \Exception
+     */
+    public function testUpdateFullEventSuccess()
+    {
+        // Compose update data
+        $eventId = 1;
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        /** @var Event $event */
+        $event = $eventsTable->get($eventId);
+        $data = [
+            'tag_ids' => [TagsFixture::TAG_WITH_EVENT],
+            'tag_names' => [TagsFixture::TAG_NAME_ALTERNATE],
+            'time_start' => (new Time($event->time_start))->addHour(1)->format('h:ia'),
+            'time_end' => (new Time($event->time_end))->addHour(1)->format('h:ia'),
+            'date' => $event->date->addDay(1)->format('Y-m-d'),
+            'category_id' => $event->category_id + 1,
+            'images' => [[
+                'id' => 2,
+                'caption' => 'Updated caption'
+            ]]
+        ];
+        foreach ($this->eventStringFields as $field) {
+            $data[$field] = $event->$field . ' updated';
+        }
+
+        // Send update request
+        $this->patch($this->updateUrl, $data);
+        $this->assertResponseOk();
+
+        // Check misc. attributes
+        $response = json_decode($this->_response->getBody());
+        $returnedEvent = $response->data->attributes;
+        foreach ($this->eventStringFields as $field) {
+            $this->assertEquals($data[$field], $returnedEvent->$field);
+        }
+        $this->assertEquals($data['date'], $returnedEvent->date);
+        $this->checkUrl($response);
+        $date = new FrozenDate($data['date']);
+        $this->checkTimes($date, $data, $returnedEvent);
+        $this->assertTrue(
+            $returnedEvent->published,
+            'Event not auto-published for user with previous published events'
+        );
+
+        // Check user
+        $usersFixture = new UsersFixture();
+        $user = $usersFixture->records[$this->addingUserId - 1];
+        $this->assertEquals($user['name'], $returnedEvent->user->name);
+        $this->assertEquals($user['email'], $returnedEvent->user->email);
+
+        // Check category
+        $categoriesFixture = new CategoriesFixture();
+        $categoryNames = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+        $expectedCategoryName = $categoryNames[$data['category_id']];
+        $this->checkCategory($expectedCategoryName, $returnedEvent);
+
+        // Check tag names
+        $expectedTagNames = $this->cleanTagNames($data['tag_names']);
+        $expectedTagNames[] = TagsFixture::TAG_NAME;
+        $this->checkTagNames($expectedTagNames, $returnedEvent);
+
+        $this->checkImages($data, $returnedEvent);
+
+        // Check relationships
+        $relationships = $response->data->relationships;
+        $this->assertEquals($relationships->category->data->id, $data['category_id']);
+        $returnedTagIds = Hash::extract($relationships->tags->data, '{n}.id');
+        $this->assertContains(TagsFixture::TAG_WITH_EVENT, $returnedTagIds);
+        $this->assertContains(TagsFixture::TAG_WITH_DIFFERENT_EVENT, $returnedTagIds);
+        $this->assertEquals($relationships->user->data->id, $this->addingUserId);
+    }
+
+    /**
+     * Performs assertions on a returned event's image data
+     *
+     * @param array $data Data included in request
+     * @param Event $returnedEvent Returned event entity
+     * @return void
+     */
+    private function checkImages(array $data, $returnedEvent)
+    {
+        $imagesFixture = new ImagesFixture();
+        $filenames = Hash::combine($imagesFixture->records, '{n}.id', '{n}.filename');
+        $count = count($data['images']);
+        for ($n = 0; $n < $count; $n++) {
+            $this->assertEquals($data['images'][$n]['caption'], $returnedEvent->images[$n]->caption);
+            foreach (['full', 'small', 'tiny'] as $size) {
+                $imageId = $data['images'][$n]['id'];
+                $filename = $filenames[$imageId];
+                $imgUrl = $returnedEvent->images[$n]->{$size . '_url'};
+                $this->assertStringEndsWith("$size/$filename", $imgUrl);
+            }
+        }
+    }
+
+    /**
+     * Performs assertions on a returned event's category data
+     *
+     * @param string $expectedCategoryName Expected category name
+     * @param Event $returnedEvent Event entity
+     * @return void
+     */
+    private function checkCategory($expectedCategoryName, $returnedEvent)
+    {
+        $baseUrl = Configure::read('mainSiteBaseUrl');
+        $this->assertEquals($expectedCategoryName, $returnedEvent->category->name);
+        $this->assertNotEmpty($returnedEvent->category->url);
+        $this->assertStringStartsWith('https://', $returnedEvent->category->url);
+        $this->assertStringStartsWith($baseUrl, $returnedEvent->category->url);
+        $this->assertStringStartsWith('https://', $returnedEvent->category->icon->svg);
+    }
+
+    /**
+     * Trims and strtolower()s an array of tag names
+     *
+     * @param array $tagNames Array of tag names
+     * @return array
+     */
+    private function cleanTagNames(array $tagNames)
+    {
+        $tagNames = array_map('strtolower', $tagNames);
+        $tagNames = array_map('trim', $tagNames);
+
+        return $tagNames;
+    }
+
+    /**
+     * Performs assertions on a returned event's tags
+     *
+     * @param array $expectedTagNames Array of expected tag names
+     * @param Event $returnedEvent Returned event entity
+     * @return void
+     */
+    private function checkTagNames(array $expectedTagNames, $returnedEvent)
+    {
+        $actualTagNames = Hash::extract($returnedEvent->tags, '{n}.name');
+        sort($actualTagNames);
+        sort($expectedTagNames);
+        $this->assertEquals($expectedTagNames, $actualTagNames);
+    }
+
+    /**
+     * Performs an assertion on a returned event's URL
+     *
+     * @param \stdClass $response Response object
+     * @return void
+     */
+    private function checkUrl($response)
+    {
+        $baseUrl = Configure::read('mainSiteBaseUrl');
+        $this->assertEquals($baseUrl . '/event/' . $response->data->id, $response->data->attributes->url);
+    }
+
+    /**
+     * Performs assertions on a returned event's time fields
+     *
+     * @param FrozenDate $date Date object
+     * @param array $data Data sent in request
+     * @param Event $returnedEvent Event entity
+     * @throws \Exception
+     * @return void
+     */
+    private function checkTimes($date, $data, $returnedEvent)
+    {
+        foreach (['start', 'end'] as $whichTime) {
+            $expected = Event::getCorrectedTime($date, new FrozenTime($data["time_$whichTime"]));
+            $actual = $returnedEvent->{"time_$whichTime"};
+            $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
+        }
     }
 }
