@@ -41,6 +41,7 @@ class EventsControllerTest extends ApplicationTest
     private $addingUserId = 1;
     private $addUrl;
     private $updateUrl;
+    private $updateEventId = 1;
     private $eventStringFields = [
         'title',
         'description',
@@ -74,7 +75,7 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'edit',
-            1,
+            $this->updateEventId,
             '?' => [
                 'apikey' => $this->getApiKey(),
                 'userToken' => $this->getUserToken()
@@ -868,10 +869,9 @@ class EventsControllerTest extends ApplicationTest
     public function testUpdateFullEventSuccess()
     {
         // Compose update data
-        $eventId = 1;
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         /** @var Event $event */
-        $event = $eventsTable->get($eventId);
+        $event = $eventsTable->get($this->updateEventId);
         $data = [
             'tag_ids' => [TagsFixture::TAG_WITH_EVENT],
             'tag_names' => [TagsFixture::TAG_NAME_ALTERNATE],
@@ -1031,6 +1031,110 @@ class EventsControllerTest extends ApplicationTest
             $expected = Event::getCorrectedTime($date, new FrozenTime($data["time_$whichTime"]));
             $actual = $returnedEvent->{"time_$whichTime"};
             $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
+        }
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} fails for non-patch requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->updateUrl, ['get', 'put', 'post', 'delete']);
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} fails for invalid category IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateFailInvalidEventId()
+    {
+        $url = $this->updateUrl;
+        $invalidEventId = 9999;
+        $url[0] = $invalidEventId;
+        $this->patch($url, []);
+        $this->assertResponseError();
+        $response = json_decode($this->_response->getBody());
+        $this->assertContains('not found', $response->errors[0]->detail);
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} fails for missing user token
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateFailMissingUserToken()
+    {
+        $url = $this->updateUrl;
+        unset($url['?']['userToken']);
+        $this->patch($url, []);
+        $this->assertResponseError();
+        $response = json_decode($this->_response->getBody());
+        $this->assertContains('don\'t have permission', $response->errors[0]->detail);
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} fails for an invalid user token
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateFailInvalidUserToken()
+    {
+        $url = $this->updateUrl;
+        $url['?']['userToken'] .= 'invalid';
+        $this->patch($url, []);
+        $this->assertResponseError();
+        $response = json_decode($this->_response->getBody());
+        $this->assertContains('token invalid', $response->errors[0]->detail);
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} fails for an unauthorized user token
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateFailUnauthUserToken()
+    {
+        $userId = 2;
+        $url = $this->updateUrl;
+        $usersFixture = new UsersFixture();
+        $userTokens = Hash::combine($usersFixture->records, '{n}.id', '{n}.token');
+        $url['?']['userToken'] = $userTokens[$userId];
+        $this->patch($url, ['title' => 'new title']);
+        $this->assertResponseError();
+        $response = json_decode($this->_response->getBody());
+        $this->assertContains('don\'t have permission', $response->errors[0]->detail);
+    }
+
+    /**
+     * Tests that PATCH /event/{eventId} can not update any protected fields
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testUpdateCantUpdateProtectedFields()
+    {
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        /** @var Event $eventBefore */
+        $eventBefore = $eventsTable->get($this->updateEventId);
+
+        foreach ($eventBefore->updateProtectedFields as $protectedField) {
+            $data = [$protectedField => 'updated'];
+            $this->patch($this->updateUrl, $data);
+            $this->assertResponseError("Error not thrown when attempting to update $protectedField");
+
+            $eventAfter = $eventsTable->get($this->updateEventId);
+            $this->assertEquals($eventBefore, $eventAfter);
+
+            $response = json_decode($this->_response->getBody());
+            $this->assertContains('field is not allowed', $response->errors[0]->detail);
         }
     }
 }
