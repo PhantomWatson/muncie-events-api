@@ -432,7 +432,7 @@ class EventsController extends ApiController
             $data[$timeField] = new FrozenTime($data['date'] . ' ' . $data[$timeField], Event::TIMEZONE);
         }
         $this->Events->patchEntity($event, $data, [
-            'fieldList' => [
+            'fields' => [
                 'title',
                 'description',
                 'location',
@@ -447,8 +447,8 @@ class EventsController extends ApiController
                 'source',
             ]
         ]);
-        $event->processTags($data['tag_ids'], $data['tag_names']);
-        $event->setImageJoinData($data['images']);
+        $event->processTags($data['tag_ids'] ?? [], $data['tag_names'] ?? []);
+        $event->setImageJoinData($data['images'] ?? []);
         $event->category = $this->Events->Categories->get($event->category_id);
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags']
