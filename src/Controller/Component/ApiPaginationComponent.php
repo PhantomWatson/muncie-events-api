@@ -140,6 +140,6 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getLink($url)
     {
-        return new Link($url);
+        return new Link($url, null, true);
     }
 }
