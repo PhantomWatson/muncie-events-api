@@ -426,7 +426,9 @@ class EventsController extends ApiController
 
         // Update event
         $data = $this->request->getData();
-        $data['date'] = new FrozenDate($data['date']);
+        if (isset($data['date'])) {
+            $data['date'] = new FrozenDate($data['date']);
+        }
         foreach (['time_start', 'time_end'] as $timeField) {
             if (!isset($data[$timeField])) {
                 continue;
