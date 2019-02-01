@@ -126,10 +126,16 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      */
     public function getPageUrl(Controller $controller, $pageNum)
     {
-        $query = $controller->request->getQuery();
-        $query['page'] = $pageNum;
+        $url = [];
+        foreach (['plugin', 'prefix', 'controller', 'action', '?'] as $param) {
+            $url[$param] = $controller->request->getParam($param);
+        }
+        foreach ($controller->request->getParam('pass') as $passedParam) {
+            $url[] = $passedParam;
+        }
+        $url['?']['page'] = $pageNum;
 
-        return Router::url(['?' => $query], true);
+        return Router::url($url, true);
     }
 
     /**
