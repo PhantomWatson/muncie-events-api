@@ -415,7 +415,9 @@ class EventsController extends ApiController
         if (!$eventExists) {
             throw new BadRequestException("Event with ID $eventId not found");
         }
-        $event = $this->Events->get($eventId);
+        $event = $this->Events->get($eventId, [
+            'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users']
+        ]);
 
         // Check user permission
         if (!$this->tokenUser || $event->user_id != $this->tokenUser->id) {
