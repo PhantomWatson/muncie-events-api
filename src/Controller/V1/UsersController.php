@@ -22,14 +22,11 @@ class UsersController extends ApiController
     use MailerAwareTrait;
 
     public $paginate = [
-        'Events' => [
-            'limit' => 50,
-            'order' => [
-                'Events.date' => 'desc',
-                'Events.time_start' => 'desc',
-            ],
-            'scope' => 'event'
-        ]
+        'limit' => 50,
+        'order' => [
+            'Events.date' => 'desc',
+            'Events.time_start' => 'desc',
+        ],
     ];
 
     /**
@@ -331,7 +328,7 @@ class UsersController extends ApiController
                 'User'
             ],
             '_serialize' => ['events', 'pagination'],
-            'events' => $this->paginate($query, ['scope' => 'event'])
+            'events' => $this->paginate($query)
         ]);
     }
 }
