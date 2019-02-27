@@ -252,6 +252,8 @@ class UsersController extends ApiController
             throw new BadRequestException('There was an error updating your profile. Details: ' . implode('; ', $messages));
         }
 
+        $this->response = $this->response->withStatus(204, 'No Content');
+
         /* Bypass JsonApi plugin to render blank response,
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
         $this->viewBuilder()->setClassName('Json');
@@ -286,6 +288,8 @@ class UsersController extends ApiController
                 'There was an error updating your password. Details: ' . implode('; ', $messages)
             );
         }
+
+        $this->response = $this->response->withStatus(204, 'No Content');
 
         /* Bypass JsonApi plugin to render blank response,
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */

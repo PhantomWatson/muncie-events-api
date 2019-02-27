@@ -532,7 +532,7 @@ class UsersControllerTest extends ApplicationTest
             'email' => 'updated.email@example.com'
         ];
         $this->patch($this->updateProfileUrl, $data);
-        $this->assertResponseOk();
+        $this->assertResponseCode(204);
 
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $user = $usersTable->get($this->updatingUserId);
@@ -666,7 +666,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $data = ['password' => 'new password'];
         $this->patch($this->updatePasswordUrl, $data);
-        $this->assertResponseOk();
+        $this->assertResponseCode(204);
 
         $passwordHash = (new LegacyPasswordHasher)->hash($data['password']);
         $usersTable = TableRegistry::getTableLocator()->get('Users');
