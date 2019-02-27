@@ -145,7 +145,7 @@ class ApplicationTest extends TestCase
                 default:
                     throw new InternalErrorException('Unrecognized method: ' . $method);
             }
-            $this->assertResponseError();
+            $this->assertResponseError(strtoupper($method) . ' method is allowed, but should be forbidden');
         }
     }
 }
