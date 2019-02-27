@@ -8,10 +8,10 @@ use Cake\Http\Exception\UnauthorizedException;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 
 class ApiKeyAuthenticate extends BaseAuthenticate
 {
+    private $apiKeyFields = ['apikey', 'apiKey'];
 
     /**
      * Constructor method
@@ -44,7 +44,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function getUser(ServerRequest $request)
     {
-        $apiKey = Hash::get($request->getQueryParams(), 'apikey', null);
+        $apiKey = $this->getApiKey($request);
         if (empty($apiKey)) {
             return false;
         }
@@ -70,12 +70,29 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function unauthenticated(ServerRequest $request, Response $response)
     {
-        $apiKey = $request->getQuery('apikey');
-
+        $apiKey = $this->getApiKey($request);
         if ($apiKey) {
             throw new UnauthorizedException('Api key not recognized');
         }
 
         throw new UnauthorizedException('Api key not provided');
+    }
+
+    /**
+     * Returns the API key passed in the current request
+     *
+     * @param ServerRequest $request Request object
+     * @return string|null
+     */
+    private function getApiKey(ServerRequest $request)
+    {
+        foreach ($this->apiKeyFields as $apiKeyField) {
+            $apiKey = $request->getQuery($apiKeyField);
+            if ($apiKey) {
+                return $apiKey;
+            }
+        }
+
+        return null;
     }
 }
