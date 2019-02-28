@@ -333,6 +333,13 @@ paths:
           schema:
             type: string
           example: randomStringOf32Characters
+        - name: eventId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          example: 123
         - in: header
           name: category_id
           description: Category ID
@@ -474,7 +481,60 @@ paths:
                           example: 403
                         detail:
                           type: string
-                          example: "You don't have permission to edit that account"
+                          example: "You don't have permission to edit that event"
+
+      security:
+        - api_key: []
+    delete:
+      tags:
+        - events
+      summary: Deletes an event
+      operationId: deleteEvent
+      parameters:
+        - name: userToken
+          description: User token (user must be the author of the event in order to delete it)
+          in: query
+          required: true
+          schema:
+            type: string
+          example: randomStringOf32Characters
+        - name: eventId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          example: 123
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                oneOf:
+                  - $ref: './docs/v1/errors/ErrorUserTokenMissing.yaml'
+                  - $ref: './docs/v1/errors/ErrorUserTokenInvalid.yaml'
+                  - $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: int
+                          example: 403
+                        detail:
+                          type: string
+                          example: "You don't have permission to delete that event"
 
       security:
         - api_key: []
