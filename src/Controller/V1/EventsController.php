@@ -484,4 +484,45 @@ class EventsController extends ApiController
             'event' => $event
         ]);
     }
+
+    /**
+     * DELETE /event/{eventId} endpoint
+     *
+     * @param int $eventId Event ID
+     * @return void
+     * @throws InternalErrorException
+     * @throws ForbiddenException
+     * @throws BadRequestException
+     */
+    public function delete($eventId = null)
+    {
+        $this->request->allowMethod('delete');
+
+        $exists = $this->Events->exists(['id' => $eventId]);
+        if (!$exists) {
+            throw new BadRequestException(
+                'The selected event could not be found, possibly because it has already been deleted.'
+            );
+        }
+
+        $event = $this->Events->get($eventId);
+
+        // Check user permission
+        if (!$this->tokenUser || $event->user_id != $this->tokenUser->id) {
+            throw new ForbiddenException('You don\'t have permission to delete that event');
+        }
+
+        if (!$this->Events->delete($event)) {
+            throw new InternalErrorException(
+                'The event could not be deleted. Please try again. Or contact an administrator for assistance.'
+            );
+        }
+
+        $this->response = $this->response->withStatus(204, 'No Content');
+
+        /* Bypass JsonApi plugin to render blank response,
+         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
+        $this->viewBuilder()->setClassName('Json');
+        $this->set('_serialize', true);
+    }
 }

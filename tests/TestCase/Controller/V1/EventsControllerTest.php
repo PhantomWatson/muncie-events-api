@@ -40,6 +40,7 @@ class EventsControllerTest extends ApplicationTest
 
     private $addingUserId = 1;
     private $addUrl;
+    private $deleteUrl;
     private $updateUrl;
     private $updateEventId = 1;
     private $eventStringFields = [
@@ -79,6 +80,16 @@ class EventsControllerTest extends ApplicationTest
             '?' => [
                 'apikey' => $this->getApiKey(),
                 'userToken' => $this->getUserToken()
+            ]
+        ];
+        $this->deleteUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'delete',
+            $this->updateEventId,
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken(1)
             ]
         ];
     }
@@ -418,16 +429,11 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testEventFailInvalidId()
     {
-        $events = (new EventsFixture())->records;
-        $eventIds = Hash::extract($events, '{n}.id');
-        sort($eventIds);
-        $outOfRangeId = array_pop($eventIds) + 1;
-
         $this->get([
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'view',
-            $outOfRangeId,
+            $this->getOutOfRangeId(),
             '?' => ['apikey' => $this->getApiKey()]
         ]);
         $this->assertResponseError();
@@ -1136,5 +1142,91 @@ class EventsControllerTest extends ApplicationTest
             $response = json_decode($this->_response->getBody());
             $this->assertContains('field is not allowed', $response->errors[0]->detail);
         }
+    }
+
+    /**
+     * Tests that an event can be successfully deleted
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteSuccess()
+    {
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $count = $eventsTable->find()->where(['id' => $this->updateEventId])->count();
+        $this->assertEquals(1, $count, 'Event targeted for delete does not exist');
+
+        $this->delete($this->deleteUrl);
+        $this->assertResponseCode(204);
+
+        $count = $eventsTable->find()->where(['id' => $this->updateEventId])->count();
+        $this->assertEquals(0, $count, 'Event was not deleted');
+    }
+
+    /**
+     * Tests that the method invoked for DELETE /event/{eventId} fails for non-delete requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->deleteUrl, ['get', 'put', 'post', 'patch']);
+    }
+
+    /**
+     * Tests that an event cannot be deleted if the provided user is not its owner
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailNotOwner()
+    {
+        $url = $this->deleteUrl;
+        $url['?']['userToken'] = $this->getUserToken(2);
+        $this->delete($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that DELETE /event fails with missing event ID
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailIdMissing()
+    {
+        $url = $this->deleteUrl;
+        unset($url[0]);
+        $this->delete($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that DELETE /event/{eventID} fails with invalid event ID
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailInvalidId()
+    {
+        $url = $this->deleteUrl;
+        $url[0] = $this->getOutOfRangeId();
+        $this->delete($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Returns an integer that is outside of the range of current event IDs
+     *
+     * @return int
+     */
+    private function getOutOfRangeId()
+    {
+        $events = (new EventsFixture())->records;
+        $eventIds = Hash::extract($events, '{n}.id');
+        sort($eventIds);
+
+        return array_pop($eventIds) + 1;
     }
 }

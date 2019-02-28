@@ -79,6 +79,9 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->patch('/event/:id', ['controller' => 'Events', 'action' => 'edit'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
+    $routes->delete('/event/:id', ['controller' => 'Events', 'action' => 'delete'])
+        ->setPass(['id'])
+        ->setPatterns(['id' => '[0-9]+']);
     $routes->connect('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
