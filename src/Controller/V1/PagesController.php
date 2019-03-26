@@ -109,4 +109,23 @@ class PagesController extends ApiController
             'page' => $page
         ]);
     }
+
+    /**
+     * /pages/widgets endpoint
+     *
+     * @return void
+     */
+    public function widgets()
+    {
+        $page = new Page();
+        $page->id = 'widgets';
+        $page->title = 'Calendar Widgets';
+        $page->body = $this->getElement('Pages/widgets');
+
+        $this->set([
+            '_entities' => ['Page'],
+            '_serialize' => ['page'],
+            'page' => $page
+        ]);
+    }
 }

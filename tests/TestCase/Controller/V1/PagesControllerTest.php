@@ -114,4 +114,21 @@ class PagesControllerTest extends ApplicationTest
         ]);
         $this->assertPageHasTitleAndBody();
     }
+
+    /**
+     * Tests /pages/widgets endpoint
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testWidgets()
+    {
+        $this->get([
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'widgets',
+            '?' => ['apikey' => $this->getApiKey()]
+        ]);
+        $this->assertPageHasTitleAndBody();
+    }
 }
