@@ -1145,6 +1145,39 @@ paths:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
+  /pages/widgets:
+    get:
+      tags:
+        - pages
+      summary: 'Get the HTML contents of the "Calendar Widgets" page'
+      operationId: getPagesWidgets
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Page'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        description: Path to access this page
+                        example: 'https://api.muncieevents.com/v1/pages/widgets'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+      security:
+        - api_key: []
   /tag/{tagId}:
     get:
       tags:
