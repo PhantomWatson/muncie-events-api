@@ -64,6 +64,19 @@ class MailingListController extends ApiController
             );
         }
 
+        // Associate current user if logged in, or user with matching email address if not logged in
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $this->tokenUser
+            ? $this->tokenUser
+            : $usersTable
+                ->find()
+                ->where(['email' => $email])
+                ->first();
+        if ($user) {
+            $usersTable->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
+            $usersTable->save($user);
+        }
+
         // Return response
         $this->response = $this->response->withStatus(204, 'No Content');
 
