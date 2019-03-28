@@ -25,13 +25,14 @@ class MailingListController extends ApiController
     {
         $this->request->allowMethod('post');
 
+        // Clean up email address
         $email = $this->request->getData('email');
         $email = trim($email);
         $email = mb_strtolower($email);
 
+        // Throw error if email address is already subscribed
         $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
         $subscriptionExists = $mailingListTable->exists(['email' => $email]);
-
         if ($subscriptionExists) {
             throw new ForbiddenException(sprintf(
                 'The email address %s is already subscribed to the mailing list.',
@@ -39,6 +40,7 @@ class MailingListController extends ApiController
             ));
         }
 
+        // Set up entity data
         $entityData = [
             'email' => $email,
             'new_subscriber' => true,
@@ -53,6 +55,7 @@ class MailingListController extends ApiController
             $entityData[$key] = $isDailyAllDays || (bool)$this->request->getData($key);
         }
 
+        // Save
         $newSubscription = $mailingListTable->newEntity($entityData);
         if (!$mailingListTable->save($newSubscription)) {
             throw new BadRequestException(
@@ -61,6 +64,7 @@ class MailingListController extends ApiController
             );
         }
 
+        // Return response
         $this->response = $this->response->withStatus(204, 'No Content');
 
         /* Bypass JsonApi plugin to render blank response,
