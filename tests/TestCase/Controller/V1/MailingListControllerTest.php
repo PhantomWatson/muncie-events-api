@@ -268,23 +268,26 @@ class MailingListControllerTest extends ApplicationTest
      */
     public function testAddSuccessCustomDays()
     {
-        $data = $this->defaultData;
-        $data['weekly'] = false;
-        $data['daily'] = false;
-        foreach ($this->days as $day) {
-            $data["daily_$day"] = in_array($day, ['sat', 'sun']);
-        }
+        foreach ($this->days as $selectedDay) {
+            $data = $this->defaultData;
+            $data['email'] = $selectedDay . $data['email'];
+            $data['weekly'] = false;
+            $data['daily'] = false;
+            foreach ($this->days as $day) {
+                $data["daily_$day"] = ($day == $selectedDay);
+            }
 
-        $this->post($this->subscribeUrl, $data);
-        $this->assertResponseCode(204);
+            $this->post($this->subscribeUrl, $data);
+            $this->assertResponseCode(204, "Error code thrown when trying to subscribe only on $selectedDay");
 
-        $newSubscription = $this->getNewSubscription();
-        foreach ($this->days as $day) {
-            $isSelected = (bool)$newSubscription->{"daily_$day"};
-            if (in_array($day, ['sat', 'sun'])) {
-                $this->assertTrue($isSelected);
-            } else {
-                $this->assertFalse($isSelected);
+            $newSubscription = $this->getNewSubscription();
+            foreach ($this->days as $day) {
+                $isSelected = (bool)$newSubscription->{"daily_$day"};
+                if ($day == $selectedDay) {
+                    $this->assertTrue($isSelected);
+                } else {
+                    $this->assertFalse($isSelected);
+                }
             }
         }
     }
