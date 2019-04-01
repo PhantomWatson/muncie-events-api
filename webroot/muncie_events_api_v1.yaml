@@ -1013,6 +1013,147 @@ paths:
                               example: There was an error uploading your image
       security:
         - api_key: []
+  /mailing-list/subscribe:
+    post:
+      tags:
+        - mailing list
+      summary: Subscribes the provided email address to the mailing list
+      operationId: postMailingListSubscribe
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: false
+          example: randomStringOf32Characters
+          description: "If user is logged in, `userToken` can optionally be provided in the query string to help associate this subscription with their user account."
+        - in: header
+          name: email
+          schema:
+            type: string
+            example: user@example.com
+          required: true
+          description: "Subscriber's email address"
+        - in: header
+          name: all_categories
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if this user would like to receive emails about all current (or possible future) categories. `all_categories` must be provided and true if `category_ids` is not provided or is empty."
+        - in: header
+          name: category_ids
+          schema:
+            type: array
+            example: [8, 9, 12]
+          required: false
+          description: "An array of category IDs. `category_ids` must be provided and non-empty if `all_categories` is not provided and TRUE."
+        - in: header
+          name: weekly
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive weekly emails about the upcoming week's events. Either `weekly`, `daily`, or at least one individual day must be provided and TRUE."
+        - in: header
+          name: daily
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive daily emails about that day's events. Either `weekly`, `daily`, or at least one individual day must be provided and TRUE."
+        - in: header
+          name: daily_sun
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Sunday about that day's events."
+        - in: header
+          name: daily_mon
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Monday about that day's events."
+        - in: header
+          name: daily_tue
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Tuesday about that day's events."
+        - in: header
+          name: daily_wed
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Wednesday about that day's events."
+        - in: header
+          name: daily_thu
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Thursday about that day's events."
+        - in: header
+          name: daily_fri
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Friday about that day's events."
+        - in: header
+          name: daily_sat
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "TRUE if the user wants to receive an email every Saturday about that day's events."
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: "Either 'all categories' or at least one individual category must be selected."
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: This email address is already subscribed
+        '405':
+          description: Method not allowed
+      security:
+        - api_key: []
   /pages/about:
     get:
       tags:
