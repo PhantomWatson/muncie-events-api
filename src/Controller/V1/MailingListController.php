@@ -3,6 +3,7 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\Category;
+use App\Model\Entity\MailingList;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\ORM\TableRegistry;
@@ -30,16 +31,7 @@ class MailingListController extends ApiController
         $email = trim($email);
         $email = mb_strtolower($email);
 
-        // Throw error if email address is already subscribed
-        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
-        $subscriptionExists = $mailingListTable->exists(['email' => $email]);
-        if ($subscriptionExists) {
-            throw new ForbiddenException(sprintf(
-                'The email address %s is already subscribed to the mailing list.',
-                $email
-            ));
-        }
-
+        $this->checkForExistingSubscription($email);
         $this->checkForMissingParams();
 
         // Set up entity data
@@ -58,6 +50,8 @@ class MailingListController extends ApiController
         }
 
         // Save
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        /** @var MailingList $newSubscription */
         $newSubscription = $mailingListTable->newEntity($entityData);
         if (!$mailingListTable->save($newSubscription)) {
             throw new BadRequestException(
@@ -66,18 +60,7 @@ class MailingListController extends ApiController
             );
         }
 
-        // Associate current user if logged in, or user with matching email address if not logged in
-        $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $user = $this->tokenUser
-            ? $this->tokenUser
-            : $usersTable
-                ->find()
-                ->where(['email' => $email])
-                ->first();
-        if ($user) {
-            $usersTable->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
-            $usersTable->save($user);
-        }
+        $this->associateUserWithSubscription($newSubscription);
 
         // Return response
         $this->response = $this->response->withStatus(204, 'No Content');
@@ -147,6 +130,46 @@ class MailingListController extends ApiController
             if (!$individualDaysSelected) {
                 throw new BadRequestException('Either weekly, daily, or at least one individual day must be selected');
             }
+        }
+    }
+
+    /**
+     * Throws an exception if the provided email address is already subscribed
+     *
+     * @param string $email Email address
+     * @return void
+     * @throws ForbiddenException
+     */
+    private function checkForExistingSubscription($email)
+    {
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $subscriptionExists = $mailingListTable->exists(['email' => $email]);
+        if ($subscriptionExists) {
+            throw new ForbiddenException(sprintf(
+                'The email address %s is already subscribed to the mailing list.',
+                $email
+            ));
+        }
+    }
+
+    /**
+     * Associates the current user or user with matching email address with the provided subscription
+     *
+     * @param MailingList $newSubscription Subscription record
+     * @return void
+     */
+    private function associateUserWithSubscription($newSubscription)
+    {
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $this->tokenUser
+            ? $this->tokenUser
+            : $usersTable
+                ->find()
+                ->where(['email' => $newSubscription->email])
+                ->first();
+        if ($user) {
+            $usersTable->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
+            $usersTable->save($user);
         }
     }
 }
