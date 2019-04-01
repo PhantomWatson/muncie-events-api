@@ -40,6 +40,12 @@ class MailingListController extends ApiController
             ));
         }
 
+        $allCategories = $this->request->getData('all_categories');
+        $categoryIds = $this->request->getData('category_ids');
+        if ($allCategories === null && $categoryIds === null) {
+            throw new BadRequestException('Either all_categories or category_ids must be provided.');
+        }
+
         // Set up entity data
         $entityData = [
             'email' => $email,
