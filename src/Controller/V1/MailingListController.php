@@ -40,15 +40,7 @@ class MailingListController extends ApiController
             ));
         }
 
-        // Throw errors for missing parameters
-        if (empty($email)) {
-            throw new BadRequestException('Email address must be provided');
-        }
-        $allCategories = $this->request->getData('all_categories');
-        $categoryIds = $this->request->getData('category_ids');
-        if ($allCategories === null && $categoryIds === null) {
-            throw new BadRequestException('Either all_categories or category_ids must be provided.');
-        }
+        $this->checkForMissingParams();
 
         // Set up entity data
         $entityData = [
@@ -58,11 +50,11 @@ class MailingListController extends ApiController
             'categories' => $this->getSelectedCategories(),
             'weekly' => (bool)$this->request->getData('weekly')
         ];
+        $daily = (bool)$this->request->getData('daily');
         $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-        $isDailyAllDays = (bool)$this->request->getData('daily');
         foreach ($days as $day) {
             $key = 'daily_' . $day;
-            $entityData[$key] = $isDailyAllDays || (bool)$this->request->getData($key);
+            $entityData[$key] = $daily || (bool)$this->request->getData($key);
         }
 
         // Save
@@ -126,5 +118,35 @@ class MailingListController extends ApiController
         }
 
         return $categories;
+    }
+
+    /**
+     * Throws errors if required parameters are missing
+     *
+     * @return void
+     */
+    private function checkForMissingParams()
+    {
+        if (empty($email)) {
+            throw new BadRequestException('Email address must be provided');
+        }
+        $allCategories = $this->request->getData('all_categories');
+        $categoryIds = $this->request->getData('category_ids');
+        if ($allCategories === null && $categoryIds === null) {
+            throw new BadRequestException('Either "all categories" or at least one individual category must be selected.');
+        }
+        $weekly = (bool)$this->request->getData('weekly');
+        $daily = (bool)$this->request->getData('daily');
+        $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+        if (!$weekly && !$daily) {
+            $individualDaysSelected = false;
+            foreach ($days as $day) {
+                $isSelected = (bool)$this->request->getData('daily_' . $day);
+                $individualDaysSelected = $individualDaysSelected || $isSelected;
+            }
+            if (!$individualDaysSelected) {
+                throw new BadRequestException('Either weekly, daily, or at least one individual day must be selected');
+            }
+        }
     }
 }
