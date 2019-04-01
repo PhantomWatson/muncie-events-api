@@ -173,7 +173,7 @@ class MailingListControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that POST /v1/mailing-list/subscribe returns the correct results for a logged-in user
+     * Tests that POST /v1/mailing-list/subscribe fails if the email address is already subscribed
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -186,5 +186,36 @@ class MailingListControllerTest extends ApplicationTest
 
         $this->post($this->subscribeUrl, $data);
         $this->assertResponseError('Error was not generated for subscribing an already-subscribed email address');
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe fails if no email address is provided
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailMissingEmail()
+    {
+        $data = $this->defaultData;
+        unset($data['email']);
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseError('Error was not generated for missing email address');
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe fails if no category selection is provided
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailMissingCategorySelection()
+    {
+        $data = $this->defaultData;
+        unset($data['all_categories']);
+        unset($data['category_ids']);
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseError('Error was not generated for missing category info');
     }
 }
