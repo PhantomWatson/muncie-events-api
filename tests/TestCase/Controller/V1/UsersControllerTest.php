@@ -26,15 +26,17 @@ class UsersControllerTest extends ApplicationTest
     public $fixtures = [
         'app.ApiCalls',
         'app.Categories',
-        'app.EventSeries',
         'app.Events',
+        'app.EventSeries',
         'app.EventsImages',
         'app.EventsTags',
         'app.Images',
+        'app.MailingList',
         'app.Tags',
         'app.Users'
     ];
 
+    private $registerUrl;
     private $updatingUserId = 1;
     private $updateProfileUrl;
     private $updatePasswordUrl;
@@ -67,6 +69,13 @@ class UsersControllerTest extends ApplicationTest
                 'userToken' => $this->getUserToken($this->updatingUserId)
             ]
         ];
+
+        $this->registerUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Users',
+            'action' => 'register',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
     }
 
     /**
@@ -90,12 +99,6 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testRegisterSuccess()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Users',
-            'action' => 'register',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
         $uncleanEmail = 'NewUser@example.com';
         $cleanEmail = 'newuser@example.com';
         $data = [
@@ -103,7 +106,7 @@ class UsersControllerTest extends ApplicationTest
             'email' => $uncleanEmail,
             'password' => 'password'
         ];
-        $this->post($url, $data);
+        $this->post($this->registerUrl, $data);
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
@@ -112,6 +115,40 @@ class UsersControllerTest extends ApplicationTest
         $this->assertEquals($data['name'], $attributes->name);
         $this->assertEquals($cleanEmail, $attributes->email);
         $this->assertNotEmpty($attributes->token);
+
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $subscriptionExists = $mailingListTable->exists(['email' => $cleanEmail]);
+        $this->assertFalse($subscriptionExists, 'New user shouldn\'t be subscribed to mailing list, but is');
+    }
+
+    /**
+     * Tests that new users can successfully subscribe to the mailing list as part of registration
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testRegisterAndSubscribe()
+    {
+        $data = [
+            'name' => 'New User Name',
+            'email' => 'newuser@example.com',
+            'password' => 'password',
+            'join_mailing_list' => true
+        ];
+        $this->post($this->registerUrl, $data);
+        $this->assertResponseOk();
+
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable
+            ->find()
+            ->where(['email' => $data['email']])
+            ->first();
+        $this->assertNotNull($user->mailing_list_id);
+
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $subscriptionExists = $mailingListTable->exists(['email' => $data['email']]);
+        $this->assertTrue($subscriptionExists, 'New user should be subscribed to mailing list, but isn\'t');
     }
 
     /**
@@ -122,14 +159,7 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testRegisterFailBadMethod()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Users',
-            'action' => 'register',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-
-        $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->registerUrl, ['get', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -140,12 +170,6 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testRegisterFailMissingParams()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Users',
-            'action' => 'register',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
         $data = [
             'name' => 'New User Name',
             'email' => 'newuser@example.com',
@@ -155,7 +179,7 @@ class UsersControllerTest extends ApplicationTest
         foreach (array_keys($data) as $requiredField) {
             $partialData = $data;
             unset($partialData[$requiredField]);
-            $this->post($url, $partialData);
+            $this->post($this->registerUrl, $partialData);
             $this->assertResponseError();
         }
     }
@@ -168,12 +192,6 @@ class UsersControllerTest extends ApplicationTest
      */
     public function testRegisterFailEmailNonunique()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Users',
-            'action' => 'register',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
         $usersFixture = new UsersFixture();
         $email = $usersFixture->records[0]['email'];
         $data = [
@@ -181,7 +199,7 @@ class UsersControllerTest extends ApplicationTest
             'email' => $email,
             'password' => 'password'
         ];
-        $this->post($url, $data);
+        $this->post($this->registerUrl, $data);
         $this->assertResponseError();
     }
 

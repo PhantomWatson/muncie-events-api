@@ -2044,6 +2044,13 @@ paths:
             example: passwordexample
           required: true
           description: "User's password"
+        - in: header
+          name: join_mailing_list
+          schema:
+            type: boolean
+            example: true
+          required: false
+          description: "If TRUE, the user will be subscribed to the mailing list using the default options (weekly emails for all event categories)"
       responses:
         '200':
           description: Successful operation

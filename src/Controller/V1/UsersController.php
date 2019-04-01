@@ -52,6 +52,10 @@ class UsersController extends ApiController
             );
         }
 
+        if ((bool)$this->request->getData('join_mailing_list')) {
+            $this->subscribeUserToMailingList($user);
+        }
+
         // Recreate entity so that only specific fields are visible
         $user = $this->Users
             ->find()
@@ -334,5 +338,40 @@ class UsersController extends ApiController
             '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($query)
         ]);
+    }
+
+    /**
+     * Subscribes a new user to the mailing list, using default options
+     *
+     * @param User $user Entity of user who just registered
+     * @return void
+     */
+    private function subscribeUserToMailingList(User $user)
+    {
+        // Prepare data
+        $subscriptionData = [
+            'email' => $user->email,
+            'new_subscriber' => true,
+            'all_categories' => true,
+            'categories' => [],
+            'weekly' => true
+        ];
+        foreach (['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as $day) {
+            $subscriptionData["daily_$day"] = false;
+        }
+
+        // Save
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $newSubscription = $mailingListTable->newEntity($subscriptionData);
+        if (!$mailingListTable->save($newSubscription)) {
+            throw new BadRequestException(
+                'There was an error subscribing you to the mailing list. ' .
+                'Please try again or contact an administrator for assistance.'
+            );
+        }
+
+        // Associate user with subscription
+        $this->Users->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
+        $this->Users->save($user);
     }
 }
