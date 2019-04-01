@@ -218,4 +218,151 @@ class MailingListControllerTest extends ApplicationTest
         $this->post($this->subscribeUrl, $data);
         $this->assertResponseError('Error was not generated for missing category info');
     }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe fails if no frequency selection is provided
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFailMissingFrequencySelection()
+    {
+        $data = $this->defaultData;
+        unset($data['weekly']);
+        unset($data['daily']);
+        $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+        foreach ($days as $day) {
+            unset($data["daily_$day"]);
+        }
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseError('Error was not generated for missing frequency info');
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe succeeds for daily instead of weekly emails
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessDaily()
+    {
+        $data = $this->defaultData;
+        $data['weekly'] = false;
+        $data['daily'] = true;
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseCode(204);
+
+        $newSubscription = $this->getNewSubscription();
+        foreach ($this->days as $day) {
+            $this->assertTrue((bool)$newSubscription->{"daily_$day"});
+        }
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing on specific days
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessCustomDays()
+    {
+        $data = $this->defaultData;
+        $data['weekly'] = false;
+        $data['daily'] = false;
+        foreach ($this->days as $day) {
+            $data["daily_$day"] = in_array($day, ['sat', 'sun']);
+        }
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseCode(204);
+
+        $newSubscription = $this->getNewSubscription();
+        foreach ($this->days as $day) {
+            $isSelected = (bool)$newSubscription->{"daily_$day"};
+            if (in_array($day, ['sat', 'sun'])) {
+                $this->assertTrue($isSelected);
+            } else {
+                $this->assertFalse($isSelected);
+            }
+        }
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing on specific days and weekly
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessCustomDaysAndWeekly()
+    {
+        $data = $this->defaultData;
+        $data['weekly'] = true;
+        $data['daily'] = false;
+        foreach ($this->days as $day) {
+            $data["daily_$day"] = in_array($day, ['sat', 'sun']);
+        }
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseCode(204);
+
+        $newSubscription = $this->getNewSubscription();
+        foreach ($this->days as $day) {
+            $isSelected = (bool)$newSubscription->{"daily_$day"};
+            if (in_array($day, ['sat', 'sun'])) {
+                $this->assertTrue($isSelected);
+            } else {
+                $this->assertFalse($isSelected);
+            }
+        }
+        $this->assertTrue((bool)$newSubscription->weekly);
+    }
+
+    /**
+     * Tests that 'daily' overrides specific days for POST /v1/mailing-list/subscribe
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddDailyAndCustomDays()
+    {
+        $data = $this->defaultData;
+        $data['daily'] = true;
+        foreach ($this->days as $day) {
+            $data["daily_$day"] = in_array($day, ['sat', 'sun']);
+        }
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseCode(204);
+
+        $newSubscription = $this->getNewSubscription();
+        foreach ($this->days as $day) {
+            $isSelected = (bool)$newSubscription->{"daily_$day"};
+            $this->assertTrue($isSelected);
+        }
+    }
+
+    /**
+     * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing daily and weekly
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddSuccessDailyAndWeekly()
+    {
+        $data = $this->defaultData;
+        $data['weekly'] = true;
+        $data['daily'] = true;
+
+        $this->post($this->subscribeUrl, $data);
+        $this->assertResponseCode(204);
+
+        $newSubscription = $this->getNewSubscription();
+        foreach ($this->days as $day) {
+            $isSelected = (bool)$newSubscription->{"daily_$day"};
+            $this->assertTrue($isSelected);
+        }
+        $this->assertTrue((bool)$newSubscription->weekly);
+    }
 }
