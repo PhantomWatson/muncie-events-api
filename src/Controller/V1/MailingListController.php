@@ -40,6 +40,10 @@ class MailingListController extends ApiController
             ));
         }
 
+        // Throw errors for missing parameters
+        if (empty($email)) {
+            throw new BadRequestException('Email address must be provided');
+        }
         $allCategories = $this->request->getData('all_categories');
         $categoryIds = $this->request->getData('category_ids');
         if ($allCategories === null && $categoryIds === null) {
