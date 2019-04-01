@@ -96,9 +96,11 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'register',
             '?' => ['apikey' => $this->getApiKey()]
         ];
+        $uncleanEmail = 'NewUser@example.com';
+        $cleanEmail = 'newuser@example.com';
         $data = [
             'name' => 'New User Name',
-            'email' => 'newuser@example.com',
+            'email' => $uncleanEmail,
             'password' => 'password'
         ];
         $this->post($url, $data);
@@ -108,7 +110,7 @@ class UsersControllerTest extends ApplicationTest
         $attributes = $response['data']->attributes;
         $this->assertNotEmpty($response['data']->id);
         $this->assertEquals($data['name'], $attributes->name);
-        $this->assertEquals($data['email'], $attributes->email);
+        $this->assertEquals($cleanEmail, $attributes->email);
         $this->assertNotEmpty($attributes->token);
     }
 

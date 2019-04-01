@@ -65,6 +65,20 @@ class User extends Entity
     }
 
     /**
+     * Automatically trims and lowercases email
+     *
+     * @param string $email Email address
+     * @return bool|string
+     */
+    protected function _setEmail($email)
+    {
+        $email = trim($email);
+        $email = mb_strtolower($email);
+
+        return $email;
+    }
+
+    /**
      * Generates a string token for the Users.api_key field
      *
      * The API key is used to authorize the user or application to make any API call
