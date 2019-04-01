@@ -127,7 +127,7 @@ class MailingListController extends ApiController
      */
     private function checkForMissingParams()
     {
-        if (empty($email)) {
+        if (empty($this->request->getData('email'))) {
             throw new BadRequestException('Email address must be provided');
         }
         $allCategories = $this->request->getData('all_categories');
