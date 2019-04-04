@@ -60,7 +60,7 @@ class MailingListFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'email' => 'Lorem ipsum dolor sit amet',
+                'email' => 'subscriber@example.com',
                 'all_categories' => 1,
                 'weekly' => 1,
                 'daily_sun' => 1,
