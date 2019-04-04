@@ -502,6 +502,8 @@ class MailingListControllerTest extends ApplicationTest
         $url['?']['userToken'] = $this->getUserToken($userId);
 
         $this->get($url);
-        $this->assertResponseError();
+        $this->assertResponseOk();
+        $response = json_decode($this->_response->getBody());
+        $this->assertNull($response->data);
     }
 }

@@ -87,10 +87,10 @@ class UsersFixture extends TestFixture
             'bio' => '',
             'email' => 'user3@example.com',
             'password' => '',
-            'mailing_list_id' => 1,
+            'mailing_list_id' => null,
             'facebook_id' => 1,
             'api_key' => null,
-            'token' => null,
+            'token' => '17d861274d3fe22d7225e84e6d882ea2',
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17'
         ],
