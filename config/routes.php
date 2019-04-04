@@ -72,6 +72,8 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
+
+    // EventsController
     $routes->connect('/event', ['controller' => 'Events', 'action' => 'add']);
     $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
         ->setPass(['id'])
@@ -82,10 +84,22 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->delete('/event/:id', ['controller' => 'Events', 'action' => 'delete'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
+
+    // EventSeriesController
     $routes->connect('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
+
+    // ImagesController
+    $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
+
+    // MailingListController
+    $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus']);
+
+    // TagsController
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
+
+    // UsersController
     $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
     $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
@@ -99,5 +113,4 @@ Router::prefix('v1', function (RouteBuilder $routes) {
         ->setPatterns(['id' => '[0-9]+']);
     $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password']);
     $routes->connect('/user/profile', ['controller' => 'Users', 'action' => 'profile']);
-    $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
 });

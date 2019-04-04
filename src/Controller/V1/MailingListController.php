@@ -4,13 +4,16 @@ namespace App\Controller\V1;
 use App\Controller\ApiController;
 use App\Model\Entity\Category;
 use App\Model\Entity\MailingList;
+use App\Model\Table\MailingListTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\ORM\TableRegistry;
 
 /**
  * Class MailingListController
  * @package App\Controller\V1
+ * @property MailingListTable $MailingList
  */
 class MailingListController extends ApiController
 {
@@ -171,5 +174,36 @@ class MailingListController extends ApiController
             $usersTable->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
             $usersTable->save($user);
         }
+    }
+
+    /**
+     * GET /mailing-list/subscription endpoint
+     *
+     * @return void
+     * @throws ForbiddenException
+     * @throws MethodNotAllowedException
+     */
+    public function subscriptionStatus()
+    {
+        $this->request->allowMethod('get');
+
+        if (!$this->tokenUser) {
+            throw new ForbiddenException('User token missing. You must be logged in to view subscription status');
+        }
+
+        $condition = $this->tokenUser->mailing_list_id
+            ? ['id' => $this->tokenUser->mailing_list_id]
+            : ['email' => $this->tokenUser->email];
+        $subscription = $this->MailingList
+            ->find()
+            ->where($condition)
+            ->contain(['Categories'])
+            ->first();
+
+        $this->set([
+            '_entities' => ['Category', 'MailingList'],
+            '_serialize' => ['subscription'],
+            'subscription' => $subscription
+        ]);
     }
 }
