@@ -2,6 +2,12 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Tag;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Behavior\TreeBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -9,22 +15,22 @@ use Cake\Validation\Validator;
 /**
  * Tags Model
  *
- * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\BelongsTo $ParentTags
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\HasMany $ChildTags
- * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsToMany $Events
+ * @property TagsTable|BelongsTo $ParentTags
+ * @property UsersTable|BelongsTo $Users
+ * @property TagsTable|HasMany $ChildTags
+ * @property EventsTable|BelongsToMany $Events
  * @property Tag[] $children
  *
- * @method \App\Model\Entity\Tag get($primaryKey, $options = [])
- * @method \App\Model\Entity\Tag newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Tag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Tag|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Tag patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Tag[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Tag findOrCreate($search, callable $callback = null, $options = [])
+ * @method Tag get($primaryKey, $options = [])
+ * @method Tag newEntity($data = null, array $options = [])
+ * @method Tag[] newEntities(array $data, array $options = [])
+ * @method Tag|bool save(EntityInterface $entity, $options = [])
+ * @method Tag patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Tag[] patchEntities($entities, array $data, array $options = [])
+ * @method Tag findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @mixin \Cake\ORM\Behavior\TreeBehavior
+ * @mixin TimestampBehavior
+ * @mixin TreeBehavior
  */
 class TagsTable extends Table
 {
@@ -68,8 +74,8 @@ class TagsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -98,8 +104,8 @@ class TagsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {
