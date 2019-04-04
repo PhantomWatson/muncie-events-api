@@ -2,12 +2,15 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Model\Entity\MailingList;
+use App\Model\Entity\User;
 use App\Model\Table\MailingListTable;
 use App\Model\Table\UsersTable;
 use App\Test\Fixture\MailingListFixture;
+use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
+use Cake\Utility\Hash;
 
 /**
  * MailingListController Test Case
@@ -24,6 +27,7 @@ class MailingListControllerTest extends ApplicationTest
     public $fixtures = [
         'app.ApiCalls',
         'app.Categories',
+        'app.CategoriesMailingList',
         'app.MailingList',
         'app.Users'
     ];
@@ -34,11 +38,24 @@ class MailingListControllerTest extends ApplicationTest
     /** @var MailingListTable */
     private $mailingListTable;
 
+    private $attributes = [
+        'email',
+        'all_categories',
+        'weekly',
+        'daily_sun',
+        'daily_mon',
+        'daily_tue',
+        'daily_wed',
+        'daily_thu',
+        'daily_fri',
+        'daily_sat'
+    ];
     private $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     private $defaultData = [];
     private $fixedEmail = 'new_subscriber@example.com';
-    private $unfixedEmail = 'NEW_SUBSCRIBER@example.com ';
+    private $getUrl;
     private $subscribeUrl;
+    private $unfixedEmail = 'NEW_SUBSCRIBER@example.com ';
 
     /**
      * Cleans up tests after they've completed
@@ -56,6 +73,14 @@ class MailingListControllerTest extends ApplicationTest
             '?' => [
                 'apikey' => $this->getApiKey(),
                 'userToken' => $this->getUserToken(1)
+            ]
+        ];
+        $this->getUrl = [
+            'prefix' => 'v1',
+            'controller' => 'MailingList',
+            'action' => 'subscriptionStatus',
+            '?' => [
+                'apikey' => $this->getApiKey()
             ]
         ];
         $this->usersTable = TableRegistry::getTableLocator()->get('Users');
@@ -367,5 +392,116 @@ class MailingListControllerTest extends ApplicationTest
             $this->assertTrue($isSelected);
         }
         $this->assertTrue((bool)$newSubscription->weekly);
+    }
+
+    /**
+     * Tests that GET /mailing-list/subscription succeeds for a subscribed all-categories user with mailing_list_id set
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testGetByIdSuccess()
+    {
+        $url = $this->getUrl;
+        $userId = UsersFixture::SUBSCRIBED_USER_WITH_ASSOCIATION;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $response = json_decode($this->_response->getBody());
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable->get($userId);
+        $subscriptionsTable = TableRegistry::getTableLocator()->get('MailingList');
+        $subscription = $subscriptionsTable->get($user->mailing_list_id);
+        foreach ($this->attributes as $attribute) {
+            $this->assertEquals($subscription->{$attribute}, $response->data->attributes->{$attribute});
+        }
+
+        // This user has all_categories == true; check that all categories are returned in this response
+        $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
+        $expectedCategories = array_keys($categoriesTable->find('list')->toArray());
+        $actualCategories = Hash::extract($response->data->relationships->categories->data, '{n}.id');
+        sort($expectedCategories);
+        sort($actualCategories);
+        $this->assertEquals($expectedCategories, $actualCategories, 'Not all expected categories were returned');
+    }
+
+    /**
+     * Tests that GET /mailing-list/subscription succeeds for a some-categories subscriber with no mailing_list_id set
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testGetByEmailSuccess()
+    {
+        $url = $this->getUrl;
+        $userId = UsersFixture::SUBSCRIBED_USER_WITHOUT_ASSOCIATION;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $response = json_decode($this->_response->getBody());
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable->get($userId);
+        $subscriptionsTable = TableRegistry::getTableLocator()->get('MailingList');
+        /** @var MailingList $subscription */
+        $subscription = $subscriptionsTable
+            ->find()
+            ->where(['email' => $user->email])
+            ->contain(['Categories'])
+            ->first();
+
+        foreach ($this->attributes as $attribute) {
+            $this->assertEquals($subscription->{$attribute}, $response->data->attributes->{$attribute});
+        }
+
+        $expectedCategories = Hash::extract($subscription->categories, '{n}.id');
+        $actualCategories = Hash::extract($response->data->relationships->categories->data, '{n}.id');
+        sort($expectedCategories);
+        sort($actualCategories);
+        $this->assertEquals($expectedCategories, $actualCategories, 'Not all expected categories were returned');
+    }
+
+    /**
+     * Tests that /v1/mailing-list fails for non-post requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testGetFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->getUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that /v1/mailing-list fails for requests without user tokens
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testGetFailNoToken()
+    {
+        $this->get($this->getUrl);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /v1/mailing-list fails for users who are not subscribed
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testGetFailNotSubscribed()
+    {
+        $url = $this->getUrl;
+        $userId = UsersFixture::USER_NOT_SUBSCRIBED;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $this->get($url);
+        $this->assertResponseError();
     }
 }

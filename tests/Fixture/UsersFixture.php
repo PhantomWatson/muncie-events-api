@@ -42,6 +42,9 @@ class UsersFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     const USER_WITHOUT_EVENTS = 2;
+    const SUBSCRIBED_USER_WITH_ASSOCIATION = 2;
+    const SUBSCRIBED_USER_WITHOUT_ASSOCIATION = 1;
+    const USER_NOT_SUBSCRIBED = 3;
 
     /**
      * Records
@@ -50,7 +53,7 @@ class UsersFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
+            'id' => self::SUBSCRIBED_USER_WITHOUT_ASSOCIATION,
             'name' => 'User',
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
@@ -64,7 +67,7 @@ class UsersFixture extends TestFixture
             'modified' => '2017-11-20 22:39:17'
         ],
         [
-            'id' => self::USER_WITHOUT_EVENTS,
+            'id' => self::USER_WITHOUT_EVENTS, // and self::SUBSCRIBED_USER_WITH_ASSOCIATION
             'name' => 'User without API key',
             'role' => 'Lorem ipsum dolor ',
             'bio' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
@@ -78,7 +81,7 @@ class UsersFixture extends TestFixture
             'modified' => '2017-11-20 22:39:17'
         ],
         [
-            'id' => 3,
+            'id' => self::USER_NOT_SUBSCRIBED,
             'name' => 'User with old-style password hash',
             'role' => 'user',
             'bio' => '',

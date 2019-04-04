@@ -76,6 +76,24 @@ class MailingListFixture extends TestFixture
                 'processed_daily' => '2019-03-27 20:42:23',
                 'processed_weekly' => '2019-03-27 20:42:23'
             ],
+            [
+                'id' => 2,
+                'email' => 'user1@example.com',
+                'all_categories' => 0,
+                'weekly' => 0,
+                'daily_sun' => 1,
+                'daily_mon' => 0,
+                'daily_tue' => 0,
+                'daily_wed' => 0,
+                'daily_thu' => 0,
+                'daily_fri' => 0,
+                'daily_sat' => 0,
+                'new_subscriber' => 1,
+                'created' => '2019-03-27 20:42:23',
+                'modified' => '2019-03-27 20:42:23',
+                'processed_daily' => '2019-03-27 20:42:23',
+                'processed_weekly' => '2019-03-27 20:42:23'
+            ]
         ];
         parent::init();
     }
