@@ -188,7 +188,7 @@ class MailingListController extends ApiController
         $this->request->allowMethod('get');
 
         if (!$this->tokenUser) {
-            throw new ForbiddenException('User token missing. You must be logged in to view subscription status');
+            throw new ForbiddenException('User token missing. You must be logged in to view subscription status.');
         }
 
         $condition = $this->tokenUser->mailing_list_id
