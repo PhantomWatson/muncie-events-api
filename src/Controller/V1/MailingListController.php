@@ -72,16 +72,15 @@ class MailingListController extends ApiController
             throw new BadRequestException('Invalid value provided for category_ids');
         }
 
+        // Check that all category IDs are valid
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
-        $categories = [];
         foreach ($categoryIds as $categoryId) {
             if (!$categoriesTable->exists(['id' => $categoryId])) {
                 throw new BadRequestException("Invalid event category ID: $categoryId");
             }
-            $categories[] = $categoriesTable->get($categoryId);
         }
 
-        return $categories;
+        return ['_ids' => $categoryIds];
     }
 
     /**
