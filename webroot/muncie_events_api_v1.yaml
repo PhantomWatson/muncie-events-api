@@ -1013,6 +1013,53 @@ paths:
                               example: There was an error uploading your image
       security:
         - api_key: []
+  /mailing-list/subscription:
+    get:
+      tags:
+        - mailing list
+      summary: Fetches the current user's subscription information, or returns NULL if the user is not subscribed
+      operationId: getMailingListSubscription
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: "User token missing. You must be logged in to view subscription status."
+        '405':
+          description: Method not allowed
+      security:
+        - api_key: []
   /mailing-list/subscribe:
     post:
       tags:
@@ -2148,6 +2195,19 @@ components:
           example: about
         attributes:
           $ref: './docs/v1/attributes/PageAttributes.yaml'
+    Subscription:
+      type: object
+      properties:
+        type:
+          type: string
+          example: subscriptions
+        id:
+          type: integer
+          example: 123
+        attributes:
+          $ref: './docs/v1/attributes/SubscriptionAttributes.yaml'
+        relationships:
+          $ref: './docs/v1/relationships/SubscriptionRelationships.yaml'
   securitySchemes:
     api_key:
       type: apiKey

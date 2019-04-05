@@ -1,0 +1,40 @@
+type: object
+properties:
+  email:
+    type: string
+    example: subscriber@example.com
+  all_categories:
+    type: boolean
+    example: true
+    description: If TRUE, the user wishes to receive information about all current and future categories of events.
+  weekly:
+    type: boolean
+    example: true
+  daily_sun:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Sunday about that day's events."
+  daily_mon:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Monday about that day's events."
+  daily_tue:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Tuesday about that day's events."
+  daily_wed:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Wednesday about that day's events."
+  daily_thu:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Thursday about that day's events."
+  daily_fri:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Friday about that day's events."
+  daily_sat:
+    type: boolean
+    example: false
+    description: "TRUE if the user wants to receive an email every Saturday about that day's events."

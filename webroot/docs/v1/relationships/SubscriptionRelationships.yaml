@@ -1,0 +1,16 @@
+type: object
+properties:
+  categories:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+              example: categories
+            id:
+              type: integer
+              example: 10
