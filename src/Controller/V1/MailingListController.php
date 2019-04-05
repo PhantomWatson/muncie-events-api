@@ -17,6 +17,8 @@ use Cake\ORM\TableRegistry;
  */
 class MailingListController extends ApiController
 {
+    private $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
     /**
      * /mailing-list/subscribe endpoint
      *
@@ -29,34 +31,16 @@ class MailingListController extends ApiController
     {
         $this->request->allowMethod('post');
 
-        // Clean up email address
-        $email = $this->request->getData('email');
-        $email = trim($email);
-        $email = mb_strtolower($email);
-
+        $email = $this->getCleanEmail();
         $this->checkForExistingSubscription($email);
         $this->checkForMissingParams();
 
-        // Set up entity data
-        $entityData = [
-            'email' => $email,
-            'new_subscriber' => true,
-            'all_categories' => (bool)$this->request->getData('all_categories'),
-            'categories' => $this->getSelectedCategories(),
-            'weekly' => (bool)$this->request->getData('weekly')
-        ];
-        $daily = (bool)$this->request->getData('daily');
-        $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-        foreach ($days as $day) {
-            $key = 'daily_' . $day;
-            $entityData[$key] = $daily || (bool)$this->request->getData($key);
-        }
-
         // Save
-        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $entityData = $this->getSubscriptionDataFromRequest();
+        $entityData['new_subscriber'] = true;
         /** @var MailingList $newSubscription */
-        $newSubscription = $mailingListTable->newEntity($entityData);
-        if (!$mailingListTable->save($newSubscription)) {
+        $newSubscription = $this->MailingList->newEntity($entityData);
+        if (!$this->MailingList->save($newSubscription)) {
             throw new BadRequestException(
                 'There was an error subscribing you to the mailing list. ' .
                 'Please try again or contact an administrator for assistance.'
@@ -65,13 +49,7 @@ class MailingListController extends ApiController
 
         $this->associateUserWithSubscription($newSubscription);
 
-        // Return response
-        $this->response = $this->response->withStatus(204, 'No Content');
-
-        /* Bypass JsonApi plugin to render blank response,
-         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
-        $this->viewBuilder()->setClassName('Json');
-        $this->set('_serialize', true);
+        $this->set204Response();
     }
 
     /**
@@ -158,20 +136,20 @@ class MailingListController extends ApiController
     /**
      * Associates the current user or user with matching email address with the provided subscription
      *
-     * @param MailingList $newSubscription Subscription record
+     * @param MailingList $subscription Subscription record
      * @return void
      */
-    private function associateUserWithSubscription($newSubscription)
+    private function associateUserWithSubscription($subscription)
     {
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $user = $this->tokenUser
             ? $this->tokenUser
             : $usersTable
                 ->find()
-                ->where(['email' => $newSubscription->email])
+                ->where(['email' => $subscription->email])
                 ->first();
         if ($user) {
-            $usersTable->patchEntity($user, ['mailing_list_id' => $newSubscription->id]);
+            $usersTable->patchEntity($user, ['mailing_list_id' => $subscription->id]);
             $usersTable->save($user);
         }
     }
@@ -191,19 +169,103 @@ class MailingListController extends ApiController
             throw new ForbiddenException('User token missing. You must be logged in to view subscription status.');
         }
 
+        $this->set([
+            '_entities' => ['Category', 'MailingList'],
+            '_serialize' => ['subscription'],
+            'subscription' => $this->getCurrentUserSubscription()
+        ]);
+    }
+
+    /**
+     * PUT /mailing-list/subscription endpoint
+     *
+     * @return void
+     * @throws ForbiddenException
+     * @throws MethodNotAllowedException
+     */
+    public function subscriptionUpdate()
+    {
+        $this->request->allowMethod('put');
+
+        if (!$this->tokenUser) {
+            throw new ForbiddenException('User token missing. You must be logged in to update subscription status.');
+        }
+
+        $subscription = $this->getCurrentUserSubscription();
+        if (!$subscription) {
+            throw new ForbiddenException('Cannot update subscription: You are not currently subscribed');
+        }
+
+        $this->checkForMissingParams();
+
+        // Save
+        $entityData = $this->getSubscriptionDataFromRequest();
+        $this->MailingList->patchEntity($subscription, $entityData);
+        if (!$this->MailingList->save($subscription)) {
+            throw new BadRequestException(
+                'There was an error subscribing you to the mailing list. ' .
+                'Please try again or contact an administrator for assistance.'
+            );
+        }
+
+        $this->associateUserWithSubscription($subscription);
+
+        $this->set204Response();
+    }
+
+    /**
+     * Returns the subscription associated (by ID or email) with the current user, or NULL if none is found
+     *
+     * @return MailingList|null
+     */
+    private function getCurrentUserSubscription()
+    {
         $condition = $this->tokenUser->mailing_list_id
             ? ['id' => $this->tokenUser->mailing_list_id]
             : ['email' => $this->tokenUser->email];
+
+        /** @var MailingList $subscription */
         $subscription = $this->MailingList
             ->find()
             ->where($condition)
             ->contain(['Categories'])
             ->first();
 
-        $this->set([
-            '_entities' => ['Category', 'MailingList'],
-            '_serialize' => ['subscription'],
-            'subscription' => $subscription
-        ]);
+        return $subscription;
+    }
+
+    /**
+     * Returns a trimmed and lowercased version of the provided email address
+     *
+     * @return string
+     */
+    private function getCleanEmail()
+    {
+        $email = (string)$this->request->getData('email');
+        $email = trim($email);
+
+        return mb_strtolower($email);
+    }
+
+    /**
+     * Returns an array of data derived from the request to be saved to a new or updated mailing list subscription
+     *
+     * @return array
+     */
+    private function getSubscriptionDataFromRequest()
+    {
+        $data = [
+            'email' => $this->getCleanEmail(),
+            'all_categories' => (bool)$this->request->getData('all_categories'),
+            'categories' => $this->getSelectedCategories(),
+            'weekly' => (bool)$this->request->getData('weekly')
+        ];
+        $daily = (bool)$this->request->getData('daily');
+        foreach ($this->days as $day) {
+            $key = 'daily_' . $day;
+            $data[$key] = $daily || (bool)$this->request->getData($key);
+        }
+
+        return $data;
     }
 }
