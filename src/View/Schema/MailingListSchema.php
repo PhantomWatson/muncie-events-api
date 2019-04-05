@@ -7,6 +7,8 @@ use JsonApi\View\Schema\EntitySchema;
 
 class MailingListSchema extends EntitySchema
 {
+    protected $resourceType = 'subscriptions';
+
     /**
      * Returns the subscription's ID
      *
