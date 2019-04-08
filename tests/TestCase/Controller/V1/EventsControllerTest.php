@@ -100,7 +100,7 @@ class EventsControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testFuture()
+    public function testFutureSuccess()
     {
         $this->get([
             'prefix' => 'v1',
@@ -115,12 +115,29 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that /v1/events/future fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testFutureFailBadMethod()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
      * Tests that /v1/events?start={date}&end={date} returns only events on the specified date
      *
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testSpecificDate()
+    public function testIndexSuccessSpecificDate()
     {
         $date = date('Y-m-d', strtotime('yesterday'));
         $this->get([
@@ -137,6 +154,28 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseContains('event yesterday');
         $this->assertResponseNotContains('event today');
         $this->assertResponseNotContains('event tomorrow');
+    }
+
+    /**
+     * Tests that /v1/events fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testIndexFailBadMethod()
+    {
+        $date = date('Y-m-d', strtotime('yesterday'));
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'index',
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'start' => $date,
+                'end' => $date
+            ]
+        ];
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -315,6 +354,23 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that /v1/events/search fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testSearchFailBadMethod()
+    {
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
      * Tests that the correct events are returned from /events/category
      *
      * @return void
@@ -341,6 +397,26 @@ class EventsControllerTest extends ApplicationTest
             $responseCategoryIds,
             'Returned events were not limited to the specified category'
         );
+    }
+
+    /**
+     * Tests that /v1/events/category fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testCategoryFailBadMethod()
+    {
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
+        $url = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'category',
+            $categoryId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
     }
 
     /**

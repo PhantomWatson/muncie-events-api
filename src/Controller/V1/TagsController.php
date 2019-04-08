@@ -22,6 +22,8 @@ class TagsController extends ApiController
      */
     public function tree()
     {
+        $this->request->allowMethod('get');
+
         $tags = $this->Tags
             ->find('threaded')
             ->orderAsc('name')
@@ -63,6 +65,8 @@ class TagsController extends ApiController
      */
     public function future()
     {
+        $this->request->allowMethod('get');
+
         /** @var EventsTable $eventsTable */
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         $tags = $eventsTable->getUpcomingEventTags();
@@ -83,6 +87,8 @@ class TagsController extends ApiController
      */
     public function view($tagId = null)
     {
+        $this->request->allowMethod('get');
+
         if (!$tagId) {
             throw new BadRequestException('Required tag ID is missing');
         }

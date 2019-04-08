@@ -18,6 +18,8 @@ class CategoriesController extends ApiController
      */
     public function index()
     {
+        $this->request->allowMethod('get');
+
         $categories = $this->Categories
             ->find()
             ->orderAsc('weight')

@@ -8,6 +8,12 @@ use App\Test\TestCase\ApplicationTest;
  */
 class PagesControllerTest extends ApplicationTest
 {
+    private $aboutUrl;
+    private $rulesEventsUrl;
+    private $rulesImagesUrl;
+    private $rulesTagsUrl;
+    private $widgetsUrl;
+
     /**
      * Fixtures
      *
@@ -29,6 +35,36 @@ class PagesControllerTest extends ApplicationTest
         $this->configRequest([
             'environment' => ['HTTPS' => 'on']
         ]);
+        $this->aboutUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'about',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->rulesEventsUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesEvents',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->rulesImagesUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesImages',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->rulesTagsUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'rulesTags',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->widgetsUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Pages',
+            'action' => 'widgets',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
     }
 
     /**
@@ -37,15 +73,21 @@ class PagesControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testAbout()
+    public function testAboutSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Pages',
-            'action' => 'about',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->aboutUrl);
         $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Tests that /pages/about fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAboutFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->aboutUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -70,15 +112,21 @@ class PagesControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testRulesEvents()
+    public function testRulesEventsSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Pages',
-            'action' => 'rulesEvents',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->rulesEventsUrl);
         $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Tests that /pages/rules-events fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesEventsFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->rulesEventsUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -87,15 +135,21 @@ class PagesControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testRulesTags()
+    public function testRulesTagsSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Pages',
-            'action' => 'rulesTags',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->rulesTagsUrl);
         $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Tests that /pages/rules-tags fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesTagsFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->rulesTagsUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -104,15 +158,21 @@ class PagesControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testRulesImages()
+    public function testRulesImagesSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Pages',
-            'action' => 'rulesImages',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->rulesImagesUrl);
         $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Tests that /pages/rules-images fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testRulesImagesFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->rulesImagesUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -121,14 +181,20 @@ class PagesControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testWidgets()
+    public function testWidgetsSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Pages',
-            'action' => 'widgets',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->widgetsUrl);
         $this->assertPageHasTitleAndBody();
+    }
+
+    /**
+     * Tests that /pages/widgets fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testWidgetsFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->widgetsUrl, ['post', 'put', 'patch', 'delete']);
     }
 }

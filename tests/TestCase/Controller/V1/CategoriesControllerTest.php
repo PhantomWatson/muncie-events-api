@@ -10,6 +10,7 @@ use Cake\Utility\Hash;
  */
 class CategoriesControllerTest extends ApplicationTest
 {
+    private $indexUrl;
 
     /**
      * Fixtures
@@ -29,6 +30,23 @@ class CategoriesControllerTest extends ApplicationTest
     ];
 
     /**
+     * Sets up this set of tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->indexUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Categories',
+            'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+    }
+
+    /**
      * Tests that /v1/categories returns the correct results
      *
      * @return void
@@ -36,12 +54,7 @@ class CategoriesControllerTest extends ApplicationTest
      */
     public function testIndexSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Categories',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->indexUrl);
         $this->assertResponseOk();
 
         // Test that all categories are included
@@ -69,5 +82,16 @@ class CategoriesControllerTest extends ApplicationTest
             $eventCounts,
             'One or more categories has a zero value for upcomingEventCount'
         );
+    }
+
+    /**
+     * Tests that /v1/categories fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testIndexFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->indexUrl, ['post', 'put', 'patch', 'delete']);
     }
 }

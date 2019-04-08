@@ -77,6 +77,8 @@ class EventsController extends ApiController
      */
     public function future()
     {
+        $this->request->allowMethod('get');
+
         $this->loadComponent('ApiPagination');
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
@@ -107,6 +109,8 @@ class EventsController extends ApiController
      */
     public function search()
     {
+        $this->request->allowMethod('get');
+
         $this->loadComponent('ApiPagination');
         $search = $this->request->getQuery('q');
         $search = trim($search);
@@ -147,6 +151,8 @@ class EventsController extends ApiController
      */
     public function category($categoryId = null)
     {
+        $this->request->allowMethod('get');
+
         $this->loadComponent('ApiPagination');
         if (!$categoryId) {
             throw new BadRequestException('Category ID is required');

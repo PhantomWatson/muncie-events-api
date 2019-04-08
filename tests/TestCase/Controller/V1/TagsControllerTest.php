@@ -11,6 +11,9 @@ use Cake\Utility\Hash;
  */
 class TagsControllerTest extends ApplicationTest
 {
+    private $futureUrl;
+    private $treeUrl;
+    private $viewUrl;
 
     /**
      * Fixtures
@@ -30,19 +33,44 @@ class TagsControllerTest extends ApplicationTest
     ];
 
     /**
+     * Sets up this set of tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->treeUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'tree',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->futureUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->viewUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'view',
+            TagsFixture::TAG_WITH_EVENT,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+    }
+
+    /**
      * Tests that /tags/tree returns the correct results
      *
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testTree()
+    public function testTreeSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Tags',
-            'action' => 'tree',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->treeUrl);
         $this->assertResponseOk();
 
         $fixture = new TagsFixture();
@@ -81,6 +109,17 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that /tags/tree fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testTreeFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->treeUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
      * Tests that /tags/future returns the correct results
      *
      * @return void
@@ -88,12 +127,7 @@ class TagsControllerTest extends ApplicationTest
      */
     public function testFuture()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Tags',
-            'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->futureUrl);
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
@@ -105,6 +139,17 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that /tags/future fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testFutureFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->futureUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
      * Tests that /tags/future returns the correct results
      *
      * @return void
@@ -112,13 +157,7 @@ class TagsControllerTest extends ApplicationTest
      */
     public function testViewSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Tags',
-            'action' => 'view',
-            TagsFixture::TAG_WITH_EVENT,
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->viewUrl);
         $this->assertResponseOk();
 
         // Test tag data
@@ -135,5 +174,16 @@ class TagsControllerTest extends ApplicationTest
         $responseEventIds = Hash::extract($response['included'], '{n}.id');
         $this->assertContains(EventsFixture::EVENT_WITH_TAG, $responseEventIds);
         $this->assertNotContains(EventsFixture::EVENT_WITH_DIFFERENT_TAG, $responseEventIds);
+    }
+
+    /**
+     * Tests that /tag/{tagId} fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testViewFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->viewUrl, ['post', 'put', 'patch', 'delete']);
     }
 }

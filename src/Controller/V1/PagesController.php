@@ -17,6 +17,7 @@ class PagesController extends ApiController
      */
     public function about()
     {
+        $this->request->allowMethod('get');
         $page = new Page();
         $page->id = 'about';
         $page->title = 'About Muncie Events';
@@ -60,6 +61,7 @@ class PagesController extends ApiController
      */
     public function rulesEvents()
     {
+        $this->request->allowMethod('get');
         $page = new Page();
         $page->id = 'rules-events';
         $page->title = 'Rules for Posting Events';
@@ -79,6 +81,7 @@ class PagesController extends ApiController
      */
     public function rulesTags()
     {
+        $this->request->allowMethod('get');
         $page = new Page();
         $page->id = 'rules-tags';
         $page->title = 'Rules for New Tags';
@@ -98,6 +101,7 @@ class PagesController extends ApiController
      */
     public function rulesImages()
     {
+        $this->request->allowMethod('get');
         $page = new Page();
         $page->id = 'rules-images';
         $page->title = 'Rules for Images';
@@ -117,6 +121,7 @@ class PagesController extends ApiController
      */
     public function widgets()
     {
+        $this->request->allowMethod('get');
         $page = new Page();
         $page->id = 'widgets';
         $page->title = 'Calendar Widgets';
