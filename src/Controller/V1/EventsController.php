@@ -5,6 +5,7 @@ use App\Controller\ApiController;
 use App\Model\Entity\Event;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
+use App\Slack\Slack;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
@@ -37,6 +38,8 @@ class EventsController extends ApiController
      */
     public function index()
     {
+        $this->request->allowMethod('get');
+
         $this->loadComponent('ApiPagination');
         $start = $this->request->getQuery('start');
         $end = $this->request->getQuery('end');
@@ -279,7 +282,7 @@ class EventsController extends ApiController
 
         // Send Slack notification
         if (!defined('PHPUNIT_RUNNING') || !PHPUNIT_RUNNING) {
-            (new \App\Slack\Slack())->sendNewEventAlert($addedEvents[0]->title);
+            (new Slack())->sendNewEventAlert($addedEvents[0]->title);
         }
 
         $this->set([
