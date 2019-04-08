@@ -13,6 +13,9 @@ class ContactControllerTest extends ApplicationTest
 {
     use EmailTrait;
 
+    private $contactUrl;
+    private $formData;
+
     /**
      * Fixtures
      *
@@ -22,6 +25,28 @@ class ContactControllerTest extends ApplicationTest
         'app.ApiCalls',
         'app.Users'
     ];
+
+    /**
+     * Sets up this set of tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->contactUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Contact',
+            'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->formData = [
+            'name' => 'Test name',
+            'email' => 'test@example.com',
+            'body' => 'Lorem ipsum...'
+        ];
+    }
 
     /**
      * Method for cleaning up after each test
@@ -44,42 +69,23 @@ class ContactControllerTest extends ApplicationTest
      */
     public function testContactSuccess()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Contact',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $data = [
-            'name' => 'Test name',
-            'email' => 'test@example.com',
-            'body' => 'Lorem ipsum...'
-        ];
-        $this->post($url, $data);
+        $this->post($this->contactUrl, $this->formData);
 
         $this->assertResponseCode(204);
         $this->assertMailSentTo(Configure::read('adminEmail'));
-        $this->assertMailSentFrom($data['email']);
-        $this->assertMailContains($data['body']);
+        $this->assertMailSentFrom($this->formData['email']);
+        $this->assertMailContains($this->formData['body']);
     }
 
     /**
-     * Tests that /v1/contact fails when user uses GET method
+     * Tests that /v1/contact fails when user uses non-POST methods
      *
      * @return void
      * @throws \PHPUnit\Exception
      */
     public function testContactFailBadMethod()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Contact',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $this->get($url);
-
-        $this->assertResponseError();
+        $this->assertDisallowedMethods($this->contactUrl, ['get', 'put', 'patch', 'delete']);
         $this->assertNoMailSent();
     }
 
@@ -91,21 +97,10 @@ class ContactControllerTest extends ApplicationTest
      */
     public function testContactFailMissingParam()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Contact',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $data = [
-            'name' => 'Test name',
-            'email' => 'test@example.com',
-            'body' => 'Lorem ipsum...'
-        ];
-        foreach ($data as $field => $value) {
-            $incompleteData = $data;
+        foreach ($this->formData as $field => $value) {
+            $incompleteData = $this->formData;
             $incompleteData[$field] = '';
-            $this->post($url, $incompleteData);
+            $this->post($this->contactUrl, $incompleteData);
             $this->assertResponseError();
             $this->assertNoMailSent();
         }
