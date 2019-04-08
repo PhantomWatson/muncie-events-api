@@ -1181,6 +1181,25 @@ paths:
           description: Method not allowed
       security:
         - api_key: []
+    delete:
+      tags:
+        - mailing list
+      summary: Unsubscribes the logged-in user from the mailing list
+      operationId: deleteMailingListSubscription
+      parameters:
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+      responses:
+        '204':
+          description: Successful operation
+        '405':
+          description: Method not allowed
+      security:
+        - api_key: []
   /mailing-list/subscribe:
     post:
       tags:

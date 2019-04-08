@@ -7,6 +7,7 @@ use App\Model\Entity\MailingList;
 use App\Model\Table\MailingListTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\ORM\TableRegistry;
 
@@ -266,5 +267,39 @@ class MailingListController extends ApiController
         }
 
         return $data;
+    }
+
+    /**
+     * DELETE /v1/mailing-list/subscription endpoint
+     *
+     * @return void
+     * @throws ForbiddenException
+     * @throws InternalErrorException
+     */
+    public function unsubscribe()
+    {
+        $this->request->allowMethod('delete');
+
+        if (!$this->tokenUser) {
+            throw new ForbiddenException('User token missing. You must be logged in to update subscription status.');
+        }
+
+        $subscription = $this->getCurrentUserSubscription();
+        if (!$subscription) {
+            throw new ForbiddenException('Cannot unsubscribe: You are not currently subscribed');
+        }
+
+        if (!$this->MailingList->delete($subscription)) {
+            throw new InternalErrorException(
+                'There was an error unsubscribing you. Please try again or contact an administrator for assistance.'
+            );
+        }
+
+        // Remove subscription association with user
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $usersTable->patchEntity($this->tokenUser, ['mailing_list_id' => null]);
+        $usersTable->save($this->tokenUser);
+
+        $this->set204Response();
     }
 }

@@ -52,6 +52,7 @@ class MailingListControllerTest extends ApplicationTest
     ];
     private $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     private $defaultData = [];
+    private $deleteUrl;
     private $fixedEmail = 'new_subscriber@example.com';
     private $getUrl;
     private $putUrl;
@@ -98,17 +99,19 @@ class MailingListControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'MailingList',
             'action' => 'subscriptionStatus',
-            '?' => [
-                'apikey' => $this->getApiKey()
-            ]
+            '?' => ['apikey' => $this->getApiKey()]
         ];
         $this->putUrl = [
             'prefix' => 'v1',
             'controller' => 'MailingList',
             'action' => 'subscriptionUpdate',
-            '?' => [
-                'apikey' => $this->getApiKey()
-            ]
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->deleteUrl = [
+            'prefix' => 'v1',
+            'controller' => 'MailingList',
+            'action' => 'unsubscribe',
+            '?' => ['apikey' => $this->getApiKey()]
         ];
     }
 
@@ -734,5 +737,84 @@ class MailingListControllerTest extends ApplicationTest
         unset($data['all_categories']);
         $this->put($url, $data);
         $this->assertResponseError("No error returned for missing category selections");
+    }
+
+    /**
+     * Tests that DELETE /v1/mailing-list/subscription succeeds
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteSuccess()
+    {
+        $subscriptionId = 1;
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $this->assertTrue(
+            $mailingListTable->exists(['id' => $subscriptionId]),
+            'Subscription to be removed is missing'
+        );
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $userId = UsersFixture::SUBSCRIBED_USER_WITH_ASSOCIATION;
+        $this->assertTrue(
+            $usersTable->exists([
+                'id' => $userId,
+                'mailing_list_id' => $subscriptionId
+            ]),
+            'User is missing mailing list association'
+        );
+
+        $url = $this->deleteUrl;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+        $this->delete($url);
+
+        $this->assertFalse(
+            $mailingListTable->exists(['id' => $subscriptionId]),
+            'Subscription was not removed'
+        );
+        $this->assertFalse(
+            $usersTable->exists([
+                'id' => $userId,
+                'mailing_list_id' => $subscriptionId
+            ]),
+            'Association with mailing list was not removed'
+        );
+    }
+
+    /**
+     * Tests that delete endpoint fails for non-DELETE requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->deleteUrl, ['get', 'post', 'put', 'patch']);
+    }
+
+    /**
+     * Tests that unsubscribe endpoint fails if the user is not subscribed
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailAlreadyUnsubscribed()
+    {
+        $url = $this->deleteUrl;
+        $userId = UsersFixture::USER_NOT_SUBSCRIBED;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+        $this->delete($url);
+        $this->assertResponseError('No error thrown when unsubscribing a not-subscribed user');
+    }
+
+    /**
+     * Tests that DELETE /v1/mailing-list/subscription fails for requests without user tokens
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailNoToken()
+    {
+        $this->delete($this->deleteUrl);
+        $this->assertResponseError();
     }
 }
