@@ -13,6 +13,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * Class EventsController
@@ -34,7 +35,7 @@ class EventsController extends ApiController
      *
      * @return void
      * @throws BadRequestException
-     * @throws \Exception
+     * @throws Exception
      */
     public function index()
     {
@@ -72,7 +73,7 @@ class EventsController extends ApiController
      * /events/future endpoint
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function future()
     {
@@ -102,7 +103,7 @@ class EventsController extends ApiController
      *
      * @return void
      * @throws BadRequestException
-     * @throws \Exception
+     * @throws Exception
      */
     public function search()
     {
@@ -142,7 +143,7 @@ class EventsController extends ApiController
      * @param int|null $categoryId Category ID
      * @return void
      * @throws BadRequestException
-     * @throws \Exception
+     * @throws Exception
      */
     public function category($categoryId = null)
     {
@@ -311,12 +312,12 @@ class EventsController extends ApiController
      */
     private function addSingleEvent(array $data, $date, $user)
     {
-        $data['date'] = new FrozenDate($date);
+        $data['date'] = $this->parseDate($date);
         foreach (['time_start', 'time_end'] as $timeField) {
             if (!isset($data[$timeField])) {
                 continue;
             }
-            $data[$timeField] = new FrozenTime($date . ' ' . $data[$timeField], Event::TIMEZONE);
+            $data[$timeField] = $this->parseTime($date, $data[$timeField]);
         }
         $event = $this->Events->newEntity($data);
         $event->autoApprove($user);
@@ -438,13 +439,13 @@ class EventsController extends ApiController
 
         // Update event
         if (isset($data['date'])) {
-            $data['date'] = new FrozenDate($data['date']);
+            $data['date'] = $this->parseDate($data['date']);
         }
         foreach (['time_start', 'time_end'] as $timeField) {
             if (!isset($data[$timeField])) {
                 continue;
             }
-            $data[$timeField] = new FrozenTime($data['date'] . ' ' . $data[$timeField], Event::TIMEZONE);
+            $data[$timeField] = $this->parseTime($data['date'], $data[$timeField]);
         }
         $this->Events->patchEntity($event, $data, [
             'fields' => [
@@ -527,5 +528,44 @@ class EventsController extends ApiController
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
         $this->viewBuilder()->setClassName('Json');
         $this->set('_serialize', true);
+    }
+
+    /**
+     * Returns a FrozenTime object, throwing a BadRequestException if the provided time string can't be parsed
+     *
+     * @param FrozenDate|string $date Date object or string
+     * @param string $time Time string, e.g. 2:30pm, 02:30 PM, 14:30
+     * @return FrozenTime
+     * @throws BadRequestException
+     */
+    private function parseTime($date, $time)
+    {
+        try {
+            return new FrozenTime($date . ' ' . $time, Event::TIMEZONE);
+        } catch (Exception $e) {
+            throw new BadRequestException(sprintf(
+                'Invalid time: %s. Please provide this value in a format such as 2:30pm, 02:30 PM, 14:30, etc.',
+                $time
+            ));
+        }
+    }
+
+    /**
+     * Returns a FrozenDate object, throwing a BadRequestException if the provided date string can't be parsed
+     *
+     * @param string $date Date string in format YYYY-MM-DD
+     * @return FrozenDate
+     * @throws BadRequestException
+     */
+    private function parseDate($date)
+    {
+        try {
+            return new FrozenDate($date);
+        } catch (Exception $e) {
+            throw new BadRequestException(sprintf(
+                'Invalid date: %s. Please provide a date in the format YYYY-MM-DD.',
+                $date
+            ));
+        }
     }
 }
