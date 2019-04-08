@@ -54,8 +54,11 @@ class MailingListControllerTest extends ApplicationTest
     private $defaultData = [];
     private $fixedEmail = 'new_subscriber@example.com';
     private $getUrl;
+    private $putUrl;
     private $subscribeUrl;
     private $unfixedEmail = 'NEW_SUBSCRIBER@example.com ';
+    private $updatedData = [];
+    private $updatedDataAlt = [];
 
     /**
      * Cleans up tests after they've completed
@@ -66,6 +69,22 @@ class MailingListControllerTest extends ApplicationTest
     {
         parent::setUp();
 
+        $this->setUrls();
+        $this->usersTable = TableRegistry::getTableLocator()->get('Users');
+        $this->mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+
+        $this->setDefaultData();
+        $this->setUpdatedData();
+        $this->setUpdatedDataAlt();
+    }
+
+    /**
+     * Sets the various URLs used in this class's tests
+     *
+     * @return void
+     */
+    private function setUrls()
+    {
         $this->subscribeUrl = [
             'prefix' => 'v1',
             'controller' => 'MailingList',
@@ -83,8 +102,23 @@ class MailingListControllerTest extends ApplicationTest
                 'apikey' => $this->getApiKey()
             ]
         ];
-        $this->usersTable = TableRegistry::getTableLocator()->get('Users');
-        $this->mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $this->putUrl = [
+            'prefix' => 'v1',
+            'controller' => 'MailingList',
+            'action' => 'subscriptionUpdate',
+            '?' => [
+                'apikey' => $this->getApiKey()
+            ]
+        ];
+    }
+
+    /**
+     * Sets the default set of data for new subscriptions
+     *
+     * @return void
+     */
+    private function setDefaultData()
+    {
         $this->defaultData = [
             'email' => $this->unfixedEmail,
             'weekly' => true,
@@ -94,6 +128,47 @@ class MailingListControllerTest extends ApplicationTest
         foreach ($this->days as $day) {
             $this->defaultData["daily_$day"] = false;
         }
+    }
+
+    /**
+     * Creates a set of data to use for update operations
+     *
+     * @return void
+     */
+    private function setUpdatedData()
+    {
+        $this->updatedData = [
+            'email' => 'updated' . $this->unfixedEmail,
+            'weekly' => false,
+            'daily' => false,
+            'all_categories' => false
+        ];
+        foreach ($this->days as $day) {
+            $this->updatedData["daily_$day"] = true;
+        }
+        $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
+        $categories = $categoriesTable
+            ->find('list')
+            ->limit(2)
+            ->toArray();
+        $this->updatedData['category_ids'] = array_keys($categories);
+    }
+
+    /**
+     * Creates an alternate set of data for updates with all of $this->updatedData's boolean values toggled
+     *
+     * @return void
+     */
+    private function setUpdatedDataAlt()
+    {
+        $this->updatedDataAlt = $this->updatedData;
+        foreach ($this->updatedData as $field => $value) {
+            if (is_bool($value)) {
+                $this->updatedDataAlt[$field] = !$value;
+            }
+        }
+        $this->updatedDataAlt['daily'] = false;
+        $this->updatedDataAlt['category_ids'] = [];
     }
 
     /**
@@ -467,7 +542,7 @@ class MailingListControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/mailing-list fails for non-post requests
+     * Tests that /v1/mailing-list/subscription fails for non-post requests
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -478,7 +553,7 @@ class MailingListControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/mailing-list fails for requests without user tokens
+     * Tests that GET /v1/mailing-list/subscription fails for requests without user tokens
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -490,7 +565,7 @@ class MailingListControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/mailing-list fails for users who are not subscribed
+     * Tests that GET /v1/mailing-list/subscription fails for users who are not subscribed
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -505,5 +580,159 @@ class MailingListControllerTest extends ApplicationTest
         $this->assertResponseOk();
         $response = json_decode($this->_response->getBody());
         $this->assertNull($response->data);
+    }
+
+    /**
+     * Tests that /v1/mailing-list/subscription succeeds
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testPutByIdSuccess()
+    {
+        $url = $this->putUrl;
+        $userId = UsersFixture::SUBSCRIBED_USER_WITH_ASSOCIATION;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $this->put($url, $this->updatedData);
+        $this->assertResponseOk();
+
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable->get($userId);
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        /** @var MailingList $subscription */
+        $subscription = $mailingListTable->get($user->mailing_list_id, ['contain' => ['Categories']]);
+        $this->assertDataUpdated($subscription);
+
+        $this->put($url, $this->updatedDataAlt);
+        $this->assertResponseOk();
+        $subscription = $mailingListTable->get($user->mailing_list_id, ['contain' => ['Categories']]);
+        $this->assertDataAltUpdated($subscription);
+    }
+
+    /**
+     * Tests that /v1/mailing-list/subscription succeeds
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testPutByEmailSuccess()
+    {
+        $url = $this->putUrl;
+        $userId = UsersFixture::SUBSCRIBED_USER_WITHOUT_ASSOCIATION;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $this->put($url, $this->updatedData);
+        $this->assertResponseOk();
+
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        /** @var User $user */
+        $user = $usersTable->get($userId);
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        /** @var MailingList $subscription */
+        $subscription = $mailingListTable->get($user->mailing_list_id, ['contain' => ['Categories']]);
+        $this->assertDataUpdated($subscription);
+    }
+
+    /**
+     * Tests that /v1/mailing-list/subscription fails for non-post requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testPutFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->putUrl, ['post', 'get', 'patch', 'delete']);
+    }
+
+    /**
+     * Runs assertions on the default set of request data
+     *
+     * @param MailingList $subscription Subscription entity assumed to have just been updated
+     * @return void
+     */
+    private function assertDataUpdated($subscription)
+    {
+        $this->assertNotEmpty($subscription, 'Subscription entity is empty');
+        $this->assertEquals('updated' . $this->fixedEmail, $subscription->email);
+        $this->assertFalse((bool)$subscription->weekly);
+        $this->assertFalse((bool)$subscription->all_categories);
+        foreach ($this->days as $day) {
+            $this->assertTrue((bool)$subscription->{"daily_$day"});
+        }
+        $expectedCategories = $this->updatedData['category_ids'];
+        $actualCategories = Hash::extract((array)$subscription->categories, '{n}.id');
+        sort($expectedCategories);
+        sort($actualCategories);
+        $this->assertEquals($expectedCategories, $actualCategories, 'Associated categories were not updated');
+    }
+
+    /**
+     * Runs assertions on the default set of request data
+     *
+     * @param MailingList $subscription Subscription entity assumed to have just been updated
+     * @return void
+     */
+    private function assertDataAltUpdated($subscription)
+    {
+        $this->assertNotEmpty($subscription, 'Subscription entity is empty');
+        $this->assertTrue((bool)$subscription->weekly);
+        $this->assertTrue((bool)$subscription->all_categories);
+        foreach ($this->days as $day) {
+            $this->assertFalse((bool)$subscription->{"daily_$day"});
+        }
+        $expectedCategories = $this->updatedDataAlt['category_ids'];
+        $actualCategories = Hash::extract((array)$subscription->categories, '{n}.id');
+        sort($expectedCategories);
+        sort($actualCategories);
+        $this->assertEquals($expectedCategories, $actualCategories, 'Associated categories were not updated');
+    }
+
+    /**
+     * Tests that PUT /v1/mailing-list/subscription fails if user is not logged in
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testPutFailNotLoggedIn()
+    {
+        $url = $this->putUrl;
+
+        $this->put($url, $this->updatedData);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that /v1/mailing-list/subscription fails for missing required parameters
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testPutFailMissingParameters()
+    {
+        $url = $this->putUrl;
+        $userId = UsersFixture::SUBSCRIBED_USER_WITH_ASSOCIATION;
+        $url['?']['userToken'] = $this->getUserToken($userId);
+
+        $data = $this->updatedData;
+        unset($data['email']);
+        $this->put($url, $data);
+        $this->assertResponseError("No error returned for missing email");
+
+        $data = $this->updatedData;
+        foreach ($this->days as $day) {
+            unset($data["daily_$day"]);
+        }
+        unset($data['daily']);
+        unset($data['weekly']);
+        $this->put($url, $data);
+        $this->assertResponseError("No error returned for missing frequency selections");
+
+        $data = $this->updatedData;
+        unset($data['category_ids']);
+        unset($data['all_categories']);
+        $this->put($url, $data);
+        $this->assertResponseError("No error returned for missing category selections");
     }
 }
