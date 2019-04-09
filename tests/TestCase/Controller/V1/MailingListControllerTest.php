@@ -766,6 +766,7 @@ class MailingListControllerTest extends ApplicationTest
         $url = $this->deleteUrl;
         $url['?']['userToken'] = $this->getUserToken($userId);
         $this->delete($url);
+        $this->assertResponseCode(204);
 
         $this->assertFalse(
             $mailingListTable->exists(['id' => $subscriptionId]),
