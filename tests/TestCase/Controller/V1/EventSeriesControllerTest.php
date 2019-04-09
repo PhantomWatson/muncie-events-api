@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\TestCase\ApplicationTest;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
 /**
@@ -9,6 +10,8 @@ use Cake\Utility\Hash;
  */
 class EventSeriesControllerTest extends ApplicationTest
 {
+    private $deleteUrl;
+
     /**
      * Fixtures
      *
@@ -25,6 +28,24 @@ class EventSeriesControllerTest extends ApplicationTest
         'app.Tags',
         'app.Users'
     ];
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $seriesId = 1;
+        $userId = 1;
+        $this->deleteUrl = [
+            'prefix' => 'v1',
+            'controller' => 'EventSeries',
+            'action' => 'delete',
+            $seriesId,
+            '?' => [
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken($userId)
+            ]
+        ];
+    }
 
     /**
      * Tests that /event-series/{eventSeriesId} returns a successful response
@@ -88,6 +109,51 @@ class EventSeriesControllerTest extends ApplicationTest
             $seriesId,
             '?' => ['apikey' => $this->getApiKey()]
         ]);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that DELETE /v1/event-series/{eventSeriesId} deletes an event returns a successful response
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteSuccess()
+    {
+        $seriesId = 1;
+
+        $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
+        $this->assertTrue($seriesTable->exists(['id' => $seriesId]));
+
+        $this->delete($this->deleteUrl);
+        $this->assertResponseCode(204);
+
+        $this->assertFalse($seriesTable->exists(['id' => $seriesId]));
+    }
+
+    /**
+     * Tests that DELETE /v1/event-series/{eventSeriesId} fails for invalid methods
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->deleteUrl, ['patch', 'put', 'post', 'get']);
+    }
+
+    /**
+     * Tests that DELETE /v1/event-series/{eventSeriesId} fails for invalid series IDs
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailBadSeriesId()
+    {
+        $seriesId = 999;
+        $url = $this->deleteUrl;
+        $url[0] = $seriesId;
+        $this->delete($url);
         $this->assertResponseError();
     }
 }

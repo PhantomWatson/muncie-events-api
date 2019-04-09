@@ -844,7 +844,7 @@ paths:
     get:
       tags:
         - events
-      summary: Get upcoming events in the specified category
+      summary: Get upcoming events in the specified series
       description: Returned events are ordered in descending chronological order (most recent to least recent)
       operationId: getEventSeries
       parameters:
@@ -922,6 +922,68 @@ paths:
                             detail:
                               type: string
                               example: 'Series with ID {eventSeriesId} not found'
+      security:
+        - api_key: []
+    delete:
+      tags:
+        - events
+      summary: Deletes the specified event series
+      description: Returned events are ordered in descending chronological order (most recent to least recent)
+      operationId: deleteEventSeries
+      parameters:
+        - name: eventSeriesId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          description: Event series ID
+          example: 123
+        - name: userToken
+          in: query
+          schema:
+            type: string
+          required: true
+          example: randomStringOf32Characters
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: "Event series ID is required / Series not found"
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: "User token missing / You don't have permission"
       security:
         - api_key: []
   /image:
