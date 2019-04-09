@@ -38,11 +38,6 @@ class ContactController extends ApiController
         ];
         $this->getMailer('Contact')->send('contact', [$data]);
 
-        $this->response = $this->response->withStatus(204, 'No Content');
-
-        /* Bypass JsonApi plugin to render blank response,
-         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
-        $this->viewBuilder()->setClassName('Json');
-        $this->set('_serialize', true);
+        $this->set204Response();
     }
 }

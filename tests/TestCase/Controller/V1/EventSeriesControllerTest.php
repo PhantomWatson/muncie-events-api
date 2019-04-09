@@ -11,6 +11,7 @@ use Cake\Utility\Hash;
 class EventSeriesControllerTest extends ApplicationTest
 {
     private $deleteUrl;
+    private $viewUrl;
 
     /**
      * Fixtures
@@ -29,6 +30,11 @@ class EventSeriesControllerTest extends ApplicationTest
         'app.Users'
     ];
 
+    /**
+     * Sets up this series of tests
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
@@ -45,10 +51,19 @@ class EventSeriesControllerTest extends ApplicationTest
                 'userToken' => $this->getUserToken($userId)
             ]
         ];
+
+        $seriesId = 1;
+        $this->viewUrl = [
+            'prefix' => 'v1',
+            'controller' => 'EventSeries',
+            'action' => 'view',
+            $seriesId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
     }
 
     /**
-     * Tests that /event-series/{eventSeriesId} returns a successful response
+     * Tests that GET /v1/event-series/{eventSeriesId} returns a successful response
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -56,45 +71,31 @@ class EventSeriesControllerTest extends ApplicationTest
     public function testViewSuccess()
     {
         $seriesId = 1;
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'EventSeries',
-            'action' => 'view',
-            $seriesId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->viewUrl);
         $this->assertResponseOk();
 
         $response = json_decode($this->_response->getBody());
         $this->assertNotEmpty($response->links->first);
         $this->assertNotEmpty($response->links->last);
         $this->assertNotEmpty($response->data);
-        $seriesIds = Hash::extract($response->data, '{n}.relationships.series.data.id');
-        $seriesIds = array_unique($seriesIds);
-        $this->assertEquals([$seriesId], $seriesIds);
+        $returnedSeriesIds = Hash::extract($response->data, '{n}.relationships.series.data.id');
+        $returnedSeriesIds = array_unique($returnedSeriesIds);
+        $this->assertEquals([$seriesId], $returnedSeriesIds);
     }
 
     /**
-     * Tests that /event-series/{eventSeriesId} fails for invalid methods
+     * Tests that GET /v1/event-series/{eventSeriesId} fails for invalid methods
      *
      * @return void
      * @throws \PHPUnit\Exception
      */
     public function testViewFailBadMethod()
     {
-        $seriesId = 1;
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'EventSeries',
-            'action' => 'view',
-            $seriesId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $this->assertDisallowedMethods($url, ['patch', 'put', 'post', 'delete']);
+        $this->assertDisallowedMethods($this->viewUrl, ['patch', 'put', 'post', 'delete']);
     }
 
     /**
-     * Tests that /event-series/{eventSeriesId} fails for invalid series IDs
+     * Tests that GET /v1/event-series/{eventSeriesId} fails for invalid series IDs
      *
      * @return void
      * @throws \PHPUnit\Exception
@@ -102,13 +103,9 @@ class EventSeriesControllerTest extends ApplicationTest
     public function testViewFailBadSeriesId()
     {
         $seriesId = 999;
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'EventSeries',
-            'action' => 'view',
-            $seriesId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $url = $this->viewUrl;
+        $url[0] = $seriesId;
+        $this->get($url);
         $this->assertResponseError();
     }
 
