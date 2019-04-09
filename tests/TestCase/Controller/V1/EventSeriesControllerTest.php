@@ -153,4 +153,32 @@ class EventSeriesControllerTest extends ApplicationTest
         $this->delete($url);
         $this->assertResponseError();
     }
+
+    /**
+     * Tests that DELETE /v1/event-series/{eventSeriesId} fails for missing user tokens
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailNoToken()
+    {
+        $url = $this->deleteUrl;
+        unset($url['?']['userToken']);
+        $this->delete($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that DELETE /v1/event-series/{eventSeriesId} fails for non-owners
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testDeleteFailNotOwner()
+    {
+        $url = $this->deleteUrl;
+        $url['?']['userToken'] = $this->getUserToken(2);
+        $this->delete($url);
+        $this->assertResponseError();
+    }
 }
