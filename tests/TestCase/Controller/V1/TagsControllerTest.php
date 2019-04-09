@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\V1;
 
+use App\Model\Table\TagsTable;
 use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
 use App\Test\TestCase\ApplicationTest;
@@ -11,6 +12,7 @@ use Cake\Utility\Hash;
  */
 class TagsControllerTest extends ApplicationTest
 {
+    private $autocompleteUrl;
     private $futureUrl;
     private $indexUrl;
     private $treeUrl;
@@ -65,6 +67,12 @@ class TagsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->autocompleteUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'autocomplete',
             '?' => ['apikey' => $this->getApiKey()]
         ];
     }
@@ -226,5 +234,151 @@ class TagsControllerTest extends ApplicationTest
     public function testIndexFailBadMethod()
     {
         $this->assertDisallowedMethods($this->indexUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete returns a successful response
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteSuccess()
+    {
+        $url = $this->autocompleteUrl;
+        $url['?']['term'] = 'tag';
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $responseTagIds = Hash::extract($response['data'], '{n}.id');
+
+        $tagIdsExpected = [
+            TagsFixture::TAG_WITH_EVENT,
+            TagsFixture::TAG_WITH_DIFFERENT_EVENT,
+            TagsFixture::TAG_ID_CHILD
+        ];
+        foreach ($tagIdsExpected as $tagId) {
+            $this->assertContains($tagId, $responseTagIds);
+        }
+
+        $tagIdsNotExpected = [
+            TagsFixture::TAG_ID_UNLISTED,
+            TagsTable::UNLISTED_GROUP_ID
+        ];
+        foreach ($tagIdsNotExpected as $tagId) {
+            $this->assertNotContains($tagId, $responseTagIds);
+        }
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete respects the optional limit parameter
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteLimit()
+    {
+        $url = $this->autocompleteUrl;
+        $url['?']['term'] = 'tag'; // This term would return at least three results if limit is unspecified
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        // Test that default limit is respected
+        $response = (array)json_decode($this->_response->getBody());
+        $responseTagCount = count($response['data']);
+        $this->assertLessThanOrEqual(10, $responseTagCount);
+        $this->assertGreaterThan(1, $responseTagCount, 'Not enough tags are returned to properly run test');
+
+        $url['?']['limit'] = $responseTagCount - 1;
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        // Test that manually specified limit is respected
+        $response = (array)json_decode($this->_response->getBody());
+        $this->assertEquals($url['?']['limit'], count($response['data']));
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete returns a success response code if no matching tags are found
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteEmptyResults()
+    {
+        $url = $this->autocompleteUrl;
+        $url['?']['term'] = 'string not present in any tag names';
+
+        $this->get($url);
+        $this->assertResponseOk();
+
+        $response = (array)json_decode($this->_response->getBody());
+        $responseTagCount = count($response['data']);
+        $this->assertEquals(0, $responseTagCount);
+    }
+
+    /**
+     * Tests that /v1/tags/autocomplete fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAutocompleteFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->autocompleteUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete fails if term is unspecified
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteFailMissingTerm()
+    {
+        $this->get($this->autocompleteUrl);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete fails if term parameter is present but empty
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteFailEmptyTerm()
+    {
+        $url = $this->autocompleteUrl;
+        $url['?']['term'] = '';
+
+        $this->get($url);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that GET /v1/tags/autocomplete fails if limit is non-numeric or less than one
+     *
+     * @throws \PHPUnit\Exception
+     * @return void
+     */
+    public function testAutocompleteFailInvalidLimit()
+    {
+        $url = $this->autocompleteUrl;
+        $url['?']['term'] = 'tag';
+
+        $badLimits = [
+            '',
+            'non-numeric',
+            '0',
+            '-5'
+        ];
+        foreach ($badLimits as $badLimit) {
+            $url['?']['limit'] = $badLimit;
+            $this->get($url);
+            $this->assertResponseError();
+        }
     }
 }

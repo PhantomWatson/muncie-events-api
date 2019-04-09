@@ -43,6 +43,8 @@ class TagsFixture extends TestFixture
     const TAG_NAME_UNLISTED = 'unlisted tag';
     const TAG_WITH_EVENT = 1;
     const TAG_WITH_DIFFERENT_EVENT = 2;
+    const TAG_ID_CHILD = 3;
+    const TAG_ID_UNLISTED = 4;
 
     /**
      * Records
@@ -73,7 +75,7 @@ class TagsFixture extends TestFixture
             'created' => '2017-11-20 22:39:12'
         ],
         [
-            'id' => 3,
+            'id' => self::TAG_ID_CHILD,
             'parent_id' => 1,
             'lft' => 2,
             'rght' => 3,
@@ -84,7 +86,7 @@ class TagsFixture extends TestFixture
             'created' => '2017-11-20 22:39:12'
         ],
         [
-            'id' => 4,
+            'id' => self::TAG_ID_UNLISTED,
             'parent_id' => null,
             'lft' => 7,
             'rght' => 8,

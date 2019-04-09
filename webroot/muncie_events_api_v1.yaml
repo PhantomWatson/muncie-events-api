@@ -1709,6 +1709,72 @@ paths:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
       security:
         - api_key: []
+  /tags/autocomplete:
+    get:
+      tags:
+        - tags
+      summary: Returns a set of selectable tags that match the provided search term in rough order of relevance
+      operationId: getTagsAutocomplete
+      parameters:
+        - name: term
+          in: query
+          schema:
+            type: string
+          description: 'A string to search for in tag names'
+          required: true
+          example: 'jazz'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: 'An optional maximum number of tags to return (defaults to 10 if unspecified)'
+          example: 20
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: tags
+                        id:
+                          type: integer
+                          format: int64
+                          example: 123
+                        attributes:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: art festivals
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 400
+                        detail:
+                          type: string
+                          example: "Search term missing / Invalid limit"
+      security:
+        - api_key: []
   /tags/future:
     get:
       tags:
