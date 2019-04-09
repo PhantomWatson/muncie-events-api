@@ -26,10 +26,10 @@ class TagSchema extends EntitySchema
      */
     public function getAttributes($tag, array $fieldKeysFilter = null): array
     {
-        $retval = [
-            'name' => $tag->name,
-            'selectable' => $tag->selectable
-        ];
+        $retval = ['name' => $tag->name];
+        if (isset($tag->selectable)) {
+            $retval['selectable'] = $tag->selectable;
+        }
 
         if (isset($tag->count)) {
             $retval['upcomingEventCount'] = $tag->count;

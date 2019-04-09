@@ -50,7 +50,7 @@ class TagsController extends ApiController
             if (!$tag['listed']) {
                 unset($tags[$k]);
             }
-            if ($tag['children']) {
+            if (isset($tag['children']) && $tag['children']) {
                 $tag['children'] = $this->filterOutHiddenTags($tag['children']);
             }
         }
@@ -119,6 +119,34 @@ class TagsController extends ApiController
             '_serialize' => ['tag'],
             '_include' => ['events'],
             'tag' => $tag
+        ]);
+    }
+
+    /**
+     * GET /v1/tags endpoint
+     *
+     * Returns all listed and selectable tags
+     *
+     * @return void
+     */
+    public function index()
+    {
+        $this->request->allowMethod('get');
+
+        $tags = $this->Tags
+            ->find()
+            ->select(['id', 'name'])
+            ->where([
+                'listed' => true,
+                'selectable' => true
+            ])
+            ->orderAsc('name')
+            ->toArray();
+
+        $this->set([
+            '_entities' => ['Tag'],
+            '_serialize' => ['tags'],
+            'tags' => $tags
         ]);
     }
 }

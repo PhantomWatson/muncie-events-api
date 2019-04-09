@@ -12,6 +12,7 @@ use Cake\Utility\Hash;
 class TagsControllerTest extends ApplicationTest
 {
     private $futureUrl;
+    private $indexUrl;
     private $treeUrl;
     private $viewUrl;
 
@@ -58,6 +59,12 @@ class TagsControllerTest extends ApplicationTest
             'controller' => 'Tags',
             'action' => 'view',
             TagsFixture::TAG_WITH_EVENT,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->indexUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Tags',
+            'action' => 'index',
             '?' => ['apikey' => $this->getApiKey()]
         ];
     }
@@ -185,5 +192,39 @@ class TagsControllerTest extends ApplicationTest
     public function testViewFailBadMethod()
     {
         $this->assertDisallowedMethods($this->viewUrl, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that GET /v1/tags/ returns the correct results
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testIndexSuccess()
+    {
+        $this->get($this->indexUrl);
+        $this->assertResponseOk();
+
+        $fixture = new TagsFixture();
+        $response = (array)json_decode($this->_response->getBody());
+        $responseTagIds = Hash::extract($response['data'], '{n}.id');
+        foreach ($fixture->records as $tag) {
+            if ($tag['listed'] && $tag['selectable']) {
+                $this->assertContains($tag['id'], $responseTagIds, 'Expected tag not in results');
+            } else {
+                $this->assertNotContains($tag['id'], $responseTagIds, 'Unlisted/unselectable tag found in results');
+            }
+        }
+    }
+
+    /**
+     * Tests that /v1/tags fails for non-GET requests
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testIndexFailBadMethod()
+    {
+        $this->assertDisallowedMethods($this->indexUrl, ['post', 'put', 'patch', 'delete']);
     }
 }

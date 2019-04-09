@@ -40,6 +40,7 @@ paths:
                         id:
                           type: integer
                           format: int64
+                          example: 123
                         attributes:
                           type: object
                           properties:
@@ -1026,6 +1027,7 @@ paths:
                       id:
                         type: integer
                         format: int64
+                        example: 123
                       attributes:
                         type: object
                         properties:
@@ -1601,6 +1603,7 @@ paths:
                         id:
                           type: integer
                           format: int64
+                          example: 123
                         attributes:
                           type: object
                           properties:
@@ -1666,6 +1669,46 @@ paths:
                               example: 'Invalid tag ID: {tagId}'
       security:
         - api_key: []
+  /tags:
+    get:
+      tags:
+        - tags
+      summary: Returns an alphabetical array of all selectable tags
+      operationId: getTags
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: tags
+                        id:
+                          type: integer
+                          format: int64
+                          example: 123
+                        attributes:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: art festivals
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
+      security:
+        - api_key: []
   /tags/future:
     get:
       tags:
@@ -1691,6 +1734,7 @@ paths:
                         id:
                           type: integer
                           format: int64
+                          example: 123
                         attributes:
                           type: object
                           properties:
@@ -1739,6 +1783,7 @@ paths:
                         id:
                           type: integer
                           format: int64
+                          example: 123
                         attributes:
                           type: object
                           properties:
@@ -1838,6 +1883,7 @@ paths:
                       id:
                         type: integer
                         format: int64
+                        example: 123
                       attributes:
                         type: object
                         properties:
@@ -2088,6 +2134,7 @@ paths:
                       id:
                         type: integer
                         format: int64
+                        example: 123
                       attributes:
                         type: object
                         properties:
@@ -2314,6 +2361,7 @@ paths:
                       id:
                         type: integer
                         format: int64
+                        example: 123
                       attributes:
                         type: object
                         properties:
@@ -2378,6 +2426,7 @@ components:
         id:
           type: integer
           format: int64
+          example: 123
         attributes:
           $ref: './docs/v1/attributes/EventAttributes.yaml'
         relationships:
