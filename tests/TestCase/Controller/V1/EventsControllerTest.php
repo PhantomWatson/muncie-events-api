@@ -815,7 +815,7 @@ class EventsControllerTest extends ApplicationTest
             $meridian = $startTime == '2:30' ? 'am' : 'pm';
             foreach (['start', 'end'] as $whichTime) {
                 $time = $whichTime == 'start' ? "2:30$meridian" : "3:30$meridian";
-                $expected = Event::getCorrectedTime($date, new FrozenTime($time));
+                $expected = Event::getDatetime($date, new FrozenTime($time));
                 $actual = $event->{"time_$whichTime"};
                 $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
             }
@@ -1110,7 +1110,7 @@ class EventsControllerTest extends ApplicationTest
     private function checkTimes($date, $data, $returnedEvent)
     {
         foreach (['start', 'end'] as $whichTime) {
-            $expected = Event::getCorrectedTime($date, new FrozenTime($data["time_$whichTime"]));
+            $expected = Event::getDatetime($date, new FrozenTime($data["time_$whichTime"]));
             $actual = $returnedEvent->{"time_$whichTime"};
             $this->assertEquals($expected, $actual, "Expected $whichTime time $expected was actually $actual");
         }

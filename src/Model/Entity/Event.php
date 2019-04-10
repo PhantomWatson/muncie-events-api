@@ -118,45 +118,18 @@ class Event extends Entity
     }
 
     /**
-     * Transforms the time into a full datetime object with correct UTC offset
+     * Returns a full datetime with correct UTC offset representing the provided time
      *
-     * @return string
-     * @throws \Exception
-     */
-    protected function _getTimeStart()
-    {
-        return self::getCorrectedTime($this->_properties['date'], $this->_properties['time_start']);
-    }
-
-    /**
-     * Transforms the time into a full datetime object with correct UTC offset
-     *
-     * @return string|null
-     * @throws \Exception
-     */
-    protected function _getTimeEnd()
-    {
-        if (isset($this->_properties['time_end'])) {
-            return self::getCorrectedTime($this->_properties['date'], $this->_properties['time_end']);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns a datetime, corrected for being a local time value stored as UTC
-     *
-     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is interpreted
-     * as "10:00:00+00:00", i.e. 10am in UTC. This returns such a time as "10:00:00+05:00" so that it's
-     * correctly interpreted and adds the correct year, month, and day information so a full RFC 3339
-     * string can be outputted.
+     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
+     * be assumed incorrectly to be UTC. This method returns a full RFC 3339 string with the correct timezone offset,
+     * year, month, and day, e.g. "2019-12-06T10:00:00+05:00".
      *
      * @param FrozenDate $date Date object
-     * @param FrozenTime|null $localTime Indiana time mistakenly represented as UTC
+     * @param FrozenTime|null $localTime Time object
      * @return string|null
      * @throws \Exception
      */
-    public static function getCorrectedTime($date, $localTime)
+    public static function getDatetime($date, $localTime)
     {
         if (!$localTime) {
             return null;

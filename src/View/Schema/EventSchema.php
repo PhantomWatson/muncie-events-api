@@ -27,6 +27,7 @@ class EventSchema extends EntitySchema
      * @param Event $entity Entity
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
+     * @throws \Exception
      */
     public function getAttributes($entity, array $fieldKeysFilter = null): array
     {
@@ -49,8 +50,8 @@ class EventSchema extends EntitySchema
             'category' => $categorySchema->getAttributes($entity->category),
             'series' => $entity->event_series ? $seriesSchema->getAttributes($entity->event_series) : null,
             'date' => $entity->date->format('Y-m-d'),
-            'time_start' => $entity->time_start,
-            'time_end' => $entity->time_end,
+            'time_start' => Event::getDatetime($entity->date, $entity->time_start),
+            'time_end' => Event::getDatetime($entity->date, $entity->time_end),
             'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,

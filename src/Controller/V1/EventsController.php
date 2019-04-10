@@ -332,6 +332,7 @@ class EventsController extends ApiController
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
         $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
+
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags']
         ]);
