@@ -99,6 +99,7 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     // MailingListController
     $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus']);
     $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate']);
+    $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
 
     // TagsController
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
