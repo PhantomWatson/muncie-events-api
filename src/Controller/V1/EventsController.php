@@ -318,6 +318,12 @@ class EventsController extends ApiController
      */
     private function addSingleEvent(array $data, $date, $user)
     {
+        if (!is_string($date)) {
+            throw new BadRequestException(sprintf(
+                "Error: Dates must be passed as strings (%s provided)",
+                gettype($data['date'])
+            ));
+        }
         $data['date'] = $this->parseDate($date);
         foreach (['time_start', 'time_end'] as $timeField) {
             if (!isset($data[$timeField])) {
@@ -446,6 +452,12 @@ class EventsController extends ApiController
 
         // Update event
         if (isset($data['date'])) {
+            if (!is_string($data['date'])) {
+                throw new BadRequestException(sprintf(
+                    "Error: Date must be passed as a string when editing an event (%s provided)",
+                    gettype($data['date'])
+                ));
+            }
             $data['date'] = $this->parseDate($data['date']);
         }
         foreach (['time_start', 'time_end'] as $timeField) {
