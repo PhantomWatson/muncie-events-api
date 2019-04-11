@@ -119,7 +119,9 @@ paths:
       tags:
         - events
       summary: Adds an event
-      description: Note that images must be added separately, and image IDs are then included in this request
+      description: "Notes: Requests with multiple dates create multiple events connected by a series, but only the
+        first event in that series is returned in the response. Images must be added separately. The IDs of added
+        images must then be included in requests to this endpoint in order to be associated with new events."
       operationId: postEvent
       parameters:
         - name: userToken
