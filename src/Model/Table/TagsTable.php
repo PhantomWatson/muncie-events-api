@@ -80,22 +80,19 @@ class TagsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('name')
-            ->allowEmpty('name');
+            ->allowEmptyString('name', true);
 
         $validator
             ->boolean('listed')
-            ->requirePresence('listed', 'create')
-            ->notEmpty('listed');
+            ->requirePresence('listed', 'create');
 
         $validator
             ->boolean('selectable')
-            ->requirePresence('selectable', 'create')
-            ->notEmpty('selectable');
+            ->requirePresence('selectable', 'create');
 
         return $validator;
     }

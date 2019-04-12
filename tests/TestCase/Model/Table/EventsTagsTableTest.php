@@ -42,8 +42,8 @@ class EventsTagsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EventsTags') ? [] : ['className' => EventsTagsTable::class];
-        $this->EventsTags = TableRegistry::get('EventsTags', $config);
+        $config = TableRegistry::getTableLocator()->exists('EventsTags') ? [] : ['className' => EventsTagsTable::class];
+        $this->EventsTags = TableRegistry::getTableLocator()->get('EventsTags', $config);
     }
 
     /**

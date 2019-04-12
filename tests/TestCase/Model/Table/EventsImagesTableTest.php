@@ -42,8 +42,8 @@ class EventsImagesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EventsImages') ? [] : ['className' => EventsImagesTable::class];
-        $this->EventsImages = TableRegistry::get('EventsImages', $config);
+        $config = TableRegistry::getTableLocator()->exists('EventsImages') ? [] : ['className' => EventsImagesTable::class];
+        $this->EventsImages = TableRegistry::getTableLocator()->get('EventsImages', $config);
     }
 
     /**

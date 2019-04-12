@@ -36,8 +36,8 @@ class EventSeriesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EventSeries') ? [] : ['className' => EventSeriesTable::class];
-        $this->EventSeries = TableRegistry::get('EventSeries', $config);
+        $config = TableRegistry::getTableLocator()->exists('EventSeries') ? [] : ['className' => EventSeriesTable::class];
+        $this->EventSeries = TableRegistry::getTableLocator()->get('EventSeries', $config);
     }
 
     /**

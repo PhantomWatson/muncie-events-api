@@ -58,13 +58,12 @@ class ApiCallsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('url')
             ->requirePresence('url', 'create')
-            ->notEmpty('url');
+            ->allowEmptyString('url', false, 'API call URL cannot be blank');
 
         return $validator;
     }

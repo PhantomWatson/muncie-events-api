@@ -146,7 +146,7 @@ class UsersControllerTest extends ApplicationTest
             'confirm_password' => 'password'
         ]);
         $this->assertRedirect();
-        $usersTable = TableRegistry::get('Users');
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
         $newUserCount = $usersTable->find()
             ->where(['email' => $email])
             ->count();
@@ -193,7 +193,7 @@ class UsersControllerTest extends ApplicationTest
         ]);
         $this->assertResponseOk();
 
-        $usersTable = TableRegistry::get('Users');
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
         $user = $usersTable->get($keylessUserId);
         $this->assertNotNull($user->api_key);
 

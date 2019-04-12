@@ -59,18 +59,16 @@ class EventSeriesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->integer('id');
 
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->notEmpty('title');
+            ->allowEmptyString('title', false);
 
         $validator
             ->boolean('published')
-            ->requirePresence('published', 'create')
-            ->notEmpty('published');
+            ->requirePresence('published', 'create');
 
         return $validator;
     }

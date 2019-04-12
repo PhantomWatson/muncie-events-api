@@ -42,8 +42,8 @@ class ImagesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Images') ? [] : ['className' => ImagesTable::class];
-        $this->Images = TableRegistry::get('Images', $config);
+        $config = TableRegistry::getTableLocator()->exists('Images') ? [] : ['className' => ImagesTable::class];
+        $this->Images = TableRegistry::getTableLocator()->get('Images', $config);
     }
 
     /**

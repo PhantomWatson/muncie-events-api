@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ApiCallsTable;
+use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -36,8 +37,8 @@ class ApiCallsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('ApiCalls') ? [] : ['className' => ApiCallsTable::class];
-        $this->ApiCalls = TableRegistry::get('ApiCalls', $config);
+        $config = TableRegistry::getTableLocator()->exists('ApiCalls') ? [] : ['className' => ApiCallsTable::class];
+        $this->ApiCalls = TableRegistry::getTableLocator()->get('ApiCalls', $config);
     }
 
     /**
