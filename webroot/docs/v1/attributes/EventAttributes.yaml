@@ -75,6 +75,7 @@ properties:
   url:
     type: string
     description: The URL for accessing this event outside of the API
+    example: 'https://muncieevents.com/event/123'
   published:
     type: boolean
     description: Unpublished events do not get displayed to the general public until approved by an administrator
