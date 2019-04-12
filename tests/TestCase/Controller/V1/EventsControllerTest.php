@@ -40,7 +40,12 @@ class EventsControllerTest extends ApplicationTest
 
     private $addingUserId = 1;
     private $addUrl;
+    private $categoryUrl;
     private $deleteUrl;
+    private $eventUrl;
+    private $futureUrl;
+    private $indexUrl;
+    private $searchUrl;
     private $updateUrl;
     private $updateEventId = 1;
     private $eventStringFields = [
@@ -92,6 +97,42 @@ class EventsControllerTest extends ApplicationTest
                 'userToken' => $this->getUserToken(1)
             ]
         ];
+        $this->futureUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $event = (new EventsFixture())->records[0];
+        $eventId = $event['id'];
+        $this->eventUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'view',
+            $eventId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->indexUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->searchUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
+        $this->categoryUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'category',
+            $categoryId,
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
     }
 
     /**
@@ -102,12 +143,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFutureSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->futureUrl);
         $this->assertResponseOk();
         $this->assertResponseContains('event today');
         $this->assertResponseContains('event tomorrow');
@@ -122,13 +158,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFutureFailBadMethod()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->futureUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -140,16 +170,10 @@ class EventsControllerTest extends ApplicationTest
     public function testIndexSuccessSpecificDate()
     {
         $date = date('Y-m-d', strtotime('yesterday'));
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'index',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'start' => $date,
-                'end' => $date
-            ]
-        ]);
+        $url = $this->indexUrl;
+        $url['?']['start'] = $date;
+        $url['?']['end'] = $date;
+        $this->get($url);
         $this->assertResponseOk();
         $this->assertResponseContains('event yesterday');
         $this->assertResponseNotContains('event today');
@@ -165,16 +189,10 @@ class EventsControllerTest extends ApplicationTest
     public function testIndexFailBadMethod()
     {
         $date = date('Y-m-d', strtotime('yesterday'));
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'index',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'start' => $date,
-                'end' => $date
-            ]
-        ];
+        $url = $this->indexUrl;
+        $url['?']['start'] = $date;
+        $url['?']['end'] = $date;
+        $this->get($url);
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
     }
 
@@ -184,14 +202,11 @@ class EventsControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testInvalidApiKey()
+    public function testFutureFailInvalidApiKey()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => ['apikey' => 'invalid key']
-        ]);
+        $url = $this->futureUrl;
+        $url['?']['apikey'] = 'invalid key';
+        $this->get($url);
         $this->assertResponseError();
     }
 
@@ -201,17 +216,11 @@ class EventsControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testWithOneTagName()
+    public function testFutureWithOneTagName()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'withTags' => [TagsFixture::TAG_NAME]
-            ]
-        ]);
+        $url = $this->futureUrl;
+        $url['?']['withTags'] = [TagsFixture::TAG_NAME];
+        $this->get($url);
         $this->assertResponseOk();
         $this->assertResponseContains('event with tag');
         $this->assertResponseNotContains('event without tag');
@@ -223,17 +232,12 @@ class EventsControllerTest extends ApplicationTest
      * @return void
      * @throws \PHPUnit\Exception
      */
-    public function testWithMultipleTagNames()
+    public function testFutureWithMultipleTagNames()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'withTags' => [TagsFixture::TAG_NAME, TagsFixture::TAG_NAME_ALTERNATE]
-            ]
-        ]);
+        $url = $this->futureUrl;
+        $url['?']['withTags'] = [TagsFixture::TAG_NAME, TagsFixture::TAG_NAME_ALTERNATE];
+        $this->get($url);
+
         $this->assertResponseOk();
         $this->assertResponseContains('event with tag');
         $this->assertResponseContains('event with different tag');
@@ -248,15 +252,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInTitleSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'search',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'q' => EventsFixture::SEARCHABLE_TITLE
-            ]
-        ]);
+        $url = $this->searchUrl;
+        $url['?']['q'] = EventsFixture::SEARCHABLE_TITLE;
+        $this->get($url);
         $this->assertResponseOk();
         $eventIds = $this->getResponseEventIds();
         $this->assertContains(
@@ -279,15 +277,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInDescriptionSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'search',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'q' => EventsFixture::SEARCHABLE_DESCRIPTION
-            ]
-        ]);
+        $url = $this->searchUrl;
+        $url['?']['q'] = EventsFixture::SEARCHABLE_DESCRIPTION;
+        $this->get($url);
         $this->assertResponseOk();
         $eventIds = $this->getResponseEventIds();
         $this->assertContains(
@@ -310,15 +302,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInLocationSuccess()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'search',
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'q' => EventsFixture::SEARCHABLE_LOCATION
-            ]
-        ]);
+        $url = $this->searchUrl;
+        $url['?']['q'] = EventsFixture::SEARCHABLE_LOCATION;
+        $this->get($url);
         $this->assertResponseOk();
         $eventIds = $this->getResponseEventIds();
         $this->assertContains(
@@ -341,12 +327,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchFailMissingParam()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'search',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->searchUrl);
         $this->assertResponseError();
         $response = json_decode($this->_response->getBody());
         $errorMsg = $response->errors[0]->detail;
@@ -361,13 +342,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchFailBadMethod()
     {
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'search',
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->searchUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -378,20 +353,14 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testCategorySuccess()
     {
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'category',
-            $categoryId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->categoryUrl);
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
         $this->assertEquals(
             [$categoryId],
             $responseCategoryIds,
@@ -407,16 +376,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testCategoryFailBadMethod()
     {
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
-        $url = [
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'category',
-            $categoryId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ];
-        $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->categoryUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
@@ -427,23 +387,16 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testCategoryWithTagSuccess()
     {
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'category',
-            $categoryId,
-            '?' => [
-                'apikey' => $this->getApiKey(),
-                'withTags' => [TagsFixture::TAG_NAME]
-            ]
-        ]);
+        $url = $this->categoryUrl;
+        $url['?']['withTags'] = [TagsFixture::TAG_NAME];
+        $this->get($url);
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
+        $category = (new CategoriesFixture())->records[0];
+        $categoryId = $category['id'];
         $this->assertEquals(
             [$categoryId],
             $responseCategoryIds,
@@ -462,21 +415,15 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testEventSuccess()
     {
-        $event = (new EventsFixture())->records[0];
-        $eventId = $event['id'];
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'view',
-            $eventId,
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->eventUrl);
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
         $eventCount = count($response['data']);
         $this->assertEquals(1, $eventCount, "Expected one event to be returned, got $eventCount");
 
+        $event = (new EventsFixture())->records[0];
+        $eventId = $event['id'];
         $this->assertEquals($eventId, $response['data']->id, 'Unexpected event ID returned');
     }
 
@@ -488,12 +435,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testEventFailIdMissing()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'view',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $url = $this->eventUrl;
+        unset($url[0]);
+        $this->get($url);
         $this->assertResponseError();
     }
 
@@ -505,13 +449,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testEventFailInvalidId()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'view',
-            $this->getOutOfRangeId(),
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $url = $this->eventUrl;
+        $url[0] = $this->getOutOfRangeId();
+        $this->get($url);
         $this->assertResponseError();
     }
 
@@ -522,12 +462,7 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testFutureEventFields()
     {
-        $this->get([
-            'prefix' => 'v1',
-            'controller' => 'Events',
-            'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
-        ]);
+        $this->get($this->futureUrl);
 
         $response = json_decode($this->_response->getBody(), true);
         $event = $response['data'][0]['attributes'];
