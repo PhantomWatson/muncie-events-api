@@ -1,9 +1,10 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * @var AppView $this
  * @var string $email
  * @var string $resetUrl
  */
+use App\View\AppView;
 ?>
 <?= $email ?>,
 

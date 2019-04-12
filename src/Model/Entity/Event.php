@@ -10,6 +10,7 @@ use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use DateTime;
+use Exception;
 
 /**
  * Event Entity
@@ -23,22 +24,22 @@ use DateTime;
  * @property int $user_id
  * @property int $category_id
  * @property int $series_id
- * @property \Cake\I18n\FrozenDate $date
- * @property \Cake\I18n\FrozenTime $time_start
- * @property \Cake\I18n\FrozenTime|null $time_end
+ * @property FrozenDate $date
+ * @property FrozenTime $time_start
+ * @property FrozenTime|null $time_end
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
  * @property bool $published
  * @property int $approved_by
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  *
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Category $category
- * @property \App\Model\Entity\EventSeries $event_series
- * @property \App\Model\Entity\Image[] $images
- * @property \App\Model\Entity\Tag[] $tags
+ * @property User $user
+ * @property Category $category
+ * @property EventSeries $event_series
+ * @property Image[] $images
+ * @property Tag[] $tags
  */
 class Event extends Entity
 {
@@ -127,7 +128,7 @@ class Event extends Entity
      * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Time object
      * @return string|null
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getDatetime($date, $localTime)
     {

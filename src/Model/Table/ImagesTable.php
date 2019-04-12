@@ -2,10 +2,15 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Image;
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Filesystem\File;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,18 +18,18 @@ use Cake\Validation\Validator;
 /**
  * Images Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsToMany $Events
+ * @property UsersTable|BelongsTo $Users
+ * @property EventsTable|BelongsToMany $Events
  *
  * @method Image get($primaryKey, $options = [])
  * @method Image newEntity($data = null, array $options = [])
  * @method Image[] newEntities(array $data, array $options = [])
- * @method Image|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method Image patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method Image|bool save(EntityInterface $entity, $options = [])
+ * @method Image patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method Image[] patchEntities($entities, array $data, array $options = [])
  * @method Image findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class ImagesTable extends Table
 {
@@ -59,8 +64,8 @@ class ImagesTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -78,8 +83,8 @@ class ImagesTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {
@@ -132,10 +137,10 @@ class ImagesTable extends Table
      *
      * @param Event $event CakePHP event object
      * @param Image $image Image entity
-     * @param \ArrayObject $options Options array
+     * @param ArrayObject $options Options array
      * @return void
      */
-    public function afterDelete(Event $event, Image $image, \ArrayObject $options)
+    public function afterDelete(Event $event, Image $image, ArrayObject $options)
     {
         if (!$image->filename) {
             return;

@@ -2,13 +2,14 @@
 namespace App\Error;
 
 use Cake\Error\ExceptionRenderer;
+use Cake\Http\Response;
 
 class AppExceptionRenderer extends ExceptionRenderer
 {
     /**
      * Renders the response for the exception.
      *
-     * @return \Cake\Http\Response The response to be sent.
+     * @return Response The response to be sent.
      */
     public function render()
     {

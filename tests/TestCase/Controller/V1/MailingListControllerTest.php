@@ -11,6 +11,7 @@ use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * MailingListController Test Case
@@ -178,7 +179,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe returns the correct results for a logged-in user
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessLoggedIn()
     {
@@ -201,7 +202,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe succeeds for an anonymous user using an unrecognized email address
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessAnonymousNewEmail()
     {
@@ -268,7 +269,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscribe fails for non-post requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailBadMethod()
     {
@@ -279,7 +280,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe fails if the email address is already subscribed
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailAlreadySubscribed()
     {
@@ -295,7 +296,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe fails if no email address is provided
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailMissingEmail()
     {
@@ -310,7 +311,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe fails if no category selection is provided
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailMissingCategorySelection()
     {
@@ -326,7 +327,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe fails if no frequency selection is provided
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailMissingFrequencySelection()
     {
@@ -346,7 +347,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe succeeds for daily instead of weekly emails
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessDaily()
     {
@@ -367,7 +368,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing on specific days
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessCustomDays()
     {
@@ -399,7 +400,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing on specific days and weekly
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessCustomDaysAndWeekly()
     {
@@ -429,7 +430,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that 'daily' overrides specific days for POST /v1/mailing-list/subscribe
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddDailyAndCustomDays()
     {
@@ -453,7 +454,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that POST /v1/mailing-list/subscribe succeeds for subscribing daily and weekly
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessDailyAndWeekly()
     {
@@ -476,7 +477,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that GET /mailing-list/subscription succeeds for a subscribed all-categories user with mailing_list_id set
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGetByIdSuccess()
     {
@@ -510,7 +511,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that GET /mailing-list/subscription succeeds for a some-categories subscriber with no mailing_list_id set
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGetByEmailSuccess()
     {
@@ -548,7 +549,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscription fails for non-post requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGetFailBadMethod()
     {
@@ -559,7 +560,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that GET /v1/mailing-list/subscription fails for requests without user tokens
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGetFailNoToken()
     {
@@ -571,7 +572,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that GET /v1/mailing-list/subscription fails for users who are not subscribed
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGetFailNotSubscribed()
     {
@@ -589,7 +590,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscription succeeds
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testPutByIdSuccess()
     {
@@ -618,7 +619,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscription succeeds
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testPutByEmailSuccess()
     {
@@ -642,7 +643,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscription fails for non-post requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testPutFailBadMethod()
     {
@@ -695,7 +696,7 @@ class MailingListControllerTest extends ApplicationTest
     /**
      * Tests that PUT /v1/mailing-list/subscription fails if user is not logged in
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testPutFailNotLoggedIn()
@@ -710,7 +711,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that /v1/mailing-list/subscription fails for missing required parameters
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testPutFailMissingParameters()
     {
@@ -743,7 +744,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that DELETE /v1/mailing-list/subscription succeeds
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteSuccess()
     {
@@ -785,7 +786,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that delete endpoint fails for non-DELETE requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailBadMethod()
     {
@@ -796,7 +797,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that unsubscribe endpoint fails if the user is not subscribed
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailAlreadyUnsubscribed()
     {
@@ -811,7 +812,7 @@ class MailingListControllerTest extends ApplicationTest
      * Tests that DELETE /v1/mailing-list/subscription fails for requests without user tokens
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailNoToken()
     {

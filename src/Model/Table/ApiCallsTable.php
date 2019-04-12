@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\ApiCall;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -8,17 +12,17 @@ use Cake\Validation\Validator;
 /**
  * ApiCalls Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property UsersTable|BelongsTo $Users
  *
- * @method \App\Model\Entity\ApiCall get($primaryKey, $options = [])
- * @method \App\Model\Entity\ApiCall newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\ApiCall[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ApiCall|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ApiCall patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\ApiCall[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\ApiCall findOrCreate($search, callable $callback = null, $options = [])
+ * @method ApiCall get($primaryKey, $options = [])
+ * @method ApiCall newEntity($data = null, array $options = [])
+ * @method ApiCall[] newEntities(array $data, array $options = [])
+ * @method ApiCall|bool save(EntityInterface $entity, $options = [])
+ * @method ApiCall patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method ApiCall[] patchEntities($entities, array $data, array $options = [])
+ * @method ApiCall findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class ApiCallsTable extends Table
 {
@@ -48,8 +52,8 @@ class ApiCallsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -69,8 +73,8 @@ class ApiCallsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

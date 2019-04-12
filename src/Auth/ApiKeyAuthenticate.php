@@ -16,7 +16,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     /**
      * Constructor method
      *
-     * @param \Cake\Controller\ComponentRegistry $registry The Component registry used on this request.
+     * @param ComponentRegistry $registry The Component registry used on this request.
      * @param array $config Array of config to use.
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
@@ -39,7 +39,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     /**
      * Get a user based on information in the request
      *
-     * @param \Cake\Http\ServerRequest $request Request object.
+     * @param ServerRequest $request Request object.
      * @return mixed Either false or an array of user information
      */
     public function getUser(ServerRequest $request)
@@ -64,8 +64,8 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * - Cake\Http\Response - A response object, which will cause AuthComponent to
      *   simply return that response.
      *
-     * @param \Cake\Http\ServerRequest $request A request object.
-     * @param \Cake\Http\Response $response A response object.
+     * @param ServerRequest $request A request object.
+     * @param Response $response A response object.
      * @return void
      */
     public function unauthenticated(ServerRequest $request, Response $response)

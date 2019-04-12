@@ -14,7 +14,7 @@ class MailingListTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\MailingListTable
+     * @var MailingListTable
      */
     public $MailingList;
 

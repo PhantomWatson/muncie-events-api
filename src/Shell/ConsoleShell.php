@@ -64,7 +64,7 @@ class ConsoleShell extends Shell
     /**
      * Display help for this console.
      *
-     * @return \Cake\Console\ConsoleOptionParser
+     * @return ConsoleOptionParser
      */
     public function getOptionParser()
     {

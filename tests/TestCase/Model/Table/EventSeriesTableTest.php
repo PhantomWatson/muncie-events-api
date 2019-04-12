@@ -14,7 +14,7 @@ class EventSeriesTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\EventSeriesTable
+     * @var EventSeriesTable
      */
     public $EventSeries;
 

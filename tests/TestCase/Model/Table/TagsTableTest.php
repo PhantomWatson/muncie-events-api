@@ -14,7 +14,7 @@ class TagsTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TagsTable
+     * @var TagsTable
      */
     public $Tags;
 

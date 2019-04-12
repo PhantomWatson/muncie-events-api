@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Controller;
 use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
+use PHPUnit\Exception;
 
 /**
  * UsersControllerTest class
@@ -40,7 +41,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests logging in
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGoodLogin()
     {
@@ -71,7 +72,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests an incorrect login
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testBadLogin()
     {
@@ -94,7 +95,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests logout
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testLogout()
     {
@@ -126,7 +127,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests register method
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRegister()
     {
@@ -156,7 +157,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests retrieval of a stored API key
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewApiKey()
     {
@@ -177,7 +178,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests generation of an API key
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testGenerateApiKey()
     {

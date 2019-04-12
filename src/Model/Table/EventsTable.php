@@ -1,10 +1,15 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Event;
 use App\Model\Entity\Tag;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -13,21 +18,21 @@ use Cake\Validation\Validator;
 /**
  * Events Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\CategoriesTable|\Cake\ORM\Association\BelongsTo $Categories
- * @property \App\Model\Table\EventSeriesTable|\Cake\ORM\Association\BelongsTo $EventSeries
- * @property \App\Model\Table\ImagesTable|\Cake\ORM\Association\BelongsToMany $Images
- * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\BelongsToMany $Tags
+ * @property UsersTable|BelongsTo $Users
+ * @property CategoriesTable|BelongsTo $Categories
+ * @property EventSeriesTable|BelongsTo $EventSeries
+ * @property ImagesTable|BelongsToMany $Images
+ * @property TagsTable|BelongsToMany $Tags
  *
- * @method \App\Model\Entity\Event get($primaryKey, $options = [])
- * @method \App\Model\Entity\Event newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Event[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Event|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Event patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Event[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Event findOrCreate($search, callable $callback = null, $options = [])
+ * @method Event get($primaryKey, $options = [])
+ * @method Event newEntity($data = null, array $options = [])
+ * @method Event[] newEntities(array $data, array $options = [])
+ * @method Event|bool save(EntityInterface $entity, $options = [])
+ * @method Event patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Event[] patchEntities($entities, array $data, array $options = [])
+ * @method Event findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class EventsTable extends Table
 {
@@ -74,8 +79,8 @@ class EventsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -146,8 +151,8 @@ class EventsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

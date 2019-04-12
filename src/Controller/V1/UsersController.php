@@ -11,6 +11,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use Exception;
 
 /**
  * Class UsersController
@@ -293,7 +294,7 @@ class UsersController extends ApiController
      * @return void
      * @throws BadRequestException
      * @throws MethodNotAllowedException
-     * @throws \Exception
+     * @throws Exception
      */
     public function events($userId)
     {

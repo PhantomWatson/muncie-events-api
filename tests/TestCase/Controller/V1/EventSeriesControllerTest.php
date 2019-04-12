@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Controller\V1;
 use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * EventSeriesControllerTest class
@@ -66,7 +67,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that GET /v1/event-series/{eventSeriesId} returns a successful response
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewSuccess()
     {
@@ -87,7 +88,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that GET /v1/event-series/{eventSeriesId} fails for invalid methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewFailBadMethod()
     {
@@ -98,7 +99,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that GET /v1/event-series/{eventSeriesId} fails for invalid series IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewFailBadSeriesId()
     {
@@ -113,7 +114,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that DELETE /v1/event-series/{eventSeriesId} deletes an event returns a successful response
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteSuccess()
     {
@@ -132,7 +133,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that DELETE /v1/event-series/{eventSeriesId} fails for invalid methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailBadMethod()
     {
@@ -143,7 +144,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that DELETE /v1/event-series/{eventSeriesId} fails for invalid series IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailBadSeriesId()
     {
@@ -158,7 +159,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that DELETE /v1/event-series/{eventSeriesId} fails for missing user tokens
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailNoToken()
     {
@@ -172,7 +173,7 @@ class EventSeriesControllerTest extends ApplicationTest
      * Tests that DELETE /v1/event-series/{eventSeriesId} fails for non-owners
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailNotOwner()
     {

@@ -14,6 +14,7 @@
 namespace App\View;
 
 use Cake\View\View;
+use Recaptcha\View\Helper\RecaptchaHelper;
 
 /**
  * Application View
@@ -21,6 +22,7 @@ use Cake\View\View;
  * Your application’s default view class
  *
  * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
+ * @property RecaptchaHelper $Recaptcha
  */
 class AppView extends View
 {

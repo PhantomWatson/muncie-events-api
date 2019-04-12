@@ -3,6 +3,7 @@ namespace App\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Exception;
 
 /**
  * PagesControllerTest class
@@ -28,7 +29,7 @@ class PagesControllerTest extends TestCase
      * testMultipleGet method
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testMultipleGet()
     {
@@ -42,7 +43,7 @@ class PagesControllerTest extends TestCase
      * Tests HTTP requests being redirected to HTTPS
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRedirectToHttps()
     {
@@ -60,7 +61,7 @@ class PagesControllerTest extends TestCase
      * Tests /docs/v1
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDocsV1()
     {

@@ -14,7 +14,7 @@ class EventsTagsTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\EventsTagsTable
+     * @var EventsTagsTable
      */
     public $EventsTags;
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -9,9 +10,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property string $url
- * @property \Cake\I18n\FrozenTime $created
+ * @property FrozenTime $created
  *
- * @property \App\Model\Entity\User $user
+ * @property User $user
  */
 class ApiCall extends Entity
 {

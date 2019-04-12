@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Controller\V1;
 use App\Model\Entity\Image;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
+use PHPUnit\Exception;
 
 /**
  * ImagesControllerTest class
@@ -75,7 +76,7 @@ class ImagesControllerTest extends ApplicationTest
      * Tests that a valid call to POST /v1/images returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccess()
     {
@@ -88,7 +89,7 @@ class ImagesControllerTest extends ApplicationTest
      * Uploads an image specified by file type and asserts a successful result
      *
      * @param string $extension Extension with dot, e.g. '.jpg'
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function checkUploadByExtension($extension)
     {
@@ -169,7 +170,7 @@ class ImagesControllerTest extends ApplicationTest
      * Tests that /image fails when user token is missing or invalid
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailBadToken()
     {
@@ -187,7 +188,7 @@ class ImagesControllerTest extends ApplicationTest
      * Tests that /image fails for non-post requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailBadMethod()
     {
@@ -198,7 +199,7 @@ class ImagesControllerTest extends ApplicationTest
      * Tests that an upload fails if the file isn't an image
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailNotImage()
     {
@@ -215,7 +216,7 @@ class ImagesControllerTest extends ApplicationTest
      * Tests that an upload fails if no image is uploaded
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailNoImage()
     {

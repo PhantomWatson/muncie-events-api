@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\EventsTag;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -8,16 +11,16 @@ use Cake\Validation\Validator;
 /**
  * EventsTags Model
  *
- * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
- * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\BelongsTo $Tags
+ * @property EventsTable|BelongsTo $Events
+ * @property TagsTable|BelongsTo $Tags
  *
- * @method \App\Model\Entity\EventsTag get($primaryKey, $options = [])
- * @method \App\Model\Entity\EventsTag newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\EventsTag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\EventsTag|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EventsTag patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\EventsTag[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\EventsTag findOrCreate($search, callable $callback = null, $options = [])
+ * @method EventsTag get($primaryKey, $options = [])
+ * @method EventsTag newEntity($data = null, array $options = [])
+ * @method EventsTag[] newEntities(array $data, array $options = [])
+ * @method EventsTag|bool save(EntityInterface $entity, $options = [])
+ * @method EventsTag patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method EventsTag[] patchEntities($entities, array $data, array $options = [])
+ * @method EventsTag findOrCreate($search, callable $callback = null, $options = [])
  */
 class EventsTagsTable extends Table
 {
@@ -48,8 +51,8 @@ class EventsTagsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -64,8 +67,8 @@ class EventsTagsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

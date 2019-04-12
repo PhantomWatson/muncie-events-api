@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -14,12 +15,12 @@ use Cake\ORM\Entity;
  * @property bool $listed
  * @property bool $selectable
  * @property int $user_id
- * @property \Cake\I18n\FrozenTime $created
+ * @property FrozenTime $created
  *
- * @property \App\Model\Entity\Tag $parent_tag
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Tag[] $child_tags
- * @property \App\Model\Entity\Event[] $events
+ * @property Tag $parent_tag
+ * @property User $user
+ * @property Tag[] $child_tags
+ * @property Event[] $events
  */
 class Tag extends Entity
 {

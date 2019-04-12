@@ -3,8 +3,12 @@ namespace App\Model\Table;
 
 use App\Model\Entity\User;
 use ArrayObject;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,21 +16,21 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\EventSeriesTable|\Cake\ORM\Association\HasMany $EventSeries
- * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\HasMany $Events
- * @property \App\Model\Table\ImagesTable|\Cake\ORM\Association\HasMany $Images
- * @property \App\Model\Table\TagsTable|\Cake\ORM\Association\HasMany $Tags
+ * @property EventSeriesTable|HasMany $EventSeries
+ * @property EventsTable|HasMany $Events
+ * @property ImagesTable|HasMany $Images
+ * @property TagsTable|HasMany $Tags
  *
  * @method User get($primaryKey, $options = [])
  * @method User newEntity($data = null, array $options = [])
  * @method User[] newEntities(array $data, array $options = [])
- * @method User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method User|bool save(EntityInterface $entity, $options = [])
+ * @method User patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method User[] patchEntities($entities, array $data, array $options = [])
  * @method User findOrCreate($search, callable $callback = null, $options = [])
- * @method \Cake\ORM\Query findByApiKey($apiKey)
+ * @method Query findByApiKey($apiKey)
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class UsersTable extends Table
 {
@@ -64,8 +68,8 @@ class UsersTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -121,8 +125,8 @@ class UsersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

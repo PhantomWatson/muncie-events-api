@@ -8,8 +8,10 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use Exception;
 
 class ApiController extends Controller
 {
@@ -25,7 +27,7 @@ class ApiController extends Controller
      * Initialization hook method
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function initialize()
     {
@@ -74,8 +76,8 @@ class ApiController extends Controller
     /**
      * Before render callback.
      *
-     * @param \Cake\Event\Event $event The beforeRender event.
-     * @return \Cake\Http\Response|null|void
+     * @param Event $event The beforeRender event.
+     * @return Response|null|void
      */
     public function beforeRender(Event $event)
     {

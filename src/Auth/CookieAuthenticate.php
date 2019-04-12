@@ -12,7 +12,7 @@ class CookieAuthenticate extends BaseAuthenticate
     /**
      * Constructor method
      *
-     * @param \Cake\Controller\ComponentRegistry $registry The Component registry used on this request.
+     * @param ComponentRegistry $registry The Component registry used on this request.
      * @param array $config Array of config to use.
      */
     public function __construct(ComponentRegistry $registry, array $config = [])

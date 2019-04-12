@@ -2,20 +2,24 @@
 namespace App\Controller;
 
 use App\Model\Table\UsersTable;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
+use Exception;
+use Recaptcha\Controller\Component\RecaptchaComponent;
 
 /**
  * Class UsersController
  * @package App\Controller
  * @property UsersTable $Users
+ * @property RecaptchaComponent $Recaptcha
  */
 class UsersController extends AppController
 {
     /**
      * Initialize method
      *
-     * @return \Cake\Http\Response|null
-     * @throws \Exception
+     * @return Response|null
+     * @throws Exception
      */
     public function initialize()
     {
@@ -45,7 +49,7 @@ class UsersController extends AppController
     /**
      * Register page
      *
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function register()
     {
@@ -91,7 +95,7 @@ class UsersController extends AppController
     /**
      * Method for /users/login
      *
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function login()
     {
@@ -135,7 +139,7 @@ class UsersController extends AppController
     /**
      * Method for /users/logout
      *
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function logout()
     {

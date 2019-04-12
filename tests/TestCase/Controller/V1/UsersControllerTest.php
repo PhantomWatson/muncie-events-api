@@ -10,6 +10,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestEmailTransport;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * UsersControllerTest class
@@ -95,7 +96,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/register succeeds with valid data
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRegisterSuccess()
     {
@@ -124,7 +125,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that new users can successfully subscribe to the mailing list as part of registration
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testRegisterAndSubscribe()
@@ -155,7 +156,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/register fails for non-POST requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRegisterFailBadMethod()
     {
@@ -166,7 +167,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/register fails with missing parameters
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRegisterFailMissingParams()
     {
@@ -188,7 +189,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/register fails for nonunique emails
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRegisterFailEmailNonunique()
     {
@@ -207,7 +208,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests successful response from /user/login
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testLoginSuccess()
     {
@@ -244,7 +245,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests error response from /user/login with bad login credentials
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testLoginFailBadCredentials()
     {
@@ -272,7 +273,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/login fails for non-POST requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testLoginFailBadMethod()
     {
@@ -290,7 +291,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests successful use of /user/{userId}
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewSuccess()
     {
@@ -318,7 +319,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/{userId} fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewFailBadMethod()
     {
@@ -338,7 +339,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/{userId} fails for invalid or missing user IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewFailInvalidUser()
     {
@@ -370,7 +371,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /v1/users/forgot-password returns the correct success status code
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testForgotPasswordSuccess()
     {
@@ -400,7 +401,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /v1/users/forgot-password fails for invalid email addresses
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testForgotPasswordFailUnknownUser()
     {
@@ -421,7 +422,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /v1/users/forgot-password fails if email address is missing or blank
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testForgotPasswordFailMissingEmail()
     {
@@ -444,7 +445,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/images returns the user's associated images
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testImagesSuccess()
     {
@@ -475,7 +476,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/images returns an empty array if the user has no associated images
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testImagesEmpty()
     {
@@ -498,7 +499,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/images fails when user token is missing or invalid
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testImagesFailBadToken()
     {
@@ -523,7 +524,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/images fails for non-get requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testImagesFailBadMethod()
     {
@@ -543,7 +544,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile succeeds with valid parameters
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileSuccess()
     {
@@ -563,7 +564,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile still succeeds with partial parameters
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testPartialUpdateProfileSuccess()
     {
@@ -588,7 +589,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/profile fails for invalid methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailBadMethod()
     {
@@ -598,7 +599,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile fails with no name/email data
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailNoParams()
     {
@@ -609,7 +610,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile fails with blank name/email
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailBlankParams()
     {
@@ -629,7 +630,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile fails with no user token
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailNoUser()
     {
@@ -646,7 +647,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile fails with an invalid user token
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailInvalidUser()
     {
@@ -663,7 +664,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/profile fails with non-unique email
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateProfileFailNonuniqueEmail()
     {
@@ -680,7 +681,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/password succeeds with valid parameters
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordSuccess()
     {
@@ -701,7 +702,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that /user/password fails for invalid methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordFailBadMethod()
     {
@@ -711,7 +712,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/password fails with no password data
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordFailNoParams()
     {
@@ -722,7 +723,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/password fails with blank password
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordFailBlankPassword()
     {
@@ -733,7 +734,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/password fails with no user token
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordFailNoUser()
     {
@@ -746,7 +747,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that PATCH /user/password fails with an invalid user token
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdatePasswordFailInvalidUser()
     {
@@ -759,7 +760,7 @@ class UsersControllerTest extends ApplicationTest
     /**
      * Tests that GET /user/{userId}/events succeeds
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventsSuccess()
     {
@@ -788,7 +789,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that GET /user/{userId}/events fails for invalid methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventsFailBadMethod()
     {
@@ -807,7 +808,7 @@ class UsersControllerTest extends ApplicationTest
      * Tests that GET /user/{userId}/events fails for invalid user IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventsFailBadUserId()
     {

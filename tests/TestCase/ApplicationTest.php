@@ -3,6 +3,7 @@ namespace App\Test\TestCase;
 
 use App\Application;
 use App\Test\Fixture\UsersFixture;
+use ArrayAccess;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\MiddlewareQueue;
@@ -11,6 +12,7 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * ApplicationTest class
@@ -88,7 +90,7 @@ class ApplicationTest extends TestCase
     /**
      * Returns a simple array of the IDs of all events returned in the JSON response to the last request
      *
-     * @return array|\ArrayAccess
+     * @return array|ArrayAccess
      */
     protected function getResponseEventIds()
     {
@@ -120,7 +122,7 @@ class ApplicationTest extends TestCase
      *
      * @param string|array $url URL of request
      * @param array $methods Array of lowercase request types, e.g. ['get', 'post']
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @throws InternalErrorException
      */
     protected function assertDisallowedMethods($url, $methods)

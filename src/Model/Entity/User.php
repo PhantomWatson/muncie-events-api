@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use App\Auth\LegacyPasswordHasher;
 use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -19,13 +20,13 @@ use Cake\ORM\Entity;
  * @property string|null $api_key
  * @property string|null $token
  * @property string|null $reset_password_hash
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  *
- * @property \App\Model\Entity\EventSeries[] $event_series
- * @property \App\Model\Entity\Event[] $events
- * @property \App\Model\Entity\Image[] $images
- * @property \App\Model\Entity\Tag[] $tags
+ * @property EventSeries[] $event_series
+ * @property Event[] $events
+ * @property Image[] $images
+ * @property Tag[] $tags
  */
 class User extends Entity
 {

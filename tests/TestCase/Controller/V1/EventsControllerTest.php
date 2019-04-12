@@ -15,6 +15,8 @@ use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
+use stdClass;
 
 /**
  * EventsControllerTest class
@@ -139,7 +141,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events/future returns only future events
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureSuccess()
     {
@@ -154,7 +156,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events/future fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureFailBadMethod()
     {
@@ -165,7 +167,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events?start={date}&end={date} returns only events on the specified date
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexSuccessSpecificDate()
     {
@@ -184,7 +186,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexFailBadMethod()
     {
@@ -200,7 +202,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that requests with invalid API keys are rejected
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureFailInvalidApiKey()
     {
@@ -214,7 +216,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests filtering in events by a single tag name
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureWithOneTagName()
     {
@@ -230,7 +232,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests filtering in events by multiple tag names
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureWithMultipleTagNames()
     {
@@ -248,7 +250,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an event is returned from /events/search if the search term is found in the event's title
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testSearchInTitleSuccess()
     {
@@ -273,7 +275,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an event is returned from /events/search if the search term is found in the event's description
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testSearchInDescriptionSuccess()
     {
@@ -298,7 +300,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an event is returned from /events/search if the search term is found in the event's location
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testSearchInLocationSuccess()
     {
@@ -323,7 +325,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an error is thrown if the search term is empty
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testSearchFailMissingParam()
     {
@@ -338,7 +340,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events/search fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testSearchFailBadMethod()
     {
@@ -349,7 +351,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that the correct events are returned from /events/category
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testCategorySuccess()
     {
@@ -372,7 +374,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /v1/events/category fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testCategoryFailBadMethod()
     {
@@ -383,7 +385,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that the correct events are returned from /events/category?withTags[]=...
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testCategoryWithTagSuccess()
     {
@@ -411,7 +413,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that the correct event is returned from /event/{eventID}
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventSuccess()
     {
@@ -431,7 +433,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /event fails with missing event ID
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventFailIdMissing()
     {
@@ -445,7 +447,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /event/{eventID} fails with invalid event ID
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testEventFailInvalidId()
     {
@@ -458,7 +460,7 @@ class EventsControllerTest extends ApplicationTest
     /**
      * Tests that all expected fields are included in events
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureEventFields()
     {
@@ -536,7 +538,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that a POST request to /event with full data for a single event succeeds
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @throws \Exception
      */
     public function testAddSingleEventSuccess()
@@ -594,7 +596,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that /event fails for non-post requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailBadMethod()
     {
@@ -605,7 +607,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event fails for invalid category IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailInvalidCategoryId()
     {
@@ -620,7 +622,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event fails for invalid image IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailInvalidImageId()
     {
@@ -635,7 +637,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event fails for invalid tag IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailInvalidTagId()
     {
@@ -650,7 +652,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event fails for missing or blank required data
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddFailMissingRequiredData()
     {
@@ -685,7 +687,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event still succeeds when optional data is blank or missing
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessMissingOptionalData()
     {
@@ -718,7 +720,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event still succeeds when using alternate time formats listed in the API docs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @throws \Exception
      */
     public function testAddSuccessAlternateTimeFormats()
@@ -761,7 +763,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event still succeeds when using alternate time formats listed in the API docs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @throws \Exception
      */
     public function testAddSuccessAnonUser()
@@ -777,7 +779,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event still succeeds when passing tag_names as a comma-delimited string
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessCommaDelimitedTags()
     {
@@ -800,7 +802,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event succeeds when passing multiple dates
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddSuccessMultipleDates()
     {
@@ -843,7 +845,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that POST /event does NOT auto-publish events for non-qualifying users
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAddNotAutoPublished()
     {
@@ -880,7 +882,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that a PATCH request to /event/{eventId} with full, valid data succeeds
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @throws \Exception
      */
     public function testUpdateFullEventSuccess()
@@ -979,7 +981,7 @@ class EventsControllerTest extends ApplicationTest
      * Performs assertions on a returned event's category data
      *
      * @param string $expectedCategoryName Expected category name
-     * @param Event $returnedEvent Event entity
+     * @param stdClass $returnedEvent Event entity
      * @return void
      */
     private function checkCategory($expectedCategoryName, $returnedEvent)
@@ -1024,7 +1026,7 @@ class EventsControllerTest extends ApplicationTest
     /**
      * Performs an assertion on a returned event's URL
      *
-     * @param \stdClass $response Response object
+     * @param stdClass $response Response object
      * @return void
      */
     private function checkUrl($response)
@@ -1055,7 +1057,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} fails for non-patch requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateFailBadMethod()
     {
@@ -1066,7 +1068,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} fails for invalid category IDs
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateFailInvalidEventId()
     {
@@ -1083,7 +1085,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} fails for missing user token
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateFailMissingUserToken()
     {
@@ -1099,7 +1101,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} fails for an invalid user token
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateFailInvalidUserToken()
     {
@@ -1115,7 +1117,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} fails for an unauthorized user token
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateFailUnauthUserToken()
     {
@@ -1134,7 +1136,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that PATCH /event/{eventId} can not update any protected fields
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testUpdateCantUpdateProtectedFields()
     {
@@ -1159,7 +1161,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an event can be successfully deleted
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteSuccess()
     {
@@ -1178,7 +1180,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that the method invoked for DELETE /event/{eventId} fails for non-delete requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailBadMethod()
     {
@@ -1189,7 +1191,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that an event cannot be deleted if the provided user is not its owner
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailNotOwner()
     {
@@ -1203,7 +1205,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that DELETE /event fails with missing event ID
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailIdMissing()
     {
@@ -1217,7 +1219,7 @@ class EventsControllerTest extends ApplicationTest
      * Tests that DELETE /event/{eventID} fails with invalid event ID
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testDeleteFailInvalidId()
     {

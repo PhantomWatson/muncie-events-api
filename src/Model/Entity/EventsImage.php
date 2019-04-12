@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -11,11 +12,11 @@ use Cake\ORM\Entity;
  * @property int $event_id
  * @property int $weight
  * @property string $caption
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  *
- * @property \App\Model\Entity\Image $image
- * @property \App\Model\Entity\Event $event
+ * @property Image $image
+ * @property Event $event
  */
 class EventsImage extends Entity
 {

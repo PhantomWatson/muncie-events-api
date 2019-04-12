@@ -2,6 +2,7 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\Page;
+use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
 
 class PageSchema extends EntitySchema
@@ -35,7 +36,7 @@ class PageSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param Entity $entity Entity
      * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array

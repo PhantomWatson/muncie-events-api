@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -10,11 +11,11 @@ use Cake\ORM\Entity;
  * @property string $title
  * @property int $user_id
  * @property bool $published
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  *
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Event[] $events
+ * @property User $user
+ * @property Event[] $events
  */
 class EventSeries extends Entity
 {

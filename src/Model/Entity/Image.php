@@ -4,6 +4,7 @@ namespace App\Model\Entity;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 
@@ -14,12 +15,12 @@ use Cake\ORM\TableRegistry;
  * @property string $filename
  * @property bool $is_flyer
  * @property int $user_id
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  * @property EventsImage $_joinData
  *
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Event[] $events
+ * @property User $user
+ * @property Event[] $events
  */
 class Image extends Entity
 {

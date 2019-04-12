@@ -14,7 +14,7 @@ class CategoriesTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CategoriesTable
+     * @var CategoriesTable
      */
     public $Categories;
 

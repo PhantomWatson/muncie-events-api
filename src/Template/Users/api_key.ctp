@@ -1,7 +1,9 @@
 <?php
+use App\View\AppView;
+use Cake\Routing\Router;
 /**
  * @var string $apiKey
- * @var \App\View\AppView $this
+ * @var AppView $this
  */
 ?>
 <?php if ($apiKey): ?>
@@ -20,7 +22,7 @@
                 Your API key must be included in the query string of every API call. For example:
                 <br />
                 <code>
-                    <?= \Cake\Routing\Router::url([
+                    <?= Router::url([
                         'prefix' => 'v1',
                         'controller' => 'Events',
                         'action' => 'future',

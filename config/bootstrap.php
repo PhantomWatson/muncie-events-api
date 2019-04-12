@@ -33,7 +33,6 @@ use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Core\Plugin;
 use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
@@ -42,6 +41,8 @@ use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\Utility\Security;
+use Detection\MobileDetect;
+use josegonzalez\Dotenv\Loader;
 
 /**
  * Read .env file if APP_NAME is not set.
@@ -50,7 +51,7 @@ use Cake\Utility\Security;
  * variables for configuration when deploying.
  */
 if (!env('APP_NAME')) {
-    $dotenv = new \josegonzalez\Dotenv\Loader([
+    $dotenv = new Loader([
         CONFIG . '.env',
         CONFIG . '.env.default'
     ]);
@@ -72,7 +73,7 @@ if (!env('APP_NAME')) {
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     exit($e->getMessage() . "\n");
 }
 
@@ -164,12 +165,12 @@ Security::setSalt(Configure::consume('Security.salt'));
  * Setup detectors for mobile and tablet.
  */
 ServerRequest::addDetector('mobile', function ($request) {
-    $detector = new \Detection\MobileDetect();
+    $detector = new MobileDetect();
 
     return $detector->isMobile();
 });
 ServerRequest::addDetector('tablet', function ($request) {
-    $detector = new \Detection\MobileDetect();
+    $detector = new MobileDetect();
 
     return $detector->isTablet();
 });

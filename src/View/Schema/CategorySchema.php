@@ -4,6 +4,7 @@ namespace App\View\Schema;
 use App\Model\Entity\Category;
 use App\Model\Table\EventsTable;
 use Cake\Core\Configure;
+use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use JsonApi\View\Schema\EntitySchema;
 
@@ -12,7 +13,7 @@ class CategorySchema extends EntitySchema
     /**
      * Returns the category's ID
      *
-     * @param \Cake\ORM\Entity $category Category entity
+     * @param Entity $category Category entity
      * @return string
      */
     public function getId($category): string
@@ -53,7 +54,7 @@ class CategorySchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param \Cake\ORM\Entity $entity Entity
+     * @param Entity $entity Entity
      * @param bool $isPrimary Is primary flag
      * @param array $includeRelationships Names of relationships to include
      * @return array

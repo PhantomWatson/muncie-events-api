@@ -14,6 +14,9 @@
  */
 namespace App\Controller;
 
+use Cake\Http\Response;
+use Exception;
+
 /**
  * Static content controller
  *
@@ -26,8 +29,8 @@ class PagesController extends AppController
     /**
      * Initialize method
      *
-     * @return \Cake\Http\Response|null
-     * @throws \Exception
+     * @return Response|null
+     * @throws Exception
      */
     public function initialize()
     {

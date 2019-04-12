@@ -1,9 +1,11 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
+ * @var AppView $this
+ * @var User $user
  */
-?>
+
+use App\Model\Entity\User;
+use App\View\AppView; ?>
 <p>
     Here, you can log in using the same information that you use to log in to the main website at
     <a href="https://muncieevents.com">MuncieEvents.com</a>.

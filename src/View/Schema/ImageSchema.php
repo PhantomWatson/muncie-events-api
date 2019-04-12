@@ -11,7 +11,7 @@ class ImageSchema extends EntitySchema
     /**
      * Returns the image's ID
      *
-     * @param \Cake\ORM\Entity $entity Tag entity
+     * @param Entity $entity Tag entity
      * @return string
      */
     public function getId($entity): string

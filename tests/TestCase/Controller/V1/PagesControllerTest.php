@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\TestCase\ApplicationTest;
+use PHPUnit\Exception;
 
 /**
  * PagesControllerTest class
@@ -71,7 +72,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests /pages/about endpoint
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAboutSuccess()
     {
@@ -83,7 +84,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests that /pages/about fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAboutFailBadMethod()
     {
@@ -110,7 +111,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests /pages/rules-events endpoint
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesEventsSuccess()
     {
@@ -122,7 +123,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests that /pages/rules-events fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesEventsFailBadMethod()
     {
@@ -133,7 +134,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests /pages/rules-tags endpoint
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesTagsSuccess()
     {
@@ -145,7 +146,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests that /pages/rules-tags fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesTagsFailBadMethod()
     {
@@ -156,7 +157,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests /pages/rules-images endpoint
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesImagesSuccess()
     {
@@ -168,7 +169,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests that /pages/rules-images fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testRulesImagesFailBadMethod()
     {
@@ -179,7 +180,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests /pages/widgets endpoint
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testWidgetsSuccess()
     {
@@ -191,7 +192,7 @@ class PagesControllerTest extends ApplicationTest
      * Tests that /pages/widgets fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testWidgetsFailBadMethod()
     {

@@ -10,6 +10,7 @@ use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * Class MailingListController
@@ -24,7 +25,7 @@ class MailingListController extends ApiController
      * /mailing-list/subscribe endpoint
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      * @throws BadRequestException
      * @throws ForbiddenException
      */

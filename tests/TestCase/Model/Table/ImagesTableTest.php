@@ -14,7 +14,7 @@ class ImagesTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ImagesTable
+     * @var ImagesTable
      */
     public $Images;
 

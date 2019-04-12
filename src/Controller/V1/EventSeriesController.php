@@ -8,6 +8,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * Class EventSeriesController
@@ -32,7 +33,7 @@ class EventSeriesController extends ApiController
      *
      * @param int|null $seriesId Event series ID
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function view($seriesId = null)
     {

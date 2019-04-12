@@ -2,6 +2,7 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\Tag;
+use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
 
 class TagSchema extends EntitySchema
@@ -9,7 +10,7 @@ class TagSchema extends EntitySchema
     /**
      * Returns the tag's ID
      *
-     * @param \Cake\ORM\Entity $entity Tag entity
+     * @param Entity $entity Tag entity
      * @return string
      */
     public function getId($entity): string

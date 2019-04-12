@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\EventSeries;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -8,17 +12,17 @@ use Cake\Validation\Validator;
 /**
  * EventSeries Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property UsersTable|BelongsTo $Users
  *
- * @method \App\Model\Entity\EventSeries get($primaryKey, $options = [])
- * @method \App\Model\Entity\EventSeries newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\EventSeries[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\EventSeries|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EventSeries patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\EventSeries[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\EventSeries findOrCreate($search, callable $callback = null, $options = [])
+ * @method EventSeries get($primaryKey, $options = [])
+ * @method EventSeries newEntity($data = null, array $options = [])
+ * @method EventSeries[] newEntities(array $data, array $options = [])
+ * @method EventSeries|bool save(EntityInterface $entity, $options = [])
+ * @method EventSeries patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method EventSeries[] patchEntities($entities, array $data, array $options = [])
+ * @method EventSeries findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class EventSeriesTable extends Table
 {
@@ -49,8 +53,8 @@ class EventSeriesTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -75,8 +79,8 @@ class EventSeriesTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

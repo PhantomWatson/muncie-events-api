@@ -5,6 +5,7 @@ use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestEmailTransport;
+use PHPUnit\Exception;
 
 /**
  * ContactControllerTest class
@@ -65,7 +66,7 @@ class ContactControllerTest extends ApplicationTest
      * Tests that /v1/contact returns the correct success status code
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testContactSuccess()
     {
@@ -81,7 +82,7 @@ class ContactControllerTest extends ApplicationTest
      * Tests that /v1/contact fails when user uses non-POST methods
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testContactFailBadMethod()
     {
@@ -93,7 +94,7 @@ class ContactControllerTest extends ApplicationTest
      * Tests that /v1/contact fails when user uses GET method
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testContactFailMissingParam()
     {

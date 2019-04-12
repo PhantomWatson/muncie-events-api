@@ -10,8 +10,8 @@ use Cake\ORM\Entity;
  * @property int $event_id
  * @property int $tag_id
  *
- * @property \App\Model\Entity\Event $event
- * @property \App\Model\Entity\Tag $tag
+ * @property Event $event
+ * @property Tag $tag
  */
 class EventsTag extends Entity
 {

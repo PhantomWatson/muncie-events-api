@@ -3,6 +3,8 @@ namespace App\View\Schema;
 
 use App\Model\Entity\Event;
 use Cake\Core\Configure;
+use Cake\ORM\Entity;
+use Exception;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Factories\Factory;
 
@@ -13,7 +15,7 @@ class EventSchema extends EntitySchema
     /**
      * Returns the event's ID
      *
-     * @param \Cake\ORM\Entity $entity Event entity
+     * @param Entity $entity Event entity
      * @return string
      */
     public function getId($entity): string
@@ -27,7 +29,7 @@ class EventSchema extends EntitySchema
      * @param Event $entity Entity
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAttributes($entity, array $fieldKeysFilter = null): array
     {

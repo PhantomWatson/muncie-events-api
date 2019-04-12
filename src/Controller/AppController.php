@@ -4,6 +4,8 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Response;
+use Exception;
 
 class AppController extends Controller
 {
@@ -12,7 +14,7 @@ class AppController extends Controller
      * Initialization hook method
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function initialize()
     {
@@ -85,8 +87,8 @@ class AppController extends Controller
     /**
      * Before render callback.
      *
-     * @param \Cake\Event\Event $event The beforeRender event.
-     * @return \Cake\Http\Response|null|void
+     * @param Event $event The beforeRender event.
+     * @return Response|null|void
      */
     public function beforeRender(Event $event)
     {

@@ -6,6 +6,7 @@ use App\Test\Fixture\EventsFixture;
 use App\Test\Fixture\TagsFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * TagsControllerTest class
@@ -81,7 +82,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tags/tree returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testTreeSuccess()
     {
@@ -127,7 +128,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tags/tree fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testTreeFailBadMethod()
     {
@@ -138,7 +139,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tags/future returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFuture()
     {
@@ -157,7 +158,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tags/future fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testFutureFailBadMethod()
     {
@@ -168,7 +169,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tags/future returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewSuccess()
     {
@@ -195,7 +196,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /tag/{tagId} fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testViewFailBadMethod()
     {
@@ -206,7 +207,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that GET /v1/tags/ returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexSuccess()
     {
@@ -229,7 +230,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /v1/tags fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexFailBadMethod()
     {
@@ -239,7 +240,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete returns a successful response
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteSuccess()
@@ -274,7 +275,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete respects the optional limit parameter
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteLimit()
@@ -304,7 +305,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete returns a success response code if no matching tags are found
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteEmptyResults()
@@ -324,7 +325,7 @@ class TagsControllerTest extends ApplicationTest
      * Tests that /v1/tags/autocomplete fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testAutocompleteFailBadMethod()
     {
@@ -334,7 +335,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete fails if term is unspecified
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteFailMissingTerm()
@@ -346,7 +347,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete fails if term parameter is present but empty
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteFailEmptyTerm()
@@ -361,7 +362,7 @@ class TagsControllerTest extends ApplicationTest
     /**
      * Tests that GET /v1/tags/autocomplete fails if limit is non-numeric or less than one
      *
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      * @return void
      */
     public function testAutocompleteFailInvalidLimit()

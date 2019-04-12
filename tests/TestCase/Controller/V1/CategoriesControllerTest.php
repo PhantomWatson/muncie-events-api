@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Controller\V1;
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Utility\Hash;
+use PHPUnit\Exception;
 
 /**
  * CategoriesControllerTest class
@@ -50,7 +51,7 @@ class CategoriesControllerTest extends ApplicationTest
      * Tests that /v1/categories returns the correct results
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexSuccess()
     {
@@ -88,7 +89,7 @@ class CategoriesControllerTest extends ApplicationTest
      * Tests that /v1/categories fails for non-GET requests
      *
      * @return void
-     * @throws \PHPUnit\Exception
+     * @throws Exception
      */
     public function testIndexFailBadMethod()
     {

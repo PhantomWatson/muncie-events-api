@@ -15,7 +15,7 @@ class UsersTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\UsersTable
+     * @var UsersTable
      */
     public $Users;
 

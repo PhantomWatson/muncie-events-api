@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\EventsImage;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -8,18 +12,18 @@ use Cake\Validation\Validator;
 /**
  * EventsImages Model
  *
- * @property \App\Model\Table\ImagesTable|\Cake\ORM\Association\BelongsTo $Images
- * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
+ * @property ImagesTable|BelongsTo $Images
+ * @property EventsTable|BelongsTo $Events
  *
- * @method \App\Model\Entity\EventsImage get($primaryKey, $options = [])
- * @method \App\Model\Entity\EventsImage newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\EventsImage[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\EventsImage|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EventsImage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\EventsImage[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\EventsImage findOrCreate($search, callable $callback = null, $options = [])
+ * @method EventsImage get($primaryKey, $options = [])
+ * @method EventsImage newEntity($data = null, array $options = [])
+ * @method EventsImage[] newEntities(array $data, array $options = [])
+ * @method EventsImage|bool save(EntityInterface $entity, $options = [])
+ * @method EventsImage patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method EventsImage[] patchEntities($entities, array $data, array $options = [])
+ * @method EventsImage findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class EventsImagesTable extends Table
 {
@@ -53,8 +57,8 @@ class EventsImagesTable extends Table
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -77,8 +81,8 @@ class EventsImagesTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

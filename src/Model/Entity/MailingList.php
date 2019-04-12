@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -18,13 +19,13 @@ use Cake\ORM\Entity;
  * @property bool $daily_fri
  * @property bool $daily_sat
  * @property bool $new_subscriber
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
- * @property \Cake\I18n\FrozenTime|null $processed_daily
- * @property \Cake\I18n\FrozenTime|null $processed_weekly
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
+ * @property FrozenTime|null $processed_daily
+ * @property FrozenTime|null $processed_weekly
  *
- * @property \App\Model\Entity\User[] $users
- * @property \App\Model\Entity\Category[] $categories
+ * @property User[] $users
+ * @property Category[] $categories
  */
 class MailingList extends Entity
 {

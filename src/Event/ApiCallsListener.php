@@ -20,7 +20,7 @@ class ApiCallsListener implements EventListenerInterface
     /**
      * Passes the event name and metadata to ActivityRecordsTable::add()
      *
-     * @param \Cake\Event\Event $event Event
+     * @param Event $event Event
      * @param array $meta Array of metadata (userId, communityId, etc.)
      * @return void
      */

@@ -14,7 +14,7 @@ class ApiCallsTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ApiCallsTable
+     * @var ApiCallsTable
      */
     public $ApiCalls;
 

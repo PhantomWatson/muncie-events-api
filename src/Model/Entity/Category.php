@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  * @property string $slug
  * @property int $weight
  *
- * @property \App\Model\Entity\Event[] $events
+ * @property Event[] $events
  */
 class Category extends Entity
 {

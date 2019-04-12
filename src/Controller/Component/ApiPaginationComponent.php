@@ -17,7 +17,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * Injects the pagination info into the response if the current request is a
      * JSON or XML request with pagination.
      *
-     * @param \Cake\Event\Event $event The Controller.beforeRender event.
+     * @param Event $event The Controller.beforeRender event.
      * @return void
      */
     public function beforeRender(Event $event)
