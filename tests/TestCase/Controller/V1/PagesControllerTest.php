@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller\V1;
 
 use App\Test\TestCase\ApplicationTest;
+use Cake\ORM\TableRegistry;
 use PHPUnit\Exception;
 
 /**
@@ -22,6 +23,7 @@ class PagesControllerTest extends ApplicationTest
      */
     public $fixtures = [
         'app.ApiCalls',
+        'app.Events',
         'app.Users'
     ];
 
@@ -78,6 +80,15 @@ class PagesControllerTest extends ApplicationTest
     {
         $this->get($this->aboutUrl);
         $this->assertPageHasTitleAndBody();
+
+        // Assert that there's no error in displaying the current number of events
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $eventsCount = $eventsTable->find()->count();
+        $response = (array)json_decode($this->_response->getBody());
+        $page = $response['data']->attributes;
+
+        $needle = sprintf('for %s local events', number_format($eventsCount));
+        $this->assertContains($needle, $page->body, 'Page does not contain expected event count string');
     }
 
     /**
