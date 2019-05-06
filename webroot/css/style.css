@@ -1,1 +1,1 @@
-body>div.container{margin-top:30px}section.home{border-bottom:1px solid #aaa;margin-bottom:50px;padding-bottom:50px}section.home:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}#swagger-ui pre.version{overflow:hidden}
+body>div.container{margin-top:30px}#api-info section{border-bottom:1px solid #aaa;margin-bottom:50px;padding-bottom:50px}#api-info section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}#swagger-ui pre.version{overflow:hidden}

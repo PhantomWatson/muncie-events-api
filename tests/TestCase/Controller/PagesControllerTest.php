@@ -71,4 +71,19 @@ class PagesControllerTest extends TestCase
         ]);
         $this->assertResponseOk();
     }
+
+    /**
+     * Tests that /api returns a successful response
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testApi()
+    {
+        $this->get([
+            'controller' => 'Pages',
+            'action' => 'api'
+        ]);
+        $this->assertResponseOk();
+    }
 }

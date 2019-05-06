@@ -46,12 +46,13 @@ class PagesController extends AppController
     }
 
     /**
-     * Home page
+     * Api information page
      *
      * @return void
      */
-    public function home()
+    public function api()
     {
+        $this->set(['pageTitle' => 'Muncie Events API']);
     }
 
     /**

@@ -44,6 +44,7 @@ Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
+    $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
     $routes->redirect('/docs', '/docs/v1');
     $routes->connect('/docs/v1', ['controller' => 'Pages', 'action' => 'docsV1']);
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
