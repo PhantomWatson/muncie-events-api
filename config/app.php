@@ -219,6 +219,15 @@ $config = [
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
+        'contact_form' => [
+            'transport' => 'default',
+            'from' => ['automailer@MuncieEvents.com' => 'Muncie Events'],
+            'sender' => ['automailer@MuncieEvents.com' => 'Muncie Events'],
+            'returnPath' => 'automailer@MuncieEvents.com',
+            'emailFormat' => 'both'
+            //'charset' => 'utf-8',
+            //'headerCharset' => 'utf-8',
+        ],
     ],
 
     /**
@@ -377,10 +386,12 @@ $config = [
 // Use Debug EmailTransport in debug mode
 if ($config['debug']) {
     $config['EmailTransport']['default']['className'] = 'Debug';
-    $config['Email']['default']['log'] = [
-        'level' => 'info',
-        'scope' => 'email'
-    ];
+    foreach ($config['Email'] as $label => $emailConfig) {
+        $config['Email'][$label]['log'] = [
+            'level' => 'info',
+            'scope' => 'email'
+        ];
+    }
 }
 
 return $config;

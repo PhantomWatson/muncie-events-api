@@ -43,12 +43,16 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+    // Pages
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'home']);
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
     $routes->connect('/api/docs/v1', ['controller' => 'Pages', 'action' => 'apiDocsV1']);
     $routes->redirect('/api/docs', ['controller' => 'Pages', 'action' => 'apiDocsV1']);
+    $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
     $routes->redirect('/docs', '/docs/v1');
     $routes->connect('/docs/v1', ['controller' => 'Pages', 'action' => 'docsV1']);
+
+    // Users
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
