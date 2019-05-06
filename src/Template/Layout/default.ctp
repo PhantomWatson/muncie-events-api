@@ -49,7 +49,7 @@ use App\View\AppView;
                         'Docs',
                         [
                             'controller' => 'Pages',
-                            'action' => 'docsV1'
+                            'action' => 'apiDocsV1'
                         ],
                         ['class' => 'nav-link']
                     ) ?>

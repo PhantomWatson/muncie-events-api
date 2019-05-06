@@ -41,7 +41,7 @@
                     'Read the docs',
                     [
                         'controller' => 'Pages',
-                        'action' => 'docsV1'
+                        'action' => 'apiDocsV1'
                     ]
                 ) ?>
             </li>

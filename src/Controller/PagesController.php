@@ -60,7 +60,7 @@ class PagesController extends AppController
      *
      * @return void
      */
-    public function docsV1()
+    public function apiDocsV1()
     {
     }
 }

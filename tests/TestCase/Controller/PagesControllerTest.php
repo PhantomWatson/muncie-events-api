@@ -58,7 +58,7 @@ class PagesControllerTest extends TestCase
     }
 
     /**
-     * Tests /docs/v1
+     * Tests /api/docs/v1
      *
      * @return void
      * @throws Exception
@@ -67,9 +67,24 @@ class PagesControllerTest extends TestCase
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'docsV1'
+            'action' => 'apiDocsV1'
         ]);
         $this->assertResponseOk();
+    }
+
+    /**
+     * Tests that /api/docs redirects to /api/docs/v1
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testDocsRedirect()
+    {
+        $this->get('/api/docs');
+        $this->assertRedirect([
+            'controller' => 'Pages',
+            'action' => 'apiDocsV1'
+        ]);
     }
 
     /**
