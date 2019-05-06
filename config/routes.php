@@ -75,7 +75,7 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 
     // EventsController
-    $routes->connect('/event', ['controller' => 'Events', 'action' => 'add'])
+    $routes->post('/event', ['controller' => 'Events', 'action' => 'add'])
         ->setHost('api.*');
     $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
         ->setPass(['id'])
