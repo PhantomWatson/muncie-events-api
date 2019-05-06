@@ -75,20 +75,16 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 
     // EventsController
-    $routes->post('/event', ['controller' => 'Events', 'action' => 'add'])
-        ->setHost('api.*');
+    $routes->post('/event', ['controller' => 'Events', 'action' => 'add']);
     $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+'])
-        ->setHost('api.*');
+        ->setPatterns(['id' => '[0-9]+']);
     $routes->patch('/event/:id', ['controller' => 'Events', 'action' => 'edit'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+'])
-        ->setHost('api.*');
+        ->setPatterns(['id' => '[0-9]+']);
     $routes->delete('/event/:id', ['controller' => 'Events', 'action' => 'delete'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+'])
-        ->setHost('api.*');
+        ->setPatterns(['id' => '[0-9]+']);
 
     // EventSeriesController
     $routes->get('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])

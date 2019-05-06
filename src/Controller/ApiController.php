@@ -27,6 +27,7 @@ class ApiController extends Controller
      * Initialization hook method
      *
      * @return void
+     * @throws BadRequestException
      * @throws Exception
      */
     public function initialize()
@@ -38,6 +39,10 @@ class ApiController extends Controller
         ]);
         if (!$this->request->is('ssl')) {
             throw new BadRequestException('API calls must be made with HTTPS protocol');
+        }
+
+        if (!$this->isApiSubdomain()) {
+            throw new BadRequestException('API calls must be made on the api subdomain');
         }
 
         $this->loadComponent(
@@ -71,6 +76,18 @@ class ApiController extends Controller
         if ($this->request->getQuery('userToken')) {
             $this->tokenUser = $this->getTokenUser();
         }
+    }
+
+    /**
+     * Returns TRUE if the current request is made on a valid API subdomain
+     *
+     * @return bool
+     */
+    private function isApiSubdomain()
+    {
+        $host = $this->request->host();
+
+        return stripos($host, 'api.') === 0;
     }
 
     /**
