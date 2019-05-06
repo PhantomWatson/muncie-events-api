@@ -70,52 +70,73 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 });
 
+// API
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 
     // EventsController
-    $routes->connect('/event', ['controller' => 'Events', 'action' => 'add']);
+    $routes->connect('/event', ['controller' => 'Events', 'action' => 'add'])
+        ->setHost('api.*');
     $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
     $routes->patch('/event/:id', ['controller' => 'Events', 'action' => 'edit'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
     $routes->delete('/event/:id', ['controller' => 'Events', 'action' => 'delete'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
 
     // EventSeriesController
     $routes->get('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
     $routes->delete('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'delete'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
 
     // ImagesController
-    $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
+    $routes->connect('/image', ['controller' => 'Images', 'action' => 'add'])
+        ->setHost('api.*');
 
     // MailingListController
-    $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus']);
-    $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate']);
-    $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
+    $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus'])
+        ->setHost('api.*');
+    $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate'])
+        ->setHost('api.*');
+    $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe'])
+        ->setHost('api.*');
 
     // TagsController
-    $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
+    $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view'])
+        ->setHost('api.*');
 
     // UsersController
-    $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
-    $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
-    $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
+    $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register'])
+        ->setHost('api.*');
+    $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login'])
+        ->setHost('api.*');
+    $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword'])
+        ->setHost('api.*');
     $routes->connect('/user/:id', ['controller' => 'Users', 'action' => 'view'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
-    $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
-    $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null]);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
+    $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null])
+        ->setHost('api.*');
+    $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null])
+        ->setHost('api.*');
     $routes->connect('/user/:id/events', ['controller' => 'Users', 'action' => 'events'])
         ->setPass(['id'])
-        ->setPatterns(['id' => '[0-9]+']);
-    $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password']);
-    $routes->connect('/user/profile', ['controller' => 'Users', 'action' => 'profile']);
+        ->setPatterns(['id' => '[0-9]+'])
+        ->setHost('api.*');
+    $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password'])
+        ->setHost('api.*');
+    $routes->connect('/user/profile', ['controller' => 'Users', 'action' => 'profile'])
+        ->setHost('api.*');
 });
