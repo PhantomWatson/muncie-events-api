@@ -83,7 +83,7 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 
-    // EventsController
+    // Events
     $routes->post('/event', ['controller' => 'Events', 'action' => 'add']);
     $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
         ->setPass(['id'])
@@ -95,7 +95,7 @@ Router::prefix('v1', function (RouteBuilder $routes) {
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
 
-    // EventSeriesController
+    // EventSeries
     $routes->get('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+'])
@@ -105,11 +105,11 @@ Router::prefix('v1', function (RouteBuilder $routes) {
         ->setPatterns(['id' => '[0-9]+'])
         ->setHost('api.*');
 
-    // ImagesController
+    // Images
     $routes->connect('/image', ['controller' => 'Images', 'action' => 'add'])
         ->setHost('api.*');
 
-    // MailingListController
+    // MailingList
     $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus'])
         ->setHost('api.*');
     $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate'])
@@ -117,11 +117,11 @@ Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe'])
         ->setHost('api.*');
 
-    // TagsController
+    // Tags
     $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view'])
         ->setHost('api.*');
 
-    // UsersController
+    // Users
     $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register'])
         ->setHost('api.*');
     $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login'])
