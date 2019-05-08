@@ -29,38 +29,6 @@ class PagesControllerTest extends TestCase
     }
 
     /**
-     * testMultipleGet method
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testMultipleGet()
-    {
-        $this->get('/');
-        $this->assertResponseOk();
-        $this->get('/');
-        $this->assertResponseOk();
-    }
-
-    /**
-     * Tests HTTP requests being redirected to HTTPS
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testRedirectToHttps()
-    {
-        $this->configRequest([
-            'environment' => ['HTTPS' => 'off']
-        ]);
-        $this->get('/');
-        $this->assertRedirect();
-
-        // Test redirection SPECIFICALLY to HTTPS
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Tests /api/docs/v1
      *
      * @return void
