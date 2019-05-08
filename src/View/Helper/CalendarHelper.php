@@ -234,4 +234,25 @@ class CalendarHelper extends Helper
             $newTime->i18nFormat('HHmmss', 'UTC')
         );
     }
+
+    /**
+     * Returns a linked list of tags
+     *
+     * @param Event $event Event entity
+     * @return string
+     */
+    public static function eventTags($event)
+    {
+        $links = [];
+        foreach ($event->tags as $tag) {
+            $url = Router::url([
+                'controller' => 'Events',
+                'action' => 'tag',
+                'slug' => $tag->id . '_' . Text::slug($tag->name)
+            ]);
+            $links[] = sprintf('<a href="%s">%s</a>', $url, $tag->name);
+        }
+
+        return implode(', ', $links);
+    }
 }
