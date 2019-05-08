@@ -10,19 +10,19 @@ use App\View\AppView;
 use App\View\Helper\CalendarHelper;
 
 $isAdmin = $authUser['role'] == 'admin';
-$isAuthor = $authUser['id'] == $event['user_id'];
-$isApproved = (bool)$event['approved_by'];
+$isAuthor = $authUser['id'] == $event->user_id;
+$isApproved = (bool)$event->approved_by;
 $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
 ?>
 <div class="actions">
     <div class="export_options_container">
-        <a href="#<?= $event['id'] ?>_options" id="export_event_<?= $event['id'] ?>" class="export_options_toggler"
-           data-toggle="collapse" data-target="#<?= $event['id'] ?>_options" aria-expanded="false"
-           aria-controls="<?= $event['id'] ?>_options">
+        <a href="#<?= $event->id ?>_options" id="export_event_<?= $event->id ?>" class="export_options_toggler"
+           data-toggle="collapse" data-target="#<?= $event->id ?>_options" aria-expanded="false"
+           aria-controls="<?= $event->id ?>_options">
             <img src="/img/icons/calendar--arrow.png" alt="Export" title="Export to another calendar application" />
             Export
         </a>
-        <div class="export_options collapse" id="<?= $event['id'] ?>_options">
+        <div class="export_options collapse" id="<?= $event->id ?>_options">
             <?= $this->Html->link(
                 'iCal',
                 [
@@ -30,7 +30,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                     'prefix' => false,
                     'controller' => 'Events',
                     'action' => 'ics',
-                    $event['id']
+                    $event->id
                 ],
                 ['title' => 'Download iCalendar (.ICS) file']
             ) ?>
@@ -42,7 +42,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                     'prefix' => false,
                     'controller' => 'Events',
                     'action' => 'ics',
-                    $event['id']
+                    $event->id
                 ],
                 ['title' => 'Add to Microsoft Outlook']
             ) ?>
@@ -56,7 +56,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'approve',
-                'id' => $event['id']
+                'id' => $event->id
             ],
             ['escape' => false]
         ) ?>
@@ -69,7 +69,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'edit',
-                'id' => $event['id']
+                'id' => $event->id
             ],
             ['escape' => false]
         ) ?>
@@ -80,7 +80,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'delete',
-                'id' => $event['id']
+                'id' => $event->id
             ],
             [
                 'confirm' => 'Are you sure you want to delete this event?',
