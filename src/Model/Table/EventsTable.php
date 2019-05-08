@@ -324,6 +324,20 @@ class EventsTable extends Table
     }
 
     /**
+     * Orders the query by date and time
+     *
+     * @param Query $query Query
+     * @return Query
+     */
+    public function findOrdered(Query $query)
+    {
+        return $query->order([
+            'date' => 'ASC',
+            'time_start' => 'ASC'
+        ]);
+    }
+
+    /**
      * Returns the count of upcoming events in the specified category
      *
      * @param int $categoryId Category ID
