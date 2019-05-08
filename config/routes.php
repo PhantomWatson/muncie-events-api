@@ -54,6 +54,18 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->redirect('/docs', '/docs/v1');
     $routes->connect('/docs/v1', ['controller' => 'Pages', 'action' => 'docsV1']);
 
+    // Tags
+    Router::connect(
+        "/tag/:slug/:direction",
+        ['controller' => 'Events', 'action' => 'tag'],
+        ['pass' => ['slug', 'direction']]
+    );
+    Router::connect(
+        "/tag/:slug",
+        ['controller' => 'Events', 'action' => 'tag'],
+        ['pass' => ['slug']]
+    );
+
     // Users
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
