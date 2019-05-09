@@ -29,6 +29,9 @@ class EventsController extends AppController
             ->find('ordered')
             ->find('startingOn', ['date' => $startDate])
             ->find('endingOn', ['date' => $endDate]);
-        $this->set(['events' => $events]);
+        $this->set([
+            'events' => $events,
+            'isFrontPage' => true
+        ]);
     }
 }
