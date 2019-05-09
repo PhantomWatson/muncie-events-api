@@ -39,5 +39,9 @@ node_modules/*
 # Migration lock file
 config/Migrations/schema-dump-default.lock
 
+# Front-end
+/webroot/jquery_ui/*
+/webroot/magnific-popup/*
+
 # Other
 notes.txt
