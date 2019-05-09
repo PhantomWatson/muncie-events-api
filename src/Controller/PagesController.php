@@ -62,6 +62,7 @@ class PagesController extends AppController
     public function api()
     {
         $this->set(['pageTitle' => 'Muncie Events API']);
+        $this->viewBuilder()->setLayout('api');
     }
 
     /**
@@ -71,6 +72,7 @@ class PagesController extends AppController
      */
     public function apiDocsV1()
     {
+        $this->viewBuilder()->setLayout('api');
     }
 
     /**
