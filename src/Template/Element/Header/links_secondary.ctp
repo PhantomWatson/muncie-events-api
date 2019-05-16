@@ -1,10 +1,8 @@
 <?php
 /**
  * @var AppView $this
- * @var callable $getActive
  * @var null|array $authUser
  */
-
 use App\View\AppView;
 ?>
 <?php if ($authUser): ?>
@@ -20,7 +18,7 @@ use App\View\AppView;
             ['class'=>'nav-link']
         ) ?>
     </li>
-    <li class="<?= $getActive('Users', 'account') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Users', 'account') ?> nav-item">
         <?= $this->Html->link(
             'Account',
             [
@@ -33,7 +31,7 @@ use App\View\AppView;
         ) ?>
     </li>
 <?php else: ?>
-    <li class="<?= $getActive('Users', 'login') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Users', 'login') ?> nav-item">
         <?= $this->Html->link(
             'Log in',
             [
@@ -45,7 +43,7 @@ use App\View\AppView;
             ['class'=>'nav-link']
         ) ?>
     </li>
-    <li class="<?= $getActive('Users', 'register') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item">
         <?= $this->Html->link(
             'Register',
             [
@@ -57,7 +55,7 @@ use App\View\AppView;
         ) ?>
     </li>
 <?php endif; ?>
-<li class="<?= $getActive('Pages', 'contact') ?> nav-item">
+<li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
     <?= $this->Html->link(
         'Contact',
         [
@@ -69,7 +67,7 @@ use App\View\AppView;
         ['class' => 'nav-link']
     ) ?>
 </li>
-<li class="<?= $getActive('Pages', 'about') ?> nav-item">
+<li class="<?= $this->Nav->getActiveLink('Pages', 'about') ?> nav-item">
     <?= $this->Html->link(
         'About Muncie Events',
         [

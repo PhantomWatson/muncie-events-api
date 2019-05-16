@@ -3,12 +3,11 @@
  * @var AppView $this
  * @var array $headerVars
  * @var array $populated
- * @var callable $getActive
  */
 use App\View\AppView;
 ?>
 <ul class="navbar-nav">
-    <li class="<?= $getActive('Events', 'index') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Events', 'index') ?> nav-item">
         <?= $this->Html->link(
             'Home',
             [
@@ -40,7 +39,7 @@ use App\View\AppView;
             </div>
         </div>
     </li>
-    <li class="<?= $getActive('Events', 'add') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Events', 'add') ?> nav-item">
         <?= $this->Html->link(
             'Add Event',
             [
@@ -52,7 +51,7 @@ use App\View\AppView;
             ['class' => 'nav-link']
         ) ?>
     </li>
-    <li class="<?= $getActive('Widgets', 'index') ?> nav-item">
+    <li class="<?= $this->Nav->getActiveLink('Widgets', 'index') ?> nav-item">
         <?= $this->Html->link(
             'Widgets',
             [

@@ -13,6 +13,7 @@
  */
 namespace App\View;
 
+use App\View\Helper\NavHelper;
 use Cake\View\View;
 use Recaptcha\View\Helper\RecaptchaHelper;
 
@@ -23,6 +24,7 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  *
  * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
  * @property RecaptchaHelper $Recaptcha
+ * @property NavHelper $Nav
  */
 class AppView extends View
 {
@@ -41,5 +43,6 @@ class AppView extends View
         $this->loadHelper('Form', [
             'templates' => 'bootstrap_form'
         ]);
+        $this->loadHelper('Nav');
     }
 }
