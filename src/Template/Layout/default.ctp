@@ -37,7 +37,7 @@
     <script>window.jQuery || document.write('<script src="js/jquery-3.1.1.min.js">\x3C/script>')</script>
     <div class="clearfix" id="header">
         <div class="container">
-            <?= $this->element('header') ?>
+            <?= $this->element('Header/header') ?>
         </div>
     </div>
 
