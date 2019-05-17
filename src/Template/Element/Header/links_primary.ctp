@@ -65,7 +65,5 @@ use App\View\AppView;
     </li>
 </ul>
 <?php
-    foreach ($populated as $monthYear => $days) {
-        $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populated) . ';');
-    }
+    $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populated) . ';');
     $this->Html->scriptBlock('setupHeaderNav();');
