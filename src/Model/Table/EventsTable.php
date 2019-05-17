@@ -3,10 +3,12 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Event;
 use App\Model\Entity\Tag;
+use Cake\Cache\Cache;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -384,5 +386,85 @@ class EventsTable extends Table
         ksort($tags);
 
         return $tags;
+    }
+
+    /**
+     * Limits a query to events in a specified month
+     *
+     * @param Query $query Query object
+     * @param array $options Options array
+     * @return Query
+     * @throws InternalErrorException
+     */
+    public function findInMonth(Query $query, $options)
+    {
+        if (!isset($options['month'])) {
+            throw new InternalErrorException('Month parameter missing');
+        }
+        if (!isset($options['year'])) {
+            throw new InternalErrorException('Year parameter missing');
+        }
+        $month = $options['month'];
+        $year = $options['year'];
+
+        $month = str_pad($month, 2, '0', STR_PAD_LEFT);
+        $query
+            ->where(function (QueryExpression $exp) use ($year, $month) {
+                return $exp->like('time_start', "$year-$month-%");
+            })
+            ->limit(31);
+
+        return $query;
+    }
+
+    /**
+     * Returns an array of dates (YYYY-MM-DD) with published events, cached daily
+     *
+     * @param string|int $month Month, zero-padded
+     * @param int $year Four-digit year
+     * @return array
+     * @throws InternalErrorException
+     */
+    public function getPopulatedDates($month = null, $year = null)
+    {
+        if ($year xor $month) {
+            throw new InternalErrorException('Both month and year need to be specified to find events in month');
+        }
+        if ($month) {
+            $month = str_pad($month, 2, '0', STR_PAD_LEFT);
+        }
+        $cacheKey = sprintf(
+            'populated-dates%s%s',
+            $year ? "-$year" : '',
+            $month ? "-$month" : ''
+        );
+
+        return Cache::remember($cacheKey, function () use ($month, $year) {
+            $query = $this->find()
+                ->select(['date'])
+                ->distinct('date')
+                ->where([
+                    'Events.published' => true,
+                    function (QueryExpression $exp) {
+                        return $exp->isNotNull('date');
+                    }
+                ])
+                ->orderAsc('date')
+                ->enableHydration(false);
+
+            // Apply optional month/year limits
+            if ($month && $year) {
+                $query->find('inMonth', compact('month', 'year'));
+            }
+
+            $dates = [];
+            foreach ($query->all() as $result) {
+                /** @var FrozenDate $date */
+                $date = $result['date'];
+                $dates[] = $date->format('Y-m-d');
+            }
+
+            return $dates;
+        }, 'daily');
     }
 }
