@@ -89,6 +89,13 @@ $config = [
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
+        'daily' => [
+            'className' => 'File',
+            'path' => CACHE,
+            'duration' => '+1 day',
+            'url' => env('CACHE_DAILY_URL', null),
+        ],
+
         /**
          * Configure the cache used for general framework caching.
          * Translation cache files are stored with this configuration.
