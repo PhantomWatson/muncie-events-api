@@ -2,7 +2,6 @@
 /**
  * @var AppView $this
  * @var array $headerVars
- * @var array $populated
  */
 use App\View\AppView;
 ?>
@@ -65,5 +64,6 @@ use App\View\AppView;
     </li>
 </ul>
 <?php
-    $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populated) . ';');
+    $populatedDates = $this->Nav->getPopulatedDates();
+    $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populatedDates) . ';');
     $this->Html->scriptBlock('setupHeaderNav();');
