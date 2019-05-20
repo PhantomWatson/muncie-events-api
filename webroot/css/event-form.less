@@ -1,0 +1,339 @@
+@import "mixins";
+
+/* Mixins */
+.AddressLoadingIndicator {
+    background-image: url('/img/loading_small.gif');
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+.SelectedDate {
+    background-color: #27324F;
+    background-image: none;
+    color: #fff;
+}
+
+#datepicker_text {
+    width: 80%;
+    @media @x-large {
+        width: 100%;
+    }
+}
+#image_tab_selected {
+    .loading {
+        background-image: url('/img/loading.gif');
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: wait;
+    }
+}
+#selected_images {
+    margin: 0;
+    padding: 0;
+
+    li {
+        background-color: #fff;
+        border: 1px solid #999;
+        list-style-type: none;
+        margin: 5px;
+        padding: 5px;
+        &:first-child {
+            border-color: #666;
+            border-width: 2px;
+        }
+        div.input.text {
+            display: inline-block;
+        }
+    }
+    p.caption {
+        margin: 0 0 5px 0;
+    }
+    input.caption {
+        margin-top: 5px;
+        @media @x-small, @small {
+            position: relative;
+        }
+    }
+    label {
+        font-weight: normal;
+    }
+    .handle {
+        cursor: pointer;
+    }
+}
+#image_form {
+    > #accordion {
+        > .card {
+            border: 0;
+            > .card-header {
+                background-color: #fff;
+                border-bottom: 0;
+            }
+            > #image_upload_container,
+            #image_select_container,
+            #image_help_container {
+                > .card-block {
+                    padding: 0 0 0 1rem;
+                }
+            }
+        }
+    }
+    > div {
+        a {
+            color: @LinkColor;
+        }
+    }
+    .help {
+        ul {
+            margin-left: 30px;
+
+            &:first-of-type {
+                margin-bottom: 15px;
+            }
+        }
+        h3 {
+            margin: 0;
+        }
+    }
+    ul.actions {
+        margin: 0 0 15px 0;
+        padding: 0;
+
+        li {
+            border-right: 1px solid #aaa;
+            display: inline-block;
+            list-style-type: none;
+            margin: 0 15px 0 0;
+            padding: 0 15px 0 0;
+            vertical-align: top;
+
+            &:last-child {
+                border-right: 0;
+            }
+        }
+        a {
+            display: inline-block;
+        }
+    }
+}
+#image_select_container {
+    overflow: auto;
+
+    a {
+        display: inline-block;
+
+        &:hover,
+        &:focus {
+            img {
+                border: 1px solid black;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            }
+        }
+    }
+    img {
+        border: 1px solid transparent;
+        margin: 0 5px 5px 0;
+    }
+}
+#image_upload_rules_toggler {
+    display: block;
+    font-size: 80%;
+    text-align: right;
+}
+#image_upload_rules {
+    display: none;
+    font-size: 80%;
+    margin: 5px 0;
+
+    ul {
+        margin: 0;
+    }
+}
+.event_form {
+    width: 100%;
+
+    > tbody {
+        > tr {
+            > th,
+            > td {
+                padding: 5px;
+                vertical-align: top;
+
+                @media @x-small {
+                    display: block;
+                }
+            }
+            > th {
+                font-weight: bold;
+                width: 175px;
+            }
+        }
+    }
+    #add_end_time {
+        display: inline-block;
+        margin-left: 10px;
+    }
+    #EventLocation,
+    #EventLocationDetails,
+    #EventCost,
+    #EventAgeRestriction,
+    #EventSource {
+        display: inline-block;
+    }
+    #eventform_noaddress,
+    #event_remove_cost,
+    #event_remove_age_restriction,
+    #event_remove_source {
+        display: inline-block;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+    #eventform_tags .input {
+        margin: 0;
+    }
+    #tag_editing {
+        margin: 0;
+    }
+    #EventTitle,
+    #EventSeriesTitle,
+    #EventLocation,
+    #EventLocationDetails,
+    #EventCost,
+    #EventAgeRestriction,
+    #EventSource {
+        width: 66%;
+    }
+    #eventform_timestart_div,
+    #eventform_hasendtime {
+        color: #fff;
+        float: left;
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+    #EventDescription {
+        width: 100%;
+    }
+    .in_series a {
+        font-size: 80%;
+
+        &:first-child {
+            margin-left: 20px;
+        }
+    }
+    #datepicker {
+        margin-bottom: 0;
+        padding: 0;
+
+        > div {
+            margin-bottom: 0;
+        }
+    }
+    #location_tips {
+        display: block;
+        color: #0b54a6;
+        cursor: pointer;
+        float: right;
+        margin-left: 10px;
+        position: relative;
+        text-align: right;
+
+        @media @x-large, @large {
+            display: inline-block;
+        }
+        &:hover {
+            color: #C85028;
+            text-decoration: underline;
+        }
+    }
+    .ui-datepicker-calendar td {
+        border: 1px solid transparent;
+    }
+    .ui-widget {
+        font-size: 90%;
+    }
+    .ui-datepicker {
+        width: 14em;
+        @media @x-small {
+            width: 100%;
+        }
+        @media @small {
+            width: 100%;
+        }
+        th {
+            padding: 0;
+        }
+    }
+}
+#eventform_noaddress.loading {
+    .AddressLoadingIndicator;
+    padding-right: 20px;
+}
+#eventform_address {
+    th.loading {
+        .AddressLoadingIndicator;
+    }
+}
+#EventDescription_tbl {
+    border-radius: .25rem;
+
+    @media @x-small, @small {
+        width: auto !important;
+    }
+}
+/* Overwrite 'active' and 'highlight' styles for a consistent appearance of selected dates on the datepicker */
+#datepicker.multi {
+    .ui-state-active,
+    .ui-widget-content .ui-state-active,
+    .ui-widget-header .ui-state-active {
+        .Ui-state-default;
+    }
+    .ui-state-active {
+        a,
+        a:link,
+        a:visited {
+            .Ui-state-default_a;
+        }
+    }
+    .ui-state-highlight,
+    .ui-widget-content .ui-state-highlight,
+    .ui-widget-header .ui-state-highlight {
+        .Ui-state-default;
+    }
+    .ui-state-highlight a,
+    .ui-widget-content .ui-state-highlight a,
+    .ui-widget-header .ui-state-highlight a {
+        .Ui-state-default_a;
+        .SelectedDate;
+    }
+}
+#datepicker.single {
+    a.ui-state-active,
+    a.ui-state-active:link,
+    a.ui-state-active:visited {
+        .Ui-state-default_a;
+        .SelectedDate;
+    }
+    .ui-state-highlight,
+    .ui-widget-content .ui-state-highlight,
+    .ui-widget-header .ui-state-highlight {
+        .Ui-state-default;
+    }
+    .ui-state-highlight a,
+    .ui-widget-content .ui-state-highlight a,
+    .ui-widget-header .ui-state-highlight a {
+        .Ui-state-default_a;
+    }
+}
+#posting_rules_toggler {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+#posting_rules {
+    margin-bottom: 15px;
+
+    ul {
+        padding-left: 20px;
+    }
+}
+.input.date.required {
+    display: none;
+}
