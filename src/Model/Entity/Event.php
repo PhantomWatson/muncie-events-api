@@ -9,6 +9,7 @@ use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use DateTime;
 use Exception;
 
@@ -20,6 +21,7 @@ use Exception;
  * @property string $description
  * @property string $location
  * @property string $location_details
+ * @property string $location_slug
  * @property string $address
  * @property int $user_id
  * @property int $category_id
@@ -294,5 +296,18 @@ class Event extends Entity
             }
             $this->tags[] = $newTag;
         }
+    }
+
+    /**
+     * Sets the location_slug property according to the value of the location property
+     *
+     * @return void
+     */
+    public function setLocationSlug()
+    {
+        $slug = str_replace('\'', '', $this->location);
+        $slug = mb_strtolower($slug);
+        $slug = Text::slug($slug);
+        $this->location_slug = $slug;
     }
 }
