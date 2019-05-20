@@ -31,8 +31,7 @@ class EventsController extends AppController
             ->find('endingOn', ['date' => $endDate])
             ->all();
         $this->set([
-            'events' => $events,
-            'isFrontPage' => true
+            'events' => $events
         ]);
     }
 }

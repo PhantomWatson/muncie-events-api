@@ -45,10 +45,6 @@
 
     <div class="container">
         <div class="row">
-            <?php if (isset($isFrontPage)): ?>
-                <?= $this->element('front_page_announcement') ?>
-            <?php endif; ?>
-
             <noscript id="noscript" class="alert alert-warning">
                 <div>
                     JavaScript is currently disabled in your browser.
