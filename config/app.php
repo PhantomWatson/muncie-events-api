@@ -387,7 +387,8 @@ $config = [
     'categoryIconBaseUrl' => env('CATEGORY_ICON_BASE_URL'),
     'eventImageBaseUrl' => env('EVENT_IMG_BASE_URL'),
     'eventImagePath' => env('EVENT_IMG_PATH'),
-    'slackWebhook' => env('SLACK_WEBHOOK')
+    'slackWebhook' => env('SLACK_WEBHOOK'),
+    'googleAnalyticsId' => 'UA-10610808-13',
 ];
 
 // Use Debug EmailTransport in debug mode
