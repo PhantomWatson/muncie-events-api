@@ -3,6 +3,7 @@ namespace App\View\Helper;
 
 use App\Model\Table\EventsTable;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\View\Helper;
 
 class NavHelper extends Helper
@@ -35,5 +36,66 @@ class NavHelper extends Helper
         }
 
         return $populated;
+    }
+
+    /**
+     * Returns a maximum of seven URLs for the soonest dates with upcoming events
+     *
+     * @return array
+     */
+    public function getDayLinks()
+    {
+        /** @var EventsTable $eventsTable */
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $populatedDates = $eventsTable->getPopulatedDates();
+        $dayLinks = [];
+        $today = date('Y-m-d');
+        $tomorrow = date('Y-m-d', strtotime('tomorrow'));
+        $limit = 7;
+        foreach ($populatedDates as $date) {
+            if ($date == $today) {
+                $dayLinks[] = [
+                    'label' => 'Today',
+                    'url' => Router::url([
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'today'
+                    ])
+                ];
+                continue;
+            }
+
+            if ($date == $tomorrow) {
+                $dayLinks[] = [
+                    'label' => 'Tomorrow',
+                    'url' => Router::url([
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'tomorrow'
+                    ])
+                ];
+                continue;
+            }
+            list($year, $month, $day) = explode('-', $date);
+            $dayLinks[] = [
+                'label' => date('D, M j', strtotime($date)),
+                'url' => Router::url([
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'Events',
+                    'action' => 'day',
+                    $month,
+                    $day,
+                    $year
+                ])
+            ];
+            if (count($dayLinks) == $limit) {
+                break;
+            }
+        }
+
+        return $dayLinks;
     }
 }

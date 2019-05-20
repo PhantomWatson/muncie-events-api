@@ -4,6 +4,8 @@
  * @var array $headerVars
  */
 use App\View\AppView;
+$populatedDates = $this->Nav->getPopulatedDates();
+$dayLinks = $this->Nav->getDayLinks();
 ?>
 <ul class="navbar-nav">
     <li class="<?= $this->Nav->getActiveLink('Events', 'index') ?> nav-item">
@@ -23,9 +25,9 @@ use App\View\AppView;
            aria-controls="header_nav_datepicker">Go to Date...</a>
         <div id="header_nav_datepicker" class="collapse" aria-labelledby="date_picker_toggler">
             <div>
-                <?php if (!empty($headerVars['dayLinks'])): ?>
+                <?php if (!empty($dayLinks)): ?>
                     <ul>
-                        <?php foreach ($headerVars['dayLinks'] as $dayLink): ?>
+                        <?php foreach ($dayLinks as $dayLink): ?>
                             <li>
                                 <a href="<?= $dayLink['url'] ?>">
                                     <?= $dayLink['label'] ?>
@@ -64,6 +66,5 @@ use App\View\AppView;
     </li>
 </ul>
 <?php
-    $populatedDates = $this->Nav->getPopulatedDates();
     $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populatedDates) . ';');
     $this->Html->scriptBlock('setupHeaderNav();');
