@@ -176,13 +176,7 @@ class EventsTable extends Table
     {
         $query
             ->where(['Events.published' => true])
-            ->contain([
-                'Categories',
-                'EventSeries',
-                'Images',
-                'Tags',
-                'Users'
-            ]);
+            ->find('withAllAssociated');
 
         return $query;
     }
@@ -415,6 +409,24 @@ class EventsTable extends Table
             ->limit(31);
 
         return $query;
+    }
+
+    /**
+     * Returns a query modified to contain() all models that the Event model is associated with
+     *
+     * @param Query $query Query object
+     * @return Query
+     */
+    public function findWithAllAssociated(Query $query)
+    {
+        return $query
+            ->contain([
+                'Users',
+                'Categories',
+                'EventSeries',
+                'Images',
+                'Tags'
+            ]);
     }
 
     /**

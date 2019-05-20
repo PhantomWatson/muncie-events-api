@@ -29,6 +29,7 @@ class EventsController extends AppController
             ->find('ordered')
             ->find('startingOn', ['date' => $startDate])
             ->find('endingOn', ['date' => $endDate])
+            ->find('withAllAssociated')
             ->all();
         $this->set([
             'events' => $events
