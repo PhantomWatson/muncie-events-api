@@ -8,7 +8,7 @@
 <head prefix="og: http://ogp.me/ns# muncieevents: http://ogp.me/ns/apps/muncieevents#">
     <link rel="dns-prefetch" href="https://ajax.googleapis.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= $this->Html->charset(); ?>
+    <?= $this->Html->charset() ?>
     <title>
         Muncie Events
         <?= isset($pageTitle) ? "- $pageTitle" : '' ?>
@@ -61,7 +61,7 @@
             </div>
 
             <?php if ($hideSidebar ?? false): ?>
-                <?= $this->element('sidebar'); ?>
+                <?= $this->element('sidebar') ?>
             <?php endif; ?>
         </div>
     </div>
