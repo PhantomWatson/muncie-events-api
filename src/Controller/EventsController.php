@@ -24,7 +24,7 @@ class EventsController extends AppController
     {
         $pageSize = '1 month';
         $startDate = $startDate ?? date('Y-m-d');
-        $endDate = strtotime($startDate . ' + ' . $pageSize);
+        $endDate = date('Y-m-d', strtotime($startDate . ' + ' . $pageSize));
         $events = $this->Events
             ->find('ordered')
             ->find('startingOn', ['date' => $startDate])
