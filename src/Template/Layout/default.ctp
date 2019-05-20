@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <?php if ($hideSidebar ?? false): ?>
+            <?php if ($hideSidebar ?? true): ?>
                 <?= $this->element('sidebar') ?>
             <?php endif; ?>
         </div>
