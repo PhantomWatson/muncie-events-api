@@ -93,11 +93,11 @@
     </script>
     <script>$.fn.modal || document.write('<script src="js/bootstrap.min.js">\x3C/script>')</script>
 
-    <script src="/js/script.js"></script>
+    <?= $this->Html->script('script') ?>
     <?php $this->Html->scriptBlock('muncieEventsImagePopups.prepare();'); ?>
     <?= $this->fetch('script') ?>
-    <script type="text/javascript" src="/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="/js/image_popups.js"></script>
+    <?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
+    <?= $this->Html->script('image_popups') ?>
     <?= $this->element('analytics') ?>
 </body>
 </html>
