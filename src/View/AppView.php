@@ -13,6 +13,7 @@
  */
 namespace App\View;
 
+use App\View\Helper\IconHelper;
 use App\View\Helper\NavHelper;
 use Cake\View\View;
 use Recaptcha\View\Helper\RecaptchaHelper;
@@ -25,6 +26,7 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
  * @property RecaptchaHelper $Recaptcha
  * @property NavHelper $Nav
+ * @property IconHelper $Icon
  */
 class AppView extends View
 {
