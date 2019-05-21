@@ -98,4 +98,33 @@ class NavHelper extends Helper
 
         return $dayLinks;
     }
+
+    /**
+     * Returns an array of location slugs => names
+     *
+     * @return array
+     */
+    public function getLocations()
+    {
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $locations = $eventsTable
+            ->find()
+            ->select(['location', 'location_slug'])
+            ->where(['date >=' => date('Y-m-d')]);
+
+        if (!$locations->count()) {
+            return [];
+        }
+
+        $slugs = [];
+        $locs = [];
+        foreach ($locations as $location) {
+            $locs[] = $location->location;
+            $slugs[] = $location->location_slug;
+        }
+        $retval = array_combine($locs, $slugs);
+        ksort($retval);
+
+        return $retval;
+    }
 }
