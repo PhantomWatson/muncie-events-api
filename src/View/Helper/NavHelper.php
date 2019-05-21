@@ -1,11 +1,19 @@
 <?php
 namespace App\View\Helper;
 
+use App\Model\Entity\Tag;
 use App\Model\Table\EventsTable;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\View\Helper;
 
+/**
+ * Class NavHelper
+ *
+ * Used to help with displaying and passing variables to elements in the header and sidebar
+ *
+ * @package App\View\Helper
+ */
 class NavHelper extends Helper
 {
     public function getActiveLink($controller, $action) {
@@ -126,5 +134,52 @@ class NavHelper extends Helper
         ksort($retval);
 
         return $retval;
+    }
+
+    /**
+     * Returns an array of tags associated with upcoming events with the 'count' property set
+     *
+     * @return Tag[]
+     */
+    public function getUpcomingTags()
+    {
+        /** @var EventsTable $eventsTable */
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+
+        return $eventsTable->getUpcomingEventTags();
+
+    }
+
+    /**
+     * Returns an array of categories and extra information used to display them in the sidebar
+     *
+     * @return array
+     */
+    public function getCategories()
+    {
+        $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
+        $categories = $categoriesTable
+            ->find()
+            ->orderAsc('weight')
+            ->all();
+
+        /** @var EventsTable $eventsTable */
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $counts = [];
+        foreach ($categories as $category) {
+            $counts[$category->id] = $eventsTable->getCategoryUpcomingEventCount($category->id);
+        }
+
+        foreach ($categories as $category) {
+            $category->count = $counts[$category->id];
+
+            $category->upcomingEventsTitle = sprintf(
+                '%s upcoming %s',
+                $category->count,
+                __n('event', 'events', $category->count)
+            );
+        }
+
+        return $categories;
     }
 }
