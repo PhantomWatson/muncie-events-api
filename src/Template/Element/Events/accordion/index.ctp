@@ -22,12 +22,14 @@ $eventsByDate = CalendarHelper::arrangeByDate($events->toArray());
 <?php endif; ?>
 
 <?php foreach ($eventsByDate as $date => $eventsOnDate): ?>
-    <?= CalendarHelper::getDateHeader($date) ?>
-    <ul class="event_accordion">
-        <?php foreach ($eventsOnDate as $event): ?>
-            <?= $this->element('Events/accordion/event', compact('event')) ?>
-        <?php endforeach; ?>
-    </ul>
+    <section>
+        <?= CalendarHelper::getDateHeader($date) ?>
+        <ul class="event_accordion">
+            <?php foreach ($eventsOnDate as $event): ?>
+                <?= $this->element('Events/accordion/event', compact('event')) ?>
+            <?php endforeach; ?>
+        </ul>
+    </section>
 <?php endforeach; ?>
 
 <?php $this->Html->scriptBlock(

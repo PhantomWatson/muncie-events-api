@@ -79,7 +79,7 @@ class CalendarHelper extends Helper
         $headerDay = sprintf('<h2 class="day">%s</h2>', $day);
         $headers = $headerShortDate . $headerDay;
 
-        return sprintf('<div class="event_accordion">%s</div>', $headers);
+        return $headers;
     }
 
     /**
