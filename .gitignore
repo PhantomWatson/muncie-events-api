@@ -43,4 +43,5 @@ config/Migrations/schema-dump-default.lock
 /webroot/magnific-popup/*
 
 # Other
+/webroot/img/events/*
 notes.txt
