@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use Cake\Datasource\ResultSetInterface;
+use Exception;
 
 /**
  * Events Controller
@@ -14,6 +15,19 @@ use Cake\Datasource\ResultSetInterface;
  */
 class EventsController extends AppController
 {
+    /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Auth->allow(['index']);
+    }
+
     /**
      * Index method
      *
