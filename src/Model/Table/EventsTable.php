@@ -175,8 +175,21 @@ class EventsTable extends Table
     public function findForApi(Query $query)
     {
         $query
-            ->where(['Events.published' => true])
+            ->find('published')
             ->find('withAllAssociated');
+
+        return $query;
+    }
+
+    /**
+     * Modifies a query to only return published events
+     *
+     * @param Query $query Query
+     * @return Query
+     */
+    public function findPublished(Query $query)
+    {
+        $query->where(['Events.published' => true]);
 
         return $query;
     }

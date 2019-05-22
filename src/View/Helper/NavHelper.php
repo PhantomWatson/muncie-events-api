@@ -116,9 +116,8 @@ class NavHelper extends Helper
     {
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         $locations = $eventsTable
-            ->find()
-            ->select(['location', 'location_slug'])
-            ->where(['date >=' => date('Y-m-d')]);
+            ->find('future')
+            ->select(['location', 'location_slug']);
 
         if (!$locations->count()) {
             return [];
