@@ -40,10 +40,14 @@ class CalendarHelper extends Helper
      * Returns the date that follows the last date in this set of events
      *
      * @param Event[] $events Array of events
-     * @return string
+     * @return string|null
      */
     public static function getNextStartDate(array $events)
     {
+        if (!$events) {
+            return null;
+        }
+
         // If $events is arranged by date
         if (is_string(array_keys($events)[0])) {
             $dates = array_keys($events);
