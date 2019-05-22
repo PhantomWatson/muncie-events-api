@@ -43,6 +43,27 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+    // Categories
+    $categories = [
+        'music',
+        'art',
+        'theater',
+        'film',
+        'activism',
+        'general',
+        'education',
+        'government',
+        'sports',
+        'religion'
+    ];
+    $routes
+        ->connect(
+            "/:slug/",
+            ['controller' => 'Events', 'action' => 'category']
+        )
+        ->setPass(['slug'])
+        ->setPatterns(['slug' => implode('|', $categories)]);
+
     // Events
     $routes->connect('/', ['controller' => 'Events', 'action' => 'index']);
 

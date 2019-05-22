@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 
+use App\Model\Entity\Category;
 use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\NotFoundException;
 use Exception;
 
 /**
@@ -25,7 +27,10 @@ class EventsController extends AppController
     {
         parent::initialize();
 
-        $this->Auth->allow(['index']);
+        $this->Auth->allow([
+            'category',
+            'index'
+        ]);
     }
 
     /**
@@ -47,6 +52,38 @@ class EventsController extends AppController
             ->all();
         $this->set([
             'events' => $events
+        ]);
+    }
+
+    /**
+     * Displays events in the specified category
+     *
+     * @param string $slug Slug of category name
+     * @param string|null $startDate The earliest date to fetch events for
+     * @return void
+     * @throws NotFoundException
+     */
+    public function category($slug)
+    {
+        /** @var Category $category */
+        $category = $this->Events->Categories
+            ->find()
+            ->where(['slug' => $slug])
+            ->first();
+        if (!$category) {
+            throw new NotFoundException(sprintf('The "%s" event category was not found', $slug));
+        }
+
+        $events = $this->Events
+            ->find('future')
+            ->find('ordered')
+            ->find('withAllAssociated')
+            ->find('inCategory', ['categoryId' => $category->id]);
+
+        $this->set([
+            'category' => $category,
+            'events' => $events,
+            'pageTitle' => $category->name
         ]);
     }
 }
