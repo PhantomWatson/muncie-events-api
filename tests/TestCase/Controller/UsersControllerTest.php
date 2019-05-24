@@ -11,13 +11,19 @@ use PHPUnit\Exception;
  */
 class UsersControllerTest extends ApplicationTest
 {
-
     /**
      * Fixtures
      *
      * @var array
      */
     public $fixtures = [
+        'app.Categories',
+        'app.Events',
+        'app.EventSeries',
+        'app.EventsImages',
+        'app.EventsTags',
+        'app.Images',
+        'app.Tags',
         'app.Users'
     ];
 
