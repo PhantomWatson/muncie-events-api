@@ -1,4 +1,6 @@
 <?php
+// @codingStandardsIgnoreFile
+
 use Migrations\AbstractMigration;
 
 class AddLocationSlugToEvents extends AbstractMigration
