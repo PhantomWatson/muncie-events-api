@@ -23,7 +23,8 @@ class NavHelper extends Helper
      * @param string $action Name of an action to compare to the current request
      * @return string|null
      */
-    public function getActiveLink($controller, $action) {
+    public function getActiveLink($controller, $action)
+    {
         if ($this->_View->getRequest()->getParam('controller') != $controller) {
             return null;
         }
@@ -153,7 +154,6 @@ class NavHelper extends Helper
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
 
         return $eventsTable->getUpcomingEventTags();
-
     }
 
     /**

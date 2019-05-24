@@ -12,8 +12,8 @@ use PHPUnit\Exception;
  */
 class PagesControllerTest extends TestCase
 {
-    use IntegrationTestTrait;
     use EmailTrait;
+    use IntegrationTestTrait;
 
     /**
      * Sets up this set of tests

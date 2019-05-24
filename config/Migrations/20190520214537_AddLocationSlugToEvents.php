@@ -20,7 +20,8 @@ class AddLocationSlugToEvents extends AbstractMigration
                     'after' => 'location_details',
                     'limit' => 50,
                     'null' => false
-                ])
+                ]
+            )
             ->update();
     }
 }
