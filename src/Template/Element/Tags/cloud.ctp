@@ -43,7 +43,7 @@ $fontSizeRange = $maxFontSize - $minFontSize;
                         'prefix' => false,
                         'controller' => 'Events',
                         'action' => 'tag',
-                        'slug' => $tag->id . '_' . Text::slug($tag->name)
+                        'slug' => $tag->id . '-' . Text::slug($tag->name)
                     ],
                     [
                         'escape' => false,

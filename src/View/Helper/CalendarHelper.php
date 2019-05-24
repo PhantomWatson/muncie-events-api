@@ -252,7 +252,7 @@ class CalendarHelper extends Helper
             $url = Router::url([
                 'controller' => 'Events',
                 'action' => 'tag',
-                'slug' => $tag->id . '_' . Text::slug($tag->name)
+                'slug' => $tag->id . '-' . Text::slug($tag->name)
             ]);
             $links[] = sprintf('<a href="%s">%s</a>', $url, $tag->name);
         }
