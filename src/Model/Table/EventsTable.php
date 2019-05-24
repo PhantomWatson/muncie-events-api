@@ -353,13 +353,22 @@ class EventsTable extends Table
     /**
      * Orders the query by date and time
      *
+     * Orders with increasing dates and times by default, but ['direction' => 'DESC'] will sort by decreasing dates and
+     * increasing times (such as when viewing past events from the most recent to the most... uh... past. Most past.
+     *
      * @param Query $query Query
+     * @param array $options Array of options, notably 'direction'
      * @return Query
      */
-    public function findOrdered(Query $query)
+    public function findOrdered(Query $query, array $options)
     {
+        $direction = $options['direction'] ?? 'ASC';
+        if (!in_array(strtoupper($direction), ['ASC', 'DESC'])) {
+            throw new InternalErrorException('Unrecognized ordering direction: ' . $direction);
+        }
+
         return $query->order([
-            'date' => 'ASC',
+            'date' => $direction,
             'time_start' => 'ASC'
         ]);
     }
