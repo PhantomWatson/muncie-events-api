@@ -247,19 +247,16 @@ div.checkbox label {
 }
 .page-link {
     color: #7f7f7f;
-}
-.page-link:hover {
-    color: #bfbfbf;
+
+    &:hover {
+        color: #bfbfbf;
+    }
 }
 .paginator {
     text-align: center;
     p {
         text-align: center;
     }
-}
-.paginator_select {
-    border-radius: 0;
-    border-left: none;
 }
 .pagination {
     margin: 0 auto;
@@ -283,6 +280,16 @@ div.checkbox label {
         margin-left: 0;
         padding: .5rem .75rem;
         position: relative;
+    }
+    .disabled {
+        > a {
+            color: @DefaultTextColor;
+
+            &:hover {
+                color: @DefaultTextColor;
+                text-decoration: none;
+            }
+        }
     }
 }
 #sql_dump {
