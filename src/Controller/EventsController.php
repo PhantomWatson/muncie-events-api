@@ -6,7 +6,9 @@ use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Exception;
 
 /**
@@ -31,7 +33,8 @@ class EventsController extends AppController
 
         $this->Auth->allow([
             'category',
-            'index'
+            'index',
+            'tag'
         ]);
     }
 
@@ -88,5 +91,51 @@ class EventsController extends AppController
             'events' => $events,
             'pageTitle' => $category->name
         ]);
+    }
+
+    /**
+     * Displays events with a specified tag
+     *
+     * @param string|null $idAndSlug A string formatted as "$id-$slug"
+     * @param string|null $direction Either 'upcoming', 'past', or null (defaults to 'upcoming')
+     * @return null|Response
+     * @throws NotFoundException
+     * @throws BadRequestException
+     */
+    public function tag($idAndSlug = '', $direction = null)
+    {
+        $this->loadModel('Tags');
+        $tag = $this->Tags->getFromIdSlug($idAndSlug);
+        if (!$tag) {
+            throw new NotFoundException('Sorry, we couldn\'t find that tag');
+        }
+
+        $direction = $direction ?? 'upcoming';
+        if (!in_array($direction, ['upcoming', 'past'])) {
+            throw new BadRequestException(
+                'Sorry, but due to our current one-dimensional understanding of time, you can\'t view events ' .
+                'in any direction other than \'upcoming\' or \'past\'.'
+            );
+        }
+
+        $baseQuery = $this->Events
+            ->find('published')
+            ->find('ordered', ['direction' => $direction == 'past' ? 'DESC' : 'ASC'])
+            ->find('withAllAssociated')
+            ->find('tagged', ['tags' => [$tag->name]]);
+        $mainQuery = (clone $baseQuery)->find($direction == 'past' ? 'past' : 'future');
+        $oppositeDirectionQuery = (clone $baseQuery)->find($direction == 'past' ? 'future' : 'past');
+
+        $this->set([
+            'pageTitle' => 'Tag: ' . ucwords($tag->name),
+            'events' => $this->paginate($mainQuery),
+            'count' => $mainQuery->count(),
+            'direction' => $direction,
+            'countOppositeDirection' => $oppositeDirectionQuery->count(),
+            'oppositeDirection' => $direction == 'past' ? 'upcoming' : 'past',
+            'tag' => $tag
+        ]);
+
+        return null;
     }
 }

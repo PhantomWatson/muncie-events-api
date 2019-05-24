@@ -111,4 +111,27 @@ class TagsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Takes a string formatted as "$id-$slug" and returns a tag entity or FALSE
+     *
+     * @param string|null $idAndSlug A string formatted as "$id-$slug"
+     * @return bool|Tag
+     */
+    public function getFromIdSlug(?string $idAndSlug)
+    {
+        if (strpos($idAndSlug, '-') === false) {
+            return false;
+        }
+
+        $tagId = (explode('-', $idAndSlug))[0];
+
+        /** @var Tag $tag */
+        $tag = $this->find()
+            ->select(['id', 'name'])
+            ->where(['id' => $tagId])
+            ->first();
+
+        return $tag ? $tag : false;
+    }
 }
