@@ -16,6 +16,13 @@ use Cake\View\Helper;
  */
 class NavHelper extends Helper
 {
+    /**
+     * Takes a controller and action name and returns either 'active' or null if they correspond to the current request
+     *
+     * @param string $controller Name of a controller to compare to the current request
+     * @param string $action Name of an action to compare to the current request
+     * @return string|null
+     */
     public function getActiveLink($controller, $action) {
         if ($this->_View->getRequest()->getParam('controller') != $controller) {
             return null;

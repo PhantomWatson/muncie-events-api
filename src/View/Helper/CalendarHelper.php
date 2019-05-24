@@ -62,6 +62,12 @@ class CalendarHelper extends Helper
         return (new Date($lastDate))->addDay(1);
     }
 
+    /**
+     * Returns an <h2> header describing the provided date, e.g. Today; Tomorrow; This Wednesday; December 6, 1984
+     *
+     * @param string $date Date string in YYYY-MM-DD format
+     * @return string
+     */
     public static function getDateHeader(string $date)
     {
         $today = date('Y-m-d');
@@ -166,6 +172,12 @@ class CalendarHelper extends Helper
         return $retval;
     }
 
+    /**
+     * Returns an <a> tag with label 'Google' with href set to a URL used for loading an event into Google Calendar
+     *
+     * @param Event $event Event entity
+     * @return string
+     */
     public static function getGoogleCalendarLink(Event $event)
     {
         // Clean up and truncate description
