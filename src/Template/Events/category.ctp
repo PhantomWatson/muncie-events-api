@@ -13,5 +13,8 @@ use App\View\AppView;
 </h1>
 
 <?php
-    $this->Html->scriptBlock(sprintf('muncieEvents.requestEventFilters.category = %s;', json_encode($category->slug)));
+    $this->Html->scriptBlock(
+        sprintf('muncieEvents.requestEventFilters.category = %s;', json_encode($category->slug)),
+        ['block' => true]
+    );
     echo $this->element('Events/accordion/wrapper');

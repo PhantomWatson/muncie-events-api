@@ -9,7 +9,7 @@
 use App\Model\Entity\Category;
 use App\View\AppView;
 
-$this->Html->scriptBlock('setupSidebar();');
+$this->Html->scriptBlock('setupSidebar();', ['block' => true]);
 $locations = $this->Nav->getLocations();
 $tags = $this->Nav->getUpcomingTags();
 $categories = $this->Nav->getCategories();

@@ -66,5 +66,5 @@ $dayLinks = $this->Nav->getDayLinks();
     </li>
 </ul>
 <?php
-    $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populatedDates) . ';');
-    $this->Html->scriptBlock('setupHeaderNav();');
+    $this->Html->scriptBlock('muncieEvents.populatedDates = ' . json_encode($populatedDates) . ';', ['block' => true]);
+    $this->Html->scriptBlock('setupHeaderNav();', ['block' => true]);

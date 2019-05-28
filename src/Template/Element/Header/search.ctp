@@ -59,5 +59,5 @@ $this->Form->setTemplates($formTemplate);
     </div>
 
     <?= $this->Form->end() ?>
-    <?php $this->Html->scriptBlock('setupSearch();'); ?>
+    <?php $this->Html->scriptBlock('setupSearch();', ['block' => true]); ?>
 </div>
