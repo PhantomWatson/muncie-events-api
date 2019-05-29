@@ -531,11 +531,22 @@ iframe.widgets {
             vertical-align: text-bottom;
         }
     }
-    .breakdown li {
-        padding-right: 5px;
+    .breakdown {
+        li {
+            padding-right: 5px;
 
-        &:first-child {
-            padding-right: 10px;
+            &:first-child {
+                padding-right: 10px;
+            }
+        }
+        button {
+            border: none;
+            cursor: pointer;
+            padding: 0;
+
+            &:disabled {
+                cursor: default;
+            }
         }
     }
 }
