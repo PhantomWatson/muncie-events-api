@@ -508,9 +508,6 @@ iframe.widgets {
         margin: 0;
         padding: 0;
     }
-    a.selected {
-        border-bottom: 1px solid #000;
-    }
     li.no_tags {
         i.icon:before {
             cursor: default;
@@ -519,6 +516,9 @@ iframe.widgets {
     th {
         padding-right: 15px;
         text-align: right;
+    }
+    a.selected {
+        border-bottom: 1px solid #000;
     }
     .direction a {
         margin-right: 15px;
@@ -546,6 +546,9 @@ iframe.widgets {
 
             &:disabled {
                 cursor: not-allowed;
+            }
+            &.selected {
+                border-bottom: 1px solid #000;
             }
         }
     }
