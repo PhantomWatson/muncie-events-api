@@ -230,3 +230,25 @@ function split(val) {
 function extractLast(term) {
     return split(term).pop();
 }
+
+/**
+ * Prepares the /tags/index page
+ */
+function setupTagIndex() {
+    $('#tag_view_options').find('.breakdown button').click(function (event) {
+        event.preventDefault();
+        var button = $(this);
+        var tagList = button.data('tag-list');
+        button.parents('ul').find('button.selected').removeClass('selected');
+        if (tagList === 'cloud') {
+            $('.tag_sublist:visible').hide();
+            $('#tag_index_cloud').show();
+            button.addClass('selected');
+        } else {
+            $('#tag_index_cloud').hide();
+            $('.tag_sublist:visible').hide();
+            $('#tag_sublist_' + tagList).show();
+            button.addClass('selected');
+        }
+    });
+}
