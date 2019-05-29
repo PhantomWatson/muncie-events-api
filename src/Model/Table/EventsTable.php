@@ -391,19 +391,30 @@ class EventsTable extends Table
      * Returns an alphabetized array of tags associated with upcoming published events,
      * plus the count of how many events each is associated with
      *
+     * @param string $direction Direction to search, either 'future' or 'past'
+     * @param int $categoryId ID of a category record
      * @return Tag[]
+     * @throws InternalErrorException
      */
-    public function getUpcomingEventTags()
+    public function getEventTags($direction = 'future', $categoryId = null)
     {
-        $events = $this->find('future')
+        if (!in_array($direction, ['future', 'past'])) {
+            throw new InternalErrorException('Invalid direction: ' . $direction);
+        }
+
+        $query = $this->find($direction)
             ->select(['id'])
             ->where(['published' => true])
             ->contain([
                 'Tags' => function (Query $query) {
                     return $query->select(['id', 'name']);
                 }
-            ])
-            ->all();
+            ]);
+        if ($categoryId) {
+            $query->where(['category_id' => $categoryId]);
+        }
+
+        $events = $query->all();
 
         $tags = [];
         foreach ($events as $event) {

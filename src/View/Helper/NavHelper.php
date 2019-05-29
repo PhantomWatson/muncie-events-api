@@ -153,7 +153,7 @@ class NavHelper extends Helper
         /** @var EventsTable $eventsTable */
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
 
-        return $eventsTable->getUpcomingEventTags();
+        return $eventsTable->getEventTags();
     }
 
     /**
