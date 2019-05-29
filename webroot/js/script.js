@@ -29,7 +29,7 @@ var muncieEvents = {
  * Keeps track of what <ul> elements have already been prepared
  */
 function setupEventAccordion() {
-    $('ul.event_accordion').each(function() {
+    $('ul.event_accordion').each(function () {
         var accordion_id = this.id;
         // Prepared <ul>s are given IDs.
         // <ul>s without IDs or with IDs not in muncieEventsFeed.accordions_prepared need to be prepared.
@@ -37,7 +37,7 @@ function setupEventAccordion() {
             if (!accordion_id) {
                 this.id = 'event_accordion_'+(muncieEventsFeed.accordions_prepared.length + 1);
             }
-            $('#'+this.id+' > li > a.more_info_handle').click(function(event) {
+            $('#'+this.id+' > li > a.more_info_handle').click(function (event) {
                 event.preventDefault();
                 var toggler = $(this);
                 var event_id = toggler.data('eventId');
@@ -89,4 +89,144 @@ function setupPagination() {
     });
 
     muncieEvents.paginationPrepared = true;
+}
+
+/**
+ * Sets up navigation functions in the header
+ */
+function setupHeaderNav() {
+    // Set up datepicker
+    $('#header_datepicker').datepicker({
+        onSelect: function (date) {
+            window.location.href = '/events/day/' + date;
+        },
+        beforeShowDay: function (date) {
+            // Get zero-padded date components
+            var day = date.getDate().toString();
+            if (day < 10) {
+                day = '0' + day.toString();
+            }
+            // Because they're zero-indexed for some reason
+            var month = (date.getMonth() + 1).toString();
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var year = date.getFullYear().toString();
+            var monthYear = month + '-' + year;
+
+            var selectable = muncieEvents.populatedDates[monthYear].indexOf(day) !== -1;
+            var className = selectable ? 'has_events' : 'no_events';
+            var tooltip = selectable ? null : 'No events';
+
+            return [selectable, className, tooltip];
+        }
+    }).change(function (event) {
+        var date = $(this).val();
+        window.location.href = '/events/day/' + date;
+    });
+}
+
+/**
+ * Prepares the sidebar
+ */
+function setupSidebar() {
+    var sidebarSelectLocation = function (location) {
+        if (location === '') {
+            return false;
+        }
+        window.location.href = location === '[past_events]'
+            ? '/past_locations'
+            : '/location/' + encodeURIComponent(location);
+    };
+    $('#sidebar').find('> div.locations select').change(function () {
+        var location = $(this).val();
+        sidebarSelectLocation(location);
+    });
+    $('#sidebar_select_location').submit(function (event) {
+        event.preventDefault();
+        var location = $(this).children('select').val();
+        sidebarSelectLocation(location);
+    });
+}
+
+/**
+ * Prepares search form in header
+ */
+function setupSearch() {
+    $('#EventSearchForm').submit(function () {
+        var input = $('#EventFilter');
+        input.val($.trim(input.val()));
+        if (input.val() === '') {
+            alert('Please enter a word or phrase in the search box to search for events.');
+            return false;
+        }
+        return true;
+    });
+
+    var inputField = $('#EventFilter');
+    inputField.focus(function () {
+        var options = $('#search_options');
+        if (options.is(':visible')) {
+            options.slideUp(200);
+        }
+    });
+    inputField.bind('keydown', function (event) {
+        // Prevent navigation away from the field on tab when selecting an item
+        if (event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
+            event.preventDefault();
+        }
+    }).autocomplete({
+        source: function (request, response) {
+            var direction = '';
+            if ($('#EventDirectionFuture').is(':checked')) {
+                direction = 'future';
+            } else if ($('#EventDirectionPast').is(':checked')) {
+                direction = 'past';
+            } else {
+                direction = 'all';
+            }
+            $.getJSON('/events/search_autocomplete/' + direction, {
+                term: extractLast(request.term)
+            }, response);
+        },
+        search: function () {
+            // Enforce minimum length
+            var term = extractLast(this.value);
+            if (term.length < 2) {
+                return false;
+            }
+            $('#search_autocomplete_loading').css('visibility', 'visible');
+        },
+        response: function () {
+            $('#search_autocomplete_loading').css('visibility', 'hidden');
+        },
+        focus: function () {
+            // Prevent value inserted on focus
+            return false;
+        },
+        select: function (event, ui) {
+            this.value = ui.item.value;
+            return false;
+        }
+    });
+}
+
+/**
+ * Splits a string into an array with any whitespace or commas as delimiters
+ *
+ * @param val
+ * @returns {Array|string[]|*}
+ */
+function split(val) {
+    return val.split(/,\s*/);
+}
+
+/**
+ * Returns the substring that follows the last whitespace or comma
+ *
+ * @param term
+ * @returns {T}
+ */
+function extractLast(term) {
+    return split(term).pop();
 }
