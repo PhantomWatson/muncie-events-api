@@ -86,6 +86,10 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Events', 'action' => 'tag'],
         ['pass' => ['slug']]
     );
+    Router::scope('/tags', ['controller' => 'Tags'], function (RouteBuilder $routes) {
+        $routes->connect('/', ['action' => 'index', 'upcoming']);
+        $routes->connect('/past', ['action' => 'index', 'past']);
+    });
 
     // Users
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'register']);
