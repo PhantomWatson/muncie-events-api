@@ -6,7 +6,6 @@
 
 use App\Model\Entity\Tag;
 use App\View\AppView;
-use Cake\Utility\Text;
 
 $minCount = $maxCount = null;
 foreach ($tags as $tag) {
@@ -43,7 +42,7 @@ $fontSizeRange = $maxFontSize - $minFontSize;
                         'prefix' => false,
                         'controller' => 'Events',
                         'action' => 'tag',
-                        'slug' => $tag->id . '-' . Text::slug($tag->name)
+                        'slug' => $tag->slug
                     ],
                     [
                         'escape' => false,

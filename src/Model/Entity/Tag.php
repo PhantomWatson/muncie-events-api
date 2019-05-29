@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
+use Cake\Utility\Text;
 
 /**
  * Tag Entity
@@ -48,4 +49,18 @@ class Tag extends Entity
         'child_tags' => true,
         'events' => true
     ];
+
+    /**
+     * Returns a slug for this tag, formatted as "$tagId-$tagName"
+     *
+     * @return string
+     */
+    public function _getSlug()
+    {
+        $slug = str_replace('\'', '', $this->name);
+        $slug = mb_strtolower($slug);
+        $slug = Text::slug($slug);
+
+        return $this->id . '-' . $slug;
+    }
 }
