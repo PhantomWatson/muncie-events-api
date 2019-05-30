@@ -163,36 +163,43 @@ function setupSearch() {
         return true;
     });
 
+    var apiUrlBase = 'https://api.' + window.location.hostname;
     var inputField = $('#EventFilter');
+
+    // Automatically close search options
     inputField.focus(function () {
         var options = $('#search_options');
         if (options.is(':visible')) {
             options.slideUp(200);
         }
     });
+
+    // Prevent navigation away from the field on tab when selecting an item
     inputField.bind('keydown', function (event) {
-        // Prevent navigation away from the field on tab when selecting an item
         if (event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
             event.preventDefault();
         }
-    }).autocomplete({
+    });
+
+    // Setup autocomplete
+    inputField.autocomplete({
         source: function (request, response) {
-            var direction = '';
-            if ($('#EventDirectionFuture').is(':checked')) {
-                direction = 'future';
-            } else if ($('#EventDirectionPast').is(':checked')) {
-                direction = 'past';
-            } else {
-                direction = 'all';
-            }
-            $.getJSON('/events/search_autocomplete/' + direction, {
-                term: extractLast(request.term)
-            }, response);
+            $.getJSON(
+                apiUrlBase + '/v1/tags/autocomplete/',
+                {term: request.term},
+                function (data) {
+                    response($.map(data.data, function (item) {
+                        return {
+                            label: item.attributes.name,
+                            value: item.attributes.name
+                        }
+                    }));
+                }
+            );
         },
         search: function () {
             // Enforce minimum length
-            var term = extractLast(this.value);
-            if (term.length < 2) {
+            if (this.value.length < 2) {
                 return false;
             }
             $('#search_autocomplete_loading').css('visibility', 'visible');
@@ -201,7 +208,7 @@ function setupSearch() {
             $('#search_autocomplete_loading').css('visibility', 'hidden');
         },
         focus: function () {
-            // Prevent value inserted on focus
+            // Prevent value from being inserted on focus
             return false;
         },
         select: function (event, ui) {
