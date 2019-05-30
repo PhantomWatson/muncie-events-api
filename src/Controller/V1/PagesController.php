@@ -3,6 +3,7 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\Page;
+use Exception;
 
 /**
  * Class PagesController
@@ -10,6 +11,18 @@ use App\Model\Entity\Page;
  */
 class PagesController extends ApiController
 {
+    /**
+     * Initialize method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow();
+    }
+
     /**
      * /pages/about endpoint
      *

@@ -22,6 +22,18 @@ class MailingListController extends ApiController
     private $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
     /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['subscribe']);
+    }
+
+    /**
      * /mailing-list/subscribe endpoint
      *
      * @return void

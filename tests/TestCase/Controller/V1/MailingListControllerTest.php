@@ -92,9 +92,8 @@ class MailingListControllerTest extends ApplicationTest
             'controller' => 'MailingList',
             'action' => 'subscribe',
             '?' => [
-                'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken(1),
-            ],
+                'userToken' => $this->getUserToken(1)
+            ]
         ];
         $this->getUrl = [
             'prefix' => 'v1',
