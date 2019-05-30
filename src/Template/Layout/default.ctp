@@ -21,20 +21,21 @@
         echo $this->fetch('meta');
         echo $this->Html->css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
         echo $this->Html->css('/magnific-popup/magnific-popup.css');
-        echo $this->Html->css('/jquery_ui/css/smoothness/jquery-ui-1.10.2.custom.min.css');
+        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
+        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
+        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
         echo $this->Html->css('style');
         echo $this->fetch('css');
     ?>
 </head>
 <body class="layout_<?= $this->getLayout() ?>">
-    <!-- jquery 3.1.1 min files from CDN, with local fallback -->
     <script
-        src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous">
     </script>
-    <script src="/jquery_ui/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-3.1.1.min.js">\x3C/script>')</script>
+    <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-3.4.1.min.js">\x3C/script>')</script>
     <div class="clearfix" id="header">
         <div class="container">
             <?= $this->element('Header/header') ?>
