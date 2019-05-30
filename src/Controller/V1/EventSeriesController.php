@@ -29,6 +29,18 @@ class EventSeriesController extends ApiController
     ];
 
     /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['view']);
+    }
+
+    /**
      * /event-series/{eventSeriesId} endpoint
      *
      * @param int|null $seriesId Event series ID

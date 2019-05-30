@@ -41,32 +41,27 @@ class PagesControllerTest extends ApplicationTest
         $this->aboutUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'about',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'about'
         ];
         $this->rulesEventsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesEvents',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'rulesEvents'
         ];
         $this->rulesImagesUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesImages',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'rulesImages'
         ];
         $this->rulesTagsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesTags',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'rulesTags'
         ];
         $this->widgetsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'widgets',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'widgets'
         ];
     }
 

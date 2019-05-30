@@ -8,6 +8,7 @@ use Cake\Database\Expression\QueryExpression;
 use Cake\Http\Exception\BadRequestException;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * Class TagsController
@@ -16,6 +17,18 @@ use Cake\ORM\TableRegistry;
  */
 class TagsController extends ApiController
 {
+    /**
+     * Initialize method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow();
+    }
+
     /**
      * /tags/tree endpoint
      *

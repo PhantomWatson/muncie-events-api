@@ -911,8 +911,6 @@ paths:
                             detail:
                               type: string
                               example: 'Series with ID {eventSeriesId} not found'
-      security:
-        - api_key: []
     delete:
       tags:
         - events
@@ -1391,8 +1389,6 @@ paths:
                           example: This email address is already subscribed
         '405':
           description: Method not allowed
-      security:
-        - api_key: []
   /pages/about:
     get:
       tags:
@@ -1424,8 +1420,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /pages/rules-events:
     get:
       tags:
@@ -1457,8 +1451,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /pages/rules-images:
     get:
       tags:
@@ -1490,8 +1482,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /pages/rules-tags:
     get:
       tags:
@@ -1523,8 +1513,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /pages/widgets:
     get:
       tags:
@@ -1556,8 +1544,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /tag/{tagId}:
     get:
       tags:
@@ -1655,8 +1641,6 @@ paths:
                             detail:
                               type: string
                               example: 'Invalid tag ID: {tagId}'
-      security:
-        - api_key: []
   /tags:
     get:
       tags:
@@ -1695,8 +1679,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /tags/autocomplete:
     get:
       tags:
@@ -1761,8 +1743,6 @@ paths:
                         detail:
                           type: string
                           example: "Search term missing / Invalid limit"
-      security:
-        - api_key: []
   /tags/future:
     get:
       tags:
@@ -1807,8 +1787,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /tags/tree:
     get:
       tags:
@@ -1907,8 +1885,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /user/{userId}:
     get:
       tags:
