@@ -42,8 +42,7 @@ class CategoriesControllerTest extends ApplicationTest
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Categories',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'index'
         ];
     }
 

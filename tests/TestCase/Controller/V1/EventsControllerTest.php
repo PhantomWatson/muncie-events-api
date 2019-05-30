@@ -102,8 +102,7 @@ class EventsControllerTest extends ApplicationTest
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'future'
         ];
         $event = (new EventsFixture())->records[0];
         $eventId = $event['id'];
@@ -111,20 +110,17 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'view',
-            $eventId,
-            '?' => ['apikey' => $this->getApiKey()]
+            $eventId
         ];
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'index'
         ];
         $this->searchUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'search',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'search'
         ];
         $category = (new CategoriesFixture())->records[0];
         $categoryId = $category['id'];
@@ -132,8 +128,7 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'category',
-            $categoryId,
-            '?' => ['apikey' => $this->getApiKey()]
+            $categoryId
         ];
     }
 
@@ -196,20 +191,6 @@ class EventsControllerTest extends ApplicationTest
         $url['?']['end'] = $date;
         $this->get($url);
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
-    }
-
-    /**
-     * Tests that requests with invalid API keys are rejected
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testFutureFailInvalidApiKey()
-    {
-        $url = $this->futureUrl;
-        $url['?']['apikey'] = 'invalid key';
-        $this->get($url);
-        $this->assertResponseError();
     }
 
     /**
@@ -590,6 +571,36 @@ class EventsControllerTest extends ApplicationTest
         $this->assertContains(TagsFixture::TAG_WITH_EVENT, $returnedTagIds);
         $this->assertContains(TagsFixture::TAG_WITH_DIFFERENT_EVENT, $returnedTagIds);
         $this->assertEquals($relationships->user->data->id, $this->addingUserId);
+    }
+
+    /**
+     * Tests that requests with invalid API keys are rejected
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testAddSingleEventFailInvalidKey()
+    {
+        $url = $this->addUrl;
+        $url['?']['apikey'] = 'invalid key';
+        $data = $this->getAddSingleEventData();
+        $this->post($url, $data);
+        $this->assertResponseError();
+    }
+
+    /**
+     * Tests that requests with missing API keys are rejected
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testAddSingleEventFailMissingKey()
+    {
+        $url = $this->addUrl;
+        unset($url['?']['apikey']);
+        $data = $this->getAddSingleEventData();
+        $this->post($url, $data);
+        $this->assertResponseError();
     }
 
     /**

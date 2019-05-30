@@ -39,8 +39,7 @@ class ContactControllerTest extends ApplicationTest
         $this->contactUrl = [
             'prefix' => 'v1',
             'controller' => 'Contact',
-            'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            'action' => 'index'
         ];
         $this->formData = [
             'name' => 'Test name',
