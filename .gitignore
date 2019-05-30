@@ -39,7 +39,6 @@ node_modules/*
 config/Migrations/schema-dump-default.lock
 
 # Front-end
-/webroot/jquery_ui/*
 /webroot/magnific-popup/*
 
 # Other
