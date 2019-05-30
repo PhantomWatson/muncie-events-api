@@ -451,10 +451,11 @@ class EventsControllerTest extends ApplicationTest
         $event = $response['data'][0]['attributes'];
         $eventsFixture = new EventsFixture();
         $excludedFields = [
-            'published',
             'approved_by',
             'created',
-            'modified'
+            'location_slug',
+            'modified',
+            'published'
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {
