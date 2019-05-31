@@ -13,6 +13,7 @@
  */
 namespace App\View;
 
+use App\View\Helper\CalendarHelper;
 use App\View\Helper\IconHelper;
 use App\View\Helper\NavHelper;
 use Cake\View\View;
@@ -24,9 +25,10 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  * Your application’s default view class
  *
  * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
- * @property RecaptchaHelper $Recaptcha
- * @property NavHelper $Nav
+ * @property CalendarHelper $Calendar
  * @property IconHelper $Icon
+ * @property NavHelper $Nav
+ * @property RecaptchaHelper $Recaptcha
  */
 class AppView extends View
 {
@@ -42,6 +44,7 @@ class AppView extends View
      */
     public function initialize()
     {
+        $this->loadHelper('Calendar');
         $this->loadHelper('Form', [
             'templates' => 'bootstrap_form'
         ]);

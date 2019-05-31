@@ -5,6 +5,7 @@ use App\Model\Entity\Category;
 use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
@@ -34,7 +35,8 @@ class EventsController extends AppController
         $this->Auth->allow([
             'category',
             'index',
-            'tag'
+            'tag',
+            'view'
         ]);
     }
 
@@ -141,5 +143,25 @@ class EventsController extends AppController
         ]);
 
         return null;
+    }
+
+    /**
+     * Shows a specific event
+     *
+     * @param string|null|int $id Event id
+     * @return void
+     * @throws RecordNotFoundException
+     */
+    public function view($id = null)
+    {
+        /** @var Event $event */
+        $event = $this->Events
+            ->find('withAllAssociated')
+            ->where(['Events.id' => $id])
+            ->firstOrFail();
+        $this->set([
+            'event' => $event,
+            'pageTitle' => $event->title
+        ]);
     }
 }

@@ -66,6 +66,11 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     // Events
     $routes->connect('/', ['controller' => 'Events', 'action' => 'index']);
+    Router::connect(
+        'event/:id',
+        ['controller' => 'Events', 'action' => 'view'],
+        ['id' => '[0-9]+', 'pass' => ['id']]
+    );
 
     // Pages
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
