@@ -259,3 +259,42 @@ function setupTagIndex() {
         }
     });
 }
+
+/**
+ * Loads another chunk of events at the bottom of the event accordion
+ */
+function loadMoreEvents() {
+    var moreEventsUrl = null;
+    var date = muncieEventsFeed.nextStartDate;
+    var tag = muncieEvents.requestEventFilters.tag;
+    var category = muncieEvents.requestEventFilters.category;
+    if (category) {
+        moreEventsUrl = '/' + category + '/' + date;
+    } else if (tag) {
+        moreEventsUrl += '/tag/' + tag;
+    } else {
+        moreEventsUrl = '/events/index/' + date + '/?page=1';
+    }
+
+    var loading = $('#event_accordion_loading_indicator');
+    var accordion = $('#event_accordion');
+    $.ajax({
+        url: moreEventsUrl,
+        beforeSend: function () {
+            loading.show();
+        },
+        success: function (data) {
+            loading.hide();
+            accordion.append(data);
+            muncieEventsImagePopups.prepare();
+        },
+        error: function() {
+            alert('There was an error loading more events. Please try again.');
+        },
+        complete: function() {
+            if ($('#no_events').is(':visible')) {
+                $('#load_more_events').hide();
+            }
+        }
+    });
+}

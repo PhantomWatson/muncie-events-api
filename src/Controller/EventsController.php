@@ -59,6 +59,10 @@ class EventsController extends AppController
         $this->set([
             'events' => $events
         ]);
+
+        if ($this->request->getQuery('page')) {
+            $this->render('/Events/page');
+        }
     }
 
     /**
