@@ -37,7 +37,7 @@ class CalendarHelper extends Helper
     }
 
     /**
-     * Returns the date that follows the last date in this set of events
+     * Returns the date that follows the last date in this set of events in the format YYYY-MM-DD
      *
      * @param Event[] $events Array of events
      * @return string|null
@@ -51,15 +51,15 @@ class CalendarHelper extends Helper
         // If $events is arranged by date
         if (is_string(array_keys($events)[0])) {
             $dates = array_keys($events);
-            $lastDate = end($dates);
+            $lastDate = new Date(end($dates));
 
         // If $events is a flat array
         } else {
             $lastEvent = end($events);
-            $lastDate = $lastEvent->date->format('Y-m-d');
+            $lastDate = $lastEvent->date;
         }
 
-        return (new Date($lastDate))->addDay(1);
+        return $lastDate->addDay(1)->format('Y-m-d');
     }
 
     /**
