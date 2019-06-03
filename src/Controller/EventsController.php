@@ -34,6 +34,7 @@ class EventsController extends AppController
 
         $this->Auth->allow([
             'category',
+            'day',
             'index',
             'tag',
             'view'
@@ -163,5 +164,37 @@ class EventsController extends AppController
             'event' => $event,
             'pageTitle' => $event->title
         ]);
+    }
+
+    /**
+     * Shows the events taking place on the specified day
+     *
+     * @param string $month Two-digit month, optionally zero-padded
+     * @param string $day Two-digit day, optionally zero-padded
+     * @param string $year Four-digit year
+     * @return void
+     */
+    public function day($month, $day, $year)
+    {
+        // Zero-pad day and month numbers
+        $month = str_pad($month, 2, '0', STR_PAD_LEFT);
+        $day = str_pad($day, 2, '0', STR_PAD_LEFT);
+        $date = "$year-$month-$day";
+        $events = $this->Events
+            ->find('startingOn', compact('date'))
+            ->find('endingOn', compact('date'))
+            ->find('ordered')
+            ->find('published')
+            ->find('withAllAssociated')
+            ->all();
+
+        $this->set(compact(
+            'date',
+            'day',
+            'events',
+            'month',
+            'year'
+        ));
+        $this->set(['pageTitle' => 'Events on ' . date('F j, Y', strtotime($date))]);
     }
 }

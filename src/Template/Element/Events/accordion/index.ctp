@@ -6,6 +6,7 @@
  *
  * @var AppView $this
  * @var Event[]|ResultSet $events
+ * @var bool $hideDateHeaders
  */
 
 use App\Model\Entity\Event;
@@ -20,7 +21,9 @@ $eventsByDate = CalendarHelper::arrangeByDate($events->toArray());
 <?php if ($events->count()): ?>
     <?php foreach ($eventsByDate as $date => $eventsOnDate): ?>
         <section>
-            <?= CalendarHelper::getDateHeader($date) ?>
+            <?php if (!($hideDateHeaders ?? false)): ?>
+                <?= CalendarHelper::getDateHeader($date) ?>
+            <?php endif; ?>
             <ul class="event_accordion">
                 <?php foreach ($eventsOnDate as $event): ?>
                     <?= $this->element('Events/accordion/event', compact('event')) ?>

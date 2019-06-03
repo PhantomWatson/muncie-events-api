@@ -11,8 +11,15 @@ use Cake\Routing\Router;
 use Cake\Utility\Text;
 use Cake\View\Helper;
 
+/**
+ * Class CalendarHelper
+ * @package App\View\Helper
+ * @property Helper\HtmlHelper $Html
+ */
 class CalendarHelper extends Helper
 {
+    public $helpers = ['Html'];
+
     /**
      * Returns an array events, grouped by their date
      *
@@ -270,5 +277,53 @@ class CalendarHelper extends Helper
         }
 
         return implode(', ', $links);
+    }
+
+    /**
+     * Returns a link to view events on the previous day
+     *
+     * @param string $date Date in format YYYY-MM-DD
+     * @return string
+     */
+    public function prevDay($date)
+    {
+        list($year, $month, $day) = explode('-', $date);
+        $timestamp = mktime(0, 0, 0, $month, $day - 1, $year);
+
+        return $this->Html->link(
+            '&larr; Previous Day',
+            [
+                'controller' => 'Events',
+                'action' => 'day',
+                date('m', $timestamp),
+                date('d', $timestamp),
+                date('Y', $timestamp)
+            ],
+            ['escape' => false]
+        );
+    }
+
+    /**
+     * Returns a link to view events on the next day
+     *
+     * @param string $date Date in format YYYY-MM-DD
+     * @return string
+     */
+    public function nextDay($date)
+    {
+        list($year, $month, $day) = explode('-', $date);
+        $timestamp = mktime(0, 0, 0, $month, $day + 1, $year);
+
+        return $this->Html->link(
+            'Next Day &rarr;',
+            [
+                'controller' => 'Events',
+                'action' => 'day',
+                date('m', $timestamp),
+                date('d', $timestamp),
+                date('Y', $timestamp)
+            ],
+            ['escape' => false]
+        );
     }
 }
