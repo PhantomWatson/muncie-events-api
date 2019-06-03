@@ -47,7 +47,8 @@ class EventSeriesTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Events')
-            ->setForeignKey('series_id');
+            ->setForeignKey('series_id')
+            ->setDependent(true);
     }
 
     /**
