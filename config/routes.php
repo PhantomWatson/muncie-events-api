@@ -67,14 +67,14 @@ Router::scope('/', function (RouteBuilder $routes) {
     // Events
     $routes->connect('/', ['controller' => 'Events', 'action' => 'index']);
     Router::connect(
-        'event/:id',
+        '/event/:id',
         ['controller' => 'Events', 'action' => 'view'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
 
     // EventSeries
     Router::connect(
-        'event-series/:id',
+        '/event-series/:id',
         ['controller' => 'EventSeries', 'action' => 'view'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
