@@ -72,6 +72,13 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
 
+    // EventSeries
+    Router::connect(
+        'event_series/:id',
+        ['controller' => 'EventSeries', 'action' => 'view'],
+        ['id' => '[0-9]+', 'pass' => ['id']]
+    );
+
     // Pages
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
     $routes->connect('/api/docs/v1', ['controller' => 'Pages', 'action' => 'apiDocsV1']);

@@ -16,6 +16,8 @@ use Cake\ORM\Entity;
  *
  * @property User $user
  * @property Event[] $events
+ * @property Event[] $pastEvents
+ * @property Event[] $upcomingEvents
  */
 class EventSeries extends Entity
 {
@@ -37,4 +39,26 @@ class EventSeries extends Entity
         'modified' => true,
         'user' => true
     ];
+
+    /**
+     * Reads the property `events` and sets the properties `pastEvents` and `upcomingEvents`
+     *
+     * @return void
+     */
+    public function splitEventsPastFuture()
+    {
+        $this->upcomingEvents = [];
+        $this->pastEvents = [];
+        if (!$this->events) {
+            return;
+        }
+
+        foreach ($this->events as $event) {
+            $property = $event->date->format('Y-m-d') < date('Y-m-d')
+                ? 'pastEvents'
+                : 'upcomingEvents';
+            $this->$property[] = $event;
+        }
+        rsort($this->pastEvents);
+    }
 }

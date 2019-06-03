@@ -5,6 +5,7 @@ use App\Model\Entity\EventSeries;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -86,5 +87,35 @@ class EventSeriesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    /**
+     * Alters a query to include ordered, published events with associated data
+     *
+     * @param Query $query Query object
+     * @return array|Query
+     */
+    public function findForView(Query $query)
+    {
+        return $query
+            ->contain([
+                'Events' => function (Query $q) {
+                    return $q
+                        ->find('ordered')
+                        ->find('published')
+                        ->find('withAllAssociated')
+                        ->select([
+                            'date',
+                            'id',
+                            'series_id',
+                            'time_end',
+                            'time_start',
+                            'title'
+                        ]);
+                },
+                'Users' => function (Query $q) {
+                    return $q->select(['id', 'name']);
+                }
+            ]);
     }
 }
