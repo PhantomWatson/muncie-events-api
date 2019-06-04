@@ -19,7 +19,7 @@
     <?php
         echo $this->Html->meta('icon');
         echo $this->fetch('meta');
-        echo $this->Html->css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');
+    echo $this->Html->css('https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
         echo $this->Html->css('/magnific-popup/magnific-popup.css');
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
@@ -88,7 +88,7 @@
     </script>
     <script>window.Tether || document.write('<script src="js/tether.min.js">\x3C/script>')</script>
     <script
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous">
     </script>
