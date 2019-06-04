@@ -10,16 +10,6 @@ body {
     }
 }
 
-#EventFilter {
-    border-radius: 0.3em 0 0 0.3em;
-    display: inline-block;
-    padding: 3px;
-    width: 40%;
-
-    @media @x-large {
-        width: 50%;
-    }
-}
 #EventSearchForm {
     @media @x-large {
         bottom: -47px;
@@ -53,7 +43,15 @@ body {
     }
 
     input[type="text"] {
+        border-radius: 0.3em 0 0 0.3em;
+        display: inline-block;
         margin-right: 5px;
+        padding: 3px;
+        width: 40%;
+
+        @media @x-large {
+            width: 50%;
+        }
     }
 }
 #filter {

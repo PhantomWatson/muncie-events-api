@@ -153,10 +153,12 @@ function setupSidebar() {
  * Prepares search form in header
  */
 function setupSearch() {
-    $('#EventSearchForm').submit(function () {
-        var input = $('#EventFilter');
-        input.val($.trim(input.val()));
-        if (input.val() === '') {
+    var searchForm = $('#EventSearchForm');
+    var inputField = searchForm.find('input[type="text"]');
+
+    searchForm.submit(function () {
+        inputField.val($.trim(inputField.val()));
+        if (inputField.val() === '') {
             alert('Please enter a word or phrase in the search box to search for events.');
             return false;
         }
@@ -164,7 +166,6 @@ function setupSearch() {
     });
 
     var apiUrlBase = 'https://api.' + window.location.hostname;
-    var inputField = $('#EventFilter');
 
     // Automatically close search options
     inputField.focus(function () {

@@ -24,8 +24,7 @@ $this->Form->setTemplates($formTemplate);
     <div class="input-group-btn">
         <?= $this->Form->control('filter', [
             'label' => false,
-            'class' => 'form-control',
-            'id' => 'EventFilter'
+            'class' => 'form-control'
         ]) ?>
         <div class="btn-group">
             <?= $this->Form->submit('Search', [
