@@ -1,5 +1,6 @@
 <?php
 return [
+    'dateWidget' => '<div class="form-inline">{{month}}{{day}}{{year}}{{hour}}{{minute}}{{second}}{{meridian}}</div>',
     'error' => '<div class="alert alert-danger">{{content}}</div>',
     'inputContainer' => '<div class="form-group {{type}}{{required}}">{{content}}</div>',
     'inputContainerError' => '<div class="form-group has-error has-feedback {{type}}{{required}}">{{content}}{{error}}</div>',
