@@ -78,6 +78,16 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'EventSeries', 'action' => 'view'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
+    Router::connect(
+        '/event-series/edit/:id',
+        ['controller' => 'EventSeries', 'action' => 'edit'],
+        ['id' => '[0-9]+', 'pass' => ['id']]
+    );
+    Router::connect(
+        '/event-series/delete/:id',
+        ['controller' => 'EventSeries', 'action' => 'delete'],
+        ['id' => '[0-9]+', 'pass' => ['id']]
+    );
 
     // Pages
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
