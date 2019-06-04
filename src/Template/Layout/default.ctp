@@ -92,7 +92,7 @@
         integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous">
     </script>
-    <script>$.fn.modal || document.write('<script src="js/bootstrap.min.js">\x3C/script>')</script>
+    <script>$.fn.modal || document.write('<script src="/js/bootstrap.min.js">\x3C/script>')</script>
 
     <?= $this->Html->script('script') ?>
     <?= $this->Html->script('image_popups') ?>
