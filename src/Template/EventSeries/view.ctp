@@ -23,9 +23,22 @@ use App\View\AppView; ?>
                 [
                     'controller' => 'EventSeries',
                     'action' => 'edit',
-                    $eventSeries->id
+                    'id' => $eventSeries->id
                 ],
                 ['escape' => false]
+            ) ?>
+
+            <?= $this->Form->postLink(
+                $this->Html->image('/img/icons/cross.png') . 'Delete',
+                [
+                    'controller' => 'EventSeries',
+                    'action' => 'delete',
+                    'id' => $eventSeries->id
+                ],
+                [
+                    'escape' => false,
+                    'confirm' => 'Delete all of the events in this series?'
+                ]
             ) ?>
         </div>
     <?php endif; ?>
