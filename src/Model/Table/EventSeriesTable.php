@@ -90,6 +90,22 @@ class EventSeriesTable extends Table
     }
 
     /**
+     * Returns an event series and all of its associated events for the /event-series/edit page
+     *
+     * @param Query $query Query object
+     * @return array|EntityInterface|null
+     */
+    public function findForEdit(Query $query)
+    {
+        return $query
+            ->contain([
+                'Events' => function (Query $q) {
+                    return $q->find('ordered');
+                }
+            ]);
+    }
+
+    /**
      * Alters a query to include ordered, published events with associated data
      *
      * @param Query $query Query object
