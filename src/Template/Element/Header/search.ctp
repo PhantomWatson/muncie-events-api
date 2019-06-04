@@ -21,17 +21,17 @@ $this->Form->setTemplates($formTemplate);
     <label class="sr-only" for="EventFilter">
         Search events
     </label>
-    <?= $this->Form->Control('filter', [
-        'label' => false,
-        'class' => 'form-control',
-        'id' => 'EventFilter'
-    ]) ?>
     <div class="input-group-btn">
+        <?= $this->Form->control('filter', [
+            'label' => false,
+            'class' => 'form-control',
+            'id' => 'EventFilter'
+        ]) ?>
         <div class="btn-group">
             <?= $this->Form->submit('Search', [
-                'class' => 'btn btn-default btn-sm'
+                'class' => 'btn btn-light btn-sm'
             ]) ?>
-            <button id="search_options_toggler" class="dropdown-toggle btn btn-secondary btn-sm" type="button"
+            <button id="search_options_toggler" class="dropdown-toggle btn btn-light btn-sm" type="button"
                     data-toggle="collapse" aria-haspopup="true" aria-expanded="false" data-target="#search_options">
                 <span class="caret"></span>
                 <span class="sr-only">Search options</span>
