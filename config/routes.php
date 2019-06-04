@@ -138,6 +138,14 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 });
 
+// Admin
+Router::prefix('admin', function (RouteBuilder $routes) {
+    $routes->fallbacks(DashedRoute::class);
+
+    // Events
+    $routes->connect('/moderate', ['controller' => 'Events', 'action' => 'moderate']);
+});
+
 // API
 Router::prefix('v1', function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
