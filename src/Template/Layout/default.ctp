@@ -35,8 +35,8 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous">
     </script>
-    <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
+    <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <div class="clearfix" id="header">
         <div class="container">
             <?= $this->element('Header/header') ?>
@@ -76,7 +76,7 @@
     <script>
         $(function() {
             if ($('#bootstrapCssTest').is(':visible')) {
-                $('head').prepend('<link rel="stylesheet" href="/css/bootstrap.min.css">');
+                $('head').prepend('<link rel="stylesheet" href="/css/bootstrap.min.css" />');
             }
         });
     </script>
