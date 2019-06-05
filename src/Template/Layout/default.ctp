@@ -36,7 +36,7 @@
         crossorigin="anonymous">
     </script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-3.4.1.min.js">\x3C/script>')</script>
+    <script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
     <div class="clearfix" id="header">
         <div class="container">
             <?= $this->element('Header/header') ?>
@@ -87,7 +87,7 @@
         integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous">
     </script>
-    <script>window.Tether || document.write('<script src="js/tether.min.js">\x3C/script>')</script>
+    <script>window.Tether || document.write('<script src="/js/tether.min.js">\x3C/script>')</script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
             crossorigin="anonymous"></script>
