@@ -37,11 +37,8 @@
     </script>
     <script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-    <div class="clearfix" id="header">
-        <div class="container">
-            <?= $this->element('Header/header') ?>
-        </div>
-    </div>
+
+    <?= $this->element('Header/header') ?>
 
     <div id="divider"></div>
 
