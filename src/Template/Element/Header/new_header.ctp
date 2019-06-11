@@ -146,6 +146,19 @@ setupSearch();
                 </li>
             <?php endif; ?>
 
+            <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
+                <?= $this->Html->link(
+                    'Mailing List',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'MailingList',
+                        'action' => 'join'
+                    ],
+                    ['class' => 'nav-link']
+                ) ?>
+            </li>
+
             <li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
                 <?= $this->Html->link(
                     'Contact',
