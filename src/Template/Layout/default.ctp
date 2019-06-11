@@ -38,7 +38,7 @@
     <script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
     <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 
-    <?= $this->element('Header/header') ?>
+    <?= $this->element('Header/new_header') ?>
 
     <div id="divider"></div>
 
