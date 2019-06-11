@@ -23,7 +23,9 @@
     "through2": "^2.0.5",
     "uglify-js": "^3.4.9"
   },
-  "devDependencies": {},
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.9.0"
+    },
   "repository": {
     "type": "",
     "url": ""
