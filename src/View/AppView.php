@@ -45,9 +45,7 @@ class AppView extends View
     public function initialize()
     {
         $this->loadHelper('Calendar');
-        $this->loadHelper('Form', [
-            'templates' => 'bootstrap_form'
-        ]);
+        $this->loadHelper('Form', ['templates' => 'bootstrap_form']);
         $this->loadHelper('Nav');
     }
 }
