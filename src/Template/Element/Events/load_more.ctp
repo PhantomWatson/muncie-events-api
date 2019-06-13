@@ -2,7 +2,7 @@
     <img id="" src="/img/loading_small.gif" alt="..." /> Loading...
 </div>
 <div id="load_more_events_wrapper">
-    <button class="btn" id="load_more_events">More events...</button>
+    <button class="btn btn-dark" id="load_more_events">More events...</button>
 </div>
 <?php $this->Html->scriptStart(['block' => true]); ?>
     $('#load_more_events').button().click(function(event) {
