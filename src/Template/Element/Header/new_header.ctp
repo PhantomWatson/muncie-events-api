@@ -7,8 +7,6 @@
 use App\View\AppView;
 use Cake\Routing\Router;
 
-$populatedDates = $this->Nav->getPopulatedDates();
-$dayLinks = $this->Nav->getDayLinks();
 $searchFormAction = Router::url(
     array_merge(
         ['controller' => 'Events', 'action' => 'search'],
@@ -18,8 +16,6 @@ $searchFormAction = Router::url(
 ?>
 
 <?php $this->Html->scriptStart(['block' => true]); ?>
-muncieEvents.populatedDates = <?= json_encode($populatedDates) ?>;
-setupHeaderNav();
 setupSearch();
 <?php $this->Html->scriptEnd(); ?>
 
@@ -36,7 +32,7 @@ setupSearch();
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="<?= $this->Nav->getActiveLink('Events', 'index') ?> nav-item">
+            <li class="<?= $this->Nav->getActiveLink('Events', 'index') ?> nav-item d-sm-block d-lg-none d-xl-block">
                 <?= $this->Html->link(
                     'Home',
                     [
@@ -47,28 +43,6 @@ setupSearch();
                     ],
                     ['class' => 'nav-link']
                 ) ?>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="date_picker_toggler" data-toggle="collapse" href="#header_nav_datepicker"
-                   aria-controls="header_nav_datepicker">
-                    Go to Date...
-                </a>
-                <div id="header_nav_datepicker" class="collapse" aria-labelledby="date_picker_toggler">
-                    <div>
-                        <?php if (!empty($dayLinks)): ?>
-                            <ul>
-                                <?php foreach ($dayLinks as $dayLink): ?>
-                                    <li>
-                                        <a href="<?= $dayLink['url'] ?>">
-                                            <?= $dayLink['label'] ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                        <div id="header_datepicker"></div>
-                    </div>
-                </div>
             </li>
             <li class="<?= $this->Nav->getActiveLink('Events', 'add') ?> nav-item">
                 <?= $this->Html->link(
@@ -133,7 +107,7 @@ setupSearch();
                         ['class' => 'nav-link']
                     ) ?>
                 </li>
-                <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item">
+                <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item d-sm-block d-lg-none d-xl-block">
                     <?= $this->Html->link(
                         'Register',
                         [
