@@ -5,18 +5,22 @@ use App\Model\Entity\Category;
 use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
+use App\Model\Table\UsersTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\ORM\TableRegistry;
 use Exception;
+use Recaptcha\Controller\Component\RecaptchaComponent;
 
 /**
  * Events Controller
  *
  * @property EventsTable $Events
  * @property TagsTable $Tags
+ * @property RecaptchaComponent $Recaptcha
  *
  * @method Event[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -33,12 +37,18 @@ class EventsController extends AppController
         parent::initialize();
 
         $this->Auth->allow([
+            'add',
             'category',
             'day',
             'index',
             'tag',
             'view'
         ]);
+
+        $action = $this->request->getParam('action');
+        if ($action === 'add') {
+            $this->loadComponent('Recaptcha.Recaptcha');
+        }
     }
 
     /**
@@ -196,5 +206,109 @@ class EventsController extends AppController
             'year'
         ));
         $this->set(['pageTitle' => 'Events on ' . date('F j, Y', strtotime($date))]);
+    }
+
+    /**
+     * Adds a new event
+     *
+     * @return Response|null
+     */
+    public function add()
+    {
+        $event = $this->Events->newEntityWithDefaults();
+
+        $this->setEventFormVars($event);
+        $this->set(['pageTitle' => 'Submit an Event',]);
+
+        if (!$this->request->is(['patch', 'post', 'put'])) {
+            return $this->render('form');
+        }
+
+        if (!$this->passedBotDetection()) {
+            $this->Flash->error(
+                'Spam detection failed. ' .
+                'Please try the reCAPTCHA challenge again or log in before submitting an event.'
+            );
+
+            return $this->render('form');
+        }
+
+        // Add an event or series
+        $data = $this->request->getData() + [
+                'tags' => [],
+                'time_end' => null
+            ];
+        $dates = explode(',', $this->request->getData('date'));
+        if (count($dates) < 2) {
+            return $this->addSingleEvent($data);
+        }
+
+        return $this->addEventSeries($data);
+    }
+
+    /**
+     * Sets view variables used in the event form
+     *
+     * @param Event $event
+     * @return void
+     */
+    private function setEventFormVars($event)
+    {
+        /**
+         * @var EventsTable $eventsTable
+         * @var UsersTable $usersTable
+         */
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $userId = $this->Auth->user('id');
+        $autoPublish = $usersTable->getAutoPublish($userId);
+        $action = $this->request->getParam('action');
+        $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
+        $firstEvent = isset($autoPublish) && !$autoPublish && $action == 'add';
+        $hasEndTime = (bool)$event->time_end;
+        $hasAddress = (bool)$event->address;
+        $hasCost = (bool)$event->cost;
+        $hasAges = (bool)$event->age_restriction;
+        $hasSource = (bool)$event->source;
+        $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
+        $categories = $categoriesTable->find('list');
+        $autocompleteLocations = [];
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        foreach ($eventsTable->getLocations() as $location) {
+            $autocompleteLocations[] = [
+                'label' => $location['location'],
+                'value' => $location['address']
+            ];
+        }
+        $dateFieldValues = [];
+        $preselectedDates = [];
+        $defaultDate = 0; // Today
+
+        $this->set(compact(
+            'action',
+            'autocompleteLocations',
+            'autoPublish',
+            'categories',
+            'dateFieldValues',
+            'defaultDate',
+            'event',
+            'firstEvent',
+            'hasAddress',
+            'hasAges',
+            'hasCost',
+            'hasEndTime',
+            'hasSource',
+            'multipleDatesAllowed',
+            'preselectedDates'
+        ));
+    }
+
+    /**
+     * Returns a boolean indicating whether or not the current user has passed bot detection
+     *
+     * @return bool
+     */
+    private function passedBotDetection()
+    {
+        return php_sapi_name() == 'cli' || $this->Auth->user() || $this->Recaptcha->verify();
     }
 }
