@@ -9,6 +9,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -529,5 +530,23 @@ class EventsTable extends Table
 
             return $dates;
         }, 'daily');
+    }
+
+    /**
+     * Returns an array of location arrays, each with the keys name, slug, and address
+     *
+     * Excludes unpublished events when looking up locations
+     *
+     * @return array
+     */
+    public function getLocations()
+    {
+        return $this
+            ->find('published')
+            ->select(['location', 'location_slug', 'address'])
+            ->distinct('location')
+            ->orderAsc('location')
+            ->enableHydration(false)
+            ->toArray();
     }
 }
