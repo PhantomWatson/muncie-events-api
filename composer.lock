@@ -4,8 +4,38 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f25546e245d421d38ac1c2f22fe62a4c",
+    "content-hash": "75cb1b706119c8658609de85dce6fcc0",
     "packages": [
+        {
+            "name": "akkaweb/cakephp-ckeditor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akkaweb/AKKA-CakePHP-CKEditor-Plugin.git",
+                "reference": "d495479dd31714afb6a6c6baafe552f5425de4fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akkaweb/AKKA-CakePHP-CKEditor-Plugin/zipball/d495479dd31714afb6a6c6baafe552f5425de4fa",
+                "reference": "d495479dd31714afb6a6c6baafe552f5425de4fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "AkkaCKEditor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "AkkaCKEditor plugin for CakePHP",
+            "time": "2016-01-05T23:28:20+00:00"
+        },
         {
             "name": "alek13/slack",
             "version": "1.10.1",
@@ -3557,6 +3587,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
@@ -4826,6 +4857,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "phantomwatson/cakephp-json-api": 20,
+        "akkaweb/cakephp-ckeditor": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

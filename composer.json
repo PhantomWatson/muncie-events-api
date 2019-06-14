@@ -20,7 +20,8 @@
         "phantomwatson/cakephp-json-api": "dev-master",
         "ext-gd": "*",
         "ext-curl": "*",
-        "alek13/slack": "^1.10"
+        "alek13/slack": "^1.10",
+        "akkaweb/cakephp-ckeditor": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",
