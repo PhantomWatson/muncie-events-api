@@ -549,4 +549,18 @@ class EventsTable extends Table
             ->enableHydration(false)
             ->toArray();
     }
+
+    /**
+     * Returns a new entity with fields set to default values
+     *
+     * @return Event
+     */
+    public function newEntityWithDefaults()
+    {
+        $event = $this->newEntity();
+        $event->time_start = new FrozenTime('12:00pm');
+        $event->time_end = new FrozenTime('1:00pm');
+
+        return $event;
+    }
 }
