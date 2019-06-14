@@ -13,9 +13,11 @@
  */
 namespace App\View;
 
+use AkkaCKEditor\View\Helper\CKEditorHelper;
 use App\View\Helper\CalendarHelper;
 use App\View\Helper\IconHelper;
 use App\View\Helper\NavHelper;
+use App\View\Helper\TagHelper;
 use Cake\View\View;
 use Recaptcha\View\Helper\RecaptchaHelper;
 
@@ -26,13 +28,14 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  *
  * @link https://book.cakephp.org/3.0/en/views.html#the-app-view
  * @property CalendarHelper $Calendar
+ * @property CKEditorHelper $CKEditor
  * @property IconHelper $Icon
  * @property NavHelper $Nav
  * @property RecaptchaHelper $Recaptcha
+ * @property TagHelper $Tag
  */
 class AppView extends View
 {
-
     /**
      * Initialization hook method.
      *
@@ -47,5 +50,15 @@ class AppView extends View
         $this->loadHelper('Calendar');
         $this->loadHelper('Form', ['templates' => 'bootstrap_form']);
         $this->loadHelper('Nav');
+
+        $controller = $this->request->getParam('controller');
+        $action = $this->request->getParam('action');
+        if ($controller == 'Events' && in_array($action, ['add', 'edit'])) {
+            $this->loadHelper('Tag');
+            $this->loadHelper('AkkaCKEditor.CKEditor', [
+                'distribution' => 'basic',
+                'version' => '4.5.0'
+            ]);
+        }
     }
 }
