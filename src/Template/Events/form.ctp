@@ -33,8 +33,6 @@ if ($multipleDatesAllowed) {
 }
 ?>
 <?php $this->Html->scriptStart(['block' => true]); ?>
-CKEDITOR.plugins.addExternal('emojione', '/ckeditor-emojione/', 'plugin.js');
-CKEDITOR.config.extraPlugins = 'emojione';
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
 <?php if ($multipleDatesAllowed): ?>
