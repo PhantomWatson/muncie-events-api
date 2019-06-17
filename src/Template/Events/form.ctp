@@ -184,13 +184,13 @@ setupEventForm();
             Time
         </th>
         <td>
-            <label class="sr-only" for="time_start.hour">
+            <label class="sr-only" for="time_start[hour]">
                 Hour
             </label>
-            <label class="sr-only" for="time_start.minute">
+            <label class="sr-only" for="time_start[minute]">
                 Minute
             </label>
-            <label class="sr-only" for="time_start.meridian">
+            <label class="sr-only" for="time_start[meridian]">
                 AM or PM
             </label>
             <div id="eventform_timestart_div" class="form-group col-md-10 col-xs-12">
@@ -217,10 +217,10 @@ setupEventForm();
                 <label class="sr-only" for="time_end[hour]">
                     Hour
                 </label>
-                <label class="sr-only" for="time_end.minute">
+                <label class="sr-only" for="time_end[minute]">
                     Minute
                 </label>
-                <label class="sr-only" for="time_end.meridian">
+                <label class="sr-only" for="time_end[meridian]">
                     AM or PM
                 </label>
                 <?= $this->Form->time('time_end', [
