@@ -185,7 +185,7 @@ class Event extends Entity
     }
 
     /**
-     * Sets the event to approved and published if $user (the user submitting the form) is an administrator
+     * Sets the event to published if the user submitting the form qualifies
      *
      * @param array|User|null $user The user submitting the form (not necessarily the original event author)
      * @return void
@@ -193,9 +193,7 @@ class Event extends Entity
      */
     public function autoPublish($user)
     {
-        if ($this->userIsAutoPublishable($user)) {
-            $this->published = true;
-        }
+        $this->published = $this->userIsAutoPublishable($user);
     }
 
     /**
