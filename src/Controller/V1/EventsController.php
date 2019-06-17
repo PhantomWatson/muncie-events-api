@@ -2,16 +2,13 @@
 namespace App\Controller\V1;
 
 use App\Controller\ApiController;
+use App\Form\EventForm;
 use App\Model\Entity\Event;
-use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use App\Slack\Slack;
-use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Exception;
 
@@ -296,13 +293,14 @@ class EventsController extends ApiController
         // Add event(s)
         $addedEvents = [];
         sort($dates);
+        $eventForm = new EventForm();
         foreach ($dates as $date) {
-            $addedEvents[] = $this->addSingleEvent($data, $date, $this->tokenUser);
+            $addedEvents[] = $eventForm->addSingleEvent($data, $date, $this->tokenUser);
         }
 
         // Associate events with a series, if applicable
         if (count($dates) > 1) {
-            $addedEvents = $this->addEventSeries($addedEvents);
+            $addedEvents = $eventForm->addEventSeries($addedEvents);
         }
 
         // Send Slack notification
@@ -323,114 +321,6 @@ class EventsController extends ApiController
             '_serialize' => ['event'],
             'event' => $addedEvents[0]
         ]);
-    }
-
-    /**
-     * Processes request data and adds a single event (not connected to a series)
-     *
-     * @param array $data Request data
-     * @param string $date A strtotime parsable date
-     * @param User|null $user A user entity, or null if user is anonymous
-     * @return Event
-     * @throws BadRequestException
-     */
-    private function addSingleEvent(array $data, $date, $user)
-    {
-        if (!is_string($date)) {
-            throw new BadRequestException(sprintf(
-                "Error: Dates must be passed as strings (%s provided)",
-                gettype($data['date'])
-            ));
-        }
-        $data['date'] = $this->parseDate($date);
-        foreach (['time_start', 'time_end'] as $timeField) {
-            if (!isset($data[$timeField])) {
-                continue;
-            }
-            $data[$timeField] = $this->parseTime($date, $data[$timeField]);
-        }
-        $event = $this->Events->newEntity($data);
-        $event->autoApprove($user);
-        $event->autoPublish($user);
-        $event->processTags($data['tag_ids'], $data['tag_names']);
-        $event->setImageJoinData($data['images']);
-        $event->category = $this->Events->Categories->get($event->category_id);
-        $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
-
-        $saved = $this->Events->save($event, [
-            'associated' => ['Images', 'Tags']
-        ]);
-        if (!$saved) {
-            $msg = $this->getEventErrorMessage($event);
-            throw new BadRequestException($msg);
-        }
-
-        return $saved;
-    }
-
-    /**
-     * Takes an array of events and creates a series to associate them with
-     *
-     * @param Event[] $events An array of events in this series
-     * @return Event[]
-     * @throws BadRequestException
-     */
-    private function addEventSeries(array $events)
-    {
-        // Create series
-        $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
-        $arbitraryEvent = $events[0];
-        $series = $seriesTable->newEntity([
-            'title' => $arbitraryEvent->title,
-            'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent)
-        ]);
-        if (!$seriesTable->save($series)) {
-            $adminEmail = Configure::read('adminEmail');
-            $msg = 'The event could not be submitted. Please correct any errors and try again. If you need ' .
-                'assistance, please contact an administrator at ' . $adminEmail . '.';
-            throw new BadRequestException($msg);
-        }
-
-        // Associate events with the new series
-        foreach ($events as &$event) {
-            $this->Events->patchEntity($event, ['series_id' => $series->id]);
-            $event->event_series = $series;
-            if (!$this->Events->save($event)) {
-                throw new InternalErrorException('Temporary: Error associating series');
-            }
-        }
-
-        return $events;
-    }
-
-    /**
-     * Returns a message to be output to the user for an event with one or more errors
-     *
-     * @param Event $event Event entity
-     * @return string
-     */
-    private function getEventErrorMessage(Event $event)
-    {
-        $errors = $event->getErrors();
-        if ($errors) {
-            $msg = sprintf(
-                'Please correct the following %s and try again. ',
-                __n('error', 'errors', count($errors))
-            );
-            foreach ($errors as $field => $fieldErrors) {
-                $field = ucwords(str_replace('_', ' ', $field));
-                $msg .= "$field: " . implode('; ', $fieldErrors) . '. ';
-            }
-        } else {
-            $msg = 'There was an error submitting this event. ';
-        }
-        $msg .= sprintf(
-            'If you need assistance, please contact an administrator at %s.',
-            Configure::read('adminEmail')
-        );
-
-        return $msg;
     }
 
     /**
@@ -469,6 +359,7 @@ class EventsController extends ApiController
         }
 
         // Update event
+        $eventForm = new EventForm();
         if (isset($data['date'])) {
             if (!is_string($data['date'])) {
                 throw new BadRequestException(sprintf(
@@ -476,13 +367,13 @@ class EventsController extends ApiController
                     gettype($data['date'])
                 ));
             }
-            $data['date'] = $this->parseDate($data['date']);
+            $data['date'] = $eventForm->parseDate($data['date']);
         }
         foreach (['time_start', 'time_end'] as $timeField) {
             if (!isset($data[$timeField])) {
                 continue;
             }
-            $data[$timeField] = $this->parseTime($data['date'], $data[$timeField]);
+            $data[$timeField] = $eventForm->parseTime($data['date'], $data[$timeField]);
         }
         $this->Events->patchEntity($event, $data, [
             'fields' => [
@@ -507,7 +398,7 @@ class EventsController extends ApiController
             'associated' => ['Images', 'Tags']
         ]);
         if (!$saved) {
-            $msg = $this->getEventErrorMessage($event);
+            $msg = $eventForm->getEventErrorMessage($event);
             throw new BadRequestException($msg);
         }
 
@@ -560,44 +451,5 @@ class EventsController extends ApiController
         }
 
         $this->set204Response();
-    }
-
-    /**
-     * Returns a FrozenTime object, throwing a BadRequestException if the provided time string can't be parsed
-     *
-     * @param FrozenDate|string $date Date object or string
-     * @param string $time Time string, e.g. 2:30pm, 02:30 PM, 14:30
-     * @return FrozenTime
-     * @throws BadRequestException
-     */
-    private function parseTime($date, $time)
-    {
-        try {
-            return new FrozenTime($date . ' ' . $time, Event::TIMEZONE);
-        } catch (Exception $e) {
-            throw new BadRequestException(sprintf(
-                'Invalid time: %s. Please provide this value in a format such as 2:30pm, 02:30 PM, 14:30, etc.',
-                $time
-            ));
-        }
-    }
-
-    /**
-     * Returns a FrozenDate object, throwing a BadRequestException if the provided date string can't be parsed
-     *
-     * @param string $date Date string in format YYYY-MM-DD
-     * @return FrozenDate
-     * @throws BadRequestException
-     */
-    private function parseDate($date)
-    {
-        try {
-            return new FrozenDate($date);
-        } catch (Exception $e) {
-            throw new BadRequestException(sprintf(
-                'Invalid date: %s. Please provide a date in the format YYYY-MM-DD.',
-                $date
-            ));
-        }
     }
 }
