@@ -16,10 +16,12 @@ use Exception;
 /**
  * Event Form
  *
+ * @property array $errors
  * @property EventsTable $Events
  */
 class EventForm
 {
+    private $errors = [];
     private $Events;
 
     /**
@@ -66,6 +68,7 @@ class EventForm
             'associated' => ['Images', 'Tags']
         ]);
         if (!$saved) {
+            $this->errors = $event->getErrors();
             $msg = $this->getEventErrorMessage($event);
             throw new BadRequestException($msg);
         }
@@ -175,5 +178,15 @@ class EventForm
         );
 
         return $msg;
+    }
+
+    /**
+     * Returns the value of $this->errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
