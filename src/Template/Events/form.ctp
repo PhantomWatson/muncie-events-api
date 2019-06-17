@@ -10,6 +10,7 @@
  * @var bool $hasAges
  * @var bool $hasCost
  * @var bool $hasEndTime
+ * @var bool $hasMultipleDates
  * @var bool $hasSource
  * @var bool $multipleDatesAllowed
  * @var Event $event
@@ -164,7 +165,7 @@ setupEventForm();
         </td>
     </tr>
     <?php if ($action == 'add'): ?>
-        <tr id="series_row">
+        <tr id="series_row" <?php if (!$hasMultipleDates): ?>style="display: none;"<?php endif; ?>>
             <th>
                 Series Name
             </th>
