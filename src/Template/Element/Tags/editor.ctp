@@ -23,7 +23,6 @@ TagManager.setupAutosuggest('#custom_tag_input');
 <div class="input" id="tag_editing">
     <div id="available_tags_container" class="form-control">
         <div id="available_tags"></div>
-        <div id="popular_tags"></div>
     </div>
     <div class="text-muted">
         Click <img src="/img/icons/menu-collapsed.png" alt="the collapse button"/> to expand groups.
