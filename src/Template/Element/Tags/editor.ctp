@@ -21,7 +21,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
 <?php $this->Html->scriptEnd(); ?>
 
 <div class="input" id="tag_editing">
-    <div id="available_tags_container" class="form-control">
+    <div id="available_tags_container">
         <div id="available_tags"></div>
     </div>
     <div class="text-muted">
