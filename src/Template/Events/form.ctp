@@ -193,7 +193,7 @@ setupEventForm();
             <label class="sr-only" for="time_start[meridian]">
                 AM or PM
             </label>
-            <div id="eventform_timestart_div" class="form-group col-md-10 col-xs-12">
+            <div id="eventform_timestart_div" class="form-group form-inline col-md-10 col-xs-12">
                 <?= $this->Form->time(
                     'time_start',
                     [
@@ -212,35 +212,38 @@ setupEventForm();
                     </button>
                 </span>
             </div>
-            <div id="eventform_hasendtime" class="form-group col-md-10 col-xs-12"
+            <div id="eventform_hasendtime" class="col-md-10 col-xs-12"
                  <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
-                <label class="sr-only" for="time_end[hour]">
-                    Hour
-                </label>
-                <label class="sr-only" for="time_end[minute]">
-                    Minute
-                </label>
-                <label class="sr-only" for="time_end[meridian]">
-                    AM or PM
-                </label>
-                <?= $this->Form->time('time_end', [
-                    'interval' => 5,
-                    'timeFormat' => '12',
-                    'hour' => [
-                        'class' => 'form-control event_time_form',
-                        'label' => true
-                    ],
-                    'minute' => ['class' => 'form-control event_time_form'],
-                    'meridian' => ['class' => 'form-control event_time_form'],
-                    'empty' => false
-                ]) ?>
-                <?= $this->Form->hidden('has_end_time', [
-                    'id' => 'eventform_hasendtime_boolinput',
-                    'value' => $hasEndTime ? 1 : 0
-                ]) ?>
-                <button id="remove_end_time" class="btn btn-link">
-                    Remove end time
-                </button>
+                to
+                <div class="form-group form-inline">
+                    <label class="sr-only" for="time_end[hour]">
+                        Hour
+                    </label>
+                    <label class="sr-only" for="time_end[minute]">
+                        Minute
+                    </label>
+                    <label class="sr-only" for="time_end[meridian]">
+                        AM or PM
+                    </label>
+                    <?= $this->Form->time('time_end', [
+                        'interval' => 5,
+                        'timeFormat' => '12',
+                        'hour' => [
+                            'class' => 'form-control event_time_form',
+                            'label' => true
+                        ],
+                        'minute' => ['class' => 'form-control event_time_form'],
+                        'meridian' => ['class' => 'form-control event_time_form'],
+                        'empty' => false
+                    ]) ?>
+                    <?= $this->Form->hidden('has_end_time', [
+                        'id' => 'eventform_hasendtime_boolinput',
+                        'value' => $hasEndTime ? 1 : 0
+                    ]) ?>
+                    <button id="remove_end_time" class="btn btn-link">
+                        Remove end time
+                    </button>
+                </div>
             </div>
         </td>
     </tr>
