@@ -101,7 +101,13 @@ setupEventForm();
     </div>
 <?php endif; ?>
 
-<?= $this->Form->create($event, ['type' => 'file']) ?>
+<?= $this->Form->create(
+    $event,
+    [
+        'id' => 'EventForm',
+        'type' => 'file'
+    ]
+) ?>
 <table class="event_form">
     <tbody>
     <tr>
