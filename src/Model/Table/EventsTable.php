@@ -92,22 +92,22 @@ class EventsTable extends Table
 
         $validator
             ->integer('category_id')
-            ->requirePresence('category_id', 'create');
+            ->requirePresence('category_id', 'create', 'Event category must be selected');
 
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->allowEmptyString('title', false);
+            ->allowEmptyString('title', false, 'Event title cannot be blank');
 
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->allowEmptyString('description', false);
+            ->allowEmptyString('description', false, 'Event description cannot be blank');
 
         $validator
             ->scalar('location')
             ->requirePresence('location', 'create')
-            ->allowEmptyString('location', false);
+            ->allowEmptyString('location', false, 'Event location cannot be blank');
 
         $validator
             ->scalar('location_details')
@@ -120,12 +120,12 @@ class EventsTable extends Table
         $validator
             ->date('date')
             ->requirePresence('date', 'create')
-            ->allowEmptyDate('date', false);
+            ->allowEmptyDate('date', false, 'Event date must be specified');
 
         $validator
             ->time('time_start')
             ->requirePresence('time_start', 'create')
-            ->allowEmptyTime('time_start', false);
+            ->allowEmptyTime('time_start', false, 'Event start time must be specified');
 
         $validator
             ->time('time_end')
@@ -145,7 +145,7 @@ class EventsTable extends Table
 
         $validator
             ->boolean('published')
-            ->requirePresence('published', 'create');
+            ->requirePresence('published', 'create', 'Event published/unpublished status missing');
 
         return $validator;
     }
