@@ -207,10 +207,10 @@ setupEventForm();
                     ]
                 ) ?>
                 <span id="eventform_noendtime" <?php if ($hasEndTime): ?>style="display: none;"<?php endif; ?>>
-                            <button id="add_end_time" class="btn btn-link">
-                                Add end time
-                            </button>
-                        </span>
+                    <button id="add_end_time" class="btn btn-link">
+                        Add end time
+                    </button>
+                </span>
             </div>
             <div id="eventform_hasendtime" class="form-group col-md-10 col-xs-12"
                  <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
