@@ -116,13 +116,26 @@ class EventForm
      * Returns a FrozenTime object, throwing a BadRequestException if the provided time string can't be parsed
      *
      * @param FrozenDate|string $date Date object or string
-     * @param string $time Time string, e.g. 2:30pm, 02:30 PM, 14:30
+     * @param array|string $time Time string (e.g. 2:30pm, 02:30 PM, 14:30) or hour/minute/meridian array
      * @return FrozenTime
      * @throws BadRequestException
      */
     public function parseTime($date, $time)
     {
+        $keysExist = array_key_exists('hour', $time)
+            && array_key_exists('minute', $time)
+            && array_key_exists('meridian', $time);
+        if (is_array($time) && !$keysExist) {
+            throw new BadRequestException(
+                'Time was provided as an array, but does not have required hour, minute, and meridian keys.'
+            );
+        }
+
         try {
+            if (is_array($time)) {
+                $time = $time['hour'] . ':' . $time['minute'] . $time['meridian'];
+            }
+
             return new FrozenTime($date . ' ' . $time, Event::TIMEZONE);
         } catch (Exception $e) {
             throw new BadRequestException(sprintf(
