@@ -296,7 +296,7 @@ setupEventForm();
             <label class="sr-only" for="EventAddress">
                 Address
             </label>
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->Form->control('address', [
                     'class' => 'form-control',
                     'label' => false,
@@ -313,7 +313,7 @@ setupEventForm();
             <label class="sr-only" for="EventDescription">
                 Description
             </label>
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->Form->control('description', [
                     'label' => false,
                     'id' => 'EventDescription'
@@ -326,7 +326,7 @@ setupEventForm();
             Tags
         </th>
         <td id="eventform_tags">
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->element('Tags/editor') ?>
             </div>
         </td>
@@ -358,7 +358,7 @@ setupEventForm();
             <label class="sr-only" for="EventCost">
                 Cost
             </label>
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->Form->control('cost', [
                     'maxLength' => 200,
                     'label' => false,
@@ -389,7 +389,7 @@ setupEventForm();
             <label class="sr-only" for="EventAgeRestriction">
                 Age Restriction
             </label>
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->Form->control('age_restriction', [
                     'label' => false,
                     'class' => 'form-control',
@@ -420,7 +420,7 @@ setupEventForm();
             <label class="sr-only" for="EventSource">
                 Source
             </label>
-            <div class='form-group col-lg-8 col-md-10 col-xs-12'>
+            <div class="form-group col-lg-8 col-md-10 col-xs-12">
                 <?= $this->Form->control('source', [
                     'label' => false,
                     'class' => 'form-control',
