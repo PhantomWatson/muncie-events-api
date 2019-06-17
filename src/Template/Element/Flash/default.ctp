@@ -2,8 +2,10 @@
 /**
  * @var string $message
  */
-$class = 'message';
-if (!empty($params['class'])) {
+$class = 'alert';
+if (empty($params['class'])) {
+    $class .= ' alert-info';
+} else {
     $class .= ' ' . $params['class'];
 }
 if (!isset($params['escape']) || $params['escape'] !== false) {

@@ -52,7 +52,9 @@
 
             <div id="content_wrapper" class="col-lg-9 col-md-8">
                 <div id="content" class="clearfix">
-                    <?= $this->Flash->render('flash') ?>
+                    <div id="flash-messages">
+                        <?= $this->Flash->render('flash') ?>
+                    </div>
                     <?= $this->fetch('content') ?>
                 </div>
             </div>
