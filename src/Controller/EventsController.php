@@ -306,7 +306,7 @@ class EventsController extends AppController
         $hasSource = (bool)$event->source;
         $hasMultipleDates = count($preselectedDates) > 1;
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
-        $categories = $categoriesTable->find('list');
+        $categories = $categoriesTable->find('list')->orderAsc('weight');
         $autocompleteLocations = [];
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         foreach ($eventsTable->getLocations() as $location) {
