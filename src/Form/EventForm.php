@@ -46,7 +46,7 @@ class EventForm
         if (!is_string($date)) {
             throw new BadRequestException(sprintf(
                 "Error: Dates must be passed as strings (%s provided)",
-                gettype($data['date'])
+                gettype($date)
             ));
         }
         $data['date'] = $this->parseDate($date);
