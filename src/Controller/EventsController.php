@@ -1,11 +1,13 @@
 <?php
 namespace App\Controller;
 
+use App\Form\EventForm;
 use App\Model\Entity\Category;
 use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
+use App\Slack\Slack;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
@@ -233,17 +235,47 @@ class EventsController extends AppController
             return $this->render('form');
         }
 
-        // Add an event or series
+        // Add an event(s)
         $data = $this->request->getData() + [
-                'tags' => [],
+                'images' => [],
+                'tag_ids' => [],
+                'tag_names' => [],
                 'time_end' => null
             ];
         $dates = explode(',', $this->request->getData('date'));
-        if (count($dates) < 2) {
-            return $this->addSingleEvent($data);
+        sort($dates);
+        $eventForm = new EventForm();
+        $user = $this->Auth->user();
+        $addedEvents = [];
+        try {
+            foreach ($dates as $date) {
+                $addedEvents[] = $eventForm->addSingleEvent($data, $date, $user);
+            }
+
+            // Associate events with a series, if applicable
+            if (count($dates) > 1) {
+                $addedEvents = $eventForm->addEventSeries($addedEvents);
+            }
+        } catch (BadRequestException $e) {
+            $errors = $eventForm->getErrors();
+            if ($errors) {
+                foreach ($errors as $field => $fieldErrors) {
+                    foreach ($fieldErrors as $error) {
+                        $this->Flash->error($error);
+                    }
+                }
+            } else {
+                $this->Flash->error($e->getMessage());
+            }
         }
 
-        return $this->addEventSeries($data);
+        // Send Slack notification
+        $phpUnitRunning = defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING;
+        if ($addedEvents && !$phpUnitRunning) {
+            (new Slack())->sendNewEventAlert($addedEvents[0]->title);
+        }
+
+        return $this->render('form');
     }
 
     /**
@@ -296,6 +328,7 @@ class EventsController extends AppController
             'hasAges',
             'hasCost',
             'hasEndTime',
+            'hasMultipleDates',
             'hasSource',
             'multipleDatesAllowed',
             'preselectedDates'
