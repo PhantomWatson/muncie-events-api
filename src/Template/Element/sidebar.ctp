@@ -3,7 +3,6 @@
  * @var Category $category
  * @var AppView $this
  * @var array $authUser
- * @var int $recentUsersCount
  * @var int $unapprovedCount
  */
 use App\Model\Entity\Category;
@@ -29,19 +28,6 @@ $categories = $this->Nav->getCategories();
                     <?php if ($unapprovedCount): ?>
                         <span class="count">
                             <?= $unapprovedCount ?>
-                        </span>
-                    <?php endif; ?>
-                </li>
-                <li>
-                    <?= $this->Html->link('Moderate New Users', [
-                        'plugin' => false,
-                        'prefix' => 'admin',
-                        'controller' => 'Users',
-                        'action' => 'moderate'
-                    ]) ?>
-                    <?php if ($recentUsersCount): ?>
-                        <span class="count">
-                            <?= $recentUsersCount ?>
                         </span>
                     <?php endif; ?>
                 </li>
