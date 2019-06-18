@@ -273,6 +273,8 @@ class EventsController extends AppController
             } else {
                 $this->Flash->error($e->getMessage());
             }
+
+            return $this->render('form');
         }
 
         // Send Slack notification
