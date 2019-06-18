@@ -122,6 +122,7 @@ setupEventForm();
                 </label>
                 <?= $this->Form->control('title', [
                     'class' => 'form-control',
+                    'id' => 'EventTitle',
                     'label' => false
                 ]) ?>
             </div>
