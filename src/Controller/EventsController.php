@@ -217,15 +217,22 @@ class EventsController extends AppController
      */
     public function add()
     {
+        // Create event entity
         $event = $this->Events->newEntityWithDefaults();
+        if ($this->request->is('post')) {
+            $event = $this->Events->patchEntity($event, $this->request->getData());
+        }
 
+        // Set view variables
         $this->setEventFormVars($event);
         $this->set(['pageTitle' => 'Submit an Event',]);
 
-        if (!$this->request->is(['patch', 'post', 'put'])) {
+        // Render if the form isn't being submitted
+        if ($this->request->is(['get'])) {
             return $this->render('form');
         }
 
+        // Abort on CAPTCHA error
         if (!$this->passedBotDetection()) {
             $this->Flash->error(
                 'Spam detection failed. ' .
@@ -236,20 +243,19 @@ class EventsController extends AppController
         }
 
         // Add an event(s)
+        $eventForm = new EventForm();
+        $addedEvents = [];
+        $dates = explode(',', $this->request->getData('date'));
+        sort($dates);
         $data = $this->request->getData() + [
                 'images' => [],
                 'tag_ids' => [],
                 'tag_names' => [],
                 'time_end' => null
             ];
-        $dates = explode(',', $this->request->getData('date'));
-        sort($dates);
-        $eventForm = new EventForm();
-        $user = $this->Auth->user();
-        $addedEvents = [];
         try {
             foreach ($dates as $date) {
-                $addedEvents[] = $eventForm->addSingleEvent($data, $date, $user);
+                $addedEvents[] = $eventForm->addSingleEvent($data, $date, $this->Auth->user());
             }
 
             // Associate events with a series, if applicable
@@ -281,7 +287,7 @@ class EventsController extends AppController
     /**
      * Sets view variables used in the event form
      *
-     * @param Event $event
+     * @param Event $event Event entity
      * @return void
      */
     private function setEventFormVars($event)
@@ -296,15 +302,14 @@ class EventsController extends AppController
         $action = $this->request->getParam('action');
         $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
         $firstEvent = isset($autoPublish) && !$autoPublish && $action == 'add';
-        $dateFieldValues = [];
-        $preselectedDates = [];
+        $date = $this->request->getData('date');
+        $preselectedDates = $date ? explode(',', $date) : [];
         $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
         $hasCost = (bool)$event->cost;
         $hasAges = (bool)$event->age_restriction;
         $hasSource = (bool)$event->source;
-        $hasMultipleDates = count($preselectedDates) > 1;
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
         $categories = $categoriesTable->find('list')->orderAsc('weight');
         $autocompleteLocations = [];
@@ -321,7 +326,6 @@ class EventsController extends AppController
             'autocompleteLocations',
             'autoPublish',
             'categories',
-            'dateFieldValues',
             'defaultDate',
             'event',
             'firstEvent',
@@ -329,7 +333,6 @@ class EventsController extends AppController
             'hasAges',
             'hasCost',
             'hasEndTime',
-            'hasMultipleDates',
             'hasSource',
             'multipleDatesAllowed',
             'preselectedDates'
