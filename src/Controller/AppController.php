@@ -2,14 +2,20 @@
 namespace App\Controller;
 
 use App\Model\Entity\User;
+use App\Model\Table\EventsTable;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Exception;
 
+/**
+ * Class AppController
+ *
+ * @package App\Controller
+ * @property EventsTable $Events
+ */
 class AppController extends Controller
 {
-
     /**
      * Initialization hook method
      *
@@ -92,8 +98,10 @@ class AppController extends Controller
      */
     public function beforeRender(Event $event)
     {
+        $this->loadModel('Events');
         $this->set([
-            'authUser' => $this->Auth->user()
+            'authUser' => $this->Auth->user(),
+            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0
         ]);
     }
 

@@ -563,4 +563,19 @@ class EventsTable extends Table
 
         return $event;
     }
+
+    /**
+     * Returns the number of currently unapproved events
+     *
+     * @return int
+     */
+    public function getUnapprovedCount()
+    {
+        return $this
+            ->find()
+            ->where(function (QueryExpression $exp) {
+                return $exp->isNull('approved_by');
+            })
+            ->count();
+    }
 }
