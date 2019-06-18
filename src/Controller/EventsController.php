@@ -296,11 +296,15 @@ class EventsController extends AppController
         $action = $this->request->getParam('action');
         $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
         $firstEvent = isset($autoPublish) && !$autoPublish && $action == 'add';
+        $dateFieldValues = [];
+        $preselectedDates = [];
+        $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
         $hasCost = (bool)$event->cost;
         $hasAges = (bool)$event->age_restriction;
         $hasSource = (bool)$event->source;
+        $hasMultipleDates = count($preselectedDates) > 1;
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
         $categories = $categoriesTable->find('list');
         $autocompleteLocations = [];
@@ -311,9 +315,6 @@ class EventsController extends AppController
                 'value' => $location['address']
             ];
         }
-        $dateFieldValues = [];
-        $preselectedDates = [];
-        $defaultDate = 0; // Today
 
         $this->set(compact(
             'action',
