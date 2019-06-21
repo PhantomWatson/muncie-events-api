@@ -71,6 +71,11 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Events', 'action' => 'view'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
+    Router::connect(
+        '/event/event/:id',
+        ['controller' => 'Events', 'action' => 'edit'],
+        ['id' => '[0-9]+', 'pass' => ['id']]
+    );
 
     // EventSeries
     Router::connect(

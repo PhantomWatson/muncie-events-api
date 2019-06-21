@@ -11,6 +11,7 @@ use App\Slack\Slack;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -349,5 +350,89 @@ class EventsController extends AppController
     private function passedBotDetection()
     {
         return php_sapi_name() == 'cli' || $this->Auth->user() || $this->Recaptcha->verify();
+    }
+
+    /**
+     * Edits an event
+     *
+     * @param int $eventId The ID of an event
+     * @return Response
+     * @throws ForbiddenException
+     */
+    public function edit($eventId = null)
+    {
+        // Get event
+        $eventExists = $this->Events->exists(['id' => $eventId]);
+        if (!$eventExists) {
+            throw new BadRequestException("Event with ID $eventId not found");
+        }
+
+        /** @var Event $event */
+        $event = $this->Events->get($eventId, [
+            'contain' => ['Images', 'Tags']
+        ]);
+
+        // Check user permission
+        if (!$this->userCanEdit($event)) {
+            throw new ForbiddenException('You don\'t have permission to edit that event');
+        }
+
+        // Prepare form
+        $this->setEventFormVars($event);
+        $this->set(['pageTitle' => 'Edit Event']);
+
+        if (!$this->request->is(['patch', 'post', 'put'])) {
+            return $this->render('form');
+        }
+
+        $data = $this->request->getData() + [
+                'images' => [],
+                'tag_ids' => [],
+                'tag_names' => [],
+                'time_end' => null
+            ];
+
+        $event = $this->Events->patchEntity($event, $data);
+        $user = $this->Auth->user();
+        $event->autoApprove($user);
+        $event->autoPublish($user);
+        $event->processTags($data['tag_ids'], $data['tag_names']);
+        $saved = $this->Events->save($event, ['associated' => ['Images', 'Tags']]);
+        if ($saved) {
+            $this->Flash->success('Event updated');
+
+            return $this->redirect([
+                'controller' => 'Events',
+                'action' => 'view',
+                'id' => $event->id
+            ]);
+        }
+        $msg = 'The event could not be updated. Please correct any indicated errors and try again, or contact an ' .
+            'administrator if you need assistance.';
+        $this->Flash->error($msg);
+
+        return $this->render('form');
+    }
+
+    /**
+     * Returns TRUE if the current user can edit the specified event
+     *
+     * @param Event $event Event entity
+     * @return bool
+     */
+    private function userCanEdit(Event $event)
+    {
+        // Anonymous users may not edit
+        if (!$this->Auth->user()) {
+            return false;
+        }
+
+        // An event's author may edit
+        if ($event->user_id != $this->Auth->user('id')) {
+            return true;
+        }
+
+        // Any admin may edit
+        return $this->Auth->user('role') == 'admin';
     }
 }
