@@ -62,28 +62,32 @@ ImageManager.setupManager();
             <div id="image_select_container" class="collapse" role="tabpanel" aria-labelledby="image_select_heading">
             </div>
         </div>
-        <ul id="selected_images">
+        <ul id="selected_images" class="form-inline">
             <?php if ($event->images): ?>
                 <?php foreach ($event->images as $eventImage): ?>
                     <?php $id = $eventImage->id; ?>
-                    <li id="selectedimage_<?= $id ?>" data-image-id="<?= $id ?>">
-                        <img src="/img/icons/arrow-move.png" class="handle" alt="Move" title="Move"/>
-                        <label class="remove" for="delete[<?= $id ?>]">
-                            Delete?
-                        </label>
-                        <?= $this->Form->checkbox("delete[$id]") ?>
-                        <?= $this->Calendar->thumbnail('tiny', [
-                            'filename' => $eventImage->filename,
-                            'class' => 'selected_image'
-                        ]) ?>
-                        <?= $this->Form->control("data.Image.$id", [
-                            'label' => 'Caption:',
-                            'div' => false,
-                            'type' => 'text',
-                            'value' => $eventImage->_joinData['caption'],
-                            'placeholder' => "Enter a caption for this image",
-                            'class' => 'caption'
-                        ]) ?>
+                    <li id="selectedimage_<?= $id ?>" data-image-id="<?= $id ?>" class="row">
+                        <div class="col-4">
+                            <img src="/img/icons/arrow-move.png" class="handle" alt="Move" title="Move"/>
+                            <input type="image" src="/img/icons/cross.png" class="remove" alt="Remove" title="Remove"/>
+                            <?= $this->Calendar->thumbnail('tiny', [
+                                'filename' => $eventImage->filename,
+                                'class' => 'selected_image'
+                            ]) ?>
+                        </div>
+                        <div class="col-8">
+                            <label for="caption-image-<?= $id ?>" class="sr-only">
+                                Caption
+                            </label>
+                            <?= $this->Form->control("data.Image.$id", [
+                                'div' => false,
+                                'id' => "caption-image-$id",
+                                'label' => false,
+                                'placeholder' => 'Enter a caption for this image',
+                                'type' => 'text',
+                                'value' => $eventImage->_joinData['caption']
+                            ]) ?>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             <?php endif; ?>

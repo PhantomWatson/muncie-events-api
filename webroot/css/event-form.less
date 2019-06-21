@@ -36,6 +36,8 @@
         list-style-type: none;
         margin: 5px;
         padding: 5px;
+        width: 100%;
+
         &:first-child {
             border-color: #666;
             border-width: 2px;
@@ -43,14 +45,9 @@
         div.input.text {
             display: inline-block;
         }
-    }
-    p.caption {
-        margin: 0 0 5px 0;
-    }
-    input.caption {
-        margin-top: 5px;
-        @media @x-small, @small {
-            position: relative;
+
+        input[type="text"] {
+            width: 100%;
         }
     }
     label {
