@@ -40,6 +40,7 @@ config/Migrations/schema-dump-default.lock
 
 # Front-end
 /webroot/magnific-popup/*
+/webroot/uploadifive/*
 
 # Other
 /webroot/img/events/*
