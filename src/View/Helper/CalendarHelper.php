@@ -113,7 +113,7 @@ class CalendarHelper extends Helper
             return '';
         }
 
-        $basePath = Configure::read('App.eventImagePath');
+        $basePath = Configure::read('eventImagePath');
         $filename = $params['filename'];
         $thumbnailPath = $basePath . DS . $type . DS . $filename;
 
@@ -124,7 +124,7 @@ class CalendarHelper extends Helper
 
         $altText = $params['caption'] ?? $filename;
         $class = "thumbnail tn_$type " . ($params['class'] ?? '');
-        $baseUrl = Configure::read('App.eventImageBaseUrl');
+        $baseUrl = Configure::read('eventImageBaseUrl');
         $url = $baseUrl . $type . '/' . $filename;
         $image = sprintf(
             '<img src="%s" class="%s" alt="%s" title="%s" />',
