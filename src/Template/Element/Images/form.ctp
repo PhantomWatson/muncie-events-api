@@ -67,15 +67,13 @@ ImageManager.setupManager();
                 <?php foreach ($event->images as $eventImage): ?>
                     <?php $id = $eventImage->id; ?>
                     <li id="selectedimage_<?= $id ?>" data-image-id="<?= $id ?>" class="row">
-                        <div class="col-4">
-                            <img src="/img/icons/arrow-move.png" class="handle" alt="Move" title="Move"/>
-                            <input type="image" src="/img/icons/cross.png" class="remove" alt="Remove" title="Remove"/>
+                        <div class="col-md-2">
                             <?= $this->Calendar->thumbnail('tiny', [
                                 'filename' => $eventImage->filename,
                                 'class' => 'selected_image'
                             ]) ?>
                         </div>
-                        <div class="col-8">
+                        <div class="col-md-10">
                             <label for="caption-image-<?= $id ?>" class="sr-only">
                                 Caption
                             </label>
@@ -88,6 +86,10 @@ ImageManager.setupManager();
                                 'value' => $eventImage->_joinData['caption']
                             ]) ?>
                         </div>
+                        <button type="button" class="remove btn btn-danger" title="Remove">
+                            <i class="fas fa-times"></i>
+                            <span class="sr-only">Remove</span>
+                        </button>
                     </li>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -118,11 +120,10 @@ ImageManager.setupManager();
                             The first image will be displayed as the event's main image.
                         </li>
                         <li>
-                            Click on the <img src="/img/icons/arrow-move.png" alt="Move" title="Move"/> icon to drag
-                            images up or down and resort them.
+                            Drag images up or down to change their order.
                         </li>
                         <li>
-                            Click on the <img src="/img/icons/cross.png" class="remove" alt="Remove" title="Remove"/>
+                            Click on the <i class="fas fa-times"></i> <span class="sr-only">"Remove"</span>
                             icon to unselect an image.
                         </li>
                     </ul>

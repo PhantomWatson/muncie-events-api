@@ -35,7 +35,7 @@
         border: 1px solid #999;
         list-style-type: none;
         margin: 5px;
-        padding: 5px;
+        padding: 5px 50px 5px 5px;
         width: 100%;
 
         &:first-child {
@@ -45,9 +45,19 @@
         div.input.text {
             display: inline-block;
         }
-
         input[type="text"] {
             width: 100%;
+        }
+
+        > div:first-child {
+            padding-left: 0;
+            padding-right: 0;
+            text-align: center;
+        }
+
+        > div:nth-child(2) {
+            padding-left: 0;
+            padding-top: 6px;
         }
     }
     label {
@@ -55,6 +65,11 @@
     }
     .handle {
         cursor: pointer;
+    }
+
+    button.remove {
+        margin-right: -40px;
+        width: 40px;
     }
 }
 #image_form {
