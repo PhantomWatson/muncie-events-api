@@ -94,41 +94,32 @@ ImageManager.setupManager();
                 <?php endforeach; ?>
             <?php endif; ?>
         </ul>
-        <div class="card">
-            <div class="card-header" role="tab" id="image_help_heading">
-                <span class="mb-0">
-                    <a id="image_help_toggler" class="collapsed" data-toggle="collapse" data-parent="#accordion"
-                       href="#image_help_container" aria-expanded="false" aria-controls="image_help_container">
-                        Help & rules
-                    </a>
-                </span>
-            </div>
-            <div id="image_help_container" class="collapse" role="tabpanel" aria-labelledby="image_help_heading">
-                <div class="card-block">
-                    <span>Uploading</span>
-                    <ul class="footnote">
-                        <li>Images must be .jpg, .jpeg, .gif, or .png.</li>
-                        <li>Each file cannot exceed <?= $finalFilesizeLimit ?>B</li>
-                        <li>You can upload an image once and re-use it in multiple events.</li>
-                        <li>By uploading an image, you affirm that you are not violating any copyrights.</li>
-                        <li>Images must not include offensive language, nudity, or graphic violence</li>
-                    </ul>
+        <button id="image-help-button" class="btn btn-link" type="button">
+            Help & rules
+        </button>
+        <div id="image-help-content">
+            <strong>Uploading</strong>
+            <ul>
+                <li>Images must be .jpg, .jpeg, .gif, or .png.</li>
+                <li>Each file cannot exceed <?= $finalFilesizeLimit ?>B</li>
+                <li>You can upload an image once and re-use it in multiple events.</li>
+                <li>By uploading an image, you affirm that you are not violating any copyrights.</li>
+                <li>Images must not include offensive language, nudity, or graphic violence</li>
+            </ul>
 
-                    <span>After selecting images</span>
-                    <ul class="footnote">
-                        <li>
-                            The first image will be displayed as the event's main image.
-                        </li>
-                        <li>
-                            Drag images up or down to change their order.
-                        </li>
-                        <li>
-                            Click on the <i class="fas fa-times"></i> <span class="sr-only">"Remove"</span>
-                            icon to unselect an image.
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <strong>After selecting images</strong>
+            <ul>
+                <li>
+                    The first image will be displayed as the event's main image.
+                </li>
+                <li>
+                    Drag images up or down to change their order.
+                </li>
+                <li>
+                    Click on the <i class="fas fa-times"></i> <span class="sr-only">"Remove"</span>
+                    icon to unselect an image.
+                </li>
+            </ul>
         </div>
     </div>
 </div>

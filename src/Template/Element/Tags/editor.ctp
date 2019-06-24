@@ -56,9 +56,9 @@ TagManager.setupAutosuggest('#custom_tag_input');
             ]) ?>
             <div class="text-muted">
                 Write out tags, separated by commas.
-                <a href="#new_tag_rules" data-toggle="collapse">Rules for creating new tags</a>
+                <button type="button" class="btn btn-link" id="tag-rules-button">Rules for creating new tags</button>
             </div>
-            <div id="new_tag_rules" class="alert alert-info collapse">
+            <div id="tag-rules-content" class="alert alert-info collapse">
                 <p>
                     Before entering new tags, please search for existing tags that describe your event. Once you start
                     typing, please select any appropriate suggestions that appear below the input field. Doing this will
