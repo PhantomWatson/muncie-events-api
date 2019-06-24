@@ -260,10 +260,6 @@ setupEventForm();
                 'label' => false,
                 'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
             ]) ?>
-            <button <?php if ($hasAddress): ?>style="display: none;"<?php endif; ?> id="eventform_noaddress"
-                    class="btn btn-link">
-                Add address
-            </button>
             <button class="btn btn-link" id="location_tips" type="button">
                 Ball State location?
             </button>
@@ -283,7 +279,7 @@ setupEventForm();
         </div>
     </div>
 
-    <div class="row form-group" id="eventform_address" <?php if (!$hasAddress): ?>style="display: none;"<?php endif; ?>>
+    <div class="row form-group" id="eventform_address">
         <label class="col-md-3" for="EventAddress">
             Address
         </label>
@@ -328,15 +324,7 @@ setupEventForm();
         </div>
     <?php endif; ?>
 
-    <div id="eventform_nocost" class="row" <?php if ($hasCost): ?>style="display: none;"<?php endif; ?>>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-link" id="event_add_cost">
-                Add cost
-            </button>
-        </div>
-    </div>
-
-    <div class="row form-group" id="eventform_hascost" <?php if (!$hasCost): ?>style="display: none;"<?php endif; ?>>
+    <div class="row form-group">
         <label class="col-md-3" for="EventCost">
             Cost
         </label>
@@ -347,24 +335,13 @@ setupEventForm();
                 'class' => 'form-control',
                 'id' => 'EventCost'
             ]) ?>
-            <button type="button" id="event_remove_cost" class="btn btn-link">
-                Remove
-            </button>
             <div class="text-muted">
                 Just leave this blank if the event is free.
             </div>
         </div>
     </div>
 
-    <div id="eventform_noages" class="row" <?php if ($hasAges): ?>style="display: none;"<?php endif; ?>>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-link" id="event_add_age_restriction">
-                Add age restriction
-            </button>
-        </div>
-    </div>
-
-    <div id="eventform_hasages" class="row form-group" <?php if (!$hasAges): ?>style="display: none;"<?php endif; ?>>
+    <div class="row form-group">
         <label class="col-md-3" for="EventAgeRestriction">
             Age Restriction
         </label>
@@ -375,25 +352,13 @@ setupEventForm();
                 'maxLength' => 30,
                 'id' => 'EventAgeRestriction'
             ]) ?>
-            <button type="button" id="event_remove_age_restriction" class="btn btn-link">
-                Remove
-            </button>
             <div class="text-muted">
                 Leave this blank if this event has no age restrictions.
             </div>
         </div>
     </div>
 
-    <div id="eventform_nosource" class="row" <?php if ($hasSource): ?>style="display: none;"<?php endif; ?>>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-link" id="event_add_source">
-                Add info source
-            </button>
-        </div>
-    </div>
-
-    <div class="row form-group" id="eventform_hassource"
-         <?php if (!$hasSource): ?>style="display: none;"<?php endif; ?>>
+    <div class="row form-group">
         <label class="col-md-3" for="EventSource">
             Source
         </label>
@@ -403,9 +368,6 @@ setupEventForm();
                 'class' => 'form-control',
                 'id' => 'EventSource'
             ]) ?>
-            <button type="button" id="event_remove_source" class="btn btn-link">
-                Remove
-            </button>
             <div class="text-muted">
                 Did you get this information from a website, newspaper, flyer, etc?
             </div>

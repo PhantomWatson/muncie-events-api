@@ -22,65 +22,6 @@ function setupEventForm() {
         $('#eventform_hasendtime').hide();
         $('#eventform_hasendtime_boolinput').val('0');
     });
-    var noAddress = $('#eventform_noaddress');
-    noAddress.click(function (event) {
-        event.preventDefault();
-        noAddress.hide();
-        $('#eventform_address').show();
-        $('#EventAddress').focus();
-    });
-    $('#event_add_cost').click(function (event) {
-        event.preventDefault();
-        $('#eventform_nocost').hide();
-        $('#eventform_hascost').show();
-        $('#EventCost').focus();
-    });
-    $('#event_remove_cost').click(function (event) {
-        event.preventDefault();
-        $('#eventform_nocost').show();
-        $('#eventform_hascost').hide();
-        $('#EventCost').val('');
-    });
-    $('#event_add_age_restriction').click(function (event) {
-        event.preventDefault();
-        $('#eventform_noages').hide();
-        $('#eventform_hasages').show();
-        $('#EventAgeRestriction').val('21+').focus().select();
-    });
-    $('#event_remove_age_restriction').click(function (event) {
-        event.preventDefault();
-        $('#eventform_noages').show();
-        $('#eventform_hasages').hide();
-        $('#EventAgeRestriction').val('');
-    });
-    $('#event_add_source').click(function (event) {
-        event.preventDefault();
-        $('#eventform_nosource').hide();
-        $('#eventform_hassource').show();
-        $('#EventSource').focus();
-    });
-    $('#event_remove_source').click(function (event) {
-        event.preventDefault();
-        $('#eventform_nosource').show();
-        $('#eventform_hassource').hide();
-        $('#EventSource').val('');
-    });
-    if ($('#EventCost').val() !== '') {
-        $('#eventform_nocost').hide();
-        $('#eventform_hascost').show();
-    }
-    if ($('#EventAgeRestriction').val() !== '') {
-        $('#eventform_noages').hide();
-        $('#eventform_hasages').show();
-    }
-    if ($('#EventSource').val() !== '') {
-        $('#eventform_nosource').hide();
-        $('#eventform_hassource').show();
-    }
-    if ($('#EventAddress').val() !== '') {
-        noAddress.hide();
-        $('#eventform_address').show();
-    }
     if ($('#eventform_hasendtime_boolinput').val() === '1') {
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
@@ -179,11 +120,7 @@ function setupLocationAutocomplete() {
             // Update address (might be changed to blank)
             var address = ui.item.value;
             $('#EventAddress').val(address);
-            var addressElement = $('#eventform_address');
-            if (address !== '' && !addressElement.is(':visible')) {
-                $('#eventform_noaddress').hide();
-                addressElement.show();
-            }
+
             return false;
         }
     }).focus(function () {
@@ -208,17 +145,12 @@ function setupAddressLookup() {
             return;
         }
         var addressRow = $('#eventform_address');
-        var addressHandle = $('#eventform_noaddress');
         // Attempt to look up address from this user's previous locations
         var matches = jQuery.grep(eventForm.previousLocations, function (locationObj) {
             return locationObj.label === locationName;
         });
         if (matches.length > 0) {
             addressField.val(matches[0].value);
-            if (!addressRow.is(':visible')) {
-                addressHandle.hide();
-                addressRow.show();
-            }
 
             // Ask the database for the address
         } else {
@@ -227,11 +159,9 @@ function setupAddressLookup() {
                 url: '/events/getAddress/' + locationName,
                 beforeSend: function () {
                     addressLabel.addClass('loading');
-                    addressHandle.addClass('loading');
                 },
                 complete: function () {
                     addressLabel.removeClass('loading');
-                    addressHandle.removeClass('loading');
                 },
                 success: function (data) {
                     // Make sure address field hasn't received input since the AJAX request
@@ -239,10 +169,6 @@ function setupAddressLookup() {
                         return;
                     }
                     addressField.val(data);
-                    if (!addressRow.is(':visible')) {
-                        addressHandle.hide();
-                        addressRow.show();
-                    }
                 },
                 error: function () {
                     console.log('Error trying to pull location address from /events/getAddress/' + locationName);
