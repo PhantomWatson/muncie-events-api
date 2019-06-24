@@ -222,15 +222,15 @@ function setupAddressLookup() {
 
             // Ask the database for the address
         } else {
-            var addressTh = addressRow.find('th');
+            var addressLabel = addressRow.find('label');
             $.ajax({
                 url: '/events/getAddress/' + locationName,
                 beforeSend: function () {
-                    addressTh.addClass('loading');
+                    addressLabel.addClass('loading');
                     addressHandle.addClass('loading');
                 },
                 complete: function () {
-                    addressTh.removeClass('loading');
+                    addressLabel.removeClass('loading');
                     addressHandle.removeClass('loading');
                 },
                 success: function (data) {

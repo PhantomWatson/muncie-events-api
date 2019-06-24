@@ -152,23 +152,6 @@
 .event_form {
     width: 100%;
 
-    > tbody {
-        > tr {
-            > th,
-            > td {
-                padding: 5px;
-                vertical-align: top;
-
-                @media @x-small {
-                    display: block;
-                }
-            }
-            > th {
-                font-weight: bold;
-                width: 175px;
-            }
-        }
-    }
     #add_end_time {
         display: inline-block;
         margin-left: 10px;
@@ -193,15 +176,6 @@
     }
     #tag_editing {
         margin: 0;
-    }
-    #EventTitle,
-    #EventSeriesTitle,
-    #EventLocation,
-    #EventLocationDetails,
-    #EventCost,
-    #EventAgeRestriction,
-    #EventSource {
-        width: 66%;
     }
     #eventform_timestart_div,
     #eventform_hasendtime {
@@ -262,13 +236,19 @@
             padding: 0;
         }
     }
+
+    label,
+    .pseudo-label {
+        font-weight: bold;
+        font-size: 120%;
+    }
 }
 #eventform_noaddress.loading {
     .AddressLoadingIndicator;
     padding-right: 20px;
 }
 #eventform_address {
-    th.loading {
+    label.loading {
         .AddressLoadingIndicator;
     }
 }

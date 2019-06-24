@@ -108,89 +108,78 @@ setupEventForm();
         'type' => 'file'
     ]
 ) ?>
-<table class="event_form">
-    <tbody>
-    <tr>
-        <th>
-            Event
-        </th>
-        <td>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <label class="sr-only" for="title">
-                    Title
-                </label>
-                <?= $this->Form->control('title', [
-                    'class' => 'form-control',
-                    'id' => 'EventTitle',
-                    'label' => false
-                ]) ?>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
+
+<div class="event_form">
+    <div class="row form-group">
+        <label class="col-md-3" for="EventTitle">
+            Title
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('title', [
+                'class' => 'form-control',
+                'id' => 'EventTitle',
+                'label' => false
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-3" for="category-id">
             Category
-        </th>
-        <td>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <label class="sr-only" for="category_id">
-                    Category
-                </label>
-                <?= $this->Form->control('category_id', [
-                    'class' => 'form-control',
-                    'label' => false,
-                    'options' => $categories
-                ]) ?>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('category_id', [
+                'class' => 'form-control',
+                'id' => 'category-id',
+                'label' => false,
+                'options' => $categories
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <span class="col-md-3 pseudo-label">
             Date(s)
-        </th>
-        <td>
-            <div class="col-xs-12 col-lg-8 col-md-10">
-                <div id="datepicker" class="<?= $multipleDatesAllowed ? 'multi' : 'single' ?>"></div>
-                <?= $this->Form->control('date', [
-                    'id' => 'datepicker_hidden',
-                    'type' => 'hidden'
-                ]) ?>
-                <?php if ($multipleDatesAllowed): ?>
-                    <div class="text-muted" id="datepicker_text">
-                        Select more than one date to create multiple events connected by a series.
-                    </div>
-                    <?= $this->Form->control('series_id', ['type' => 'hidden']) ?>
-                <?php endif; ?>
-            </div>
-        </td>
-    </tr>
-    <?php if ($action == 'add'): ?>
-        <tr id="series_row" <?php if (count($preselectedDates) < 2): ?>style="display: none;"<?php endif; ?>>
-            <th>
-                Series Name
-            </th>
-            <td>
-                <label class="sr-only" for="EventSeriesTitle">
-                    Series Name
-                </label>
-                <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                    <?= $this->Form->control('series_title', [
-                        'label' => false,
-                        'class' => 'form-control',
-                        'id' => 'EventSeriesTitle'
-                    ]) ?>
-                    <div class="text-muted">
-                        By default, the series and its events have the same title.
-                    </div>
+        </span>
+        <div class="col-md-9">
+            <div id="datepicker" class="<?= $multipleDatesAllowed ? 'multi' : 'single' ?>"></div>
+            <?= $this->Form->control('date', [
+                'id' => 'datepicker_hidden',
+                'type' => 'hidden'
+            ]) ?>
+            <?php if ($multipleDatesAllowed): ?>
+                <div class="text-muted" id="datepicker_text">
+                    Select more than one date to create multiple events connected by a series.
                 </div>
-            </td>
-        </tr>
+                <?= $this->Form->control('series_id', ['type' => 'hidden']) ?>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <?php if ($action == 'add'): ?>
+        <div class="row form-group" id="series_row"
+             <?php if (count($preselectedDates) < 2): ?>style="display: none;"<?php endif; ?>>
+            <label class="col-md-3" for="EventSeriesTitle">
+                Series Name
+            </label>
+            <div class="col-md-9">
+                <?= $this->Form->control('series_title', [
+                    'label' => false,
+                    'class' => 'form-control',
+                    'id' => 'EventSeriesTitle'
+                ]) ?>
+                <div class="text-muted">
+                    By default, the series and its events have the same title.
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
-    <tr>
-        <th>
+
+    <div class="row form-group">
+        <span class="pseudo-label col-md-3">
             Time
-        </th>
-        <td>
+        </span>
+        <div class="col-md-9">
             <label class="sr-only" for="time_start[hour]">
                 Hour
             </label>
@@ -200,7 +189,7 @@ setupEventForm();
             <label class="sr-only" for="time_start[meridian]">
                 AM or PM
             </label>
-            <div id="eventform_timestart_div" class="form-group form-inline col-md-10 col-xs-12">
+            <div id="eventform_timestart_div" class="form-group form-inline">
                 <?= $this->Form->time(
                     'time_start',
                     [
@@ -219,8 +208,7 @@ setupEventForm();
                     </button>
                 </span>
             </div>
-            <div id="eventform_hasendtime" class="col-md-10 col-xs-12"
-                 <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
+            <div id="eventform_hasendtime" <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
                 to
                 <div class="form-group form-inline">
                     <label class="sr-only" for="time_end[hour]">
@@ -252,221 +240,203 @@ setupEventForm();
                     </button>
                 </div>
             </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-3" for="location">
             Location
-        </th>
-        <td>
-            <label class="sr-only" for="location">
-                Location
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('location', [
+                'class' => 'form-control',
+                'label' => false
+            ]) ?>
+            <label class="sr-only" for="location-details">
+                Location details
             </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('location', [
-                    'class' => 'form-control',
-                    'label' => false
-                ]) ?>
-                <label class="sr-only" for="location-details">
-                    Location details
-                </label>
-                <?= $this->Form->control('location_details', [
-                    'class' => 'form-control',
-                    'label' => false,
-                    'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
-                ]) ?>
-                <button <?php if ($hasAddress): ?>style="display: none;"<?php endif; ?> id="eventform_noaddress"
-                        class="btn btn-link">
-                    Add address
-                </button>
-                <button class="btn btn-link" id="location_tips" type="button">
-                    Ball State location?
-                </button>
-                <div id="location-tips-content">
-                    <p>
-                        For Ball State locations, enter the location name as "(building name), Ball State
-                        University" and put the room number or other details in the 'location details' field.
-                        This helps avoid accumulating a large number of names in our database that all refer
-                        to the same location and helps people find your event more easily.
-                    </p>
-                    <p>
-                        Not sure what a Ball State building is officially called? Check out this
-                        <a href="https://cms.bsu.edu/map/building-list" target="_blank">list of all Ball State
-                            buildings</a>.
-                    </p>
-                </div>
+            <?= $this->Form->control('location_details', [
+                'class' => 'form-control',
+                'label' => false,
+                'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
+            ]) ?>
+            <button <?php if ($hasAddress): ?>style="display: none;"<?php endif; ?> id="eventform_noaddress"
+                    class="btn btn-link">
+                Add address
+            </button>
+            <button class="btn btn-link" id="location_tips" type="button">
+                Ball State location?
+            </button>
+            <div id="location-tips-content">
+                <p>
+                    For Ball State locations, enter the location name as "(building name), Ball State
+                    University" and put the room number or other details in the 'location details' field.
+                    This helps avoid accumulating a large number of names in our database that all refer
+                    to the same location and helps people find your event more easily.
+                </p>
+                <p>
+                    Not sure what a Ball State building is officially called? Check out this
+                    <a href="https://cms.bsu.edu/map/building-list" target="_blank">list of all Ball State
+                        buildings</a>.
+                </p>
             </div>
-        </td>
-    </tr>
-    <tr id="eventform_address" <?php if (!$hasAddress): ?>style="display: none;"<?php endif; ?>>
-        <th>
+        </div>
+    </div>
+
+    <div class="row form-group" id="eventform_address" <?php if (!$hasAddress): ?>style="display: none;"<?php endif; ?>>
+        <label class="col-md-3" for="EventAddress">
             Address
-        </th>
-        <td>
-            <label class="sr-only" for="EventAddress">
-                Address
-            </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('address', [
-                    'class' => 'form-control',
-                    'label' => false,
-                    'id' => 'EventAddress'
-                ]) ?>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('address', [
+                'class' => 'form-control',
+                'label' => false,
+                'id' => 'EventAddress'
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-md-3" for="EventDescription">
             Description
-        </th>
-        <td>
-            <label class="sr-only" for="EventDescription">
-                Description
-            </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('description', [
-                    'label' => false,
-                    'id' => 'EventDescription'
-                ]) ?>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <th>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('description', [
+                'label' => false,
+                'id' => 'EventDescription'
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <span class="pseudo-label col-md-3">
             Tags
-        </th>
-        <td id="eventform_tags">
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->element('Tags/editor') ?>
-            </div>
-        </td>
-    </tr>
+        </span>
+        <div class="col-md-9" id="eventform_tags">
+            <?= $this->element('Tags/editor') ?>
+        </div>
+    </div>
+
     <?php if ($authUser): ?>
-        <tr>
-            <th>
+        <div class="row form-group">
+            <span class="pseudo-label col-md-3">
                 Images
-            </th>
-            <td>
-                <div class="form-group col-xs-12">
-                    <?= $this->element('Images/form') ?>
-                </div>
-            </td>
-        </tr>
+            </span>
+            <div class="col-md-9">
+                <?= $this->element('Images/form') ?>
+            </div>
+        </div>
     <?php endif; ?>
-    <tr id="eventform_nocost" <?php if ($hasCost): ?>style="display: none;"<?php endif; ?>>
-        <td>
-            <a href="#" id="event_add_cost">
+
+    <div id="eventform_nocost" class="row" <?php if ($hasCost): ?>style="display: none;"<?php endif; ?>>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-link" id="event_add_cost">
                 Add cost
-            </a>
-        </td>
-    </tr>
-    <tr id="eventform_hascost" <?php if (!$hasCost): ?>style="display: none;"<?php endif; ?>>
-        <th>
+            </button>
+        </div>
+    </div>
+
+    <div class="row form-group" id="eventform_hascost" <?php if (!$hasCost): ?>style="display: none;"<?php endif; ?>>
+        <label class="col-md-3" for="EventCost">
             Cost
-        </th>
-        <td>
-            <label class="sr-only" for="EventCost">
-                Cost
-            </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('cost', [
-                    'maxLength' => 200,
-                    'label' => false,
-                    'class' => 'form-control',
-                    'id' => 'EventCost'
-                ]) ?>
-                <a href="#" id="event_remove_cost">
-                    Remove
-                </a>
-                <div class="text-muted">
-                    Just leave this blank if the event is free.
-                </div>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('cost', [
+                'maxLength' => 200,
+                'label' => false,
+                'class' => 'form-control',
+                'id' => 'EventCost'
+            ]) ?>
+            <button type="button" id="event_remove_cost" class="btn btn-link">
+                Remove
+            </button>
+            <div class="text-muted">
+                Just leave this blank if the event is free.
             </div>
-        </td>
-    </tr>
-    <tr id="eventform_noages" <?php if ($hasAges): ?>style="display: none;"<?php endif; ?>>
-        <td>
-            <a href="#" id="event_add_age_restriction">
+        </div>
+    </div>
+
+    <div id="eventform_noages" class="row" <?php if ($hasAges): ?>style="display: none;"<?php endif; ?>>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-link" id="event_add_age_restriction">
                 Add age restriction
-            </a>
-        </td>
-    </tr>
-    <tr id="eventform_hasages" <?php if (!$hasAges): ?>style="display: none;"<?php endif; ?>>
-        <th>
+            </button>
+        </div>
+    </div>
+
+    <div id="eventform_hasages" class="row form-group" <?php if (!$hasAges): ?>style="display: none;"<?php endif; ?>>
+        <label class="col-md-3" for="EventAgeRestriction">
             Age Restriction
-        </th>
-        <td>
-            <label class="sr-only" for="EventAgeRestriction">
-                Age Restriction
-            </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('age_restriction', [
-                    'label' => false,
-                    'class' => 'form-control',
-                    'maxLength' => 30,
-                    'id' => 'EventAgeRestriction'
-                ]) ?>
-                <a href="#" id="event_remove_age_restriction">
-                    Remove
-                </a>
-                <div class="text-muted">
-                    Leave this blank if this event has no age restrictions.
-                </div>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('age_restriction', [
+                'label' => false,
+                'class' => 'form-control',
+                'maxLength' => 30,
+                'id' => 'EventAgeRestriction'
+            ]) ?>
+            <button type="button" id="event_remove_age_restriction" class="btn btn-link">
+                Remove
+            </button>
+            <div class="text-muted">
+                Leave this blank if this event has no age restrictions.
             </div>
-        </td>
-    </tr>
-    <tr id="eventform_nosource" <?php if ($hasSource): ?>style="display: none;"<?php endif; ?>>
-        <td>
-            <a href="#" id="event_add_source">
+        </div>
+    </div>
+
+    <div id="eventform_nosource" class="row" <?php if ($hasSource): ?>style="display: none;"<?php endif; ?>>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-link" id="event_add_source">
                 Add info source
-            </a>
-        </td>
-    </tr>
-    <tr id="eventform_hassource" <?php if (!$hasSource): ?>style="display: none;"<?php endif; ?>>
-        <th>
+            </button>
+        </div>
+    </div>
+
+    <div class="row form-group" id="eventform_hassource"
+         <?php if (!$hasSource): ?>style="display: none;"<?php endif; ?>>
+        <label class="col-md-3" for="EventSource">
             Source
-        </th>
-        <td>
-            <label class="sr-only" for="EventSource">
-                Source
-            </label>
-            <div class="form-group col-lg-8 col-md-10 col-xs-12">
-                <?= $this->Form->control('source', [
-                    'label' => false,
-                    'class' => 'form-control',
-                    'id' => 'EventSource'
-                ]) ?>
-                <a href="#" id="event_remove_source">
-                    Remove
-                </a>
-                <div class="text-muted">
-                    Did you get this information from a website, newspaper, flyer, etc?
-                </div>
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('source', [
+                'label' => false,
+                'class' => 'form-control',
+                'id' => 'EventSource'
+            ]) ?>
+            <button type="button" id="event_remove_source" class="btn btn-link">
+                Remove
+            </button>
+            <div class="text-muted">
+                Did you get this information from a website, newspaper, flyer, etc?
             </div>
-        </td>
-    </tr>
+        </div>
+    </div>
+
     <?php if ($action == 'add' && !$authUser): ?>
-        <tr>
-            <th>
+        <div class="row form-group">
+            <span class="pseudo-label col-md-3">
                 Spam Protection
-            </th>
-            <td>
+            </span>
+            <div class="col-md-9">
                 <?= $this->Recaptcha->display() ?>
-            </td>
-        </tr>
+            </div>
+        </div>
     <?php endif; ?>
-    <tr>
-        <th>
-            <label class="sr-only" for="submit">
+
+    <div class="row form-group">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+            <label class="sr-only" for="event-form-submit">
                 Ready to Submit?
             </label>
-        </th>
-        <td>
-            <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <?= $this->Form->submit('Submit', [
+                'class' => 'btn btn-primary',
+                'id' => 'event-form-submit'
+            ]) ?>
+        </div>
+    </div>
+</div>
+
 <?= $this->Form->end() ?>
 
 <?php
