@@ -16,6 +16,7 @@
  * @var EventsTable $eventsTable
  * @var string $action
  * @var string $defaultDate
+ * @var string $filesizeLimit
  * @var string $pageTitle
  * @var string[] $preselectedDates
  */
@@ -244,23 +245,11 @@ setupEventForm();
     </div>
 
     <div class="row form-group">
-        <label class="col-md-3" for="location">
-            Location
-        </label>
-        <div class="col-md-9">
-            <?= $this->Form->control('location', [
-                'class' => 'form-control',
-                'label' => false
-            ]) ?>
-            <label class="sr-only" for="location-details">
-                Location details
+        <div class="col-md-3">
+            <label for="location">
+                Location
             </label>
-            <?= $this->Form->control('location_details', [
-                'class' => 'form-control',
-                'label' => false,
-                'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
-            ]) ?>
-            <button class="btn btn-link" id="location_tips" type="button">
+            <button class="btn btn-sm btn-outline-dark" id="location_tips" type="button">
                 Ball State location?
             </button>
             <div id="location-tips-content">
@@ -276,6 +265,20 @@ setupEventForm();
                         buildings</a>.
                 </p>
             </div>
+        </div>
+        <div class="col-md-9">
+            <?= $this->Form->control('location', [
+                'class' => 'form-control',
+                'label' => false
+            ]) ?>
+            <label class="sr-only" for="location-details">
+                Location details
+            </label>
+            <?= $this->Form->control('location_details', [
+                'class' => 'form-control',
+                'label' => false,
+                'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
+            ]) ?>
         </div>
     </div>
 
@@ -315,9 +318,38 @@ setupEventForm();
 
     <?php if ($authUser): ?>
         <div class="row form-group">
-            <span class="pseudo-label col-md-3">
-                Images
-            </span>
+            <div class="col-md-3">
+                <span class="pseudo-label">
+                    Images
+                </span>
+                <button id="image-help-button" class="btn btn-sm btn-outline-dark" type="button">
+                    Help & rules
+                </button>
+                <div id="image-help-content">
+                    <strong>Uploading</strong>
+                    <ul>
+                        <li>Images must be .jpg, .jpeg, .gif, or .png.</li>
+                        <li>Each file cannot exceed <?= $filesizeLimit ?>B</li>
+                        <li>You can upload an image once and re-use it in multiple events.</li>
+                        <li>By uploading an image, you affirm that you are not violating any copyrights.</li>
+                        <li>Images must not include offensive language, nudity, or graphic violence</li>
+                    </ul>
+
+                    <strong>After selecting images</strong>
+                    <ul>
+                        <li>
+                            The first image will be displayed as the event's main image.
+                        </li>
+                        <li>
+                            Drag images up or down to change their order.
+                        </li>
+                        <li>
+                            Click on the <i class="fas fa-times"></i> <span class="sr-only">"Remove"</span>
+                            icon to unselect an image.
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="col-md-9">
                 <?= $this->element('Images/form') ?>
             </div>

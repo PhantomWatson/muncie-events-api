@@ -2,6 +2,7 @@
 /**
  * @var AppView $this
  * @var Event $event
+ * @var string $filesizeLimit
  */
 
 use App\Model\Entity\Event;
@@ -13,11 +14,6 @@ $this->Form->setTemplates([
 ]);
 
 $userId = $authUser['id'] ?? null;
-$uploadMax = ini_get('upload_max_filesize');
-$postMax = ini_get('post_max_size');
-$serverFilesizeLimit = min($uploadMax, $postMax);
-$manualFilesizeLimit = '10M';
-$finalFilesizeLimit = min($manualFilesizeLimit, $serverFilesizeLimit);
 $this->Html->script('/js/image_manager.js', ['block' => true]);
 $this->Html->script('/uploadifive/jquery.uploadifive.min.js', ['block' => true]);
 $this->Html->css('/uploadifive/uploadifive.css', ['block' => true]);
@@ -27,7 +23,7 @@ $this->Html->css('/uploadifive/uploadifive.css', ['block' => true]);
 ImageManager.setupUpload({
 userId: <?= json_encode($userId) ?>,
 eventId: <?= json_encode($event->id ?? null) ?>,
-filesizeLimit: '<?= $finalFilesizeLimit ?>B',
+filesizeLimit: '<?= $filesizeLimit ?>B',
 eventImgBaseUrl: '<?= Configure::read('App.eventImageBaseUrl') ?>'
 });
 ImageManager.setupManager();
@@ -94,32 +90,5 @@ ImageManager.setupManager();
                 <?php endforeach; ?>
             <?php endif; ?>
         </ul>
-        <button id="image-help-button" class="btn btn-link" type="button">
-            Help & rules
-        </button>
-        <div id="image-help-content">
-            <strong>Uploading</strong>
-            <ul>
-                <li>Images must be .jpg, .jpeg, .gif, or .png.</li>
-                <li>Each file cannot exceed <?= $finalFilesizeLimit ?>B</li>
-                <li>You can upload an image once and re-use it in multiple events.</li>
-                <li>By uploading an image, you affirm that you are not violating any copyrights.</li>
-                <li>Images must not include offensive language, nudity, or graphic violence</li>
-            </ul>
-
-            <strong>After selecting images</strong>
-            <ul>
-                <li>
-                    The first image will be displayed as the event's main image.
-                </li>
-                <li>
-                    Drag images up or down to change their order.
-                </li>
-                <li>
-                    Click on the <i class="fas fa-times"></i> <span class="sr-only">"Remove"</span>
-                    icon to unselect an image.
-                </li>
-            </ul>
-        </div>
     </div>
 </div>

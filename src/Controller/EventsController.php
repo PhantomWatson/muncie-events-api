@@ -323,6 +323,11 @@ class EventsController extends AppController
                 'value' => $location['address']
             ];
         }
+        $uploadMax = ini_get('upload_max_filesize');
+        $postMax = ini_get('post_max_size');
+        $serverFilesizeLimit = min($uploadMax, $postMax);
+        $manualFilesizeLimit = '10M';
+        $filesizeLimit = min($manualFilesizeLimit, $serverFilesizeLimit);
 
         $this->set(compact(
             'action',
@@ -331,6 +336,7 @@ class EventsController extends AppController
             'categories',
             'defaultDate',
             'event',
+            'filesizeLimit',
             'firstEvent',
             'hasAddress',
             'hasAges',
