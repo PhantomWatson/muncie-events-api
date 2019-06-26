@@ -181,6 +181,7 @@ var ImageManager = {
 
     setupUpload: function (params) {
         this.eventImgBaseUrl = params.eventImgBaseUrl;
+        this.userId = params.userId;
 
         $('#image_upload_button').uploadifive({
             uploadScript: '/images/upload',
