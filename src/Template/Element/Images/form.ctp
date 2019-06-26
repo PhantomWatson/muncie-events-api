@@ -31,33 +31,16 @@ ImageManager.setupManager();
 
 <div id="image_form">
     <div id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="card">
-            <div class="card-header" role="tab" id="image_upload_heading">
-                <span class="mb-0">
-                    <a id="image_upload_toggler" data-toggle="collapse" data-parent="#accordion"
-                       href="#image_upload_container" aria-expanded="false" aria-controls="image_upload_container">
-                      Upload new image
-                    </a>
-                </span>
-            </div>
-            <div id="image_upload_container" class="collapse" role="tabpanel" aria-labelledby="image_upload_heading">
-                <div class="card-block">
-                    <a href="#" id="image_upload_button">Select image</a>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" role="tab" id="image_select_heading">
-                <span class="mb-0">
-                    <a id="image_select_toggler" class="collapsed" data-toggle="collapse" data-parent="#accordion"
-                       href="#image_select_container" aria-expanded="false" aria-controls="image_select_container">
-                      Select a previously uploaded image
-                    </a>
-                </span>
-            </div>
-            <div id="image_select_container" class="collapse" role="tabpanel" aria-labelledby="image_select_heading">
-            </div>
-        </div>
+        <button type="button" id="image_upload_button">
+            Upload a new image
+        </button>
+
+        <button type="button" id="image_select_toggler" class="btn btn-secondary">
+            Select a previously uploaded image
+        </button>
+
+        <div id="image_select_container"></div>
+
         <ul id="selected_images" class="form-inline">
             <?php if ($event->images): ?>
                 <?php foreach ($event->images as $eventImage): ?>

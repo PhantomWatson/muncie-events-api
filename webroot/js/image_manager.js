@@ -187,7 +187,8 @@ var ImageManager = {
             checkScript: '/images/file_exists',
             onCheck: false,
             fileSizeLimit: params.filesize_limit,
-            buttonText: 'Click to select an image',
+            buttonText: 'Upload a new image',
+            buttonClass: 'btn btn-secondary',
             formData: {
                 user_id: params.userId,
                 event_id: params.eventId
