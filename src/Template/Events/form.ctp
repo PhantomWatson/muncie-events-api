@@ -38,9 +38,6 @@ if ($multipleDatesAllowed) {
 <?php $this->Html->scriptStart(['block' => true]); ?>
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
-$('#example_selectable_tag').tooltip().click(function(event) {
-event.preventDefault();
-});
 TagManager.setupAutosuggest('#custom_tag_input');
 <?php if ($multipleDatesAllowed): ?>
     setupDatepickerMultiple(<?= json_encode($defaultDate) ?>, <?= json_encode($preselectedDates) ?>);
