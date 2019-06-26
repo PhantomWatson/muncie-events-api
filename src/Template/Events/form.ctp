@@ -255,7 +255,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
             <label for="location">
                 Location
             </label>
-            <button class="btn btn-sm btn-outline-dark" id="location_tips" type="button">
+            <button class="btn btn-sm btn-outline-dark float-right float-md-none" id="location_tips" type="button">
                 Ball State location?
             </button>
             <div id="location-tips-content">
@@ -353,7 +353,8 @@ TagManager.setupAutosuggest('#custom_tag_input');
                              style="vertical-align:top;"/>
                     </span>
                 </label>
-                <button type="button" class="btn btn-sm btn-outline-dark" id="tag-rules-button">
+                <button type="button" class="btn btn-sm btn-outline-dark float-right float-md-none"
+                        id="tag-rules-button">
                     Rules for new tags
                 </button>
                 <div id="tag-rules-content" class="alert alert-info collapse">
@@ -419,7 +420,8 @@ TagManager.setupAutosuggest('#custom_tag_input');
                 <span class="pseudo-label">
                     Images
                 </span>
-                <button id="image-help-button" class="btn btn-sm btn-outline-dark" type="button">
+                <button id="image-help-button" class="btn btn-sm btn-outline-dark float-right float-md-none"
+                        type="button">
                     Help & rules
                 </button>
                 <div id="image-help-content">
