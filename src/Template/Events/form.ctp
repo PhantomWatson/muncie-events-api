@@ -28,6 +28,8 @@ use App\View\AppView;
 $this->Form->setTemplates(['inputContainer' => '{{content}}']);
 
 // JS
+$this->Html->script('tag_manager.js', ['block' => true]);
+$this->Tag->setup('#available_tags', $event);
 $this->Html->script('event_form.js', ['block' => true]);
 if ($multipleDatesAllowed) {
     $this->Html->script('jquery-ui.multidatespicker.js', ['block' => true]);
@@ -36,6 +38,10 @@ if ($multipleDatesAllowed) {
 <?php $this->Html->scriptStart(['block' => true]); ?>
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
+$('#example_selectable_tag').tooltip().click(function(event) {
+event.preventDefault();
+});
+TagManager.setupAutosuggest('#custom_tag_input');
 <?php if ($multipleDatesAllowed): ?>
     setupDatepickerMultiple(<?= json_encode($defaultDate) ?>, <?= json_encode($preselectedDates) ?>);
 <?php else: ?>
@@ -309,12 +315,103 @@ setupEventForm();
 
     <div class="row form-group">
         <span class="pseudo-label col-md-3">
-            Tags
+            Select Tags
         </span>
         <div class="col-md-9" id="eventform_tags">
-            <?= $this->element('Tags/editor') ?>
+            <div class="input" id="tag_editing">
+                <div id="available_tags_container">
+                    <div id="available_tags"></div>
+                </div>
+                <div class="text-muted">
+                    Click <img src="/img/icons/menu-collapsed.png" alt="the collapse button"/> to expand groups.
+                    Click
+                    <a href="#" title="Selectable tags will appear in blue" id="example_selectable_tag">selectable
+                        tags</a>
+                    to select them.
+                </div>
+
+                <div id="selected_tags_container" style="display: none;">
+                    <span class="label">
+                        Selected tags:
+                    </span>
+                    <span id="selected_tags"></span>
+                    <div class="text-muted">
+                        Click on a tag to unselect it.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <?php if ($authUser): ?>
+        <div class="row form-group" id="custom_tag_input_wrapper">
+            <div class="col-md-3">
+                <label for="custom_tag_input">
+                    Add Tags
+                    <span id="tag_autosuggest_loading" style="display: none;">
+                        <img src="/img/loading_small.gif" alt="Working..." title="Working..."
+                             style="vertical-align:top;"/>
+                    </span>
+                </label>
+                <button type="button" class="btn btn-sm btn-outline-dark" id="tag-rules-button">
+                    Rules for new tags
+                </button>
+                <div id="tag-rules-content" class="alert alert-info collapse">
+                    <p>
+                        Before entering new tags, please search for existing tags that describe your event. Once you
+                        start
+                        typing, please select any appropriate suggestions that appear below the input field. Doing this
+                        will
+                        make it more likely that your event will be linked to popular tags that are viewed by more
+                        visitors.
+                    </p>
+
+                    <p>
+                        New tags must:
+                    </p>
+                    <ul>
+                        <li>
+                            be short, general descriptions that people might search for, describing what will take place
+                            at
+                            the
+                            event
+                        </li>
+                        <li>
+                            be general enough to also apply to different events
+                        </li>
+                    </ul>
+
+                    <p>
+                        Must not:
+                    </p>
+                    <ul>
+                        <li>
+                            include punctuation, such as dashes, commas, slashes, periods, etc.
+                        </li>
+                        <li>
+                            include profanity, email addresses, or website addresses
+                        </li>
+                        <li>
+                            be the name of the location (having this as a tag would be redundant, since people can
+                            already
+                            view
+                            events by location)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <?= $this->Form->control('customTags', [
+                    'label' => false,
+                    'class' => 'form-control',
+                    'id' => 'custom_tag_input'
+                ]) ?>
+                <div class="text-muted">
+                    Write out tags, separated by commas.
+                </div>
+            </div>
+        </div>
+    <?php endif ?>
 
     <?php if ($authUser): ?>
         <div class="row form-group">
