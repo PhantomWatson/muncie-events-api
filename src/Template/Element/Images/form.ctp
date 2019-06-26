@@ -25,7 +25,7 @@ ImageManager.setupUpload({
 userId: <?= json_encode($authUser['id'] ?? null) ?>,
 eventId: <?= json_encode($event->id ?? null) ?>,
 filesizeLimit: '<?= $filesizeLimit ?>B',
-eventImgBaseUrl: '<?= Configure::read('App.eventImageBaseUrl') ?>'
+eventImgBaseUrl: '<?= Configure::read('eventImageBaseUrl') ?>'
 });
 ImageManager.setupManager();
 <?php $this->Html->scriptEnd(); ?>
