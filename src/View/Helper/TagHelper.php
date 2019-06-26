@@ -86,23 +86,31 @@ class TagHelper extends Helper
     }
 
     /**
-     * Takes a threaded resultset of available tags and returns a nested array
+     * Takes a threaded resultset of available tags and returns a nested array with branches placed before leaves
+     *
+     * i.e. tags with children are ordered before tags without children
      *
      * @param ResultSetInterface $tags ResultSet of tags
      * @return array
      */
     private function availableTagsToArray($tags)
     {
-        $retval = [];
+        $tagsWithChildren = [];
+        $tagsWithoutChildren = [];
         foreach ($tags as $tag) {
-            $retval[] = [
+            $tagArray = [
                 'id' => $tag->id,
                 'name' => $tag->name,
                 'selectable' => (bool)$tag->selectable,
                 'children' => $this->availableTagsToArray($tag->children)
             ];
+            if ($tag->children) {
+                $tagsWithChildren[] = $tagArray;
+            } else {
+                $tagsWithoutChildren[] = $tagArray;
+            }
         }
 
-        return $retval;
+        return array_merge($tagsWithChildren, $tagsWithoutChildren);
     }
 }
