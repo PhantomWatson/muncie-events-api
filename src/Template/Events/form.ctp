@@ -210,7 +210,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
                     ]
                 ) ?>
                 <span id="eventform_noendtime" <?php if ($hasEndTime): ?>style="display: none;"<?php endif; ?>>
-                    <button id="add_end_time" class="btn btn-link">
+                    <button id="add_end_time" class="btn btn-sm btn-secondary">
                         Add end time
                     </button>
                 </span>
@@ -242,7 +242,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
                         'id' => 'eventform_hasendtime_boolinput',
                         'value' => $hasEndTime ? 1 : 0
                     ]) ?>
-                    <button id="remove_end_time" class="btn btn-link">
+                    <button id="remove_end_time" class="btn btn-sm btn-secondary">
                         Remove end time
                     </button>
                 </div>
