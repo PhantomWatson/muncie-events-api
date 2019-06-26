@@ -78,6 +78,10 @@ function setupEventForm() {
         html: true,
         title: 'Images'
     });
+
+    $('#example_selectable_tag').tooltip().click(function (event) {
+        event.preventDefault();
+    });
 }
 
 function setupLocationAutocomplete() {
