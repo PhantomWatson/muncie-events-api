@@ -1,6 +1,7 @@
 <?php
 /**
  * @var AppView $this
+ * @var array $authUser
  * @var Event $event
  * @var string $filesizeLimit
  */
@@ -21,7 +22,7 @@ $this->Html->css('/uploadifive/uploadifive.css', ['block' => true]);
 
 <?php $this->Html->scriptStart(['block' => true]); ?>
 ImageManager.setupUpload({
-userId: <?= json_encode($userId) ?>,
+userId: <?= json_encode($authUser['id'] ?? null) ?>,
 eventId: <?= json_encode($event->id ?? null) ?>,
 filesizeLimit: '<?= $filesizeLimit ?>B',
 eventImgBaseUrl: '<?= Configure::read('App.eventImageBaseUrl') ?>'
