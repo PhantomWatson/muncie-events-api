@@ -16,11 +16,7 @@ var ImageManager = {
     },
 
     getSelectionContainer: function (imageId) {
-        return $('<li id="selectedimage_' + imageId + '" data-image-id="' + imageId + '"></li>');
-    },
-
-    getDragHandle: function () {
-        return $('<img src="/img/icons/arrow-move.png" class="handle" alt="Move" title="Move" />');
+        return $('<li id="selectedimage_' + imageId + '" data-image-id="' + imageId + '" class="row"></li>');
     },
 
     getLinkedImage: function (imageId, filename) {
@@ -34,27 +30,24 @@ var ImageManager = {
     },
 
     getCaptionFieldLabel: function (imageId) {
-        return $('<label for="selected_img_' + imageId + '_caption">Caption:</label>');
+        return $('<label for="caption-image-' + imageId + '" class="sr-only">Caption</label>');
     },
 
     getCaptionField: function (imageId) {
         return $(
-            '<input type="text" class="caption" placeholder="Enter a caption for this image"' +
-            ' id="selected_img_' + imageId + '_caption" name="data[Image][' + imageId + ']" />'
+            '<input class="form-control" type="text" name="data[Image][' + imageId + ']" ' +
+            'id="caption-image-' + imageId + '" placeholder="Enter a caption for this image" value="" />'
         );
     },
 
     getRemoveButton: function () {
-        var remove_handle = $(
-            '<a href="#" class="remove"><img src="/img/icons/cross.png" class="remove" alt="Remove" title="Remove" />' +
-            '</a>'
-        );
-        remove_handle.click(function (event) {
-            event.preventDefault();
-            var container = $(this).parent('li');
-            ImageManager.unselectImage(container);
-        });
-        return remove_handle;
+        return $('<button type="button" class="remove btn btn-danger" title="Remove"></button>')
+            .append('<i class="fas fa-times"></i>')
+            .append('<span class="sr-only">Remove</span>')
+            .click(function () {
+                var container = $(this).parent('li');
+                ImageManager.unselectImage(container);
+            });
     },
 
     addHiddenListedImage: function (imageId, filename) {
@@ -74,12 +67,15 @@ var ImageManager = {
     },
 
     populateSelectionContainer: function (selectionContainer, imageId, filename) {
-        selectionContainer
-            .append(ImageManager.getDragHandle())
-            .append(ImageManager.getRemoveButton(imageId))
-            .append(ImageManager.getLinkedImage(imageId, filename))
+        var leftCol = $('<div class="col-md-2"></div>')
+            .append(ImageManager.getLinkedImage(imageId, filename));
+        var rightCol = $('<div class="col-md-10"></div>')
             .append(ImageManager.getCaptionFieldLabel(imageId))
-            .append(ImageManager.getCaptionField(imageId))
+            .append(ImageManager.getCaptionField(imageId));
+        selectionContainer
+            .append(leftCol)
+            .append(rightCol)
+            .append(ImageManager.getRemoveButton(imageId))
             .appendTo($('#selected_images'));
     },
 
