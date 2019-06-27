@@ -226,7 +226,7 @@ class EventsController extends AppController
 
         // Set view variables
         $this->setEventFormVars($event);
-        $this->set(['pageTitle' => 'Submit an Event',]);
+        $this->set(['pageTitle' => 'Submit an Event']);
 
         // Render if the form isn't being submitted
         if ($this->request->is(['get'])) {
