@@ -99,6 +99,8 @@ class ImagesTable extends Table
      * @param int $userId User ID
      * @param array $fileInfo Array of image file info (name, type, tmp_name, error, size)
      * @return Image
+     * @throws BadRequestException
+     * @throws InternalErrorException
      */
     public function processUpload(int $userId, $fileInfo)
     {
