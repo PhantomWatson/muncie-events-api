@@ -107,14 +107,14 @@ class ImagesTable extends Table
         // Create record in database
         $image = $this->newEntity(['user_id' => $userId]);
         if (!$this->save($image)) {
-            throw new BadRequestException('Error saving image to database');
+            throw new InternalErrorException('Error saving image to database');
         }
 
         // Set and save filename, which must happen after the initial save in order to use the image's ID
         $image->setExtension($fileInfo['name']);
         $image->setNewFilename();
         if (!$this->save($image)) {
-            throw new BadRequestException('Error updating image in database');
+            throw new InternalErrorException('Error updating image in database');
         }
 
         // Create the three resized versions of the uploaded image
