@@ -191,10 +191,6 @@ var ImageManager = {
                 event_id: params.eventId
             },
             onUploadComplete: function (file, data) {
-                console.log(file);
-                console.log(params);
-                console.log(data);
-
                 var intRegex = /^\d+$/;
 
                 // If the image's ID is returned
