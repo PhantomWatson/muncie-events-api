@@ -381,6 +381,16 @@
 
 #image_select_toggler {
     margin-top: 15px;
+
+    &.loading {
+        > img.loading {
+            display: inline;
+        }
+    }
+
+    > img.loading {
+        display: none;
+    }
 }
 
 .event_form {

@@ -38,6 +38,7 @@ ImageManager.setupManager();
 
         <button type="button" id="image_select_toggler" class="btn btn-secondary">
             Select a previously uploaded image
+            <img src="/img/loading_small_dark.gif" class="loading" alt="Loading..."/>
         </button>
 
         <div id="image_select_container"></div>
