@@ -55,7 +55,7 @@ class Tag extends Entity
      *
      * @return string
      */
-    public function _getSlug()
+    protected function _getSlug()
     {
         $slug = str_replace('\'', '', $this->name);
         $slug = mb_strtolower($slug);
