@@ -253,7 +253,7 @@ var ImageManager = {
         var container = $('#image_select_container');
         var link = $('#image_select_toggler');
         $.ajax({
-            url: '/images/user_images/' + ImageManager.userId,
+            url: '/images/user-images/' + ImageManager.userId,
             beforeSend: function () {
                 link.addClass('loading');
                 container.html('<img src="/img/loading.gif" class="loading" alt="Loading..." />');
