@@ -238,15 +238,13 @@ var ImageManager = {
             return;
         }
 
-        ImageManager.showUploadedImages();
-    },
-
-    showUploadedImages: function () {
-        if ($('#image_select_toggler').hasClass('loading')) {
+        var container = $('#image_select_container');
+        if (container.children().length === 0) {
+            ImageManager.loadUploadedImages();
             return;
         }
 
-        this.loadUploadedImages();
+        container.slideToggle();
     },
 
     loadUploadedImages: function () {
@@ -256,7 +254,6 @@ var ImageManager = {
             url: '/images/user-images/' + ImageManager.userId,
             beforeSend: function () {
                 link.addClass('loading');
-                container.html('<img src="/img/loading.gif" class="loading" alt="Loading..." />');
             },
             complete: function () {
                 link.removeClass('loading');
@@ -265,9 +262,6 @@ var ImageManager = {
                 console.log(jqXHR);
                 console.log(textStatus);
                 console.log(errorThrown);
-                container.find('.loading').slideUp(300, function () {
-                    $(this).remove();
-                });
                 var error = $(
                     '<div class="alert alert-danger">' +
                     'There was an error loading your uploaded images. ' +
@@ -278,15 +272,14 @@ var ImageManager = {
                 container.after(error);
             },
             success: function (data) {
-                container.find('.loading').slideUp(300, function () {
-                    $(this).remove();
-                    container.html(data);
-                    ImageManager.addHiddenUploadedImages();
-                    container.find('a').click(function (event) {
-                        event.preventDefault();
-                        var imageId = $(this).data('imageId');
-                        ImageManager.selectListedImage(imageId);
-                    });
+                container.hide();
+                container.html(data);
+                container.slideDown();
+                ImageManager.addHiddenUploadedImages();
+                container.find('button').click(function (event) {
+                    event.preventDefault();
+                    var imageId = $(this).data('imageId');
+                    ImageManager.selectListedImage(imageId);
                 });
             }
         });
