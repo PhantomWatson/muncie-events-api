@@ -73,21 +73,6 @@
     }
 }
 #image_form {
-    > #accordion {
-        > .card {
-            border: 0;
-            > .card-header {
-                background-color: #fff;
-                border-bottom: 0;
-            }
-            > #image_upload_container,
-            #image_select_container {
-                > .card-block {
-                    padding: 0 0 0 1rem;
-                }
-            }
-        }
-    }
     > div {
         a {
             color: @LinkColor;
@@ -129,8 +114,10 @@
 #image_select_container {
     overflow: auto;
 
-    a {
+    button {
         display: inline-block;
+        min-height: 71px;
+        min-width: 83px;
 
         &:hover,
         &:focus {
@@ -139,10 +126,11 @@
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
             }
         }
-    }
-    img {
-        border: 1px solid transparent;
-        margin: 0 5px 5px 0;
+
+        > img {
+            border: 1px solid transparent;
+            margin: 0 5px 5px 0;
+        }
     }
 }
 
