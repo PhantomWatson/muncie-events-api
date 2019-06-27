@@ -181,7 +181,7 @@ var ImageManager = {
 
         $('#image_upload_button').uploadifive({
             uploadScript: '/images/upload',
-            checkScript: '/images/file_exists',
+            checkScript: '/images/file-exists',
             onCheck: false,
             fileSizeLimit: params.filesize_limit,
             buttonText: 'Upload a new image',
