@@ -156,17 +156,16 @@ var ImageManager = {
             .fadeIn(300);
 
         $.ajax({
-            url: '/images/filename/' + imageId,
+            url: '/images/filename/' + imageId + '.json',
             success: function (data) {
                 if (!data) {
                     alert('There was an error selecting an image (image not found).');
                     $('#selectedimage_' + imageId).remove();
                 } else {
-                    var filename = data;
                     selectionContainer.removeClass('loading');
-                    ImageManager.populateSelectionContainer(selectionContainer, imageId, filename);
+                    ImageManager.populateSelectionContainer(selectionContainer, imageId, data.filename);
                     ImageManager.afterSelection(imageId);
-                    ImageManager.addHiddenListedImage(imageId, filename);
+                    ImageManager.addHiddenListedImage(imageId, data.filename);
                 }
             },
             error: function () {

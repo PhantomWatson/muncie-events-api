@@ -8,6 +8,7 @@ use App\Model\Table\UsersTable;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Exception;
 
 /**
  * Images Controller
@@ -74,5 +75,21 @@ class ImagesController extends AppController
 
         $this->viewbuilder()->setLayout('ajax');
         $this->set(compact('retval'));
+    }
+
+    /**
+     * Returns the filename for the specified image
+     *
+     * @param int $imageId Image ID
+     * @return void
+     * @throws Exception
+     */
+    public function filename($imageId)
+    {
+        $image = $this->Images->get((int)$imageId);
+        $this->set([
+            '_serialize' => ['filename'],
+            'filename' => $image->filename ?? false
+        ]);
     }
 }
