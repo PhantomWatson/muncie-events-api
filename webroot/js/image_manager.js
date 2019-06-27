@@ -1,6 +1,7 @@
 var ImageManager = {
     userId: null,
     eventImgBaseUrl: '',
+    previousImagesLoaded: false,
 
     setupManager: function () {
         $('#selected_images').sortable({
@@ -234,7 +235,7 @@ var ImageManager = {
         }
 
         var container = $('#image_select_container');
-        if (container.children().length === 0) {
+        if (!this.previousImagesLoaded) {
             ImageManager.loadUploadedImages();
             return;
         }
@@ -276,6 +277,7 @@ var ImageManager = {
                     var imageId = $(this).data('imageId');
                     ImageManager.selectListedImage(imageId);
                 });
+                ImageManager.previousImagesLoaded = true;
             }
         });
     },
