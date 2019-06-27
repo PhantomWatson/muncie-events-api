@@ -80,7 +80,6 @@ class AppController extends Controller
     public function beforeFilter(Event $event)
     {
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
-            $this->loadModel('Users');
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
