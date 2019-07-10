@@ -24,6 +24,13 @@ class CookieAuthenticate extends BaseAuthenticate
             'fields' => [
                 'username' => 'email',
                 'password' => 'password'
+            ],
+            'passwordHasher' => [
+                'className' => 'Fallback',
+                'hashers' => [
+                    'Default',
+                    'Weak' => ['hashType' => 'sha1']
+                ]
             ]
         ]);
         parent::__construct($registry, $config);
