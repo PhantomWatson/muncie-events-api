@@ -120,4 +120,24 @@ class EventsController extends AppController
 
         return $this->redirect($this->referer());
     }
+
+    /**
+     * Deletes an event
+     *
+     * @param int|null $eventId Event ID
+     * @return Response
+     */
+    public function delete($eventId = null)
+    {
+        $event = $this->Events->get($eventId);
+        if ($this->Events->delete($event)) {
+            $this->Flash->success('The event has been deleted.');
+        } else {
+            $this->Flash->error(
+                'The event could not be deleted. Please try again or contact an administrator for assistance.'
+            );
+        }
+
+        return $this->redirect($this->referer());
+    }
 }

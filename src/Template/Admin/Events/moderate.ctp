@@ -83,6 +83,7 @@ $displayedEventFields = [
                 $editLabel = $this->Html->image('icons/pencil.png', ['alt' => 'Edit']) . 'Edit';
 
                 $deleteUrl = [
+                    'prefix' => 'admin',
                     'controller' => 'Events',
                     'action' => 'delete'
                 ];
