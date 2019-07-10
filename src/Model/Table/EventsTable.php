@@ -482,6 +482,38 @@ class EventsTable extends Table
     }
 
     /**
+     * Returns a query to collect the information needed for the event moderation page
+     *
+     * @param Query $query Query object
+     * @return Query
+     */
+    public function findForModeration(Query $query)
+    {
+        return $query
+            ->find('withAllAssociated')
+            ->contain([
+                'EventSeries' => function (Query $q) {
+                    return $q
+                        ->select(['id', 'title'])
+                        ->contain([
+                            'Events' => function (Query $q) {
+                                return $q->select(['id', 'series_id']);
+                            }
+                        ]);
+                }
+            ])
+            ->orderAsc('Events.created')
+            ->where([
+                'OR' => [
+                    function (QueryExpression $exp) {
+                        return $exp->isNull('Events.approved_by');
+                    },
+                    ['Events.published' => '0']
+                ]
+            ]);
+    }
+
+    /**
      * Returns an array of dates (YYYY-MM-DD) with published events, cached daily
      *
      * @param string|int $month Month, zero-padded
