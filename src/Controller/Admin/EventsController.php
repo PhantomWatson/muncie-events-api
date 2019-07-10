@@ -4,10 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
+use App\Model\Table\EventSeriesTable;
+use Cake\Http\Response;
 use Exception;
 
 /**
  * Events Controller
+ *
+ * @property EventSeriesTable $EventSeries
  */
 class EventsController extends AppController
 {
@@ -65,5 +69,55 @@ class EventsController extends AppController
             'identicalSeries' => $identicalSeries,
             'pageTitle' => 'Review Unapproved Events'
         ]);
+    }
+
+    /**
+     * Marks the specified event as approved by an administrator
+     *
+     * @return Response
+     */
+    public function approve()
+    {
+        $eventIds = $this->request->getParam('pass');
+        if (empty($eventIds)) {
+            $this->Flash->error('No events approved because no IDs were specified');
+
+            return $this->redirect('/');
+        }
+
+        $seriesToApprove = [];
+        foreach ($eventIds as $id) {
+            if (!$this->Events->exists($id)) {
+                $this->Flash->error("Cannot approve. Event with ID# $id not found.");
+                continue;
+            }
+            $event = $this->Events->get($id, [
+                'contain' => 'EventSeries'
+            ]);
+            if ($event->series_id) {
+                $seriesToApprove[$event->series_id] = true;
+            }
+
+            // Approve & publish it
+            $event->approved_by = $this->Auth->user('id');
+            $event->published = true;
+
+            if ($this->Events->save($event)) {
+                $this->Flash->success("Event #$id approved.");
+            }
+        }
+
+        if ($seriesToApprove) {
+            $this->loadModel('EventSeries');
+            foreach ($seriesToApprove as $seriesId => $flag) {
+                $series = $this->EventSeries->get($seriesId);
+                $series->published = true;
+                if ($this->EventSeries->save($series)) {
+                    $this->Flash->success("Event series #$seriesId approved.");
+                }
+            }
+        }
+
+        return $this->redirect($this->referer());
     }
 }
