@@ -441,4 +441,30 @@ class EventsController extends AppController
         // Any admin may edit
         return $this->Auth->user('role') == 'admin';
     }
+
+    /**
+     * Deletes an event
+     *
+     * @param int|null $eventId Event ID
+     * @return Response
+     */
+    public function delete($eventId = null)
+    {
+        $event = $this->Events->get($eventId);
+        if (!$this->userCanEdit($event)) {
+            $this->Flash->error('You are not authorized to delete that event');
+            return $this->redirect($this->referer());
+        }
+
+        if ($this->Events->delete($event)) {
+            $this->Flash->success('The event has been deleted.');
+
+            return $this->redirect('/');
+        }
+        $this->Flash->error(
+            'The event could not be deleted. Please try again or contact an administrator for assistance.'
+        );
+
+        return $this->redirect(['action' => 'index']);
+    }
 }
