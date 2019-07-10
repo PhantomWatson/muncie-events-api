@@ -22,7 +22,7 @@ class CookieAuthenticate extends BaseAuthenticate
                 'name' => 'CookieAuth'
             ],
             'fields' => [
-                'username' => 'username',
+                'username' => 'email',
                 'password' => 'password'
             ]
         ]);
