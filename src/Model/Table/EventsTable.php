@@ -97,17 +97,17 @@ class EventsTable extends Table
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->allowEmptyString('title', false, 'Event title cannot be blank');
+            ->allowEmptyString('title', 'Event title cannot be blank', false);
 
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->allowEmptyString('description', false, 'Event description cannot be blank');
+            ->allowEmptyString('description', 'Event description cannot be blank', false);
 
         $validator
             ->scalar('location')
             ->requirePresence('location', 'create')
-            ->allowEmptyString('location', false, 'Event location cannot be blank');
+            ->allowEmptyString('location', 'Event location cannot be blank', false);
 
         $validator
             ->scalar('location_details')
@@ -120,12 +120,12 @@ class EventsTable extends Table
         $validator
             ->date('date')
             ->requirePresence('date', 'create')
-            ->allowEmptyDate('date', false, 'Event date must be specified');
+            ->allowEmptyDate('date', 'Event date must be specified', false);
 
         $validator
             ->time('time_start')
             ->requirePresence('time_start', 'create')
-            ->allowEmptyTime('time_start', false, 'Event start time must be specified');
+            ->allowEmptyTime('time_start', 'Event start time must be specified', false);
 
         $validator
             ->time('time_end')

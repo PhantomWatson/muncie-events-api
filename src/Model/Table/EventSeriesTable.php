@@ -66,7 +66,7 @@ class EventSeriesTable extends Table
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->allowEmptyString('title', false);
+            ->allowEmptyString('title', 'Title required', false);
 
         $validator
             ->boolean('published')

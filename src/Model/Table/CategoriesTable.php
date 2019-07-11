@@ -61,12 +61,12 @@ class CategoriesTable extends Table
         $validator
             ->scalar('name')
             ->requirePresence('name', 'create')
-            ->allowEmptyString('name', false);
+            ->allowEmptyString('name', 'Category name required', false);
 
         $validator
             ->scalar('slug')
             ->requirePresence('slug', 'create')
-            ->allowEmptyString('slug', false);
+            ->allowEmptyString('slug', 'Category slug required', false);
 
         $validator
             ->integer('weight')

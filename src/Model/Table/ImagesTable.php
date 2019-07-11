@@ -74,7 +74,7 @@ class ImagesTable extends Table
 
         $validator
             ->scalar('filename')
-            ->allowEmptyString('filename', false);
+            ->allowEmptyString('filename', 'Filename required', false);
 
         return $validator;
     }
