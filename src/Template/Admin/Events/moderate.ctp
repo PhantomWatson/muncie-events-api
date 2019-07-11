@@ -117,6 +117,7 @@ $displayedEventFields = [
                             <?= $this->Html->link(
                                 $editLabel,
                                 [
+                                    'prefix' => false,
                                     'controller' => 'Events',
                                     'action' => 'edit',
                                     'id' => $eventId
