@@ -122,13 +122,15 @@ class EventForm
      */
     public function parseTime($date, $time)
     {
-        $keysExist = array_key_exists('hour', $time)
-            && array_key_exists('minute', $time)
-            && array_key_exists('meridian', $time);
-        if (is_array($time) && !$keysExist) {
-            throw new BadRequestException(
-                'Time was provided as an array, but does not have required hour, minute, and meridian keys.'
-            );
+        if (is_array($time)) {
+            $keysExist = array_key_exists('hour', $time)
+                && array_key_exists('minute', $time)
+                && array_key_exists('meridian', $time);
+            if (!$keysExist) {
+                throw new BadRequestException(
+                    'Time was provided as an array, but does not have required hour, minute, and meridian keys.'
+                );
+            }
         }
 
         try {
