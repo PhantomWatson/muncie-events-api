@@ -36,7 +36,7 @@ class EventsControllerTest extends ApplicationTest
     public function testMultipleGet()
     {
         $this->get('/');
-        $this->assertResponseOk('Response: ' . print_r($this->_response, true));
+        $this->assertResponseOk();
         $this->get('/');
         $this->assertResponseOk();
     }
