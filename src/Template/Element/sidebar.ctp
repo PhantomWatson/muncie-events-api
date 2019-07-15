@@ -115,7 +115,7 @@ $categories = $this->Nav->getCategories();
                 ?>
             </h2>
             <?= $this->element(
-                'tags/cloud',
+                'Tags/cloud',
                 [
                     'class' => 'form-control',
                     'tags' => $tags
