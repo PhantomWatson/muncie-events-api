@@ -4,38 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "955e2d2dc44dd7e93e4181c652d75451",
+    "content-hash": "086d355a7252ff1def86a66a8bae24f8",
     "packages": [
-        {
-            "name": "akkaweb/cakephp-ckeditor",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/akkaweb/AKKA-CakePHP-CKEditor-Plugin.git",
-                "reference": "d495479dd31714afb6a6c6baafe552f5425de4fa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/akkaweb/AKKA-CakePHP-CKEditor-Plugin/zipball/d495479dd31714afb6a6c6baafe552f5425de4fa",
-                "reference": "d495479dd31714afb6a6c6baafe552f5425de4fa",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "AkkaCKEditor\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "AkkaCKEditor plugin for CakePHP",
-            "time": "2016-01-05T23:28:20+00:00"
-        },
         {
             "name": "alek13/slack",
             "version": "1.10.1",
@@ -544,6 +514,36 @@
                 "search"
             ],
             "time": "2019-06-11T18:06:05+00:00"
+        },
+        {
+            "name": "funayaki/ckeditor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/funayaki/AKKA-CakePHP-CKEditor-Plugin.git",
+                "reference": "08b9c5fc1225a5719a0345b27897396bd118abe0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/funayaki/AKKA-CakePHP-CKEditor-Plugin/zipball/08b9c5fc1225a5719a0345b27897396bd118abe0",
+                "reference": "08b9c5fc1225a5719a0345b27897396bd118abe0",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^3.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7|^6.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "AkkaCKEditor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "AkkaCKEditor plugin for CakePHP",
+            "time": "2018-10-05T10:33:34+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4966,7 +4966,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "phantomwatson/cakephp-json-api": 20,
-        "akkaweb/cakephp-ckeditor": 20,
+        "funayaki/ckeditor": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

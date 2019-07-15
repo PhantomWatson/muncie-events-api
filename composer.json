@@ -21,7 +21,7 @@
         "ext-gd": "*",
         "ext-curl": "*",
         "alek13/slack": "^1.10",
-        "akkaweb/cakephp-ckeditor": "dev-master"
+        "funayaki/ckeditor": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",

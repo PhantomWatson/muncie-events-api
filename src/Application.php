@@ -40,8 +40,9 @@ class Application extends BaseApplication
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
-        $this->addPlugin('Recaptcha');
+        $this->addPlugin('AkkaCKEditor');
         $this->addPlugin('JsonApi');
+        $this->addPlugin('Recaptcha');
         $this->addPlugin('Search');
 
         if (PHP_SAPI === 'cli') {
