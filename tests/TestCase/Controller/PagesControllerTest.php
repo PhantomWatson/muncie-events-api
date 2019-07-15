@@ -1,16 +1,16 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 use PHPUnit\Exception;
 
 /**
  * PagesControllerTest class
  */
-class PagesControllerTest extends TestCase
+class PagesControllerTest extends ApplicationTest
 {
     use EmailTrait;
     use IntegrationTestTrait;

@@ -2,13 +2,13 @@
 
 namespace App\Test\TestCase\Controller;
 
+use App\Test\TestCase\ApplicationTest;
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\ImagesController Test Case
  */
-class ImagesControllerTest extends TestCase
+class ImagesControllerTest extends ApplicationTest
 {
     use IntegrationTestTrait;
 

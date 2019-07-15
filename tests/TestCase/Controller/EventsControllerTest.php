@@ -1,13 +1,13 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\TestCase\ApplicationTest;
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\EventsController Test Case
  */
-class EventsControllerTest extends TestCase
+class EventsControllerTest extends ApplicationTest
 {
     use IntegrationTestTrait;
 
