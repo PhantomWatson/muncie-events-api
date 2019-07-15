@@ -36,6 +36,7 @@ class EventsControllerTest extends ApplicationTest
     public function testMultipleGet()
     {
         $this->get('/');
+        print_r($this->_response);
         $this->assertResponseOk();
         $this->get('/');
         $this->assertResponseOk();
@@ -53,7 +54,6 @@ class EventsControllerTest extends ApplicationTest
             'environment' => ['HTTPS' => 'off']
         ]);
         $this->get('/');
-        print_r($this->_response);
         $this->assertRedirect();
 
         // Test redirection SPECIFICALLY to HTTPS

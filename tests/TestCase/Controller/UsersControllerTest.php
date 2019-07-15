@@ -56,6 +56,7 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'login'
         ];
         $this->get($loginPath);
+        print_r($this->_response);
         $this->assertResponseOk();
 
         $this->post(
@@ -92,6 +93,7 @@ class UsersControllerTest extends ApplicationTest
                 'password' => 'wrong'
             ]
         );
+        print_r($this->_response);
         $this->assertResponseOk();
         $this->assertResponseContains('Email or password is incorrect');
         $this->assertSession(null, 'Auth.User.id');
