@@ -19,7 +19,7 @@ class AppController extends Controller
     /**
      * Initialization hook method
      *
-     * @return void
+     * @return Response|null
      * @throws Exception
      */
     public function initialize()
@@ -69,6 +69,12 @@ class AppController extends Controller
             ]
         );
         $this->Auth->deny();
+
+        if (!$this->request->is('ssl')) {
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
+        }
+
+        return null;
     }
 
     /**

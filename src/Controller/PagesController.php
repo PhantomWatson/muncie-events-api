@@ -43,10 +43,6 @@ class PagesController extends AppController
 
         $this->Auth->allow();
 
-        if (!$this->request->is('ssl')) {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
-        }
-
         if ($this->request->getParam('action') === 'contact') {
             $this->loadComponent('Recaptcha.Recaptcha');
         }
