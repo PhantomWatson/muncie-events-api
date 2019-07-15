@@ -53,6 +53,7 @@ class EventsControllerTest extends ApplicationTest
             'environment' => ['HTTPS' => 'off']
         ]);
         $this->get('/');
+        print_r($this->_response);
         $this->assertRedirect();
 
         // Test redirection SPECIFICALLY to HTTPS
