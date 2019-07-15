@@ -453,6 +453,7 @@ class EventsController extends AppController
         $event = $this->Events->get($eventId);
         if (!$this->userCanEdit($event)) {
             $this->Flash->error('You are not authorized to delete that event');
+
             return $this->redirect($this->referer());
         }
 
