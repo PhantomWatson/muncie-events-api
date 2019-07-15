@@ -56,7 +56,9 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'login'
         ];
         $this->get($loginPath);
+        echo "Debugging:\n";
         print_r($this->_response);
+        var_dump($this->_response);
         $this->assertResponseOk();
 
         $this->post(
