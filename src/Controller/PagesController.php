@@ -133,4 +133,16 @@ class PagesController extends AppController
             'pageTitle' => 'About'
         ]);
     }
+
+    /**
+     * Terms of service page
+     *
+     * @return void
+     */
+    public function terms()
+    {
+        $this->set([
+            'pageTitle' => 'Web Site Terms and Conditions of Use'
+        ]);
+    }
 }
