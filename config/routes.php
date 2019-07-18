@@ -95,6 +95,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
     // Pages
+    $routes->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
     $routes->connect('/api/docs/v1', ['controller' => 'Pages', 'action' => 'apiDocsV1']);
     $routes->redirect('/api/docs', ['controller' => 'Pages', 'action' => 'apiDocsV1']);

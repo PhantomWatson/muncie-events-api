@@ -121,4 +121,16 @@ class PagesController extends AppController
 
         return null;
     }
+
+    /**
+     * About page
+     *
+     * @return void
+     */
+    public function about()
+    {
+        $this->set([
+            'pageTitle' => 'About'
+        ]);
+    }
 }

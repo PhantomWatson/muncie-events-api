@@ -34,7 +34,9 @@ class PagesController extends ApiController
         $page = new Page();
         $page->id = 'about';
         $page->title = 'About Muncie Events';
-        $page->body = $this->getElement('Pages/about');
+        $page->body =
+            $this->getElement('Pages/about_styles') .
+            $this->getElement('Pages/about');
 
         $this->set([
             '_entities' => ['Page'],
