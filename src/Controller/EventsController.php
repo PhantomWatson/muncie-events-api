@@ -468,4 +468,40 @@ class EventsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Redirects to the /events/day page for today
+     *
+     * @return Response
+     */
+    public function today()
+    {
+        $timestamp = time();
+
+        return $this->redirect([
+            'controller' => 'Events',
+            'action' => 'day',
+            date('m', $timestamp),
+            date('d', $timestamp),
+            date('Y', $timestamp)
+        ]);
+    }
+
+    /**
+     * Redirects to the /events/day page for tomorrow
+     *
+     * @return Response
+     */
+    public function tomorrow()
+    {
+        $timestamp = strtotime('+1 day');
+
+        return $this->redirect([
+            'controller' => 'Events',
+            'action' => 'day',
+            date('m', $timestamp),
+            date('d', $timestamp),
+            date('Y', $timestamp)
+        ]);
+    }
 }

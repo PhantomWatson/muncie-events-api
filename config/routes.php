@@ -76,6 +76,8 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Events', 'action' => 'edit'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
+    $routes->connect('/today', ['controller' => 'Events', 'action' => 'today']);
+    $routes->connect('/tomorrow', ['controller' => 'Events', 'action' => 'tomorrow']);
 
     // EventSeries
     Router::connect(
