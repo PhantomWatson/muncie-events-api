@@ -4,27 +4,27 @@
   "description": "Muncie Events API",
   "main": "",
   "dependencies": {
-    "commander": "^2.19.0",
+      "commander": "^2.20.0",
     "dateformat": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.1.0",
     "gulp-less": "^3.5.0",
     "gulp-notify": "^3.2.0",
     "gulp-phpcs": "^2.2.0",
-    "gulp-phpunit": "^0.24.1",
+      "gulp-phpunit": "^0.26.0",
     "gulp-util": "^3.0.8",
-    "jquery": "^3.3.1",
-    "jshint": "^2.9.7",
+      "jquery": "^3.4.1",
+      "jshint": "^2.10.2",
     "jshint-stylish": "^2.2.1",
     "less-plugin-clean-css": "^1.5.1",
-    "lodash": "^4.17.11",
-    "lodash.template": "^4.4.0",
-    "semver": "^5.6.0",
+      "lodash": "^4.17.15",
+      "lodash.template": "^4.5.0",
+      "semver": "^5.7.0",
     "through2": "^2.0.5",
-    "uglify-js": "^3.4.9"
+      "uglify-js": "^3.6.0"
   },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.9.0"
+        "@fortawesome/fontawesome-free": "^5.10.1"
     },
   "repository": {
     "type": "",
