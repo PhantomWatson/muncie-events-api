@@ -148,40 +148,15 @@ function setupAddressLookup() {
         if (locationName === '') {
             return;
         }
-        var addressRow = $('#eventform_address');
-        // Attempt to look up address from this user's previous locations
+
+        // Attempt to look up address from the previousLocations object
         var matches = jQuery.grep(eventForm.previousLocations, function (locationObj) {
             return locationObj.label === locationName;
         });
         if (matches.length > 0) {
             addressField.val(matches[0].value);
-
-            // Ask the database for the address
-        } else {
-            var addressLabel = addressRow.find('label');
-            $.ajax({
-                url: '/events/getAddress/' + locationName,
-                beforeSend: function () {
-                    addressLabel.addClass('loading');
-                },
-                complete: function () {
-                    addressLabel.removeClass('loading');
-                },
-                success: function (data) {
-                    // Make sure address field hasn't received input since the AJAX request
-                    if (data === '' || addressField.val() !== '') {
-                        return;
-                    }
-                    addressField.val(data);
-                },
-                error: function () {
-                    console.log('Error trying to pull location address from /events/getAddress/' + locationName);
-                }
-            });
         }
     });
-
-    // Stop in-progress address lookup on any keydown in address field
 }
 
 function setupDatepickerMultiple(defaultDate, preselectedDates) {
