@@ -20,7 +20,10 @@ use Cake\ORM\ResultSet;
             <?= $pageTitle ?>
         </h1>
         <div class="form-group col-lg-8 col-xs-12">
-            <?= $this->Form->control('email', ['class' => 'form-control']) ?>
+            <?= $this->Form->control('email', [
+                'class' => 'form-control',
+                'label' => 'Email address'
+            ]) ?>
         </div>
         <div id="mailing_list_basic_options" class="form-group col-lg-8 col-xs-12">
             <div class="form-control mailing-options">
