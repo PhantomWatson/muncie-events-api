@@ -8,6 +8,7 @@ use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Security;
 use Cake\Validation\Validator;
 
 /**
@@ -135,5 +136,47 @@ class MailingListTable extends Table
         $rules->add($rules->isUnique(['email']));
 
         return $rules;
+    }
+
+    /**
+     * Returns an array of days of the week, with abbreviations as keys
+     *
+     * @return array
+     */
+    public function getDays()
+    {
+        return [
+            'sun' => 'Sunday',
+            'mon' => 'Monday',
+            'tue' => 'Tuesday',
+            'wed' => 'Wednesday',
+            'thu' => 'Thursday',
+            'fri' => 'Friday',
+            'sat' => 'Saturday'
+        ];
+    }
+
+    /**
+     * Returns a mailing list record matching the provided email address, or null if none is found
+     *
+     * @param string $email Email address
+     * @return MailingList|null|EntityInterface
+     */
+    public function getFromEmail($email)
+    {
+        return $this->find()
+            ->where(['email' => $email])
+            ->first();
+    }
+
+    /**
+     * Returns the security hash for the specified mailing list subscriber ID
+     *
+     * @param int|null $subscriberId ID of record in mailing list table
+     * @return string
+     */
+    public function getHash(?int $subscriberId)
+    {
+        return Security::hash($subscriberId, null, true);
     }
 }
