@@ -44,23 +44,9 @@ class MailingListController extends AppController
     public function index($subscriberId = null, $hash = null)
     {
         if ($subscriberId) {
-            $subscriberIsValid = $this->MailingList->exists(['id' => $subscriberId]);
-            if (!$subscriberIsValid) {
-                $this->Flash->error(
-                    'It looks like you\'re trying to change settings for a user who is no longer subscribed. ' .
-                    'Please contact an administrator if you need assistance. '
-                );
-
-                return $this->redirect('/');
-            }
-            $hashIsValid = $hash == $this->MailingList->getHash($subscriberId);
-            if (!$hashIsValid) {
-                $this->Flash->error(
-                    'It appears that you clicked on a broken link. If you copied and pasted a URL to get ' .
-                    'here, you may not have copied the whole address. Please contact an administrator if you need ' .
-                    'assistance.');
-
-                return $this->redirect('/');
+            $redirect = $this->validateIdAndHash($subscriberId, $hash);
+            if ($redirect) {
+                return $redirect;
             }
 
             $subscription = $this->MailingList->get($subscriberId);
@@ -170,5 +156,64 @@ class MailingListController extends AppController
         $email = $this->Auth->user('email');
 
         return $this->MailingList->getFromEmail($email);
+    }
+
+    /**
+     * Page for unsubscribing from the mailing list
+     *
+     * @param int|null $subscriberId ID of record in mailing_list table
+     * @param string|null $hash Hash for verifying that the user making this request is the subscriber
+     * @return Response|null
+     */
+    public function unsubscribe($subscriberId = null, $hash = null)
+    {
+        $redirect = $this->validateIdAndHash($subscriberId, $hash);
+        if ($redirect) {
+            return $redirect;
+        }
+
+        $subscription = $this->MailingList->get($subscriberId);
+
+        if ($this->MailingList->delete($subscription)) {
+            $this->Flash->success('You have been removed from the mailing list');
+        } else {
+            $this->Flash->error(
+                'Sorry, but there was an error trying to remove you from the mailing list. ' .
+                'Please try again, or contact an administrator for assistance.'
+            );
+        }
+
+        return $this->redirect('/');
+    }
+
+    /**
+     * Generates a flash message and returns a redirect response if the subscriber ID and/or hash are invalid
+     *
+     * @param int|null $subscriberId ID of record in the mailing list table
+     * @param string|null $hash Security hash for this subscriber
+     * @return bool|Response|null
+     */
+    private function validateIdAndHash(?int $subscriberId, ?string $hash)
+    {
+        $subscriberIsValid = $this->MailingList->exists(['id' => $subscriberId]);
+        if (!$subscriberIsValid) {
+            $this->Flash->error(
+                'It looks like you\'re trying to change settings for a user who is no longer subscribed. ' .
+                'Please contact an administrator if you need assistance. '
+            );
+
+            return $this->redirect('/');
+        }
+        $hashIsValid = $hash == $this->MailingList->getHash($subscriberId);
+        if (!$hashIsValid) {
+            $this->Flash->error(
+                'It appears that you clicked on a broken link. If you copied and pasted a URL to get ' .
+                'here, you may not have copied the whole address. Please contact an administrator if you need ' .
+                'assistance.');
+
+            return $this->redirect('/');
+        }
+
+        return false;
     }
 }

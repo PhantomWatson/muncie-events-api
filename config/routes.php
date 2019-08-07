@@ -96,6 +96,9 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
 
+    // MailingList
+    $routes->connect('/unsubscribe', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
+
     // Pages
     $routes->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
     $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
