@@ -3,17 +3,22 @@
  * @var AppView $this
  * @var array $days
  * @var MailingList $subscription
+ * @var MailingListTable $mailingListTable
  * @var ResultSet|Category[] $categories
  * @var string $pageTitle
  */
 
 use App\Model\Entity\Category;
 use App\Model\Entity\MailingList;
+use App\Model\Table\MailingListTable;
 use App\View\AppView;
 use Cake\ORM\ResultSet;
+use Cake\ORM\TableRegistry;
 
+$mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+$hash = $mailingListTable->getHash($subscription->id);
 ?>
-<div class="mailing_list_settings">
+<div id="mailing-list-form">
     <?= $this->Form->create($subscription, ['id' => 'MailingListForm']) ?>
     <fieldset>
         <h1 class="page_title">
@@ -174,24 +179,27 @@ use Cake\ORM\ResultSet;
         </div>
     </fieldset>
 
-    <?php if (isset($subscription->id)): ?>
-        <fieldset>
-            <legend>Unsubscribe</legend>
-            <?= $this->Form->control(
-                'unsubscribe',
-                [
-                    'type' => 'checkbox',
-                    'label' => 'Remove me from this  mailing list'
-                ]
-            ) ?>
-        </fieldset>
-    <?php endif; ?>
-
     <?= $this->Form->button(
         isset($subscription->id) ? 'Update Subscription' : 'Join Event Mailing List',
         ['class' => 'btn btn-secondary']
     ) ?>
     <?= $this->Form->end() ?>
+    <?php if (isset($subscription->id)): ?>
+        <?= $this->Form->postButton(
+            'Unsubscribe',
+            [
+                'controller' => 'MailingList',
+                'action' => 'unsubscribe',
+                $subscription->id,
+                $hash
+            ],
+            [
+                'class' => 'btn btn-danger',
+                'confirm' => 'Are you sure that you want to unsubscribe from the mailing list?',
+                'method' => 'delete'
+            ]
+        ) ?>
+    <?php endif; ?>
 </div>
 
 <?php $this->Html->script('mailing_list.js', ['block' => true]); ?>
