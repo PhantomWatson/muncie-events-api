@@ -135,7 +135,7 @@ $categories = $this->Nav->getCategories();
                     'plugin' => false,
                     'prefix' => false,
                     'controller' => 'MailingList',
-                    'action' => 'join'
+                    'action' => 'index'
                 ]
             ) ?>
             and get daily or weekly emails about all upcoming events or only the categories
