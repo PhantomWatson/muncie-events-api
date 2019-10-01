@@ -48,6 +48,7 @@ class EventsControllerTest extends ApplicationTest
     private $futureUrl;
     private $indexUrl;
     private $searchUrl;
+    private $searchPastUrl;
     private $updateUrl;
     private $updateEventId = 1;
     private $eventStringFields = [
@@ -124,6 +125,13 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'search',
+            '?' => ['apikey' => $this->getApiKey()]
+        ];
+        $this->searchPastUrl = [
+            'prefix' => 'v1',
+            'controller' => 'Events',
+            'action' => 'search',
+            'past',
             '?' => ['apikey' => $this->getApiKey()]
         ];
         $category = (new CategoriesFixture())->records[0];
@@ -337,7 +345,7 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/events/search fails for non-GET requests
+     * Tests that /v1/events/search (and .../past) fails for non-GET requests
      *
      * @return void
      * @throws Exception
@@ -345,6 +353,7 @@ class EventsControllerTest extends ApplicationTest
     public function testSearchFailBadMethod()
     {
         $this->assertDisallowedMethods($this->searchUrl, ['post', 'put', 'patch', 'delete']);
+        $this->assertDisallowedMethods($this->searchPastUrl, ['post', 'put', 'patch', 'delete']);
     }
 
     /**
