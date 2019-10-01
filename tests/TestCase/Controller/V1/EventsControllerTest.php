@@ -324,6 +324,51 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests that an event is returned from /events/search/past if the search term is found in the event's title
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testSearchPastInTitleSuccess()
+    {
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_TITLE,
+            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE,
+            'past'
+        );
+    }
+
+    /**
+     * Tests that an event is returned from /events/search/past if the search term is found in the event's description
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testSearchPastInDescriptionSuccess()
+    {
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_DESCRIPTION,
+            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            'past'
+        );
+    }
+
+    /**
+     * Tests that an event is returned from /events/search/past if the search term is found in the event's location
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testSearchPastInLocationSuccess()
+    {
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_LOCATION,
+            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
+            'past'
+        );
+    }
+
+    /**
      * Tests that an error is thrown if the search term is empty
      *
      * @return void
