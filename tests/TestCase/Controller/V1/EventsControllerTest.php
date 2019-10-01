@@ -255,6 +255,33 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
+     * Asserts that a search term in a given past/future direction only returns the specified result
+     *
+     * @param string $searchTerm String to use in the request's 'q' parameter
+     * @param string $direction 'past' or 'future'
+     * @param int $expectedEventId ID of the only event expected to be in search results
+     * @throws Exception
+     */
+    private function assertSingleSearchResult($searchTerm, $expectedEventId, $direction = 'future')
+    {
+        $url = $direction == 'past' ? $this->searchPastUrl : $this->searchUrl;
+        $url['?']['q'] = $searchTerm;
+        $this->get($url);
+        $this->assertResponseOk();
+        $eventIds = $this->getResponseEventIds();
+        $this->assertContains(
+            $expectedEventId,
+            $eventIds,
+            'Expected search result not found'
+        );
+        $this->assertCount(
+            1,
+            $eventIds,
+            'Search results contain more than one event when only one was expected'
+        );
+    }
+
+    /**
      * Tests that an event is returned from /events/search if the search term is found in the event's title
      *
      * @return void
@@ -262,20 +289,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInTitleSuccess()
     {
-        $url = $this->searchUrl;
-        $url['?']['q'] = EventsFixture::SEARCHABLE_TITLE;
-        $this->get($url);
-        $this->assertResponseOk();
-        $eventIds = $this->getResponseEventIds();
-        $this->assertContains(
-            EventsFixture::EVENT_WITH_SEARCHABLE_TITLE,
-            $eventIds,
-            'Event with searchable title not in results'
-        );
-        $this->assertCount(
-            1,
-            $eventIds,
-            'Results contain more than one event'
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_TITLE,
+            EventsFixture::EVENT_WITH_SEARCHABLE_TITLE
         );
     }
 
@@ -287,20 +303,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInDescriptionSuccess()
     {
-        $url = $this->searchUrl;
-        $url['?']['q'] = EventsFixture::SEARCHABLE_DESCRIPTION;
-        $this->get($url);
-        $this->assertResponseOk();
-        $eventIds = $this->getResponseEventIds();
-        $this->assertContains(
-            EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION,
-            $eventIds,
-            'Event with searchable description not in results'
-        );
-        $this->assertCount(
-            1,
-            $eventIds,
-            'Results contain more than one event'
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_DESCRIPTION,
+            EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION
         );
     }
 
@@ -312,20 +317,9 @@ class EventsControllerTest extends ApplicationTest
      */
     public function testSearchInLocationSuccess()
     {
-        $url = $this->searchUrl;
-        $url['?']['q'] = EventsFixture::SEARCHABLE_LOCATION;
-        $this->get($url);
-        $this->assertResponseOk();
-        $eventIds = $this->getResponseEventIds();
-        $this->assertContains(
-            EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION,
-            $eventIds,
-            'Event with searchable location not in results'
-        );
-        $this->assertCount(
-            1,
-            $eventIds,
-            'Results contain more than one event'
+        $this->assertSingleSearchResult(
+            EventsFixture::SEARCHABLE_LOCATION,
+            EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION
         );
     }
 
