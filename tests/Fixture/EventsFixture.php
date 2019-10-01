@@ -77,6 +77,9 @@ class EventsFixture extends TestFixture
     const SEARCHABLE_DESCRIPTION = 'Searchable description';
     const EVENT_WITH_SEARCHABLE_LOCATION = 112;
     const SEARCHABLE_LOCATION = 'Searchable location';
+    const PAST_EVENT_WITH_SEARCHABLE_TITLE = 113;
+    const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION = 114;
+    const PAST_EVENT_WITH_SEARCHABLE_LOCATION = 115;
 
     public function init()
     {
@@ -200,6 +203,24 @@ class EventsFixture extends TestFixture
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_LOCATION,
             'date' => date('Y-m-d', strtotime('tomorrow')),
+            'location' => self::SEARCHABLE_LOCATION
+        ]);
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'title' => self::SEARCHABLE_TITLE
+        ]);
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'description' => self::SEARCHABLE_DESCRIPTION
+        ]);
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
+            'date' => date('Y-m-d', strtotime('yesterday')),
             'location' => self::SEARCHABLE_LOCATION
         ]);
     }
