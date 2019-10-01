@@ -66,12 +66,12 @@ class MailingListTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->allowEmptyString('email', false);
+            ->allowEmptyString('email', 'Email address cannot be blank', false);
 
         $validator
             ->boolean('all_categories')
@@ -111,7 +111,7 @@ class MailingListTable extends Table
 
         $validator
             ->boolean('new_subscriber')
-            ->requirePresence('new_subscriber', 'create');
+            ->requirePresence('new_subscriber', null, 'create');
 
         $validator
             ->dateTime('processed_daily')

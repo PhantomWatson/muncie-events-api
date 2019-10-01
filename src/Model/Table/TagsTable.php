@@ -84,7 +84,7 @@ class TagsTable extends Table
 
         $validator
             ->scalar('name')
-            ->allowEmptyString('name', true);
+            ->allowEmptyString('name', 'Tag name cannot be blank', false);
 
         $validator
             ->boolean('listed')

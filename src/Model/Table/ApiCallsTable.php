@@ -63,7 +63,7 @@ class ApiCallsTable extends Table
         $validator
             ->scalar('url')
             ->requirePresence('url', 'create')
-            ->allowEmptyString('url', false, 'API call URL cannot be blank');
+            ->allowEmptyString('url', 'API call URL cannot be blank', false);
 
         return $validator;
     }

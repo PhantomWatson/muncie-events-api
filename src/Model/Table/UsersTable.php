@@ -79,7 +79,7 @@ class UsersTable extends Table
         $validator
             ->scalar('name')
             ->requirePresence('name', 'create')
-            ->allowEmptyString('name', false, 'User name cannot be blank');
+            ->allowEmptyString('name', 'User name cannot be blank', false);
 
         $validator
             ->scalar('role')
@@ -89,13 +89,13 @@ class UsersTable extends Table
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->allowEmptyString('email', false, 'Email address cannot be blank');
+            ->allowEmptyString('email', 'Email address cannot be blank', false);
 
         $validator
             ->scalar('password')
             ->requirePresence('password', 'create')
-            ->allowEmptyString('password', false)
-            ->allowEmptyString('confirm_password', false)
+            ->allowEmptyString('password', 'Password cannot be blank', false)
+            ->allowEmptyString('confirm_password', 'Please confirm your password by typing it a second time', false)
             ->add('confirm_password', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
