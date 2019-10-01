@@ -103,13 +103,20 @@ class EventsController extends ApiController
     /**
      * /events/search endpoint
      *
+     * @param string|null $direction Either null or "past"
      * @return void
      * @throws BadRequestException
      * @throws Exception
      */
-    public function search()
+    public function search($direction = null)
     {
         $this->request->allowMethod('get');
+
+        if (!in_array($direction, [null, 'past'])) {
+            throw new BadRequestException(
+                "Unrecognized direction: \"$direction\". This must either be \"past\" or left blank."
+            );
+        }
 
         $this->loadComponent('ApiPagination');
         $search = $this->request->getQuery('q');
@@ -120,7 +127,7 @@ class EventsController extends ApiController
 
         $baseQuery = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find('future');
+            ->find($direction ?? 'future');
         $matchesEventDetails = $baseQuery->cleanCopy()
             ->find('search', ['search' => $this->request->getQueryParams()]);
         $matchesTag = $baseQuery->cleanCopy()

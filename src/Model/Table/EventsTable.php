@@ -324,6 +324,24 @@ class EventsTable extends Table
     }
 
     /**
+     * Limits the query to events before today's date
+     *
+     * @param Query $query Query
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findPast(Query $query)
+    {
+        return $query
+            ->where([
+                function (QueryExpression $exp) {
+                    return $exp->lt('date', date('Y-m-d'));
+                }
+            ]);
+    }
+
+    /**
      * Returns the count of upcoming events in the specified category
      *
      * @param int $categoryId Category ID
