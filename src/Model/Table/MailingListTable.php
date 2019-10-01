@@ -75,53 +75,43 @@ class MailingListTable extends Table
 
         $validator
             ->boolean('all_categories')
-            ->requirePresence('all_categories', 'create')
-            ->allowEmptyString('all_categories', false);
+            ->requirePresence('all_categories', 'create');
 
         $validator
             ->boolean('weekly')
-            ->requirePresence('weekly', 'create')
-            ->allowEmptyString('weekly', false);
+            ->requirePresence('weekly', 'create');
 
         $validator
             ->boolean('daily_sun')
-            ->requirePresence('daily_sun', 'create')
-            ->allowEmptyString('daily_sun', false);
+            ->requirePresence('daily_sun', 'create');
 
         $validator
             ->boolean('daily_mon')
-            ->requirePresence('daily_mon', 'create')
-            ->allowEmptyString('daily_mon', false);
+            ->requirePresence('daily_mon', 'create');
 
         $validator
             ->boolean('daily_tue')
-            ->requirePresence('daily_tue', 'create')
-            ->allowEmptyString('daily_tue', false);
+            ->requirePresence('daily_tue', 'create');
 
         $validator
             ->boolean('daily_wed')
-            ->requirePresence('daily_wed', 'create')
-            ->allowEmptyString('daily_wed', false);
+            ->requirePresence('daily_wed', 'create');
 
         $validator
             ->boolean('daily_thu')
-            ->requirePresence('daily_thu', 'create')
-            ->allowEmptyString('daily_thu', false);
+            ->requirePresence('daily_thu', 'create');
 
         $validator
             ->boolean('daily_fri')
-            ->requirePresence('daily_fri', 'create')
-            ->allowEmptyString('daily_fri', false);
+            ->requirePresence('daily_fri', 'create');
 
         $validator
             ->boolean('daily_sat')
-            ->requirePresence('daily_sat', 'create')
-            ->allowEmptyString('daily_sat', false);
+            ->requirePresence('daily_sat', 'create');
 
         $validator
             ->boolean('new_subscriber')
-            ->requirePresence('new_subscriber', 'create')
-            ->allowEmptyString('new_subscriber', false);
+            ->requirePresence('new_subscriber', 'create');
 
         $validator
             ->dateTime('processed_daily')
