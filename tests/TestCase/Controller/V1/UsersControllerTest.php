@@ -623,7 +623,7 @@ class UsersControllerTest extends ApplicationTest
             $alteredData = $data;
             $alteredData[$param] = '';
             $this->patch($this->updateProfileUrl, $alteredData);
-            $this->assertResponseError();
+            $this->assertResponseError("Error not triggered for blank $param");
         }
     }
 
