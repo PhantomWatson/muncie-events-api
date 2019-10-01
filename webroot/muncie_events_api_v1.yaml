@@ -4,7 +4,7 @@ servers:
     url: https://api.muncieevents.com/v1
 info:
   description: |
-    The API for 
+    The API for
     [MuncieEvents.com](https://muncieevents.com).
   version: '1.0.0'
   title: Muncie Events API
@@ -840,7 +840,7 @@ paths:
                               example: 400
                             detail:
                               type: string
-                              example: The `start` parameter is required
+                              example: The `q` parameter is required
       security:
         - api_key: []
   /event-series/{eventSeriesId}:
