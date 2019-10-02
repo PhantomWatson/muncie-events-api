@@ -391,9 +391,6 @@ class UsersControllerTest extends ApplicationTest
         $this->assertMailSentTo($user->email);
         $resetUrl = 'https://muncieevents.com/reset_password/' . $user->id . '/' . $user->getResetPasswordHash();
 
-        // Slashes need to be escaped because $resetUrl is used as pattern in preg_match("/$resetUrl/")
-        $resetUrl = str_replace('/', '\/', $resetUrl);
-
         $this->assertMailContains($resetUrl);
     }
 
