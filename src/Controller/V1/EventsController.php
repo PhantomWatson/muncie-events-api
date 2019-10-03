@@ -125,9 +125,22 @@ class EventsController extends ApiController
             throw new BadRequestException('The parameter "q" is required');
         }
 
+        $categoryId = $this->request->getQuery('category');
+        if ($categoryId) {
+            $categoryExists = TableRegistry::getTableLocator()
+                ->get('Categories')
+                ->exists(['id' => $categoryId]);
+            if (!$categoryExists) {
+                throw new BadRequestException("Category with ID $categoryId not found");
+            }
+        }
+
         $baseQuery = $this->Events
             ->find('forApi', $this->getFinderOptions())
             ->find($direction ?? 'future');
+        if ($categoryId) {
+            $baseQuery->where(['category_id' => $categoryId]);
+        }
         $matchesEventDetails = $baseQuery->cleanCopy()
             ->find('search', ['search' => $this->request->getQueryParams()]);
         $matchesTag = $baseQuery->cleanCopy()
