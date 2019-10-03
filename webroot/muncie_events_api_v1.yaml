@@ -788,6 +788,13 @@ paths:
           required: true
           description: Search term
           example: music festivals
+        - name: category
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: Category ID (optional)
+          example: 8
       responses:
         '200':
           description: Successful operation
@@ -841,6 +848,19 @@ paths:
                             detail:
                               type: string
                               example: The `q` parameter is required
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: 'Category with ID {categoryId} not found'
       security:
         - api_key: []
   /events/search/past:
@@ -857,6 +877,13 @@ paths:
           required: true
           description: Search term
           example: music festivals
+        - name: category
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: Category ID (optional)
+          example: 8
       responses:
         '200':
           description: Successful operation
@@ -910,6 +937,19 @@ paths:
                             detail:
                               type: string
                               example: The `q` parameter is required
+                  - type: object
+                    properties:
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              example: 400
+                            detail:
+                              type: string
+                              example: 'Category with ID {categoryId} not found'
       security:
         - api_key: []
   /event-series/{eventSeriesId}:
