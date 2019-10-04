@@ -97,17 +97,17 @@ class EventsTable extends Table
         $validator
             ->scalar('title')
             ->requirePresence('title', 'create')
-            ->allowEmptyString('title', 'Event title cannot be blank', false);
+            ->allowEmptyString('title', 'Event title cannot be empty', false);
 
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->allowEmptyString('description', 'Event description cannot be blank', false);
+            ->allowEmptyString('description', 'Event description cannot be empty', false);
 
         $validator
             ->scalar('location')
             ->requirePresence('location', 'create')
-            ->allowEmptyString('location', 'Event location cannot be blank', false);
+            ->allowEmptyString('location', 'Event location cannot be empty', false);
 
         $validator
             ->scalar('location_details')
@@ -329,6 +329,24 @@ class EventsTable extends Table
             ->where([
                 function (QueryExpression $exp) {
                     return $exp->gte('date', date('Y-m-d'));
+                }
+            ]);
+    }
+
+    /**
+     * Limits the query to events before today's date
+     *
+     * @param Query $query Query
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findPast(Query $query)
+    {
+        return $query
+            ->where([
+                function (QueryExpression $exp) {
+                    return $exp->lt('date', date('Y-m-d'));
                 }
             ]);
     }

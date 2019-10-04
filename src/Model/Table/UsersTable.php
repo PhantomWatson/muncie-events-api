@@ -96,7 +96,7 @@ class UsersTable extends Table
             ->scalar('password')
             ->requirePresence('password', 'create')
             ->allowEmptyString('password', 'Password cannot be blank', false)
-            ->allowEmptyString('confirm_password', 'Password confirmation required', false)
+            ->allowEmptyString('confirm_password', 'Please confirm your password by typing it a second time', false)
             ->add('confirm_password', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],

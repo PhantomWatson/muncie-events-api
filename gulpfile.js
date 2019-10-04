@@ -17,17 +17,9 @@ function customNotify(message) {
     })
 }
 
-gulp.task('default', ['php_cs']);
-
-
-
-/**************
- *    PHP     *
- **************/
-
-gulp.task('php_cs', function (cb) {
+phpCS = function (cb) {
     return gulp.src(['src/**/*.php', 'config/*.php', 'tests/*.php', 'tests/**/*.php', 'config/**/*.php'])
-        // Validate files using PHP Code Sniffer
+    // Validate files using PHP Code Sniffer
         .pipe(phpcs({
             bin: '.\\vendor\\bin\\phpcs.bat',
             standard: '.\\vendor\\cakephp\\cakephp-codesniffer\\CakePHP',
@@ -36,7 +28,17 @@ gulp.task('php_cs', function (cb) {
         }))
         // Log all problems that was found
         .pipe(phpcs.reporter('log'));
-});
+};
+
+gulp.task('default', phpCS);
+
+
+
+/**************
+ *    PHP     *
+ **************/
+
+gulp.task('php_cs', phpCS);
 
 function testNotification(status, pluginName, override) {
     var options = {
@@ -60,7 +62,7 @@ gulp.task('php_unit', function() {
 /**************
  * Javascript *
  **************/
-var srcJsFiles = [ 
+var srcJsFiles = [
     'webroot/js/script.js'
 ];
 

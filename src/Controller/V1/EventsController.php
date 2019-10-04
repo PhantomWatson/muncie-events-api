@@ -118,13 +118,20 @@ class EventsController extends ApiController
     /**
      * /events/search endpoint
      *
+     * @param string|null $direction Either null or "past"
      * @return void
      * @throws BadRequestException
      * @throws Exception
      */
-    public function search()
+    public function search($direction = null)
     {
         $this->request->allowMethod('get');
+
+        if (!in_array($direction, [null, 'past'])) {
+            throw new BadRequestException(
+                "Unrecognized direction: \"$direction\". This must either be \"past\" or left blank."
+            );
+        }
 
         $this->loadComponent('ApiPagination');
         $search = $this->request->getQuery('q');
@@ -133,9 +140,22 @@ class EventsController extends ApiController
             throw new BadRequestException('The parameter "q" is required');
         }
 
+        $categoryId = $this->request->getQuery('category');
+        if ($categoryId) {
+            $categoryExists = TableRegistry::getTableLocator()
+                ->get('Categories')
+                ->exists(['id' => $categoryId]);
+            if (!$categoryExists) {
+                throw new BadRequestException("Category with ID $categoryId not found");
+            }
+        }
+
         $baseQuery = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find('future');
+            ->find($direction ?? 'future');
+        if ($categoryId) {
+            $baseQuery->where(['category_id' => $categoryId]);
+        }
         $matchesEventDetails = $baseQuery->cleanCopy()
             ->find('search', ['search' => $this->request->getQueryParams()]);
         $matchesTag = $baseQuery->cleanCopy()

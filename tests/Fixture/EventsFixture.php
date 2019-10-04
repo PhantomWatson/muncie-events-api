@@ -19,15 +19,14 @@ class EventsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'title' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'description' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null],
-        'location' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'location_details' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'location_slug' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'description' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null],
+        'location' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'location_details' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'address' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'user_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'category_id' => ['type' => 'smallinteger', 'length' => 6, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         'series_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'date' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => '0000-00-00', 'comment' => '', 'precision' => null],
+        'date' => ['type' => 'date', 'length' => null, 'null' => false, 'default' => '1969-12-31', 'comment' => '', 'precision' => null],
         'time_start' => ['type' => 'time', 'length' => null, 'null' => false, 'default' => '00:00:00', 'comment' => '', 'precision' => null],
         'time_end' => ['type' => 'time', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'age_restriction' => ['type' => 'string', 'length' => 30, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -35,8 +34,8 @@ class EventsFixture extends TestFixture
         'source' => ['type' => 'string', 'length' => 200, 'null' => false, 'default' => '', 'collate' => 'utf8mb4_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'published' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         'approved_by' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => '1969-12-31 23:59:59', 'comment' => '', 'precision' => null],
+        'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => '1969-12-31 23:59:59', 'comment' => '', 'precision' => null],
         '_indexes' => [
             'person_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'category_id' => ['type' => 'index', 'columns' => ['category_id'], 'length' => []],
@@ -46,7 +45,7 @@ class EventsFixture extends TestFixture
         ],
         '_options' => [
             'engine' => 'MyISAM',
-            'collation' => 'latin1_general_ci'
+            'collation' => 'utf8mb4_unicode_ci'
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -78,6 +77,15 @@ class EventsFixture extends TestFixture
     const SEARCHABLE_DESCRIPTION = 'Searchable description';
     const EVENT_WITH_SEARCHABLE_LOCATION = 112;
     const SEARCHABLE_LOCATION = 'Searchable location';
+    const PAST_EVENT_WITH_SEARCHABLE_TITLE = 113;
+    const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION = 114;
+    const PAST_EVENT_WITH_SEARCHABLE_LOCATION = 115;
+    const EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY = 116;
+    const EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 117;
+    const EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 118;
+    const PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY = 119;
+    const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 120;
+    const PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 121;
 
     public function init()
     {
@@ -95,9 +103,6 @@ class EventsFixture extends TestFixture
      */
     private function getDefaultEventData()
     {
-        $categoriesFixture = new CategoriesFixture();
-        $categories = $categoriesFixture->getCategories();
-
         return [
             'id' => 1,
             'title' => 'Event title',
@@ -106,7 +111,7 @@ class EventsFixture extends TestFixture
             'location_details' => 'Location details',
             'address' => 'Location address',
             'user_id' => 1,
-            'category_id' => array_keys($categories)[0],
+            'category_id' => CategoriesFixture::DEFAULT_CATEGORY_ID,
             'series_id' => 1,
             'date' => '2018-01-01',
             'time_start' => '22:38:43',
@@ -186,22 +191,78 @@ class EventsFixture extends TestFixture
     {
         $defaultEvent = $this->getDefaultEventData();
 
+        // Future events in first category
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_TITLE,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'title' => self::SEARCHABLE_TITLE
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'description' => self::SEARCHABLE_DESCRIPTION
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_LOCATION,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'location' => self::SEARCHABLE_LOCATION
+        ]);
+
+        // Past events in first category
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'title' => self::SEARCHABLE_TITLE
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'description' => self::SEARCHABLE_DESCRIPTION
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'location' => self::SEARCHABLE_LOCATION
+        ]);
+
+        // Future events in second category
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => self::SEARCHABLE_TITLE,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'description' => self::SEARCHABLE_DESCRIPTION,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'location' => self::SEARCHABLE_LOCATION,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
+        ]);
+
+        // Past events in second category
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'title' => self::SEARCHABLE_TITLE,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'description' => self::SEARCHABLE_DESCRIPTION,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'location' => self::SEARCHABLE_LOCATION,
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
     }
 }

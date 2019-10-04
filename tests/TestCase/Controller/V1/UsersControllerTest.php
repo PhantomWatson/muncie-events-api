@@ -390,6 +390,7 @@ class UsersControllerTest extends ApplicationTest
         $this->assertMailSentFrom(Configure::read('automailer_address'));
         $this->assertMailSentTo($user->email);
         $resetUrl = 'https://muncieevents.com/reset_password/' . $user->id . '/' . $user->getResetPasswordHash();
+
         $this->assertMailContains($resetUrl);
     }
 
@@ -619,7 +620,7 @@ class UsersControllerTest extends ApplicationTest
             $alteredData = $data;
             $alteredData[$param] = '';
             $this->patch($this->updateProfileUrl, $alteredData);
-            $this->assertResponseError();
+            $this->assertResponseError("Error not triggered for blank $param");
         }
     }
 
