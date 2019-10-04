@@ -352,24 +352,6 @@ class EventsTable extends Table
     }
 
     /**
-     * Limits the query to events before today's date
-     *
-     * @param Query $query Query
-     * @return $this|Query
-     * @throws InternalErrorException
-     * @throws BadRequestException
-     */
-    public function findPast(Query $query)
-    {
-        return $query
-            ->where([
-                function (QueryExpression $exp) {
-                    return $exp->lt('date', date('Y-m-d'));
-                }
-            ]);
-    }
-
-    /**
      * Orders the query by date and time
      *
      * Orders with increasing dates and times by default, but ['direction' => 'DESC'] will sort by decreasing dates and
