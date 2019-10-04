@@ -80,6 +80,12 @@ class EventsFixture extends TestFixture
     const PAST_EVENT_WITH_SEARCHABLE_TITLE = 113;
     const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION = 114;
     const PAST_EVENT_WITH_SEARCHABLE_LOCATION = 115;
+    const EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY = 116;
+    const EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 117;
+    const EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 118;
+    const PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY = 119;
+    const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 120;
+    const PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 121;
 
     public function init()
     {
@@ -188,40 +194,81 @@ class EventsFixture extends TestFixture
     {
         $defaultEvent = $this->getDefaultEventData();
 
+        // Future events in first category
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_TITLE,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'title' => self::SEARCHABLE_TITLE
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'description' => self::SEARCHABLE_DESCRIPTION
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_LOCATION,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'location' => self::SEARCHABLE_LOCATION
         ]);
 
+        // Past events in first category
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'title' => self::SEARCHABLE_TITLE
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'description' => self::SEARCHABLE_DESCRIPTION
         ]);
-
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'location' => self::SEARCHABLE_LOCATION
+        ]);
+
+        // Future events in second category
+        $categoriesFixture = new CategoriesFixture();
+        $categories = $categoriesFixture->getCategories();
+        $altCategoryId = array_keys($categories)[1];
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'title' => self::SEARCHABLE_TITLE,
+            'category_id' => $altCategoryId
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'description' => self::SEARCHABLE_DESCRIPTION,
+            'category_id' => $altCategoryId
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('tomorrow')),
+            'location' => self::SEARCHABLE_LOCATION,
+            'category_id' => $altCategoryId
+        ]);
+
+        // Past events in second category
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'title' => self::SEARCHABLE_TITLE,
+            'category_id' => $altCategoryId
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'description' => self::SEARCHABLE_DESCRIPTION,
+            'category_id' => $altCategoryId
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
+            'date' => date('Y-m-d', strtotime('yesterday')),
+            'location' => self::SEARCHABLE_LOCATION,
+            'category_id' => $altCategoryId
         ]);
     }
 }

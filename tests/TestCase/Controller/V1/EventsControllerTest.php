@@ -259,111 +259,139 @@ class EventsControllerTest extends ApplicationTest
      *
      * @param string $searchTerm String to use in the request's 'q' parameter
      * @param string $direction 'past' or 'future'
-     * @param int $expectedEventId ID of the only event expected to be in search results
+     * @param int[] $expectedEventIds IDs of the events expected to be in search results
      * @throws Exception
      */
-    private function assertSingleSearchResult($searchTerm, $expectedEventId, $direction = 'future')
+    private function assertSearchResults($searchTerm, $expectedEventIds, $direction = 'future')
     {
         $url = $direction == 'past' ? $this->searchPastUrl : $this->searchUrl;
         $url['?']['q'] = $searchTerm;
         $this->get($url);
         $this->assertResponseOk();
         $eventIds = $this->getResponseEventIds();
-        $this->assertContains(
-            $expectedEventId,
-            $eventIds,
-            'Expected search result not found'
-        );
-        $this->assertCount(
-            1,
-            $eventIds,
-            'Search results contain more than one event when only one was expected'
+        foreach ($expectedEventIds as $expectedEventId) {
+            $this->assertContains(
+                $expectedEventId,
+                $eventIds,
+                "Expected search result #$expectedEventId not found"
+            );
+        }
+        $expectedEventCount = count($expectedEventIds);
+        $eventCount = count($eventIds);
+        $this->assertEquals(
+            $expectedEventCount,
+            $eventCount,
+            sprintf(
+                'Search results contain %s %s when %s %s expected',
+                $eventCount,
+                __n('event', 'events', $eventCount),
+                $expectedEventCount,
+                __n('was', 'were', $expectedEventCount)
+            )
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search if the search term is found in the event's title
+     * Tests response from /events/search if the search term is found in the title field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchInTitleSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_TITLE,
-            EventsFixture::EVENT_WITH_SEARCHABLE_TITLE
+            [
+                EventsFixture::EVENT_WITH_SEARCHABLE_TITLE,
+                EventsFixture::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY
+            ]
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search if the search term is found in the event's description
+     * Tests response from /events/search if the search term is found in the description field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchInDescriptionSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_DESCRIPTION,
-            EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION
+            [
+                EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION,
+                EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY
+            ]
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search if the search term is found in the event's location
+     * Tests response from /events/search if the search term is found in the location field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchInLocationSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_LOCATION,
-            EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION
+            [
+                EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION,
+                EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY
+            ]
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search/past if the search term is found in the event's title
+     * Tests response from /events/search/past if the search term is found in the title field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchPastInTitleSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_TITLE,
-            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE,
+            [
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE,
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY
+            ],
             'past'
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search/past if the search term is found in the event's description
+     * Tests response from /events/search/past if the search term is found in the description field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchPastInDescriptionSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_DESCRIPTION,
-            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
+            [
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY
+            ],
             'past'
         );
     }
 
     /**
-     * Tests that an event is returned from /events/search/past if the search term is found in the event's location
+     * Tests response from /events/search/past if the search term is found in the location field
      *
      * @return void
      * @throws Exception
      */
     public function testSearchPastInLocationSuccess()
     {
-        $this->assertSingleSearchResult(
+        $this->assertSearchResults(
             EventsFixture::SEARCHABLE_LOCATION,
-            EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
+            [
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY
+            ],
             'past'
         );
     }
