@@ -260,12 +260,16 @@ class EventsControllerTest extends ApplicationTest
      * @param string $searchTerm String to use in the request's 'q' parameter
      * @param string $direction 'past' or 'future'
      * @param int[] $expectedEventIds IDs of the events expected to be in search results
+     * @param int|null $categoryId Optional category ID
      * @throws Exception
      */
-    private function assertSearchResults($searchTerm, $expectedEventIds, $direction = 'future')
+    private function assertSearchResults($searchTerm, $expectedEventIds, $direction = 'future', $categoryId = null)
     {
         $url = $direction == 'past' ? $this->searchPastUrl : $this->searchUrl;
         $url['?']['q'] = $searchTerm;
+        if ($categoryId) {
+            $url['?']['category'] = $categoryId;
+        }
         $this->get($url);
         $this->assertResponseOk();
         $eventIds = $this->getResponseEventIds();
