@@ -103,7 +103,8 @@ class EventsControllerTest extends ApplicationTest
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'future'
+            'action' => 'future',
+            '?' => ['apikey' => $this->getApiKey()]
         ];
         $event = (new EventsFixture())->records[0];
         $eventId = $event['id'];
@@ -111,17 +112,20 @@ class EventsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'view',
-            $eventId
+            $eventId,
+            '?' => ['apikey' => $this->getApiKey()]
         ];
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'index'
+            'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()]
         ];
         $this->searchUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'search'
+            'action' => 'search',
+            '?' => ['apikey' => $this->getApiKey()]
         ];
         $this->searchPastUrl = [
             'prefix' => 'v1',
@@ -130,13 +134,12 @@ class EventsControllerTest extends ApplicationTest
             'past',
             '?' => ['apikey' => $this->getApiKey()]
         ];
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->categoryUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'category',
-            $categoryId
+            CategoriesFixture::DEFAULT_CATEGORY_ID,
+            '?' => ['apikey' => $this->getApiKey()]
         ];
     }
 
@@ -199,6 +202,20 @@ class EventsControllerTest extends ApplicationTest
         $url['?']['end'] = $date;
         $this->get($url);
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
+    }
+
+    /**
+     * Tests that requests with invalid API keys are rejected
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testFutureFailInvalidApiKey()
+    {
+        $url = $this->futureUrl;
+        $url['?']['apikey'] = 'invalid key';
+        $this->get($url);
+        $this->assertResponseError();
     }
 
     /**
@@ -454,10 +471,8 @@ class EventsControllerTest extends ApplicationTest
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->assertEquals(
-            [$categoryId],
+            [CategoriesFixture::DEFAULT_CATEGORY_ID],
             $responseCategoryIds,
             'Returned events were not limited to the specified category'
         );
@@ -490,10 +505,8 @@ class EventsControllerTest extends ApplicationTest
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->assertEquals(
-            [$categoryId],
+            [CategoriesFixture::DEFAULT_CATEGORY_ID],
             $responseCategoryIds,
             'Returned events were not limited to the specified category'
         );
@@ -563,11 +576,10 @@ class EventsControllerTest extends ApplicationTest
         $event = $response['data'][0]['attributes'];
         $eventsFixture = new EventsFixture();
         $excludedFields = [
+            'published',
             'approved_by',
             'created',
-            'location_slug',
-            'modified',
-            'published'
+            'modified'
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {
@@ -588,12 +600,10 @@ class EventsControllerTest extends ApplicationTest
      */
     private function getAddSingleEventData()
     {
-        $categoriesFixture = new CategoriesFixture();
-        $category = $categoriesFixture->records[0];
         $imagesFixture = new ImagesFixture();
 
         return [
-            'category_id' => $category['id'],
+            'category_id' => CategoriesFixture::DEFAULT_CATEGORY_ID,
             'title' => 'Test Event Title',
             'description' => 'Test event description',
             'location' => 'Test location name',
@@ -665,7 +675,8 @@ class EventsControllerTest extends ApplicationTest
 
         // Check category
         $categoriesFixture = new CategoriesFixture();
-        $expectedCategoryName = $categoriesFixture->records[0]['name'];
+        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+        $expectedCategoryName = $categories[CategoriesFixture::DEFAULT_CATEGORY_ID];
         $this->checkCategory($expectedCategoryName, $returnedEvent);
 
         // Check tag names
@@ -684,36 +695,6 @@ class EventsControllerTest extends ApplicationTest
         $this->assertContains(TagsFixture::TAG_WITH_EVENT, $returnedTagIds);
         $this->assertContains(TagsFixture::TAG_WITH_DIFFERENT_EVENT, $returnedTagIds);
         $this->assertEquals($relationships->user->data->id, $this->addingUserId);
-    }
-
-    /**
-     * Tests that requests with invalid API keys are rejected
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testAddSingleEventFailInvalidKey()
-    {
-        $url = $this->addUrl;
-        $url['?']['apikey'] = 'invalid key';
-        $data = $this->getAddSingleEventData();
-        $this->post($url, $data);
-        $this->assertResponseError();
-    }
-
-    /**
-     * Tests that requests with missing API keys are rejected
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testAddSingleEventFailMissingKey()
-    {
-        $url = $this->addUrl;
-        unset($url['?']['apikey']);
-        $data = $this->getAddSingleEventData();
-        $this->post($url, $data);
-        $this->assertResponseError();
     }
 
     /**
