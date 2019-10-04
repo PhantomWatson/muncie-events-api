@@ -103,9 +103,6 @@ class EventsFixture extends TestFixture
      */
     private function getDefaultEventData()
     {
-        $categoriesFixture = new CategoriesFixture();
-        $categories = $categoriesFixture->getCategories();
-
         return [
             'id' => 1,
             'title' => 'Event title',
@@ -114,7 +111,7 @@ class EventsFixture extends TestFixture
             'location_details' => 'Location details',
             'address' => 'Location address',
             'user_id' => 1,
-            'category_id' => array_keys($categories)[0],
+            'category_id' => CategoriesFixture::DEFAULT_CATEGORY_ID,
             'series_id' => 1,
             'date' => '2018-01-01',
             'time_start' => '22:38:43',
@@ -229,26 +226,23 @@ class EventsFixture extends TestFixture
         ]);
 
         // Future events in second category
-        $categoriesFixture = new CategoriesFixture();
-        $categories = $categoriesFixture->getCategories();
-        $altCategoryId = array_keys($categories)[1];
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'title' => self::SEARCHABLE_TITLE,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'description' => self::SEARCHABLE_DESCRIPTION,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('tomorrow')),
             'location' => self::SEARCHABLE_LOCATION,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
 
         // Past events in second category
@@ -256,19 +250,19 @@ class EventsFixture extends TestFixture
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'title' => self::SEARCHABLE_TITLE,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'description' => self::SEARCHABLE_DESCRIPTION,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
         $this->records[] = array_merge($defaultEvent, [
             'id' => self::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
             'date' => date('Y-m-d', strtotime('yesterday')),
             'location' => self::SEARCHABLE_LOCATION,
-            'category_id' => $altCategoryId
+            'category_id' => CategoriesFixture::ALT_CATEGORY_ID
         ]);
     }
 }
