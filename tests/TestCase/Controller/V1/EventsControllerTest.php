@@ -401,6 +401,38 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
+     * Tests response from /events/search?category={categoryId}
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testSearchByCategorySuccess()
+    {
+        $this->assertSearchResults(
+            EventsFixture::SEARCHABLE_TITLE,
+            [EventsFixture::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY],
+            'future',
+            CategoriesFixture::ALT_CATEGORY_ID
+        );
+    }
+
+    /**
+     * Tests response from /events/search/past?category={categoryId}
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testSearchPastByCategorySuccess()
+    {
+        $this->assertSearchResults(
+            EventsFixture::SEARCHABLE_TITLE,
+            [EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY],
+            'past',
+            CategoriesFixture::ALT_CATEGORY_ID
+        );
+    }
+
+    /**
      * Tests that an error is thrown if the search term is empty
      *
      * @return void
