@@ -134,13 +134,11 @@ class EventsControllerTest extends ApplicationTest
             'past',
             '?' => ['apikey' => $this->getApiKey()]
         ];
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->categoryUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'category',
-            $categoryId,
+            CategoriesFixture::DEFAULT_CATEGORY_ID,
             '?' => ['apikey' => $this->getApiKey()]
         ];
     }
@@ -473,10 +471,8 @@ class EventsControllerTest extends ApplicationTest
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->assertEquals(
-            [$categoryId],
+            [CategoriesFixture::DEFAULT_CATEGORY_ID],
             $responseCategoryIds,
             'Returned events were not limited to the specified category'
         );
@@ -509,10 +505,8 @@ class EventsControllerTest extends ApplicationTest
         $response = (array)json_decode($this->_response->getBody());
         $responseCategoryIds = Hash::extract($response['data'], '{n}.relationships.category.data.id');
         $responseCategoryIds = array_unique($responseCategoryIds);
-        $category = (new CategoriesFixture())->records[0];
-        $categoryId = $category['id'];
         $this->assertEquals(
-            [$categoryId],
+            [CategoriesFixture::DEFAULT_CATEGORY_ID],
             $responseCategoryIds,
             'Returned events were not limited to the specified category'
         );
@@ -606,12 +600,10 @@ class EventsControllerTest extends ApplicationTest
      */
     private function getAddSingleEventData()
     {
-        $categoriesFixture = new CategoriesFixture();
-        $category = $categoriesFixture->records[0];
         $imagesFixture = new ImagesFixture();
 
         return [
-            'category_id' => $category['id'],
+            'category_id' => CategoriesFixture::DEFAULT_CATEGORY_ID,
             'title' => 'Test Event Title',
             'description' => 'Test event description',
             'location' => 'Test location name',
@@ -683,7 +675,8 @@ class EventsControllerTest extends ApplicationTest
 
         // Check category
         $categoriesFixture = new CategoriesFixture();
-        $expectedCategoryName = $categoriesFixture->records[0]['name'];
+        $categories = Hash::combine($categoriesFixture->records, '{n}.id', '{n}.name');
+        $expectedCategoryName = $categories[CategoriesFixture::DEFAULT_CATEGORY_ID];
         $this->checkCategory($expectedCategoryName, $returnedEvent);
 
         // Check tag names
