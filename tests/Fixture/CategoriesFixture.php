@@ -33,7 +33,7 @@ class CategoriesFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     const DEFAULT_CATEGORY_ID = 13;
-    CONST ALT_CATEGORY_ID = 9;
+    const ALT_CATEGORY_ID = 9;
 
     /**
      * Records
