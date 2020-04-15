@@ -387,13 +387,14 @@ class EventsController extends ApiController
      */
     private function addEventSeries(array $events)
     {
-        // Create series
         $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
         $arbitraryEvent = $events[0];
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $arbitraryEvent->user_id ? $usersTable->get($arbitraryEvent->user_id) : null;
         $series = $seriesTable->newEntity([
             'title' => $arbitraryEvent->title,
             'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent)
+            'published' => $arbitraryEvent->userIsAutoPublishable($user)
         ]);
         if (!$seriesTable->save($series)) {
             $adminEmail = Configure::read('adminEmail');
