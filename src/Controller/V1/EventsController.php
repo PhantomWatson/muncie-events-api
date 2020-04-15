@@ -3,10 +3,10 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\Event;
-use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use App\Slack\Slack;
 use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
@@ -332,9 +332,9 @@ class EventsController extends ApiController
      *
      * @param array $data Request data
      * @param string $date A strtotime parsable date
-     * @param User|null $user A user entity, or null if user is anonymous
-     * @return Event
-     * @throws BadRequestException
+     * @param \App\Model\Entity\User|null $user A user entity, or null if user is anonymous
+     * @return \App\Model\Entity\Event
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     private function addSingleEvent(array $data, $date, $user)
     {
@@ -356,8 +356,16 @@ class EventsController extends ApiController
         $event->autoPublish($user);
         $event->processTags($data['tag_ids'], $data['tag_names']);
         $event->setImageJoinData($data['images']);
-        $event->category = $this->Events->Categories->get($event->category_id);
-        $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
+        try {
+            $event->category = $this->Events->Categories->get($event->category_id);
+        } catch (RecordNotFoundException $e) {
+            throw new BadRequestException('Invalid category ID selected (#' . $event->category_id . ')');
+        }
+        try {
+            $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
+        } catch (RecordNotFoundException $e) {
+            throw new BadRequestException('Invalid user ID (#' . $event->user_id . ') associated with event');
+        }
 
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags']
