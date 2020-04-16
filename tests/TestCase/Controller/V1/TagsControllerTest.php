@@ -33,7 +33,7 @@ class TagsControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -49,32 +49,32 @@ class TagsControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'tree',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->viewUrl = [
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'view',
             TagsFixture::TAG_WITH_EVENT,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->autocompleteUrl = [
             'prefix' => 'v1',
             'controller' => 'Tags',
             'action' => 'autocomplete',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 
@@ -257,7 +257,7 @@ class TagsControllerTest extends ApplicationTest
         $tagIdsExpected = [
             TagsFixture::TAG_WITH_EVENT,
             TagsFixture::TAG_WITH_DIFFERENT_EVENT,
-            TagsFixture::TAG_ID_CHILD
+            TagsFixture::TAG_ID_CHILD,
         ];
         foreach ($tagIdsExpected as $tagId) {
             $this->assertContains($tagId, $responseTagIds);
@@ -265,7 +265,7 @@ class TagsControllerTest extends ApplicationTest
 
         $tagIdsNotExpected = [
             TagsFixture::TAG_ID_UNLISTED,
-            TagsTable::UNLISTED_GROUP_ID
+            TagsTable::UNLISTED_GROUP_ID,
         ];
         foreach ($tagIdsNotExpected as $tagId) {
             $this->assertNotContains($tagId, $responseTagIds);
@@ -374,7 +374,7 @@ class TagsControllerTest extends ApplicationTest
             '',
             'non-numeric',
             '0',
-            '-5'
+            '-5',
         ];
         foreach ($badLimits as $badLimit) {
             $url['?']['limit'] = $badLimit;

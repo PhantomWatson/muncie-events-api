@@ -30,6 +30,6 @@ class ApiCall extends Entity
         'user_id' => true,
         'url' => true,
         'created' => true,
-        'user' => true
+        'user' => true,
     ];
 }

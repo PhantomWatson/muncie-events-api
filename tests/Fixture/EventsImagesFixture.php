@@ -47,7 +47,7 @@ class EventsImagesFixture extends TestFixture
             'weight' => 1,
             'caption' => 'Lorem ipsum dolor sit amet',
             'created' => '2017-11-20 22:38:50',
-            'modified' => '2017-11-20 22:38:50'
+            'modified' => '2017-11-20 22:38:50',
         ],
     ];
 }

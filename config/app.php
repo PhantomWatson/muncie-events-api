@@ -199,7 +199,7 @@ $config = [
             'password' => null,
             'client' => null,
             'tls' => false,
-            'url' => null
+            'url' => null,
         ],
     ],
 
@@ -371,7 +371,7 @@ $config = [
     'categoryIconBaseUrl' => env('CATEGORY_ICON_BASE_URL'),
     'eventImageBaseUrl' => env('EVENT_IMG_BASE_URL'),
     'eventImagePath' => env('EVENT_IMG_PATH'),
-    'slackWebhook' => env('SLACK_WEBHOOK')
+    'slackWebhook' => env('SLACK_WEBHOOK'),
 ];
 
 // Use Debug EmailTransport in debug mode
@@ -379,7 +379,7 @@ if ($config['debug']) {
     $config['EmailTransport']['default']['className'] = 'Debug';
     $config['Email']['default']['log'] = [
         'level' => 'info',
-        'scope' => 'email'
+        'scope' => 'email',
     ];
 }
 

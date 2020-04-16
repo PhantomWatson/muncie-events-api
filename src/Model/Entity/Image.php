@@ -40,7 +40,7 @@ class Image extends Entity
         'created' => true,
         'modified' => true,
         'user' => true,
-        'events' => true
+        'events' => true,
     ];
 
     // Dimensions in pixels
@@ -313,7 +313,7 @@ class Image extends Entity
 
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
         $imagesTable->patchEntity($this, [
-            'filename' => $this->id . '.' . $this->extension
+            'filename' => $this->id . '.' . $this->extension,
         ]);
     }
 

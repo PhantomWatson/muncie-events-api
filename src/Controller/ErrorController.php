@@ -35,7 +35,7 @@ class ErrorController extends AppController
     {
         parent::initialize();
         $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false
+            'enableBeforeRedirect' => false,
         ]);
     }
 

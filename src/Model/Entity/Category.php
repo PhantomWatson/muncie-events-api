@@ -35,6 +35,6 @@ class Category extends Entity
         'slug' => true,
         'weight' => true,
         'events' => true,
-        'mailing_list' => true
+        'mailing_list' => true,
     ];
 }

@@ -27,7 +27,7 @@ class EventsController extends ApiController
         'order' => [
             'Events.date' => 'asc',
             'Events.time_start' => 'asc',
-        ]
+        ],
     ];
 
     /**
@@ -62,10 +62,10 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events'],
-            'events' => $this->paginate($query)
+            'events' => $this->paginate($query),
         ]);
     }
 
@@ -93,10 +93,10 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events', 'pagination'],
-            'events' => $this->paginate($query)
+            'events' => $this->paginate($query),
         ]);
     }
 
@@ -154,10 +154,10 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events', 'pagination'],
-            'events' => $this->paginate($finalQuery)
+            'events' => $this->paginate($finalQuery),
         ]);
     }
 
@@ -199,10 +199,10 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events', 'pagination'],
-            'events' => $this->paginate($query)
+            'events' => $this->paginate($query),
         ]);
     }
 
@@ -237,10 +237,10 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['event'],
-            'event' => $event
+            'event' => $event,
         ]);
     }
 
@@ -278,7 +278,7 @@ class EventsController extends ApiController
             'source' => '',
             'tag_ids' => [],
             'tag_names' => [],
-            'images' => []
+            'images' => [],
         ];
         foreach ($optionalFields as $optionalField => $blankValue) {
             if (!isset($data[$optionalField])) {
@@ -319,11 +319,11 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_links' => [],
             '_serialize' => ['event'],
-            'event' => $addedEvents[0]
+            'event' => $addedEvents[0],
         ]);
     }
 
@@ -368,7 +368,7 @@ class EventsController extends ApiController
         }
 
         $saved = $this->Events->save($event, [
-            'associated' => ['Images', 'Tags']
+            'associated' => ['Images', 'Tags'],
         ]);
         if (!$saved) {
             $msg = $this->getEventErrorMessage($event);
@@ -394,7 +394,7 @@ class EventsController extends ApiController
         $series = $seriesTable->newEntity([
             'title' => $arbitraryEvent->title,
             'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($user)
+            'published' => $arbitraryEvent->userIsAutoPublishable($user),
         ]);
         if (!$seriesTable->save($series)) {
             $adminEmail = Configure::read('adminEmail');
@@ -463,7 +463,7 @@ class EventsController extends ApiController
         }
         /** @var Event $event */
         $event = $this->Events->get($eventId, [
-            'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users']
+            'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users'],
         ]);
 
         // Check user permission
@@ -509,13 +509,13 @@ class EventsController extends ApiController
                 'age_restriction',
                 'cost',
                 'source',
-            ]
+            ],
         ]);
         $event->processTags($data['tag_ids'] ?? [], $data['tag_names'] ?? []);
         $event->setImageJoinData($data['images'] ?? []);
         $event->category = $this->Events->Categories->get($event->category_id);
         $saved = $this->Events->save($event, [
-            'associated' => ['Images', 'Tags']
+            'associated' => ['Images', 'Tags'],
         ]);
         if (!$saved) {
             $msg = $this->getEventErrorMessage($event);
@@ -529,11 +529,11 @@ class EventsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_links' => [],
             '_serialize' => ['event'],
-            'event' => $event
+            'event' => $event,
         ]);
     }
 

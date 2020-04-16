@@ -24,7 +24,7 @@ class PagesControllerTest extends ApplicationTest
     public $fixtures = [
         'app.ApiCalls',
         'app.Events',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -36,37 +36,37 @@ class PagesControllerTest extends ApplicationTest
     {
         parent::setUp();
         $this->configRequest([
-            'environment' => ['HTTPS' => 'on']
+            'environment' => ['HTTPS' => 'on'],
         ]);
         $this->aboutUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
             'action' => 'about',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->rulesEventsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
             'action' => 'rulesEvents',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->rulesImagesUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
             'action' => 'rulesImages',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->rulesTagsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
             'action' => 'rulesTags',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->widgetsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
             'action' => 'widgets',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 

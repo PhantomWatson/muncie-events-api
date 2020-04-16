@@ -42,7 +42,7 @@ class UsersController extends ApiController
         $this->request->allowMethod('post');
 
         $user = $this->Users->newEntity($this->request->getData(), [
-            'fields' => ['name', 'email', 'password']
+            'fields' => ['name', 'email', 'password'],
         ]);
         $user->role = 'user';
         $user->token = User::generateToken();
@@ -67,7 +67,7 @@ class UsersController extends ApiController
         $this->set([
             '_entities' => ['User'],
             '_serialize' => ['user'],
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -107,7 +107,7 @@ class UsersController extends ApiController
         $this->set([
             '_entities' => ['User'],
             '_serialize' => ['user'],
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -123,8 +123,8 @@ class UsersController extends ApiController
             'fields' => ['username' => 'email'],
             'passwordHasher' => [
                 'className' => 'Fallback',
-                'hashers' => ['Default', 'Legacy']
-            ]
+                'hashers' => ['Default', 'Legacy'],
+            ],
         ];
         $auth = new FormAuthenticate($registry, $config);
 
@@ -155,7 +155,7 @@ class UsersController extends ApiController
         $this->set([
             '_entities' => ['User'],
             '_serialize' => ['user'],
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -213,7 +213,7 @@ class UsersController extends ApiController
         $this->set([
             '_entities' => ['Image'],
             '_serialize' => ['images'],
-            'images' => $images
+            'images' => $images,
         ]);
     }
 
@@ -319,10 +319,10 @@ class UsersController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events', 'pagination'],
-            'events' => $this->paginate($query)
+            'events' => $this->paginate($query),
         ]);
     }
 
@@ -340,7 +340,7 @@ class UsersController extends ApiController
             'new_subscriber' => true,
             'all_categories' => true,
             'categories' => [],
-            'weekly' => true
+            'weekly' => true,
         ];
         foreach (['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as $day) {
             $subscriptionData["daily_$day"] = false;

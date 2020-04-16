@@ -20,7 +20,7 @@ class ContactEmailPreview extends MailPreview
         return $mailer->contact([
             'email' => 'sender@example.com',
             'name' => 'Example Name',
-            'body' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper ultrices mauris...'
+            'body' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus semper ultrices mauris...',
         ]);
     }
 }

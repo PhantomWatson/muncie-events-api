@@ -37,8 +37,8 @@ class CategorySchema extends EntitySchema
             'name' => $category->name,
             'url' => $siteBaseUrl . '/' . $category->slug,
             'icon' => [
-                'svg' => $iconBaseUrl . $iconFilename
-            ]
+                'svg' => $iconBaseUrl . $iconFilename,
+            ],
         ];
 
         if (!$category->noEventCount) {

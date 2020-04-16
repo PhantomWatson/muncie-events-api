@@ -41,10 +41,10 @@ class EventsTagsTable extends Table
 
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Tags', [
-            'foreignKey' => 'tag_id'
+            'foreignKey' => 'tag_id',
         ]);
     }
 

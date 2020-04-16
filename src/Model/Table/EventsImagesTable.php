@@ -46,11 +46,11 @@ class EventsImagesTable extends Table
 
         $this->belongsTo('Images', [
             'foreignKey' => 'image_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

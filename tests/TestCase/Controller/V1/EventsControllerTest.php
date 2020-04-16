@@ -37,7 +37,7 @@ class EventsControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     private $addingUserId = 1;
@@ -59,7 +59,7 @@ class EventsControllerTest extends ApplicationTest
         'address',
         'age_restriction',
         'cost',
-        'source'
+        'source',
     ];
 
     /**
@@ -77,8 +77,8 @@ class EventsControllerTest extends ApplicationTest
             'action' => 'add',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken($this->addingUserId)
-            ]
+                'userToken' => $this->getUserToken($this->addingUserId),
+            ],
         ];
         $this->updateUrl = [
             'prefix' => 'v1',
@@ -87,8 +87,8 @@ class EventsControllerTest extends ApplicationTest
             $this->updateEventId,
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
+                'userToken' => $this->getUserToken(),
+            ],
         ];
         $this->deleteUrl = [
             'prefix' => 'v1',
@@ -97,14 +97,14 @@ class EventsControllerTest extends ApplicationTest
             $this->updateEventId,
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken(1)
-            ]
+                'userToken' => $this->getUserToken(1),
+            ],
         ];
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'future',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $event = (new EventsFixture())->records[0];
         $eventId = $event['id'];
@@ -113,33 +113,33 @@ class EventsControllerTest extends ApplicationTest
             'controller' => 'Events',
             'action' => 'view',
             $eventId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->searchUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'search',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->searchPastUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'search',
             'past',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->categoryUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
             'action' => 'category',
             CategoriesFixture::DEFAULT_CATEGORY_ID,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 
@@ -305,7 +305,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_TITLE,
             [
                 EventsFixture::EVENT_WITH_SEARCHABLE_TITLE,
-                EventsFixture::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY
+                EventsFixture::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
             ]
         );
     }
@@ -322,7 +322,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_DESCRIPTION,
             [
                 EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION,
-                EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY
+                EventsFixture::EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
             ]
         );
     }
@@ -339,7 +339,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_LOCATION,
             [
                 EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION,
-                EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY
+                EventsFixture::EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
             ]
         );
     }
@@ -356,7 +356,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_TITLE,
             [
                 EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE,
-                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY,
             ],
             'past'
         );
@@ -374,7 +374,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_DESCRIPTION,
             [
                 EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION,
-                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY,
             ],
             'past'
         );
@@ -392,7 +392,7 @@ class EventsControllerTest extends ApplicationTest
             EventsFixture::SEARCHABLE_LOCATION,
             [
                 EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION,
-                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY
+                EventsFixture::PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY,
             ],
             'past'
         );
@@ -579,11 +579,12 @@ class EventsControllerTest extends ApplicationTest
             'published',
             'approved_by',
             'created',
-            'modified'
+            'modified',
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {
-            if ($field == 'id'
+            if (
+                $field == 'id'
                 || stripos($field, '_id') !== false
                 || strpos($field, '_') === 0
             ) {
@@ -613,28 +614,28 @@ class EventsControllerTest extends ApplicationTest
             'source' => 'Test info source',
             'cost' => 'Test cost',
             'date' => [
-                date('Y-m-d', strtotime('tomorrow'))
+                date('Y-m-d', strtotime('tomorrow')),
             ],
             'time_start' => '02:00PM',
             'time_end' => '03:00PM',
             'tag_names' => [
                 ' new tag 1 ',
-                'NEW TAG 2'
+                'NEW TAG 2',
             ],
             'tag_ids' => [
                 TagsFixture::TAG_WITH_EVENT,
-                TagsFixture::TAG_WITH_DIFFERENT_EVENT
+                TagsFixture::TAG_WITH_DIFFERENT_EVENT,
             ],
             'images' => [
                 [
                     'id' => $imagesFixture->records[1]['id'],
-                    'caption' => 'Caption for first image'
+                    'caption' => 'Caption for first image',
                 ],
                 [
                     'id' => $imagesFixture->records[0]['id'],
-                    'caption' => 'Caption for second image'
-                ]
-            ]
+                    'caption' => 'Caption for second image',
+                ],
+            ],
         ];
     }
 
@@ -767,7 +768,7 @@ class EventsControllerTest extends ApplicationTest
             'description',
             'location',
             'date',
-            'time_start'
+            'time_start',
         ];
         $validData = $this->getAddSingleEventData();
         foreach ($requiredFields as $requiredField) {
@@ -805,7 +806,7 @@ class EventsControllerTest extends ApplicationTest
             'source' => '',
             'images' => [],
             'tag_ids' => [],
-            'tag_names' => []
+            'tag_names' => [],
         ];
         $validData = $this->getAddSingleEventData();
         foreach ($optionalFields as $optionalField => $blankValue) {
@@ -841,7 +842,7 @@ class EventsControllerTest extends ApplicationTest
             '2:30 PM' => '3:30 PM',
             '02:30 PM' => '03:30 PM',
             '14:30' => '15:30',
-            '2:30' => '3:30' // AM
+            '2:30' => '3:30', // AM
         ];
         $date = new FrozenDate($data['date'][0]);
 
@@ -1005,8 +1006,8 @@ class EventsControllerTest extends ApplicationTest
             'category_id' => $event->category_id + 1,
             'images' => [[
                 'id' => 2,
-                'caption' => 'Updated caption'
-            ]]
+                'caption' => 'Updated caption',
+            ]],
         ];
         foreach ($this->eventStringFields as $field) {
             $data[$field] = $event->$field . ' updated';

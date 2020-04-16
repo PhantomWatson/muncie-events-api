@@ -29,7 +29,7 @@ class ApiCallsListener implements EventListenerInterface
         $apiCallsTable = TableRegistry::getTableLocator()->get('ApiCalls');
         $apiCall = $apiCallsTable->newEntity([
             'user_id' => $meta['userId'],
-            'url' => $meta['url']
+            'url' => $meta['url'],
         ]);
         $apiCallsTable->save($apiCall);
     }

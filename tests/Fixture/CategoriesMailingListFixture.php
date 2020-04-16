@@ -48,12 +48,12 @@ class CategoriesMailingListFixture extends TestFixture
             [
                 'id' => 1,
                 'mailing_list_id' => 2,
-                'category_id' => 8
+                'category_id' => 8,
             ],
             [
                 'id' => 2,
                 'mailing_list_id' => 2,
-                'category_id' => 9
+                'category_id' => 9,
             ],
         ];
         parent::init();

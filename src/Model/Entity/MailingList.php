@@ -56,6 +56,6 @@ class MailingList extends Entity
         'processed_daily' => true,
         'processed_weekly' => true,
         'users' => true,
-        'categories' => true
+        'categories' => true,
     ];
 }

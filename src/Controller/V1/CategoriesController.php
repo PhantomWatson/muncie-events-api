@@ -28,7 +28,7 @@ class CategoriesController extends ApiController
         $this->set([
             '_entities' => ['Category'],
             '_serialize' => ['categories'],
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 }

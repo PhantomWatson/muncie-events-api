@@ -34,7 +34,7 @@ class ContactController extends ApiController
         $data = [
             'name' => $this->request->getData('name'),
             'email' => $this->request->getData('email'),
-            'body' => $this->request->getData('body')
+            'body' => $this->request->getData('body'),
         ];
         $this->getMailer('Contact')->send('contact', [$data]);
 

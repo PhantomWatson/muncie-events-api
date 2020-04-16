@@ -35,7 +35,7 @@ class TagsController extends ApiController
             '_entities' => ['Tag'],
             '_include' => ['children'],
             '_serialize' => ['tags'],
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 
@@ -75,7 +75,7 @@ class TagsController extends ApiController
         $this->set([
             '_entities' => ['Tag'],
             '_serialize' => ['tags'],
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 
@@ -101,7 +101,7 @@ class TagsController extends ApiController
                     return $q
                         ->find('forApi')
                         ->find('future');
-                }
+                },
             ])
             ->first();
         if (!$tag) {
@@ -115,11 +115,11 @@ class TagsController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['tag'],
             '_include' => ['events'],
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 
@@ -139,7 +139,7 @@ class TagsController extends ApiController
             ->select(['id', 'name'])
             ->where([
                 'listed' => true,
-                'selectable' => true
+                'selectable' => true,
             ])
             ->orderAsc('name')
             ->toArray();
@@ -147,7 +147,7 @@ class TagsController extends ApiController
         $this->set([
             '_entities' => ['Tag'],
             '_serialize' => ['tags'],
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 
@@ -179,7 +179,7 @@ class TagsController extends ApiController
             $term . ' %',
             $term . '%',
             '% ' . $term . '%',
-            '%' . $term . '%'
+            '%' . $term . '%',
         ];
 
         // Collect tags up to $limit
@@ -193,7 +193,7 @@ class TagsController extends ApiController
                 'selectable' => true,
                 function (QueryExpression $exp) use ($like) {
                     return $exp->like('name', $like);
-                }
+                },
             ];
             if (!empty($tags)) {
                 $tagIds = array_keys($tags);
@@ -213,7 +213,7 @@ class TagsController extends ApiController
         $this->set([
             '_entities' => ['Tag'],
             '_serialize' => ['tags'],
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 }

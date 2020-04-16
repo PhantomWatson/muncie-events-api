@@ -27,7 +27,7 @@ class CategoriesControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -43,7 +43,7 @@ class CategoriesControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Categories',
             'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 

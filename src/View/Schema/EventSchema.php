@@ -47,7 +47,7 @@ class EventSchema extends EntitySchema
             'user' => $entity->user ?
                 [
                     'name' => $entity->user->name,
-                    'email' => $entity->user->email
+                    'email' => $entity->user->email,
                 ] : null,
             'category' => $categorySchema->getAttributes($entity->category),
             'series' => $entity->event_series ? $seriesSchema->getAttributes($entity->event_series) : null,
@@ -60,12 +60,12 @@ class EventSchema extends EntitySchema
             'tags' => [],
             'images' => [],
             'url' => $baseUrl . '/event/' . $entity->id,
-            'published' => $entity->published
+            'published' => $entity->published,
         ];
 
         foreach ($entity->tags as $tag) {
             $attributes['tags'][] = [
-                'name' => $tag->name
+                'name' => $tag->name,
             ];
         }
 
@@ -74,7 +74,7 @@ class EventSchema extends EntitySchema
                 'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
                 'small_url' => $baseUrl . '/img/events/small/' . $image->filename,
                 'full_url' => $baseUrl . '/img/events/full/' . $image->filename,
-                'caption' => $image->_joinData->caption
+                'caption' => $image->_joinData->caption,
             ];
         }
 
@@ -93,17 +93,17 @@ class EventSchema extends EntitySchema
     {
         return [
             'category' => [
-                self::DATA => $entity->category
+                self::DATA => $entity->category,
             ],
             'series' => [
-                self::DATA => $entity->event_series
+                self::DATA => $entity->event_series,
             ],
             'tags' => [
-                self::DATA => $entity->tags
+                self::DATA => $entity->tags,
             ],
             'user' => [
-                self::DATA => $entity->user
-            ]
+                self::DATA => $entity->user,
+            ],
         ];
     }
 }

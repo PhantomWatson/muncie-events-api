@@ -36,11 +36,11 @@ class UsersController extends AppController
             'type' => 'image',
             'theme' => 'light',
             'lang' => 'en',
-            'size' => 'normal'
+            'size' => 'normal',
         ]);
 
         $this->Auth->allow([
-            'register', 'login', 'logout'
+            'register', 'login', 'logout',
         ]);
 
         return null;
@@ -57,13 +57,13 @@ class UsersController extends AppController
 
         $this->set([
             'pageTitle' => 'Register an Account',
-            'user' => $user
+            'user' => $user,
         ]);
 
         if ($this->request->is('post')) {
             if ($this->Recaptcha->verify()) {
                 $user = $this->Users->patchEntity($user, $this->request->getData(), [
-                    'fields' => ['name', 'email', 'password']
+                    'fields' => ['name', 'email', 'password'],
                 ]);
                 $user->role = 'user';
 
@@ -73,7 +73,7 @@ class UsersController extends AppController
 
                     return $this->redirect([
                         'controller' => 'Pages',
-                        'action' => 'home'
+                        'action' => 'home',
                     ]);
                 }
 
@@ -129,7 +129,7 @@ class UsersController extends AppController
                 ],
                 'secure' => true,
                 'expire' => strtotime('+1 year'),
-                'httpOnly' => true
+                'httpOnly' => true,
             ]);
         }
 
@@ -171,7 +171,7 @@ class UsersController extends AppController
 
         $this->set([
             'apiKey' => $apiKey,
-            'pageTitle' => $apiKey ? 'Your API Key' : 'Generate API Key'
+            'pageTitle' => $apiKey ? 'Your API Key' : 'Generate API Key',
         ]);
     }
 }

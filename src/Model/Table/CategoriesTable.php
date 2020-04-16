@@ -38,12 +38,12 @@ class CategoriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('Events', [
-            'foreignKey' => 'category_id'
+            'foreignKey' => 'category_id',
         ]);
         $this->belongsToMany('MailingList', [
             'foreignKey' => 'category_id',
             'targetForeignKey' => 'mailing_list_id',
-            'joinTable' => 'categories_mailing_list'
+            'joinTable' => 'categories_mailing_list',
         ]);
     }
 

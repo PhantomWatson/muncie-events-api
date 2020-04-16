@@ -24,7 +24,7 @@ class ContactControllerTest extends ApplicationTest
      */
     public $fixtures = [
         'app.ApiCalls',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -40,12 +40,12 @@ class ContactControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Contact',
             'action' => 'index',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->formData = [
             'name' => 'Test name',
             'email' => 'test@example.com',
-            'body' => 'Lorem ipsum...'
+            'body' => 'Lorem ipsum...',
         ];
     }
 

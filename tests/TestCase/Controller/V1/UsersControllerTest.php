@@ -34,7 +34,7 @@ class UsersControllerTest extends ApplicationTest
         'app.Images',
         'app.MailingList',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     private $registerUrl;
@@ -57,8 +57,8 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'profile',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken($this->updatingUserId)
-            ]
+                'userToken' => $this->getUserToken($this->updatingUserId),
+            ],
         ];
 
         $this->updatePasswordUrl = [
@@ -67,15 +67,15 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'password',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken($this->updatingUserId)
-            ]
+                'userToken' => $this->getUserToken($this->updatingUserId),
+            ],
         ];
 
         $this->registerUrl = [
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'register',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 
@@ -105,7 +105,7 @@ class UsersControllerTest extends ApplicationTest
         $data = [
             'name' => 'New User Name',
             'email' => $uncleanEmail,
-            'password' => 'password'
+            'password' => 'password',
         ];
         $this->post($this->registerUrl, $data);
         $this->assertResponseOk();
@@ -134,7 +134,7 @@ class UsersControllerTest extends ApplicationTest
             'name' => 'New User Name',
             'email' => 'newuser@example.com',
             'password' => 'password',
-            'join_mailing_list' => true
+            'join_mailing_list' => true,
         ];
         $this->post($this->registerUrl, $data);
         $this->assertResponseOk();
@@ -174,7 +174,7 @@ class UsersControllerTest extends ApplicationTest
         $data = [
             'name' => 'New User Name',
             'email' => 'newuser@example.com',
-            'password' => 'password'
+            'password' => 'password',
         ];
 
         foreach (array_keys($data) as $requiredField) {
@@ -198,7 +198,7 @@ class UsersControllerTest extends ApplicationTest
         $data = [
             'name' => 'New User Name',
             'email' => $email,
-            'password' => 'password'
+            'password' => 'password',
         ];
         $this->post($this->registerUrl, $data);
         $this->assertResponseError();
@@ -216,20 +216,20 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'login',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $usersFixture = new UsersFixture();
 
         $users = [
             'with new password hash' => $usersFixture->records[0],
-            'with legacy password hash' => $usersFixture->records[2]
+            'with legacy password hash' => $usersFixture->records[2],
         ];
 
         $expectedFields = ['name', 'email', 'token'];
         foreach ($users as $type => $user) {
             $data = [
                 'email' => $user['email'],
-                'password' => 'password'
+                'password' => 'password',
             ];
             $this->post($url, $data);
             $response = json_decode($this->_response->getBody())->data;
@@ -253,13 +253,13 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'login',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $usersFixture = new UsersFixture();
 
         $data = [
             'email' => $usersFixture->records[0]['email'],
-            'password' => 'password'
+            'password' => 'password',
         ];
         foreach ($data as $field => $val) {
             $wrongData = $data;
@@ -281,7 +281,7 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'login',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->assertDisallowedMethods($url, ['get', 'put', 'patch', 'delete']);
@@ -301,7 +301,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'view',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->get($url);
@@ -329,7 +329,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'view',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
@@ -349,7 +349,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'view',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->get($url);
@@ -360,7 +360,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'view',
             null,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->get($url);
@@ -379,7 +379,7 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         /** @var User $user */
@@ -406,7 +406,7 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $user = (new UsersFixture())->records[0];
         $this->post($url, ['email' => 'invalid' . $user['email']]);
@@ -427,7 +427,7 @@ class UsersControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->post($url, ['email' => '']);
         $this->assertResponseError();
@@ -452,8 +452,8 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'images',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
+                'userToken' => $this->getUserToken(),
+            ],
         ];
         $this->get($url);
         $response = json_decode($this->_response->getBody());
@@ -484,8 +484,8 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'images',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken($userId)
-            ]
+                'userToken' => $this->getUserToken($userId),
+            ],
         ];
         $this->get($url);
         $response = json_decode($this->_response->getBody());
@@ -506,8 +506,8 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'images',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken() . 'invalid'
-            ]
+                'userToken' => $this->getUserToken() . 'invalid',
+            ],
         ];
         $this->get($url);
         $this->assertResponseError();
@@ -531,8 +531,8 @@ class UsersControllerTest extends ApplicationTest
             'action' => 'images',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
+                'userToken' => $this->getUserToken(),
+            ],
         ];
 
         $this->assertDisallowedMethods($url, ['post', 'put', 'patch', 'delete']);
@@ -547,7 +547,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $data = [
             'name' => 'Updated Name',
-            'email' => 'updated.email@example.com'
+            'email' => 'updated.email@example.com',
         ];
         $this->patch($this->updateProfileUrl, $data);
         $this->assertResponseCode(204);
@@ -567,7 +567,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $data = [
             'name' => 'Updated Name',
-            'email' => 'updated.email@example.com'
+            'email' => 'updated.email@example.com',
         ];
 
         foreach ($data as $param => $value) {
@@ -613,7 +613,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $data = [
             'name' => 'Updated Name',
-            'email' => 'updated.email@example.com'
+            'email' => 'updated.email@example.com',
         ];
 
         foreach ($data as $param => $value) {
@@ -635,7 +635,7 @@ class UsersControllerTest extends ApplicationTest
         unset($url['?']['userToken']);
         $data = [
             'name' => 'Updated Name',
-            'email' => 'updated.email@example.com'
+            'email' => 'updated.email@example.com',
         ];
         $this->patch($url, $data);
         $this->assertResponseError();
@@ -652,7 +652,7 @@ class UsersControllerTest extends ApplicationTest
         $url['?']['userToken'] .= 'invalid';
         $data = [
             'name' => 'Updated Name',
-            'email' => 'updated.email@example.com'
+            'email' => 'updated.email@example.com',
         ];
         $this->patch($url, $data);
         $this->assertResponseError();
@@ -669,7 +669,7 @@ class UsersControllerTest extends ApplicationTest
         $lastUser = end($usersFixture->records);
         $data = [
             'name' => 'Updated Name',
-            'email' => $lastUser['email']
+            'email' => $lastUser['email'],
         ];
         $this->patch($this->updateProfileUrl, $data);
         $this->assertResponseError();
@@ -686,11 +686,11 @@ class UsersControllerTest extends ApplicationTest
         $this->patch($this->updatePasswordUrl, $data);
         $this->assertResponseCode(204);
 
-        $passwordHash = (new LegacyPasswordHasher)->hash($data['password']);
+        $passwordHash = (new LegacyPasswordHasher())->hash($data['password']);
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $userIsUpdated = $usersTable->exists([
             'id' => $this->updatingUserId,
-            'password' => $passwordHash
+            'password' => $passwordHash,
         ]);
         $this->assertTrue($userIsUpdated, 'Password was not updated.');
     }
@@ -767,7 +767,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'events',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
 
         $this->get($url);
@@ -796,7 +796,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'events',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->assertDisallowedMethods($url, ['patch', 'put', 'post', 'delete']);
     }
@@ -815,7 +815,7 @@ class UsersControllerTest extends ApplicationTest
             'controller' => 'Users',
             'action' => 'events',
             $userId,
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->get($url);
         $this->assertResponseError();

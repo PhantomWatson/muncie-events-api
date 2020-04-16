@@ -39,12 +39,12 @@ class EventsTagsFixture extends TestFixture
         [
             'id' => 1,
             'event_id' => EventsFixture::EVENT_WITH_TAG,
-            'tag_id' => 1
+            'tag_id' => 1,
         ],
         [
             'id' => 2,
             'event_id' => EventsFixture::EVENT_WITH_DIFFERENT_TAG,
-            'tag_id' => 2
+            'tag_id' => 2,
         ],
     ];
 }

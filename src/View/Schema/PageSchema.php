@@ -29,7 +29,7 @@ class PageSchema extends EntitySchema
     {
         return [
             'title' => $entity->title,
-            'body' => $entity->body
+            'body' => $entity->body,
         ];
     }
 

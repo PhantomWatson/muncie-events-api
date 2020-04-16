@@ -21,7 +21,7 @@ class PagesControllerTest extends TestCase
     {
         parent::setUp();
         $this->configRequest([
-            'environment' => ['HTTPS' => 'on']
+            'environment' => ['HTTPS' => 'on'],
         ]);
     }
 
@@ -48,7 +48,7 @@ class PagesControllerTest extends TestCase
     public function testRedirectToHttps()
     {
         $this->configRequest([
-            'environment' => ['HTTPS' => 'off']
+            'environment' => ['HTTPS' => 'off'],
         ]);
         $this->get('/');
         $this->assertRedirect();
@@ -67,7 +67,7 @@ class PagesControllerTest extends TestCase
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'docsV1'
+            'action' => 'docsV1',
         ]);
         $this->assertResponseOk();
     }

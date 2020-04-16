@@ -36,8 +36,8 @@ class ApplicationTest extends TestCase
         parent::setUp();
         $this->configRequest([
             'environment' => [
-                'HTTPS' => 'on'
-            ]
+                'HTTPS' => 'on',
+            ],
         ]);
 
         $this->usersFixture = new UsersFixture();
@@ -72,8 +72,8 @@ class ApplicationTest extends TestCase
 
         return [
             'Auth' => [
-                'User' => $usersFixture->records[$userId - 1]
-            ]
+                'User' => $usersFixture->records[$userId - 1],
+            ],
         ];
     }
 

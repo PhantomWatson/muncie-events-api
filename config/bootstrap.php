@@ -53,7 +53,7 @@ use josegonzalez\Dotenv\Loader;
 if (!env('APP_NAME')) {
     $dotenv = new Loader([
         CONFIG . '.env',
-        CONFIG . '.env.default'
+        CONFIG . '.env.default',
     ]);
     $dotenv->parse()
         ->putenv()

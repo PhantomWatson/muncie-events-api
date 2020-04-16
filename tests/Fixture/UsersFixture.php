@@ -66,7 +66,7 @@ class UsersFixture extends TestFixture
             'api_key' => 'KOsc08Hf1cOLUpbt1NHwoTwA2BnCIUSZ',
             'token' => 'xl0iV04yK5gtabGX4v9es6eWR93BxkTg',
             'created' => '2017-11-20 22:39:17',
-            'modified' => '2017-11-20 22:39:17'
+            'modified' => '2017-11-20 22:39:17',
         ],
         [
             'id' => self::USER_WITHOUT_EVENTS, // and self::SUBSCRIBED_USER_WITH_ASSOCIATION
@@ -80,7 +80,7 @@ class UsersFixture extends TestFixture
             'api_key' => null,
             'token' => '7xVY2FVjrf3v3TJMVS2u1ROajFTxfMIZ',
             'created' => '2017-11-20 22:39:17',
-            'modified' => '2017-11-20 22:39:17'
+            'modified' => '2017-11-20 22:39:17',
         ],
         [
             'id' => self::USER_NOT_SUBSCRIBED,
@@ -94,7 +94,7 @@ class UsersFixture extends TestFixture
             'api_key' => null,
             'token' => '17d861274d3fe22d7225e84e6d882ea2',
             'created' => '2017-11-20 22:39:17',
-            'modified' => '2017-11-20 22:39:17'
+            'modified' => '2017-11-20 22:39:17',
         ],
     ];
 

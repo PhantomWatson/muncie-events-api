@@ -78,7 +78,7 @@ class Event extends Entity
         'category' => true,
         'event_series' => true,
         'images' => true,
-        'tags' => true
+        'tags' => true,
     ];
 
     /**
@@ -96,7 +96,7 @@ class Event extends Entity
         'user',
         'category',
         'event_series',
-        'tags'
+        'tags',
     ];
 
     /**
@@ -119,7 +119,7 @@ class Event extends Entity
 
             $image->_joinData = new Entity([
                 'weight' => $i + 1,
-                'caption' => $imageData['caption']
+                'caption' => $imageData['caption'],
             ]);
             $this->images[] = $image;
         }
@@ -242,7 +242,7 @@ class Event extends Entity
 
         return $eventsTable->exists([
             'published' => true,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -298,7 +298,7 @@ class Event extends Entity
                 'user_id' => $this->user_id,
                 'parent_id' => TagsTable::UNLISTED_GROUP_ID,
                 'listed' => false,
-                'selectable' => true
+                'selectable' => true,
             ]);
             if (!$tagsTable->save($newTag)) {
                 throw new BadRequestException('There was an error adding the tag ' . $tagName);

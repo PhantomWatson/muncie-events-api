@@ -61,7 +61,7 @@ class TagsFixture extends TestFixture
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
-            'created' => '2017-11-20 22:39:12'
+            'created' => '2017-11-20 22:39:12',
         ],
         [
             'id' => self::TAG_WITH_DIFFERENT_EVENT,
@@ -72,7 +72,7 @@ class TagsFixture extends TestFixture
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
-            'created' => '2017-11-20 22:39:12'
+            'created' => '2017-11-20 22:39:12',
         ],
         [
             'id' => self::TAG_ID_CHILD,
@@ -83,7 +83,7 @@ class TagsFixture extends TestFixture
             'listed' => 1,
             'selectable' => 1,
             'user_id' => 1,
-            'created' => '2017-11-20 22:39:12'
+            'created' => '2017-11-20 22:39:12',
         ],
         [
             'id' => self::TAG_ID_UNLISTED,
@@ -94,7 +94,7 @@ class TagsFixture extends TestFixture
             'listed' => 0,
             'selectable' => 1,
             'user_id' => 1,
-            'created' => '2017-11-20 22:39:12'
+            'created' => '2017-11-20 22:39:12',
         ],
         [
             'id' => TagsTable::UNLISTED_GROUP_ID,
@@ -105,8 +105,8 @@ class TagsFixture extends TestFixture
             'listed' => 0,
             'selectable' => 0,
             'user_id' => 1,
-            'created' => '2017-11-20 22:39:12'
-        ]
+            'created' => '2017-11-20 22:39:12',
+        ],
     ];
 
     /**

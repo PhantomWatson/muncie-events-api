@@ -47,12 +47,12 @@ class MailingListTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany('Users', [
-            'foreignKey' => 'mailing_list_id'
+            'foreignKey' => 'mailing_list_id',
         ]);
         $this->belongsToMany('Categories', [
             'foreignKey' => 'mailing_list_id',
             'targetForeignKey' => 'category_id',
-            'joinTable' => 'categories_mailing_list'
+            'joinTable' => 'categories_mailing_list',
         ]);
     }
 

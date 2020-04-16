@@ -44,7 +44,7 @@ class EventSeriesFixture extends TestFixture
                 'user_id' => 1,
                 'published' => 1,
                 'created' => '2019-10-02 16:12:47',
-                'modified' => '2019-10-02 16:12:47'
+                'modified' => '2019-10-02 16:12:47',
             ],
         ];
         parent::init();

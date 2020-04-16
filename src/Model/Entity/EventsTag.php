@@ -29,6 +29,6 @@ class EventsTag extends Entity
         'event_id' => true,
         'tag_id' => true,
         'event' => true,
-        'tag' => true
+        'tag' => true,
     ];
 }

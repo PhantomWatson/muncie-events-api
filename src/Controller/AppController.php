@@ -21,7 +21,7 @@ class AppController extends Controller
         parent::initialize();
 
         $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false
+            'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
         $this->loadComponent(
@@ -30,36 +30,36 @@ class AppController extends Controller
                 'loginAction' => [
                     'prefix' => false,
                     'controller' => 'Users',
-                    'action' => 'login'
+                    'action' => 'login',
                 ],
                 'logoutRedirect' => [
                     'prefix' => false,
                     'controller' => 'Pages',
-                    'action' => 'home'
+                    'action' => 'home',
                 ],
                 'authenticate' => [
                     'Form' => [
                         'fields' => [
                             'username' => 'email',
-                            'password' => 'password'
+                            'password' => 'password',
                         ],
                         'passwordHasher' => [
                             'className' => 'Fallback',
                             'hashers' => [
                                 'Default',
-                                'Weak' => ['hashType' => 'sha1']
-                            ]
-                        ]
+                                'Weak' => ['hashType' => 'sha1'],
+                            ],
+                        ],
                     ],
                     'Cookie' => [
                         'fields' => [
                             'username' => 'email',
-                            'password' => 'password'
-                        ]
-                    ]
+                            'password' => 'password',
+                        ],
+                    ],
                 ],
                 'authError' => 'You are not authorized to view this page',
-                'authorize' => 'Controller'
+                'authorize' => 'Controller',
             ]
         );
         $this->Auth->deny();
@@ -93,7 +93,7 @@ class AppController extends Controller
     public function beforeRender(Event $event)
     {
         $this->set([
-            'authUser' => $this->Auth->user()
+            'authUser' => $this->Auth->user(),
         ]);
     }
 
