@@ -111,6 +111,15 @@ class Event extends Entity
         $this->images = [];
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
         foreach ($imagesData as $i => $imageData) {
+            if (!is_array($imageData)) {
+                throw new BadRequestException(sprintf(
+                    'Invalid image data provided: %s provided instead of array',
+                    gettype($imageData)
+                ));
+            }
+            if (!isset($imageData['id'])) {
+                throw new BadRequestException('Image ID not provided');
+            }
             try {
                 $image = $imagesTable->get($imageData['id']);
             } catch (RecordNotFoundException $e) {
