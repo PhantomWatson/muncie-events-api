@@ -45,7 +45,7 @@ class ImagesFixture extends TestFixture
             'is_flyer' => 0,
             'user_id' => 1,
             'created' => '2017-11-20 22:39:02',
-            'modified' => '2017-11-20 22:39:02'
+            'modified' => '2017-11-20 22:39:02',
         ],
         [
             'id' => 2,
@@ -53,7 +53,7 @@ class ImagesFixture extends TestFixture
             'is_flyer' => 0,
             'user_id' => 1,
             'created' => '2017-11-20 22:39:02',
-            'modified' => '2017-11-20 22:39:02'
+            'modified' => '2017-11-20 22:39:02',
         ],
     ];
 }

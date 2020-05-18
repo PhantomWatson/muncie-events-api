@@ -55,19 +55,19 @@ class TagsTable extends Table
 
         $this->belongsTo('ParentTags', [
             'className' => 'Tags',
-            'foreignKey' => 'parent_id'
+            'foreignKey' => 'parent_id',
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('ChildTags', [
             'className' => 'Tags',
-            'foreignKey' => 'parent_id'
+            'foreignKey' => 'parent_id',
         ]);
         $this->belongsToMany('Events', [
             'foreignKey' => 'tag_id',
             'targetForeignKey' => 'event_id',
-            'joinTable' => 'events_tags'
+            'joinTable' => 'events_tags',
         ]);
     }
 

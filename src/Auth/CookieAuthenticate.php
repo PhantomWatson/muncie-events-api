@@ -19,11 +19,11 @@ class CookieAuthenticate extends BaseAuthenticate
     {
         $this->setConfig([
             'cookie' => [
-                'name' => 'CookieAuth'
+                'name' => 'CookieAuth',
             ],
             'fields' => [
-                'username' => 'email',
-                'password' => 'password'
+                'username' => 'username',
+                'password' => 'password',
             ],
             'passwordHasher' => [
                 'className' => 'Fallback',
@@ -80,7 +80,7 @@ class CookieAuthenticate extends BaseAuthenticate
     public function implementedEvents()
     {
         return [
-            'Auth.logout' => 'logout'
+            'Auth.logout' => 'logout',
         ];
     }
 

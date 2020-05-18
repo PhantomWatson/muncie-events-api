@@ -39,7 +39,7 @@ class MailingListSchema extends EntitySchema
             'daily_wed' => $subscription->daily_wed,
             'daily_thu' => $subscription->daily_thu,
             'daily_fri' => $subscription->daily_fri,
-            'daily_sat' => $subscription->daily_sat
+            'daily_sat' => $subscription->daily_sat,
         ];
 
         return $retval;

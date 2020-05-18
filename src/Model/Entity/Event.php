@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use App\Model\Table\TagsTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
@@ -79,7 +80,7 @@ class Event extends Entity
         'category' => true,
         'event_series' => true,
         'images' => true,
-        'tags' => true
+        'tags' => true,
     ];
 
     /**
@@ -97,7 +98,7 @@ class Event extends Entity
         'user',
         'category',
         'event_series',
-        'tags'
+        'tags',
     ];
 
     /**
@@ -105,16 +106,31 @@ class Event extends Entity
      *
      * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] arrays
      * @return void
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function setImageJoinData($imagesData)
     {
         $this->images = [];
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
         foreach ($imagesData as $i => $imageData) {
-            $image = $imagesTable->get($imageData['id']);
+            if (!is_array($imageData)) {
+                throw new BadRequestException(sprintf(
+                    'Invalid image data provided: %s provided instead of array',
+                    gettype($imageData)
+                ));
+            }
+            if (!isset($imageData['id'])) {
+                throw new BadRequestException('Image ID not provided');
+            }
+            try {
+                $image = $imagesTable->get($imageData['id']);
+            } catch (RecordNotFoundException $e) {
+                throw new BadRequestException('Invalid image ID selected (#' . $imageData['id'] . ')');
+            }
+
             $image->_joinData = new Entity([
                 'weight' => $i + 1,
-                'caption' => $imageData['caption']
+                'caption' => $imageData['caption'],
             ]);
             $this->images[] = $image;
         }
@@ -235,7 +251,7 @@ class Event extends Entity
 
         return $eventsTable->exists([
             'published' => true,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -245,14 +261,18 @@ class Event extends Entity
      * @param int[] $tagIds An array of tag IDs
      * @param string|string[] $tagNames An array of tag names or a comma-delimited string
      * @return void
-     * @throws BadRequestException
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function processTags($tagIds, $tagNames)
     {
         $tagsTable = TableRegistry::getTableLocator()->get('Tags');
         $this->tags = $this->tags ?? [];
         foreach ($tagIds as $tagId) {
-            $this->tags[] = $tagsTable->get($tagId);
+            try {
+                $this->tags[] = $tagsTable->get($tagId);
+            } catch (RecordNotFoundException $e) {
+                throw new BadRequestException('Invalid tag ID selected (#' . $tagId . ')');
+            }
         }
 
         if (!is_array($tagNames)) {
@@ -287,7 +307,7 @@ class Event extends Entity
                 'user_id' => $this->user_id,
                 'parent_id' => TagsTable::UNLISTED_GROUP_ID,
                 'listed' => false,
-                'selectable' => true
+                'selectable' => true,
             ]);
             if (!$tagsTable->save($newTag)) {
                 throw new BadRequestException('There was an error adding the tag ' . $tagName);

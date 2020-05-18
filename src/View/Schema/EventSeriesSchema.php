@@ -31,7 +31,7 @@ class EventSeriesSchema extends EntitySchema
 
         return [
             'title' => $series->title,
-            'url' => $baseUrl . '/event_series/' . $series->id
+            'url' => $baseUrl . '/event_series/' . $series->id,
         ];
     }
 
@@ -47,11 +47,11 @@ class EventSeriesSchema extends EntitySchema
     {
         return [
             'events' => [
-                self::DATA => $series->events
+                self::DATA => $series->events,
             ],
             'user' => [
-                self::DATA => $series->user
-            ]
+                self::DATA => $series->user,
+            ],
         ];
     }
 }

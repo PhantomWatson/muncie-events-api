@@ -24,8 +24,8 @@ class EventSeriesController extends ApiController
                 'Events.date' => 'desc',
                 'Events.time_start' => 'desc',
             ],
-            'scope' => 'event'
-        ]
+            'scope' => 'event',
+        ],
     ];
 
     /**
@@ -73,10 +73,10 @@ class EventSeriesController extends ApiController
                 'EventSeries',
                 'Image',
                 'Tag',
-                'User'
+                'User',
             ],
             '_serialize' => ['events'],
-            'events' => $this->paginate($query, ['scope' => 'event'])
+            'events' => $this->paginate($query, ['scope' => 'event']),
         ]);
     }
 

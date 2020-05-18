@@ -74,7 +74,7 @@ class MailingListFixture extends TestFixture
                 'created' => '2019-03-27 20:42:23',
                 'modified' => '2019-03-27 20:42:23',
                 'processed_daily' => '2019-03-27 20:42:23',
-                'processed_weekly' => '2019-03-27 20:42:23'
+                'processed_weekly' => '2019-03-27 20:42:23',
             ],
             [
                 'id' => 2,
@@ -92,8 +92,8 @@ class MailingListFixture extends TestFixture
                 'created' => '2019-03-27 20:42:23',
                 'modified' => '2019-03-27 20:42:23',
                 'processed_daily' => '2019-03-27 20:42:23',
-                'processed_weekly' => '2019-03-27 20:42:23'
-            ]
+                'processed_weekly' => '2019-03-27 20:42:23',
+            ],
         ];
         parent::init();
     }

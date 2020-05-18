@@ -25,7 +25,7 @@ class ImagesControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     private $addUrl;
@@ -53,8 +53,8 @@ class ImagesControllerTest extends ApplicationTest
             'action' => 'add',
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken()
-            ]
+                'userToken' => $this->getUserToken(),
+            ],
         ];
 
         $this->createUploadDirectories();
@@ -240,8 +240,8 @@ class ImagesControllerTest extends ApplicationTest
                 'name' => $filename,
                 'size' => filesize($imagePath),
                 'tmp_name' => $imagePath,
-                'type' => mime_content_type($imagePath)
-            ]
+                'type' => mime_content_type($imagePath),
+            ],
         ];
     }
 }

@@ -31,7 +31,7 @@ class EventsTagsTableTest extends TestCase
         'app.EventSeries',
         'app.Images',
         'app.EventsImages',
-        'app.Tags'
+        'app.Tags',
     ];
 
     /**

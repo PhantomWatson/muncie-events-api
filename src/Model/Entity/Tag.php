@@ -47,7 +47,7 @@ class Tag extends Entity
         'parent_tag' => true,
         'user' => true,
         'child_tags' => true,
-        'events' => true
+        'events' => true,
     ];
 
     /**

@@ -24,7 +24,7 @@ class UsersControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -38,8 +38,8 @@ class UsersControllerTest extends ApplicationTest
         $this->configRequest([
             'environment' => [
                 'HTTPS' => 'on',
-                'RECAPTCHA_ENABLED' => false
-            ]
+                'RECAPTCHA_ENABLED' => false,
+            ],
         ]);
     }
 
@@ -53,7 +53,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $loginPath = [
             'controller' => 'Users',
-            'action' => 'login'
+            'action' => 'login',
         ];
         $this->get($loginPath);
         $this->assertResponseOk();
@@ -62,15 +62,15 @@ class UsersControllerTest extends ApplicationTest
             $loginPath,
             [
                 'email' => 'user1@example.com',
-                'password' => 'password'
+                'password' => 'password',
             ]
         );
         $this->assertResponseSuccess();
         $this->assertResponseNotContains('Email or password is incorrect');
         $this->assertSession(1, 'Auth.User.id');
         $this->assertRedirect([
-            'controller' => 'Events',
-            'action' => 'index'
+            'controller' => 'Pages',
+            'action' => 'home',
         ]);
     }
 
@@ -85,11 +85,11 @@ class UsersControllerTest extends ApplicationTest
         $this->post(
             [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
             ],
             [
                 'email' => 'wrong@example.com',
-                'password' => 'wrong'
+                'password' => 'wrong',
             ]
         );
         $this->assertResponseOk();
@@ -108,23 +108,23 @@ class UsersControllerTest extends ApplicationTest
         $this->post(
             [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
             ],
             [
                 'email' => 'user1@example.com',
-                'password' => 'password'
+                'password' => 'password',
             ]
         );
         $this->assertSession('user1@example.com', 'Auth.User.email');
 
         $this->get([
             'controller' => 'Users',
-            'action' => 'logout'
+            'action' => 'logout',
         ]);
         $this->assertResponseSuccess();
         $this->assertRedirect([
             'controller' => 'Pages',
-            'action' => 'home'
+            'action' => 'home',
         ]);
         $this->assertSession(null, 'Auth.User.email');
     }
@@ -139,7 +139,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $registerPath = [
             'controller' => 'Users',
-            'action' => 'register'
+            'action' => 'register',
         ];
         $this->get($registerPath);
         $this->assertResponseOk();
@@ -149,7 +149,7 @@ class UsersControllerTest extends ApplicationTest
             'name' => 'New User',
             'email' => $email,
             'password' => 'password',
-            'confirm_password' => 'password'
+            'confirm_password' => 'password',
         ]);
         $this->assertRedirect();
         $usersTable = TableRegistry::getTableLocator()->get('Users');
@@ -171,7 +171,7 @@ class UsersControllerTest extends ApplicationTest
         $this->session($this->getUserSession($userIdWithKey));
         $this->get([
             'controller' => 'Users',
-            'action' => 'apiKey'
+            'action' => 'apiKey',
         ]);
         $this->assertResponseOk();
 
@@ -195,7 +195,7 @@ class UsersControllerTest extends ApplicationTest
         $this->session($this->getUserSession($keylessUserId));
         $this->post([
             'controller' => 'Users',
-            'action' => 'apiKey'
+            'action' => 'apiKey',
         ]);
         $this->assertResponseOk();
 

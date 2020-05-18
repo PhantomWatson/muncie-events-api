@@ -85,7 +85,7 @@ class PagesController extends ApiController
         $this->set([
             '_entities' => ['Page'],
             '_serialize' => ['page'],
-            'page' => $page
+            'page' => $page,
         ]);
     }
 
@@ -105,7 +105,7 @@ class PagesController extends ApiController
         $this->set([
             '_entities' => ['Page'],
             '_serialize' => ['page'],
-            'page' => $page
+            'page' => $page,
         ]);
     }
 
@@ -125,7 +125,7 @@ class PagesController extends ApiController
         $this->set([
             '_entities' => ['Page'],
             '_serialize' => ['page'],
-            'page' => $page
+            'page' => $page,
         ]);
     }
 
@@ -145,7 +145,7 @@ class PagesController extends ApiController
         $this->set([
             '_entities' => ['Page'],
             '_serialize' => ['page'],
-            'page' => $page
+            'page' => $page,
         ]);
     }
 }

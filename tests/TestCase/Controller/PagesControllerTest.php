@@ -24,22 +24,21 @@ class PagesControllerTest extends ApplicationTest
     {
         parent::setUp();
         $this->configRequest([
-            'environment' => ['HTTPS' => 'on']
+            'environment' => ['HTTPS' => 'on'],
         ]);
     }
 
     /**
-     * Tests /api/docs/v1
+     * testMultipleGet method
      *
      * @return void
      * @throws Exception
      */
-    public function testDocsV1()
+    public function testMultipleGet()
     {
-        $this->get([
-            'controller' => 'Pages',
-            'action' => 'apiDocsV1'
-        ]);
+        $this->get('/');
+        $this->assertResponseOk();
+        $this->get('/');
         $this->assertResponseOk();
     }
 
@@ -59,16 +58,16 @@ class PagesControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /api returns a successful response
+     * Tests /docs/v1
      *
      * @return void
      * @throws Exception
      */
-    public function testApi()
+    public function testDocsV1()
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'api'
+            'action' => 'docsV1',
         ]);
         $this->assertResponseOk();
     }
@@ -103,16 +102,49 @@ class PagesControllerTest extends ApplicationTest
             'category' => 'General',
             'name' => 'Sender name',
             'email' => 'sender@example.com',
-            'body' => 'Message body'
+            'body' => 'Message body',
         ];
         $this->post([
             'controller' => 'Pages',
-            'action' => 'contact'
+            'action' => 'contact',
         ], $data);
         $this->assertResponseContains('Thank you for contacting us.');
         $this->assertResponseOk();
         $this->assertMailSentFrom($data['email']);
         $this->assertMailSentTo(Configure::read('adminEmail'));
         $this->assertMailContains($data['body']);
+    }
+
+    /**
+     * Tests HTTP requests being redirected to HTTPS
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testRedirectToHttps()
+    {
+        $this->configRequest([
+            'environment' => ['HTTPS' => 'off'],
+        ]);
+        $this->get('/');
+        $this->assertRedirect();
+
+        // Test redirection SPECIFICALLY to HTTPS
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Tests that /api returns a successful response
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testApi()
+    {
+        $this->get([
+            'controller' => 'Pages',
+            'action' => 'api'
+        ]);
+        $this->assertResponseOk();
     }
 }

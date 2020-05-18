@@ -45,7 +45,7 @@ class EventSeriesTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Events')
             ->setForeignKey('series_id')

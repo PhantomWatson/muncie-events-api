@@ -38,6 +38,6 @@ class EventsImage extends Entity
         'created' => true,
         'modified' => true,
         'image' => true,
-        'event' => true
+        'event' => true,
     ];
 }

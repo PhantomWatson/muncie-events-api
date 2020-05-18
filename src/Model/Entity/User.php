@@ -42,7 +42,7 @@ class User extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'id' => false,
     ];
 
     /**
@@ -51,7 +51,7 @@ class User extends Entity
      * @var array
      */
     protected $_hidden = [
-        'password'
+        'password',
     ];
 
     /**
@@ -62,7 +62,7 @@ class User extends Entity
      */
     protected function _setPassword($password)
     {
-        return (new LegacyPasswordHasher)->hash($password);
+        return (new LegacyPasswordHasher())->hash($password);
     }
 
     /**

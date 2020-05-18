@@ -36,6 +36,7 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  */
 class AppView extends View
 {
+
     /**
      * Initialization hook method.
      *

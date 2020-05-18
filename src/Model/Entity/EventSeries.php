@@ -37,7 +37,7 @@ class EventSeries extends Entity
         'published' => true,
         'created' => true,
         'modified' => true,
-        'user' => true
+        'user' => true,
     ];
 
     /**

@@ -28,7 +28,7 @@ class EventSeriesControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -49,8 +49,8 @@ class EventSeriesControllerTest extends ApplicationTest
             $seriesId,
             '?' => [
                 'apikey' => $this->getApiKey(),
-                'userToken' => $this->getUserToken($userId)
-            ]
+                'userToken' => $this->getUserToken($userId),
+            ],
         ];
 
         $seriesId = 1;
@@ -58,7 +58,8 @@ class EventSeriesControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'EventSeries',
             'action' => 'view',
-            $seriesId
+            $seriesId,
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 

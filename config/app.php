@@ -206,7 +206,7 @@ $config = [
             'password' => null,
             'client' => null,
             'tls' => false,
-            'url' => null
+            'url' => null,
         ],
     ],
 
@@ -397,7 +397,7 @@ if ($config['debug']) {
     foreach ($config['Email'] as $label => $emailConfig) {
         $config['Email'][$label]['log'] = [
             'level' => 'info',
-            'scope' => 'email'
+            'scope' => 'email',
         ];
     }
 }

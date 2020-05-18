@@ -185,7 +185,7 @@ class MailingListController extends ApiController
         $this->set([
             '_entities' => ['Category', 'MailingList'],
             '_serialize' => ['subscription'],
-            'subscription' => $this->getCurrentUserSubscription()
+            'subscription' => $this->getCurrentUserSubscription(),
         ]);
     }
 
@@ -271,7 +271,7 @@ class MailingListController extends ApiController
             'email' => $this->getCleanEmail(),
             'all_categories' => (bool)$this->request->getData('all_categories'),
             'categories' => $this->getSelectedCategories(),
-            'weekly' => (bool)$this->request->getData('weekly')
+            'weekly' => (bool)$this->request->getData('weekly'),
         ];
         $daily = (bool)$this->request->getData('daily');
         foreach ($this->days as $day) {

@@ -52,12 +52,12 @@ class ImagesTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsToMany('Events', [
             'foreignKey' => 'image_id',
             'targetForeignKey' => 'event_id',
-            'joinTable' => 'events_images'
+            'joinTable' => 'events_images',
         ]);
     }
 

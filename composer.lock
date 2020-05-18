@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f25546e245d421d38ac1c2f22fe62a4c",
+    "content-hash": "b234610d35943736f2121c9dd7988002",
     "packages": [
         {
             "name": "alek13/slack",
@@ -1875,6 +1875,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-08-06T17:53:53+00:00"
         }
     ],
@@ -2100,16 +2101,16 @@
         },
         {
             "name": "cakephp/cakephp-codesniffer",
-            "version": "3.1.2",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp-codesniffer.git",
-                "reference": "45a1dcc2e83598362b8c323df3e67510676457fe"
+                "reference": "7998a191e787fd5b68cb635d7050cb0d7b55e1a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/45a1dcc2e83598362b8c323df3e67510676457fe",
-                "reference": "45a1dcc2e83598362b8c323df3e67510676457fe",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/7998a191e787fd5b68cb635d7050cb0d7b55e1a1",
+                "reference": "7998a191e787fd5b68cb635d7050cb0d7b55e1a1",
                 "shasum": ""
             },
             "require": {
@@ -2122,7 +2123,7 @@
             "type": "phpcodesniffer-standard",
             "autoload": {
                 "psr-4": {
-                    "CakePHP\\": "CakePHP"
+                    "CakePHP\\": "CakePHP/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2136,12 +2137,12 @@
                 }
             ],
             "description": "CakePHP CodeSniffer Standards",
-            "homepage": "http://cakephp.org",
+            "homepage": "https://cakephp.org",
             "keywords": [
                 "codesniffer",
                 "framework"
             ],
-            "time": "2019-08-30T01:55:00+00:00"
+            "time": "2019-12-07T03:02:34+00:00"
         },
         {
             "name": "cakephp/debug_kit",
@@ -4944,5 +4945,6 @@
     },
     "platform-dev": {
         "ext-fileinfo": "*"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }

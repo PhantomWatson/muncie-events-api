@@ -19,7 +19,7 @@ class EventsCollection extends FilterCollection
 
             // Automatically add wildcards before and after a search term
             'before' => true,
-            'after' => true
+            'after' => true,
         ]);
     }
 }

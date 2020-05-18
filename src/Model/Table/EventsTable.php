@@ -57,25 +57,25 @@ class EventsTable extends Table
         $this->addBehavior('Search.Search');
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->belongsTo('Categories', [
             'foreignKey' => 'category_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('EventSeries', [
-            'foreignKey' => 'series_id'
+            'foreignKey' => 'series_id',
         ]);
         $this->belongsToMany('Images', [
             'foreignKey' => 'event_id',
             'targetForeignKey' => 'image_id',
             'joinTable' => 'events_images',
-            'saveStrategy' => 'replace'
+            'saveStrategy' => 'replace',
         ]);
         $this->belongsToMany('Tags', [
             'foreignKey' => 'event_id',
             'targetForeignKey' => 'tag_id',
-            'joinTable' => 'events_tags'
+            'joinTable' => 'events_tags',
         ]);
     }
 
@@ -218,7 +218,7 @@ class EventsTable extends Table
             ->where([
                 function (QueryExpression $exp) use ($options) {
                     return $exp->gte('date', $options['date']);
-                }
+                },
             ]);
     }
 
@@ -251,7 +251,7 @@ class EventsTable extends Table
             ->where([
                 function (QueryExpression $exp) use ($options) {
                     return $exp->lte('date', $options['date']);
-                }
+                },
             ]);
     }
 
@@ -329,7 +329,7 @@ class EventsTable extends Table
             ->where([
                 function (QueryExpression $exp) {
                     return $exp->gte('date', date('Y-m-d'));
-                }
+                },
             ]);
     }
 
@@ -347,7 +347,7 @@ class EventsTable extends Table
             ->where([
                 function (QueryExpression $exp) {
                     return $exp->lt('date', date('Y-m-d'));
-                }
+                },
             ]);
     }
 
@@ -409,7 +409,7 @@ class EventsTable extends Table
             ->contain([
                 'Tags' => function (Query $query) {
                     return $query->select(['id', 'name']);
-                }
+                },
             ]);
         if ($categoryId) {
             $query->where(['category_id' => $categoryId]);

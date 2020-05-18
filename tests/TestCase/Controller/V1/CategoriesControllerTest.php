@@ -27,7 +27,7 @@ class CategoriesControllerTest extends ApplicationTest
         'app.EventsTags',
         'app.Images',
         'app.Tags',
-        'app.Users'
+        'app.Users',
     ];
 
     /**
@@ -42,7 +42,8 @@ class CategoriesControllerTest extends ApplicationTest
         $this->indexUrl = [
             'prefix' => 'v1',
             'controller' => 'Categories',
-            'action' => 'index'
+            'action' => 'index',
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 

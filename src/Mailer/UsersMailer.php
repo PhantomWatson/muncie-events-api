@@ -28,7 +28,7 @@ class UsersMailer extends Mailer
             ->setSubject('Muncie Events: Reset Password')
             ->setViewVars([
                 'email' => $user->email,
-                'resetUrl' => $resetUrl
+                'resetUrl' => $resetUrl,
             ])
             ->setDomain('api.muncieevents.com')
             ->setEmailFormat('both');

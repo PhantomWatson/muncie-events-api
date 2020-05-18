@@ -35,7 +35,7 @@ class ApiController extends Controller
         parent::initialize();
 
         $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false
+            'enableBeforeRedirect' => false,
         ]);
         if (!$this->request->is('ssl')) {
             throw new BadRequestException('API calls must be made with HTTPS protocol');
@@ -50,7 +50,7 @@ class ApiController extends Controller
             [
                 'authenticate' => ['ApiKey'],
                 'authError' => 'You are not authorized to view this page',
-                'authorize' => 'Controller'
+                'authorize' => 'Controller',
             ]
         );
         $this->Auth->deny();
@@ -113,7 +113,7 @@ class ApiController extends Controller
 
         $event = new Event('apiCall', $this, ['meta' => [
             'url' => $this->request->getRequestTarget(),
-            'userId' => $this->Auth->user('id')
+            'userId' => $this->Auth->user('id'),
         ]]);
         $this->getEventManager()->dispatch($event);
     }

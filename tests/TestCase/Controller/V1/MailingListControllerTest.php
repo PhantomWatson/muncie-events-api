@@ -30,7 +30,7 @@ class MailingListControllerTest extends ApplicationTest
         'app.Categories',
         'app.CategoriesMailingList',
         'app.MailingList',
-        'app.Users'
+        'app.Users',
     ];
 
     /** @var UsersTable */
@@ -49,7 +49,7 @@ class MailingListControllerTest extends ApplicationTest
         'daily_wed',
         'daily_thu',
         'daily_fri',
-        'daily_sat'
+        'daily_sat',
     ];
     private $days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     private $defaultData = [];
@@ -92,26 +92,27 @@ class MailingListControllerTest extends ApplicationTest
             'controller' => 'MailingList',
             'action' => 'subscribe',
             '?' => [
-                'userToken' => $this->getUserToken(1)
-            ]
+                'apikey' => $this->getApiKey(),
+                'userToken' => $this->getUserToken(1),
+            ],
         ];
         $this->getUrl = [
             'prefix' => 'v1',
             'controller' => 'MailingList',
             'action' => 'subscriptionStatus',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->putUrl = [
             'prefix' => 'v1',
             'controller' => 'MailingList',
             'action' => 'subscriptionUpdate',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->deleteUrl = [
             'prefix' => 'v1',
             'controller' => 'MailingList',
             'action' => 'unsubscribe',
-            '?' => ['apikey' => $this->getApiKey()]
+            '?' => ['apikey' => $this->getApiKey()],
         ];
     }
 
@@ -126,7 +127,7 @@ class MailingListControllerTest extends ApplicationTest
             'email' => $this->unfixedEmail,
             'weekly' => true,
             'daily' => false,
-            'all_categories' => true
+            'all_categories' => true,
         ];
         foreach ($this->days as $day) {
             $this->defaultData["daily_$day"] = false;
@@ -144,7 +145,7 @@ class MailingListControllerTest extends ApplicationTest
             'email' => 'updated' . $this->unfixedEmail,
             'weekly' => false,
             'daily' => false,
-            'all_categories' => false
+            'all_categories' => false,
         ];
         foreach ($this->days as $day) {
             $this->updatedData["daily_$day"] = true;
@@ -192,7 +193,7 @@ class MailingListControllerTest extends ApplicationTest
         $this->assertDefaultDataSaved($newSubscription);
         $associationWasMade = $this->usersTable->exists([
             'id' => 1,
-            'mailing_list_id' => $newSubscription->id
+            'mailing_list_id' => $newSubscription->id,
         ]);
         $this->assertTrue($associationWasMade, 'User was not associated with mailing list subscription');
     }
@@ -758,7 +759,7 @@ class MailingListControllerTest extends ApplicationTest
         $this->assertTrue(
             $usersTable->exists([
                 'id' => $userId,
-                'mailing_list_id' => $subscriptionId
+                'mailing_list_id' => $subscriptionId,
             ]),
             'User is missing mailing list association'
         );
@@ -775,7 +776,7 @@ class MailingListControllerTest extends ApplicationTest
         $this->assertFalse(
             $usersTable->exists([
                 'id' => $userId,
-                'mailing_list_id' => $subscriptionId
+                'mailing_list_id' => $subscriptionId,
             ]),
             'Association with mailing list was not removed'
         );

@@ -26,7 +26,7 @@ class MailingListTableTest extends TestCase
     public $fixtures = [
         'app.MailingList',
         'app.Users',
-        'app.Categories'
+        'app.Categories',
     ];
 
     /**

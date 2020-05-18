@@ -2,7 +2,6 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ApiCallsTable;
-use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -26,7 +25,7 @@ class ApiCallsTableTest extends TestCase
      */
     public $fixtures = [
         'app.ApiCalls',
-        'app.Users'
+        'app.Users',
     ];
 
     /**

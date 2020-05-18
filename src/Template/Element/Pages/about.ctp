@@ -39,6 +39,7 @@ $yearsCount = date('Y') - 2009;
             'Michael Bratton' => 'Mobile App Developer',
             'Ronan Furlong' => 'Mobile App Developer',
             'Timothy Hartke' => 'Mobile App Developer',
+            'Matthew Taylor' => 'Mobile App Developer',
             'Sydnee Kuebler' => 'Icon Designer',
             'Benjamin Easley' => 'Graphic Designer',
             'Nicholas Boyum' => 'Artist (map of Muncie background image)',

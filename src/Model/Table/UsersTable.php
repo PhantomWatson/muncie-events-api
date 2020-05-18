@@ -53,16 +53,16 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany('EventSeries', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Events', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Images', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Tags', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
     }
 
@@ -100,8 +100,8 @@ class UsersTable extends Table
             ->add('confirm_password', [
                 'compare' => [
                     'rule' => ['compareWith', 'password'],
-                    'message' => 'Your passwords do not match.'
-                ]
+                    'message' => 'Your passwords do not match.',
+                ],
             ]);
 
         $validator
@@ -132,7 +132,7 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']), 'uniqueEmail', [
-            'message' => 'There is already a Muncie Events account registered with this email address.'
+            'message' => 'There is already a Muncie Events account registered with this email address.',
         ]);
 
         return $rules;
@@ -260,7 +260,7 @@ class UsersTable extends Table
 
         $isAdmin = $this->exists([
             'id' => $userId,
-            'role' => 'admin'
+            'role' => 'admin',
         ]);
         if ($isAdmin) {
             return true;

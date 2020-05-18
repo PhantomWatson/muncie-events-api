@@ -29,10 +29,10 @@ class AppExceptionRenderer extends ExceptionRenderer
                 'errors' => [
                     [
                         'status' => $code,
-                        'detail' => $message
-                    ]
-                ]
-            ]
+                        'detail' => $message,
+                    ],
+                ],
+            ],
         ];
         $this->controller->set($viewVars);
 
