@@ -153,7 +153,7 @@ class MailingListTable extends Table
             'wed' => 'Wednesday',
             'thu' => 'Thursday',
             'fri' => 'Friday',
-            'sat' => 'Saturday'
+            'sat' => 'Saturday',
         ];
     }
 

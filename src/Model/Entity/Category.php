@@ -51,7 +51,7 @@ class Category extends Entity
             'prefix' => false,
             'controller' => 'Events',
             'action' => 'category',
-            $this->slug
+            $this->slug,
         ]);
     }
 }

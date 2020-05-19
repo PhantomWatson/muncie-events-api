@@ -45,7 +45,7 @@ class EventsController extends AppController
             'day',
             'index',
             'tag',
-            'view'
+            'view',
         ]);
 
         $action = $this->request->getParam('action');
@@ -73,7 +73,7 @@ class EventsController extends AppController
             ->find('withAllAssociated')
             ->all();
         $this->set([
-            'events' => $events
+            'events' => $events,
         ]);
 
         if ($this->request->getQuery('page')) {
@@ -109,7 +109,7 @@ class EventsController extends AppController
         $this->set([
             'category' => $category,
             'events' => $events,
-            'pageTitle' => $category->name
+            'pageTitle' => $category->name,
         ]);
     }
 
@@ -153,7 +153,7 @@ class EventsController extends AppController
             'direction' => $direction,
             'countOppositeDirection' => $oppositeDirectionQuery->count(),
             'oppositeDirection' => $direction == 'past' ? 'upcoming' : 'past',
-            'tag' => $tag
+            'tag' => $tag,
         ]);
 
         return null;
@@ -175,7 +175,7 @@ class EventsController extends AppController
             ->firstOrFail();
         $this->set([
             'event' => $event,
-            'pageTitle' => $event->title
+            'pageTitle' => $event->title,
         ]);
     }
 
@@ -252,7 +252,7 @@ class EventsController extends AppController
                 'images' => [],
                 'tag_ids' => [],
                 'tag_names' => [],
-                'time_end' => null
+                'time_end' => null,
             ];
         try {
             foreach ($dates as $date) {
@@ -320,7 +320,7 @@ class EventsController extends AppController
         foreach ($eventsTable->getLocations() as $location) {
             $autocompleteLocations[] = [
                 'label' => $location['location'],
-                'value' => $location['address']
+                'value' => $location['address'],
             ];
         }
         $uploadMax = ini_get('upload_max_filesize');
@@ -375,7 +375,7 @@ class EventsController extends AppController
 
         /** @var Event $event */
         $event = $this->Events->get($eventId, [
-            'contain' => ['Images', 'Tags']
+            'contain' => ['Images', 'Tags'],
         ]);
 
         // Check user permission
@@ -395,7 +395,7 @@ class EventsController extends AppController
                 'images' => [],
                 'tag_ids' => [],
                 'tag_names' => [],
-                'time_end' => null
+                'time_end' => null,
             ];
 
         $event = $this->Events->patchEntity($event, $data);
@@ -410,7 +410,7 @@ class EventsController extends AppController
             return $this->redirect([
                 'controller' => 'Events',
                 'action' => 'view',
-                'id' => $event->id
+                'id' => $event->id,
             ]);
         }
         $msg = 'The event could not be updated. Please correct any indicated errors and try again, or contact an ' .
@@ -483,7 +483,7 @@ class EventsController extends AppController
             'action' => 'day',
             date('m', $timestamp),
             date('d', $timestamp),
-            date('Y', $timestamp)
+            date('Y', $timestamp),
         ]);
     }
 
@@ -501,7 +501,7 @@ class EventsController extends AppController
             'action' => 'day',
             date('m', $timestamp),
             date('d', $timestamp),
-            date('Y', $timestamp)
+            date('Y', $timestamp),
         ]);
     }
 }

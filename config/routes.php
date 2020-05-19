@@ -54,7 +54,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         'education',
         'government',
         'sports',
-        'religion'
+        'religion',
     ];
     $routes
         ->connect(

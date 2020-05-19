@@ -55,7 +55,7 @@ class EventSeriesController extends AppController
 
         return $this->EventSeries->exists([
             'id' => $seriesId,
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
@@ -132,7 +132,7 @@ class EventSeriesController extends AppController
 
         $this->set([
             'eventSeries' => $eventSeries,
-            'pageTitle' => 'Edit Series: ' . $eventSeries->title
+            'pageTitle' => 'Edit Series: ' . $eventSeries->title,
         ]);
 
         return null;
@@ -176,7 +176,7 @@ class EventSeriesController extends AppController
             'canEdit' => $canEdit,
             'dividedEvents' => $dividedEvents,
             'eventSeries' => $eventSeries,
-            'pageTitle' => 'Event Series: ' . $eventSeries->title
+            'pageTitle' => 'Event Series: ' . $eventSeries->title,
         ]);
 
         return null;

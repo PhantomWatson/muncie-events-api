@@ -23,7 +23,7 @@ class MailingListLogTable extends Table
         $this->setTable('mailing_list_log');
         $this->setDisplayField('result');
         $this->belongsTo('MailingList', [
-            'foreignKey' => 'recipient_id'
+            'foreignKey' => 'recipient_id',
         ]);
     }
 

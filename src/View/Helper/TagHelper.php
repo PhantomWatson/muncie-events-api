@@ -28,7 +28,7 @@ class TagHelper extends Helper
             foreach ($event->tags as $tag) {
                 $selectedTags[] = [
                     'id' => $tag->id,
-                    'name' => $tag->name
+                    'name' => $tag->name,
                 ];
             }
         }
@@ -102,7 +102,7 @@ class TagHelper extends Helper
                 'id' => $tag->id,
                 'name' => $tag->name,
                 'selectable' => (bool)$tag->selectable,
-                'children' => $this->availableTagsToArray($tag->children)
+                'children' => $this->availableTagsToArray($tag->children),
             ];
             if ($tag->children) {
                 $tagsWithChildren[] = $tagArray;

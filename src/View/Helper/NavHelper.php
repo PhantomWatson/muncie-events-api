@@ -76,8 +76,8 @@ class NavHelper extends Helper
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Events',
-                        'action' => 'today'
-                    ])
+                        'action' => 'today',
+                    ]),
                 ];
                 continue;
             }
@@ -89,8 +89,8 @@ class NavHelper extends Helper
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Events',
-                        'action' => 'tomorrow'
-                    ])
+                        'action' => 'tomorrow',
+                    ]),
                 ];
                 continue;
             }
@@ -104,8 +104,8 @@ class NavHelper extends Helper
                     'action' => 'day',
                     $month,
                     $day,
-                    $year
-                ])
+                    $year,
+                ]),
             ];
             if (count($dayLinks) == $limit) {
                 break;

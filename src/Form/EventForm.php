@@ -65,7 +65,7 @@ class EventForm
         $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
 
         $saved = $this->Events->save($event, [
-            'associated' => ['Images', 'Tags']
+            'associated' => ['Images', 'Tags'],
         ]);
         if (!$saved) {
             $this->errors = $event->getErrors();
@@ -91,7 +91,7 @@ class EventForm
         $series = $seriesTable->newEntity([
             'title' => $arbitraryEvent->title,
             'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent)
+            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent),
         ]);
         if (!$seriesTable->save($series)) {
             $adminEmail = Configure::read('adminEmail');

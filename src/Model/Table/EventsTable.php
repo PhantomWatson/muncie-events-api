@@ -370,7 +370,7 @@ class EventsTable extends Table
 
         return $query->order([
             'date' => $direction,
-            'time_start' => 'ASC'
+            'time_start' => 'ASC',
         ]);
     }
 
@@ -477,7 +477,7 @@ class EventsTable extends Table
                 'Categories',
                 'EventSeries',
                 'Images',
-                'Tags'
+                'Tags',
             ]);
     }
 
@@ -498,9 +498,9 @@ class EventsTable extends Table
                         ->contain([
                             'Events' => function (Query $q) {
                                 return $q->select(['id', 'series_id']);
-                            }
+                            },
                         ]);
-                }
+                },
             ])
             ->orderAsc('Events.created')
             ->where([
@@ -508,8 +508,8 @@ class EventsTable extends Table
                     function (QueryExpression $exp) {
                         return $exp->isNull('Events.approved_by');
                     },
-                    ['Events.published' => '0']
-                ]
+                    ['Events.published' => '0'],
+                ],
             ]);
     }
 
@@ -543,7 +543,7 @@ class EventsTable extends Table
                     'Events.published' => true,
                     function (QueryExpression $exp) {
                         return $exp->isNotNull('date');
-                    }
+                    },
                 ])
                 ->orderAsc('date')
                 ->enableHydration(false);

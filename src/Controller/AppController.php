@@ -107,7 +107,7 @@ class AppController extends Controller
         $this->loadModel('Events');
         $this->set([
             'authUser' => $this->Auth->user(),
-            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0
+            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
         ]);
     }
 

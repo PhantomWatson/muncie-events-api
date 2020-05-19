@@ -21,7 +21,7 @@ class ImagesControllerTest extends ApplicationTest
         'app.Images',
         'app.Users',
         'app.Events',
-        'app.EventsImages'
+        'app.EventsImages',
     ];
 
     /**

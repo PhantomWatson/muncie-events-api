@@ -30,7 +30,7 @@ class MailingListController extends AppController
         $this->Auth->allow([
             'index',
             'sendDaily',
-            'sendWeekly'
+            'sendWeekly',
         ]);
     }
 
@@ -76,7 +76,7 @@ class MailingListController extends AppController
             'categories' => $this->Categories->find()->all(),
             'days' => $this->MailingList->getDays(),
             'pageTitle' => $subscriberId ? 'Update Subscription' : 'Join Muncie Events Mailing List',
-            'subscription' => $subscription
+            'subscription' => $subscription,
         ]);
 
         return null;

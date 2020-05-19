@@ -130,7 +130,7 @@ class PagesController extends AppController
     public function about()
     {
         $this->set([
-            'pageTitle' => 'About'
+            'pageTitle' => 'About',
         ]);
     }
 
@@ -142,7 +142,7 @@ class PagesController extends AppController
     public function terms()
     {
         $this->set([
-            'pageTitle' => 'Web Site Terms and Conditions of Use'
+            'pageTitle' => 'Web Site Terms and Conditions of Use',
         ]);
     }
 }

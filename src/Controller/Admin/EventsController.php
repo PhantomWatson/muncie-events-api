@@ -67,7 +67,7 @@ class EventsController extends AppController
         $this->set([
             'events' => $events,
             'identicalSeries' => $identicalSeries,
-            'pageTitle' => 'Review Unapproved Events'
+            'pageTitle' => 'Review Unapproved Events',
         ]);
     }
 
@@ -92,7 +92,7 @@ class EventsController extends AppController
                 continue;
             }
             $event = $this->Events->get($id, [
-                'contain' => 'EventSeries'
+                'contain' => 'EventSeries',
             ]);
             if ($event->series_id) {
                 $seriesToApprove[$event->series_id] = true;

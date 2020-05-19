@@ -58,7 +58,7 @@ class AppView extends View
             $this->loadHelper('Tag');
             $this->loadHelper('AkkaCKEditor.CKEditor', [
                 'distribution' => 'basic',
-                'version' => '4.5.0'
+                'version' => '4.5.0',
             ]);
         }
     }

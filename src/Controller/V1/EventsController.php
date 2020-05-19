@@ -43,7 +43,7 @@ class EventsController extends ApiController
             'search',
             'category',
             'view',
-            'future'
+            'future',
         ]);
     }
 

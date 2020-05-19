@@ -18,7 +18,7 @@ class MailingListControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.MailingList'
+        'app.MailingList',
     ];
 
     /**

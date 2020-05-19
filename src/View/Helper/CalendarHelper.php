@@ -81,7 +81,7 @@ class CalendarHelper extends Helper
         $tomorrow = date('Y-m-d', strtotime('+1 day'));
         $namedDates = [
             $today => 'Today',
-            $tomorrow => 'Tomorrow'
+            $tomorrow => 'Tomorrow',
         ];
         $endOfWeek = date('Y-m-d', strtotime('today + 6 days'));
         $thisWeek = ($date >= $today && $date < $endOfWeek);
@@ -193,7 +193,7 @@ class CalendarHelper extends Helper
             'action' => 'view',
             'id' => $event['id'],
             'plugin' => false,
-            'prefix' => false
+            'prefix' => false,
         ], true);
         $description = strip_tags($event['description']);
         $description = str_replace('&nbsp;', '', $description);
@@ -203,7 +203,7 @@ class CalendarHelper extends Helper
             [
                 'ellipsis' => "... (continued at $eventUrl)",
                 'exact' => false,
-                'html' => false
+                'html' => false,
             ]
         );
 
@@ -271,7 +271,7 @@ class CalendarHelper extends Helper
             $url = Router::url([
                 'controller' => 'Events',
                 'action' => 'tag',
-                'slug' => $tag->id . '-' . Text::slug($tag->name)
+                'slug' => $tag->id . '-' . Text::slug($tag->name),
             ]);
             $links[] = sprintf('<a href="%s">%s</a>', $url, $tag->name);
         }
@@ -297,7 +297,7 @@ class CalendarHelper extends Helper
                 'action' => 'day',
                 date('m', $timestamp),
                 date('d', $timestamp),
-                date('Y', $timestamp)
+                date('Y', $timestamp),
             ],
             ['escape' => false]
         );
@@ -321,7 +321,7 @@ class CalendarHelper extends Helper
                 'action' => 'day',
                 date('m', $timestamp),
                 date('d', $timestamp),
-                date('Y', $timestamp)
+                date('Y', $timestamp),
             ],
             ['escape' => false]
         );

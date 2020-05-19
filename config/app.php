@@ -231,7 +231,7 @@ $config = [
             'from' => ['automailer@MuncieEvents.com' => 'Muncie Events'],
             'sender' => ['automailer@MuncieEvents.com' => 'Muncie Events'],
             'returnPath' => 'automailer@MuncieEvents.com',
-            'emailFormat' => 'both'
+            'emailFormat' => 'both',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

@@ -24,7 +24,7 @@ class EventsControllerTest extends ApplicationTest
         'app.Images',
         'app.Tags',
         'app.EventsImages',
-        'app.EventsTags'
+        'app.EventsTags',
     ];
 
     /**
@@ -50,7 +50,7 @@ class EventsControllerTest extends ApplicationTest
     public function testRedirectToHttps()
     {
         $this->configRequest([
-            'environment' => ['HTTPS' => 'off']
+            'environment' => ['HTTPS' => 'off'],
         ]);
         $this->get('/');
         $this->assertRedirect();

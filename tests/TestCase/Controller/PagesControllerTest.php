@@ -52,7 +52,7 @@ class PagesControllerTest extends ApplicationTest
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'contact'
+            'action' => 'contact',
         ]);
         $this->assertResponseOk();
         $this->assertResponseContains('site administrator');
@@ -113,7 +113,7 @@ class PagesControllerTest extends ApplicationTest
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'api'
+            'action' => 'api',
         ]);
         $this->assertResponseOk();
     }

@@ -101,7 +101,7 @@ class EventSeriesTable extends Table
             ->contain([
                 'Events' => function (Query $q) {
                     return $q->find('ordered');
-                }
+                },
             ]);
     }
 
@@ -126,12 +126,12 @@ class EventSeriesTable extends Table
                             'series_id',
                             'time_end',
                             'time_start',
-                            'title'
+                            'title',
                         ]);
                 },
                 'Users' => function (Query $q) {
                     return $q->select(['id', 'name']);
-                }
+                },
             ]);
     }
 }

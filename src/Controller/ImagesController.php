@@ -31,7 +31,7 @@ class ImagesController extends AppController
         $this->viewbuilder()->setLayout('ajax');
         $this->loadModel('Users');
         $this->set([
-            'images' => $this->Users->getImagesList($userId)
+            'images' => $this->Users->getImagesList($userId),
         ]);
     }
 
@@ -89,7 +89,7 @@ class ImagesController extends AppController
         $image = $this->Images->get((int)$imageId);
         $this->set([
             '_serialize' => ['filename'],
-            'filename' => $image->filename ?? false
+            'filename' => $image->filename ?? false,
         ]);
     }
 }

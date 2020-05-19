@@ -109,7 +109,7 @@ class TagsController extends AppController
         ));
         $this->set([
             'categories' => $this->Categories->find('list')->all(),
-            'letters' => array_merge(range('a', 'z'), ['nonalpha'])
+            'letters' => array_merge(range('a', 'z'), ['nonalpha']),
         ]);
     }
 }
