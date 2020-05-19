@@ -43,36 +43,6 @@ class PagesControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /api/docs redirects to /api/docs/v1
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testDocsRedirect()
-    {
-        $this->get('/api/docs');
-        $this->assertRedirect([
-            'controller' => 'Pages',
-            'action' => 'apiDocsV1'
-        ]);
-    }
-
-    /**
-     * Tests /docs/v1
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testDocsV1()
-    {
-        $this->get([
-            'controller' => 'Pages',
-            'action' => 'docsV1',
-        ]);
-        $this->assertResponseOk();
-    }
-
-    /**
      * Test that the contact page loads
      *
      * @return void
