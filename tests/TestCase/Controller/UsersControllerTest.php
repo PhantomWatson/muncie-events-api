@@ -69,8 +69,8 @@ class UsersControllerTest extends ApplicationTest
         $this->assertResponseNotContains('Email or password is incorrect');
         $this->assertSession(1, 'Auth.User.id');
         $this->assertRedirect([
-            'controller' => 'Pages',
-            'action' => 'home',
+            'controller' => 'Events',
+            'action' => 'index',
         ]);
     }
 
