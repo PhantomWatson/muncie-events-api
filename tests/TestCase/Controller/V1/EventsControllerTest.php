@@ -577,6 +577,7 @@ class EventsControllerTest extends ApplicationTest
             'approved_by',
             'created',
             'modified',
+            'location_slug',
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {
