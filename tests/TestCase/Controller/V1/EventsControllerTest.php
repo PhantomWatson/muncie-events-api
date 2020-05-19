@@ -527,9 +527,6 @@ class EventsControllerTest extends ApplicationTest
         $this->assertResponseOk();
 
         $response = (array)json_decode($this->_response->getBody());
-        $eventCount = count($response['data']);
-        $this->assertEquals(1, $eventCount, "Expected one event to be returned, got $eventCount");
-
         $event = (new EventsFixture())->records[0];
         $eventId = $event['id'];
         $this->assertEquals($eventId, $response['data']->id, 'Unexpected event ID returned');
