@@ -7,9 +7,11 @@
         (such as sales) and deadlines are not considered events and may not be posted.
     </li>
     <li>
-        <strong>Public Events:</strong> Only events open to the general public (not counting age
-        restrictions) and relevant to the general public can be posted. No private events,
-        members-only events, or events that only pertain to specific groups can be posted.
+        <strong>Public Events:</strong> Only events open to the general public (not counting age restrictions) and
+        relevant to the general public may be posted. Private events, members-only events, or events that only pertain
+        to specific group are disallowed. Events that can only be attended by people who attended previous events fall
+        under "members only", and as such, only the first meeting of multiple-day classes may be posted if subsequent
+        meetings are restricted to only enrolled students.
     </li>
     <li>
         <strong>Virtual Events:</strong> Virtual events may be posted if they are live video broadcasts being made from
