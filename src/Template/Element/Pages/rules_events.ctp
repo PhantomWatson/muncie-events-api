@@ -27,7 +27,7 @@
     </li>
     <li>
         <strong>Language:</strong> To be considerate of our wide and diverse audience, offensive language
-        is not allowed. In general, any words that would be bleeped on television are not allowed in
+        is not allowed. In general, any words that would be censored on television are not allowed in
         posted events.
     </li>
     <li>
