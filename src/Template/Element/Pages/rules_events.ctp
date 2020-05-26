@@ -1,3 +1,9 @@
+<?php
+
+use Cake\Core\Configure;
+
+$adminEmail = Configure::read('adminEmail');
+?>
 <ul>
     <li>
         <strong>Muncie Events:</strong> Only events taking place in Muncie may be posted.
@@ -42,5 +48,9 @@
         information entered into other fields, such as location name, address, cost, or age
         restrictions. Using CAPS LOCK FOR EMPHASIS and other obnoxiously-formatted text
         (administrators' discretion) is not allowed.
+    </li>
+    <li>
+        <strong>Questions?</strong> Please email <a href="mailto:<?= $adminEmail ?>"><?= $adminEmail ?></a> if you have
+        any questions.
     </li>
 </ul>
