@@ -528,8 +528,3 @@ TagManager.setupAutosuggest('#custom_tag_input');
 </div>
 
 <?= $this->Form->end() ?>
-
-<?php
-echo $this->CKEditor->loadJs();
-echo $this->CKEditor->replace('description');
-?>
