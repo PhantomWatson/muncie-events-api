@@ -37,6 +37,7 @@ use Exception;
  * @property int $approved_by
  * @property FrozenTime $created
  * @property FrozenTime $modified
+ * @property string $location_medium 'physical' or 'virtual'
  *
  * @property User $user
  * @property Category $category
@@ -327,5 +328,19 @@ class Event extends Entity
         $slug = mb_strtolower($slug);
         $slug = Text::slug($slug);
         $this->location_slug = $slug;
+    }
+
+    /**
+     * A virtual field that returns 'virtual' or 'physical' depending on whether the location name is 'Virtual Event'
+     *
+     * @return string
+     */
+    protected function _getLocationMedium()
+    {
+        if ($this->location == 'Virtual Event') {
+            return 'virtual';
+        }
+
+        return 'physical';
     }
 }
