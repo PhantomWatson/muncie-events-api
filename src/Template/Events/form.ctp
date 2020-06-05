@@ -51,9 +51,12 @@ TagManager.setupAutosuggest('#custom_tag_input');
     <?= $pageTitle ?>
 </h1>
 
-<a href="#posting_rules" id="posting_rules_toggler" data-toggle="collapse">
-    Rules for Posting Events
-</a>
+<p id="posting-rules-toggler-container">
+    <span>Before continuing, please read the</span>
+    <a href="#posting_rules" id="posting_rules_toggler" data-toggle="collapse" class="btn btn-sm btn-secondary">
+        Rules for Posting Events
+    </a>
+</p>
 
 <div id="posting_rules" class="alert alert-info collapse">
     <?= $this->element('Events/rules') ?>
