@@ -591,7 +591,7 @@ class EventsTable extends Table
     {
         $event = $this->newEntity();
         $event->time_start = new FrozenTime('12:00pm');
-        $event->time_end = new FrozenTime('1:00pm');
+        $event->time_end = null;
 
         return $event;
     }
