@@ -82,6 +82,44 @@ function setupEventForm() {
     $('#example_selectable_tag').tooltip().click(function (event) {
         event.preventDefault();
     });
+
+    const handleChangeEventType = function () {
+        const virtualButton = document.querySelector('input[name="location_medium"][value="virtual"]');
+        const isVirtual = virtualButton.checked;
+        const locationNameField = document.getElementById('location');
+        const addressHeader = document.querySelector('#eventform_address > label');
+        const addressField = document.getElementById('EventAddress');
+        const locationDetailsField = document.getElementById('location-details');
+        const locationRow = locationNameField.parentElement.parentElement;
+        const locationRowOriginalDisplay = locationRow.style.display;
+
+        if (isVirtual) {
+            locationNameField.value = 'Virtual Event';
+            addressHeader.textContent = 'URL';
+            addressField.placeholder = 'https://';
+            addressField.setAttribute('type', 'url');
+            addressField.required = true;
+            locationDetailsField.parentElement.style.display = 'none';
+            locationRow.style.display = 'none';
+
+            return;
+        }
+
+        if (locationNameField.value === 'Virtual Event') {
+            locationNameField.value = '';
+        }
+        addressHeader.textContent = 'Address';
+        addressField.placeholder = '';
+        addressField.setAttribute('type', 'text');
+        addressField.required = false;
+        locationDetailsField.parentElement.style.display = 'block';
+        locationRow.style.display = locationRowOriginalDisplay;
+    };
+    const options = document.querySelectorAll('input[name="location_medium"]');
+    for (let x = 0; x < options.length; x++) {
+        options[x].addEventListener('click', handleChangeEventType)
+    }
+    handleChangeEventType();
 }
 
 function setupLocationAutocomplete() {

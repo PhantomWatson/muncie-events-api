@@ -118,6 +118,26 @@ TagManager.setupAutosuggest('#custom_tag_input');
 
 <div class="event_form">
     <div class="row form-group">
+        <label class="col-md-3" for="event-medium">
+            Type
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('location_medium', [
+                'label' => false,
+                'id' => 'event-medium',
+                'div' => ['class' => 'col-lg-12'],
+                'legend' => false,
+                'options' => [
+                    'physical' => 'Regular event',
+                    'virtual' => 'Virtual event',
+                ],
+                'type' => 'radio',
+                'separator' => '<br />',
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row form-group">
         <label class="col-md-3" for="EventTitle">
             Title
         </label>
@@ -275,7 +295,8 @@ TagManager.setupAutosuggest('#custom_tag_input');
         <div class="col-md-9">
             <?= $this->Form->control('location', [
                 'class' => 'form-control',
-                'label' => false
+                'label' => false,
+                'placeholder' => 'Location name',
             ]) ?>
             <label class="sr-only" for="location-details">
                 Location details
