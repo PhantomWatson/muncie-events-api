@@ -109,6 +109,10 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'Events', 'action' => 'location'],
         ['pass' => ['location', 'direction']]
     );
+    $routes->connect(
+        '/locations-past',
+        ['controller' => 'Events', 'action' => 'locationsPast']
+    );
 
     // EventSeries
     Router::connect(

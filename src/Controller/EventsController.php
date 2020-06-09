@@ -558,4 +558,25 @@ class EventsController extends AppController
             'pageTitle' => $pageTitle,
         ]);
     }
+
+    /**
+     * Lists all of the locations at which past events took place
+     *
+     * @return void
+     */
+    public function locationsPast()
+    {
+        $locations = $this->Events
+            ->find('locations')
+            ->find('past')
+            ->enableHydration(false)
+            ->toArray();
+        $count = count($locations);
+
+        $this->set([
+            'count' => $count,
+            'locations' => $locations,
+            'pageTitle' => 'Locations of Past Events',
+        ]);
+    }
 }
