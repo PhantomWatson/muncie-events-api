@@ -317,11 +317,14 @@ class EventsController extends AppController
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
         $categories = $categoriesTable->find('list')->orderAsc('weight');
         $autocompleteLocations = [];
-        $eventsTable = TableRegistry::getTableLocator()->get('Events');
-        foreach ($eventsTable->getLocations() as $location) {
+        $events = $this->Events
+            ->find('locations')
+            ->enableHydration(false)
+            ->toArray();
+        foreach ($events as $event) {
             $autocompleteLocations[] = [
-                'label' => $location['location'],
-                'value' => $location['address'],
+                'label' => $event['location'],
+                'value' => $event['address'],
             ];
         }
         $uploadMax = ini_get('upload_max_filesize');

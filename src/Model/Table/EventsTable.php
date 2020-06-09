@@ -565,21 +565,18 @@ class EventsTable extends Table
     }
 
     /**
-     * Returns an array of location arrays, each with the keys name, slug, and address
+     * Modifies a query to just return ordered unique location information for published events
      *
-     * Excludes unpublished events when looking up locations
-     *
-     * @return array
+     * @param Query $query Query
+     * @return Query
      */
-    public function getLocations()
+    public function findLocations(Query $query)
     {
         return $this
             ->find('published')
             ->select(['location', 'location_slug', 'address'])
             ->distinct('location')
-            ->orderAsc('location')
-            ->enableHydration(false)
-            ->toArray();
+            ->orderAsc('location');
     }
 
     /**
