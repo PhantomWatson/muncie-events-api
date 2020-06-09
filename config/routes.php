@@ -18,6 +18,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use App\Model\Entity\Event;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -78,6 +79,36 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
     $routes->connect('/today', ['controller' => 'Events', 'action' => 'today']);
     $routes->connect('/tomorrow', ['controller' => 'Events', 'action' => 'tomorrow']);
+    $routes->connect(
+        '/virtual',
+        [
+            'controller' => 'Events',
+            'action' => 'location',
+            'location' => Event::VIRTUAL_LOCATION,
+            'direction' => 'future'
+        ],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->connect(
+        '/virtual/:direction',
+        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->redirect(
+        '/location/' . Event::VIRTUAL_LOCATION,
+        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->connect(
+        '/location/:location',
+        ['controller' => 'Events', 'action' => 'location', 'direction' => 'future'],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->connect(
+        '/location/:location/:direction',
+        ['controller' => 'Events', 'action' => 'location'],
+        ['pass' => ['location', 'direction']]
+    );
 
     // EventSeries
     Router::connect(

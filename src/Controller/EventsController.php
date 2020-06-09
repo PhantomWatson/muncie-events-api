@@ -44,6 +44,7 @@ class EventsController extends AppController
             'category',
             'day',
             'index',
+            'location',
             'tag',
             'view',
         ]);
@@ -502,6 +503,56 @@ class EventsController extends AppController
             date('m', $timestamp),
             date('d', $timestamp),
             date('Y', $timestamp),
+        ]);
+    }
+
+    /**
+     * Page for viewing events taking place at a given location
+     *
+     * @param null $location The name of the location
+     * @param string $direction Either 'future' or 'past' (leave blank for 'future')
+     * @return void
+     * @throws \Cake\Http\Exception\BadRequestException
+     */
+    public function location($location = null, $direction = 'future')
+    {
+        if (!$location) {
+            throw new BadRequestException('Error: No location name given.');
+        }
+
+        if (!in_array($direction, ['future', 'past'])) {
+            throw new BadRequestException(
+                'Direction not recognized. Either "future" or "past" expected. ' .
+                'Your weird Time Lord stuff won\'t work on us.'
+            );
+        }
+
+        // For this page's results
+        $primaryQuery = $this->Events
+            ->find('published')
+            ->find('withAllAssociated')
+            ->find('ordered')
+            ->find('atLocation', ['location' => $location])
+            ->find($direction);
+        $count = $primaryQuery->count();
+        $events = $this->paginate($primaryQuery);
+
+        // For finding the count of results in the other (past/future) direction
+        $secondaryQuery = $this->Events
+            ->find('published')
+            ->find('atLocation', ['location' => $location])
+            ->find($direction == 'future' ? 'past' : 'future');
+        $countOtherDirection = $secondaryQuery->count();
+
+        $pageTitle = $location == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $location;
+
+        $this->set([
+            'count' => $count,
+            'countOtherDirection' => $countOtherDirection,
+            'direction' => $direction,
+            'events' => $events,
+            'location' => $location,
+            'pageTitle' => $pageTitle,
         ]);
     }
 }
