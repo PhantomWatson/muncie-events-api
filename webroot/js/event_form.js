@@ -14,7 +14,6 @@ function setupEventForm() {
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
         $('#eventform_hasendtime_boolinput').val('1');
-        timeEndHour.focus();
 
         // Pre-select an end time one hour from the start time
         const timeStartHour = document.querySelector('select[name="time_start[hour]"]');
@@ -30,6 +29,8 @@ function setupEventForm() {
         timeEndMeridian.selectedIndex = (timeEndHour.selectedIndex === timeEndHour.childElementCount - 1)
             ? (timeStartMeridian.selectedIndex === 0 ? 1 : 0)
             : timeStartMeridian.selectedIndex;
+
+        timeEndHour.focus();
     });
     $('#remove_end_time').click(function (event) {
         event.preventDefault();
