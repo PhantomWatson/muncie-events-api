@@ -610,4 +610,23 @@ class EventsTable extends Table
             })
             ->count();
     }
+
+    /**
+     * Finds events at the specified location
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'location' expected
+     * @return Query
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function findAtLocation(Query $query, array $options)
+    {
+        if (!array_key_exists('location', $options)) {
+            throw new InternalErrorException('\'location\' missing from findAtLocation()');
+        }
+
+        $query->where(['location' => $options['location']]);
+
+        return $query;
+    }
 }
