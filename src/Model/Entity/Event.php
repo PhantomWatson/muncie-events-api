@@ -48,6 +48,7 @@ use Exception;
 class Event extends Entity
 {
     const TIMEZONE = 'America/Indiana/Indianapolis';
+    const VIRTUAL_LOCATION = 'Virtual Event';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -337,7 +338,7 @@ class Event extends Entity
      */
     protected function _getLocationMedium()
     {
-        if ($this->location == 'Virtual Event') {
+        if ($this->location == self::VIRTUAL_LOCATION) {
             return 'virtual';
         }
 
