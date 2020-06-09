@@ -173,7 +173,7 @@ class NavHelper extends Helper
         $categories = $categoriesTable
             ->find()
             ->orderAsc('weight')
-            ->all();
+            ->toArray();
 
         /** @var EventsTable $eventsTable */
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
