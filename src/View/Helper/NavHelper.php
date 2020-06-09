@@ -21,15 +21,21 @@ class NavHelper extends Helper
      *
      * @param string $controller Name of a controller to compare to the current request
      * @param string $action Name of an action to compare to the current request
+     * @param string $pass Passed parameter
      * @return string|null
      */
-    public function getActiveLink($controller, $action)
+    public function getActiveLink($controller, $action, $pass = null)
     {
         if ($this->_View->getRequest()->getParam('controller') != $controller) {
             return null;
         }
         if ($this->_View->getRequest()->getParam('action') != $action) {
             return null;
+        }
+        if ($pass) {
+            if ($this->_View->getRequest()->getParam('pass')[0] != $pass) {
+                return null;
+            }
         }
 
         return 'active';
