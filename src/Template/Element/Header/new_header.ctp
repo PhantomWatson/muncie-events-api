@@ -4,6 +4,7 @@
  * @var null|array $authUser
  */
 
+use App\Model\Entity\Event;
 use App\View\AppView;
 use Cake\Routing\Router;
 
@@ -56,14 +57,16 @@ setupSearch();
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="<?= $this->Nav->getActiveLink('Widgets', 'index') ?> nav-item">
+            <li class="<?= $this->Nav->getActiveLink('Events', 'location', Event::VIRTUAL_LOCATION) ?> nav-item">
                 <?= $this->Html->link(
-                    'Widgets',
+                    'Virtual Events',
                     [
                         'plugin' => false,
                         'prefix' => false,
-                        'controller' => 'Widgets',
-                        'action' => 'index'
+                        'controller' => 'Events',
+                        'action' => 'location',
+                        'location' => Event::VIRTUAL_LOCATION,
+                        'direction' => 'future',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
