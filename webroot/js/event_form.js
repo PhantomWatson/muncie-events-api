@@ -106,8 +106,7 @@ function setupEventForm() {
         const addressHeader = document.querySelector('#eventform_address > label');
         const addressField = document.getElementById('EventAddress');
         const locationDetailsField = document.getElementById('location-details');
-        const locationRow = locationNameField.parentElement.parentElement;
-        const locationRowOriginalDisplay = locationRow.style.display;
+        const locationRow = document.getElementById('location-row');
 
         if (isVirtual) {
             locationNameField.value = 'Virtual Event';
@@ -129,7 +128,7 @@ function setupEventForm() {
         addressField.setAttribute('type', 'text');
         addressField.required = false;
         locationDetailsField.parentElement.style.display = 'block';
-        locationRow.style.display = locationRowOriginalDisplay;
+        locationRow.style.display = 'flex';
     };
     const options = document.querySelectorAll('input[name="location_medium"]');
     for (let x = 0; x < options.length; x++) {
