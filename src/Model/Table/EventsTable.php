@@ -635,8 +635,9 @@ class EventsTable extends Table
     /**
      * Takes a location name slug and returns the full name of a location
      *
-     * Pulls this full location name from an arbitrarily chosen event. This doesn't eliminate the possibility of
-     * nonunique location names with identical
+     * Pulls this full location name from an arbitrarily chosen event. Note that there may be different location names
+     * that share the same slug, due to variations in capitalization and punctuation. This method will choose one
+     * arbitrarily to return.
      *
      * @param string $locationSlug Location name slug
      * @return string
