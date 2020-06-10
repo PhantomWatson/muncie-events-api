@@ -424,9 +424,9 @@ TagManager.setupAutosuggest('#custom_tag_input');
             </div>
             <div class="col-md-9">
                 <?= $this->Form->control('customTags', [
-                    'label' => false,
                     'class' => 'form-control',
-                    'id' => 'custom_tag_input'
+                    'id' => 'custom_tag_input',
+                    'label' => false,
                 ]) ?>
                 <div class="text-muted">
                     Write out tags, separated by commas.
@@ -482,10 +482,11 @@ TagManager.setupAutosuggest('#custom_tag_input');
         </label>
         <div class="col-md-9">
             <?= $this->Form->control('cost', [
-                'maxLength' => 200,
-                'label' => false,
                 'class' => 'form-control',
-                'id' => 'EventCost'
+                'id' => 'EventCost',
+                'label' => false,
+                'maxLength' => 200,
+                'placeholder' => '$5 presale, $10 at the door',
             ]) ?>
             <div class="text-muted">
                 Just leave this blank if the event is free.
@@ -499,10 +500,11 @@ TagManager.setupAutosuggest('#custom_tag_input');
         </label>
         <div class="col-md-9">
             <?= $this->Form->control('age_restriction', [
-                'label' => false,
                 'class' => 'form-control',
+                'id' => 'EventAgeRestriction',
+                'label' => false,
                 'maxLength' => 30,
-                'id' => 'EventAgeRestriction'
+                'placeholder' => '21+',
             ]) ?>
             <div class="text-muted">
                 Leave this blank if this event has no age restrictions.
@@ -516,9 +518,10 @@ TagManager.setupAutosuggest('#custom_tag_input');
         </label>
         <div class="col-md-9">
             <?= $this->Form->control('source', [
-                'label' => false,
                 'class' => 'form-control',
-                'id' => 'EventSource'
+                'id' => 'EventSource',
+                'label' => false,
+                'placeholder' => 'https://www.facebook.com/events/1234567890',
             ]) ?>
             <div class="text-muted">
                 Did you get this information from a website, newspaper, flyer, etc?
