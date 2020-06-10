@@ -388,7 +388,7 @@ class EventsController extends AppController
 
         // Prepare form
         $this->setEventFormVars($event);
-        $this->set(['pageTitle' => 'Edit Event']);
+        $this->set(['pageTitle' => 'Edit ' . $event->title]);
 
         if (!$this->request->is(['patch', 'post', 'put'])) {
             return $this->render('form');
