@@ -89,7 +89,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         [
             'controller' => 'Events',
             'action' => 'location',
-            'location' => Event::VIRTUAL_LOCATION_SLUG
+            'location' => Event::VIRTUAL_LOCATION_SLUG,
         ],
         ['pass' => ['location', 'direction']]
     );
