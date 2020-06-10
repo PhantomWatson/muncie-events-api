@@ -41,27 +41,27 @@ class PagesControllerTest extends ApplicationTest
         $this->aboutUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'about'
+            'action' => 'about',
         ];
         $this->rulesEventsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesEvents'
+            'action' => 'rulesEvents',
         ];
         $this->rulesImagesUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesImages'
+            'action' => 'rulesImages',
         ];
         $this->rulesTagsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'rulesTags'
+            'action' => 'rulesTags',
         ];
         $this->widgetsUrl = [
             'prefix' => 'v1',
             'controller' => 'Pages',
-            'action' => 'widgets'
+            'action' => 'widgets',
         ];
     }
 

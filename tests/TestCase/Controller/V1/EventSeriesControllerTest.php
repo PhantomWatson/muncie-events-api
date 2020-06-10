@@ -58,7 +58,7 @@ class EventSeriesControllerTest extends ApplicationTest
             'prefix' => 'v1',
             'controller' => 'EventSeries',
             'action' => 'view',
-            $seriesId
+            $seriesId,
         ];
     }
 
