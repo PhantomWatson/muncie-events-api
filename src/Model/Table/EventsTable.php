@@ -611,6 +611,11 @@ class EventsTable extends Table
     /**
      * Finds events at a location, specified by name or slug
      *
+     * If 'location_slug' is provided, note that this might capture events at locations with different names that share
+     * that same slug, due to capitalization and punctuation variations and there being no mechanism for enforcing slug
+     * uniqueness. For example, /locations/i-m-foo would look for events at locations called "I'm Foo", "I-M Foo",
+     * and "i m foo".
+     *
      * @param Query $query Query
      * @param array $options Array of options, with 'location' expected
      * @return Query
