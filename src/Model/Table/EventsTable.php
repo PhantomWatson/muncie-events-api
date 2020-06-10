@@ -572,7 +572,7 @@ class EventsTable extends Table
      */
     public function findLocations(Query $query)
     {
-        return $this
+        return $query
             ->find('published')
             ->select(['location', 'location_slug', 'address'])
             ->distinct('location')
