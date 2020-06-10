@@ -377,7 +377,6 @@ class EventsController extends AppController
             throw new BadRequestException("Event with ID $eventId not found");
         }
 
-        /** @var Event $event */
         $event = $this->Events->get($eventId, [
             'contain' => ['Images', 'Tags'],
         ]);
@@ -417,9 +416,10 @@ class EventsController extends AppController
                 'id' => $event->id,
             ]);
         }
-        $msg = 'The event could not be updated. Please correct any indicated errors and try again, or contact an ' .
-            'administrator if you need assistance.';
-        $this->Flash->error($msg);
+        $this->Flash->error(
+            'The event could not be updated. ' .
+            'Please correct any indicated errors and try again, or contact an administrator if you need assistance.'
+        );
 
         return $this->render('form');
     }
