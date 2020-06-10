@@ -114,7 +114,8 @@ function setupHeaderNav() {
             var year = date.getFullYear().toString();
             var monthYear = month + '-' + year;
 
-            var selectable = muncieEvents.populatedDates[monthYear].indexOf(day) !== -1;
+            var selectable = muncieEvents.populatedDates.hasOwnProperty(monthYear)
+                && muncieEvents.populatedDates[monthYear].indexOf(day) !== -1;
             var className = selectable ? 'has_events' : 'no_events';
             var tooltip = selectable ? null : 'No events';
 
@@ -130,22 +131,15 @@ function setupHeaderNav() {
  * Prepares the sidebar
  */
 function setupSidebar() {
-    var sidebarSelectLocation = function (location) {
-        if (location === '') {
-            return false;
+    const locations = document.getElementById('sidebar-locations');
+    locations.selectedIndex = 0;
+    locations.addEventListener('change', (event) => {
+        const locationName = event.target.value;
+        if (locationName === 'Virtual Event') {
+            window.location.href = '/virtual';
+        } else if (locationName !== '') {
+            window.location.href = '/location/' + encodeURIComponent(locationName);
         }
-        window.location.href = location === '[past_events]'
-            ? '/past_locations'
-            : '/location/' + encodeURIComponent(location);
-    };
-    $('#sidebar').find('> div.locations select').change(function () {
-        var location = $(this).val();
-        sidebarSelectLocation(location);
-    });
-    $('#sidebar_select_location').submit(function (event) {
-        event.preventDefault();
-        var location = $(this).children('select').val();
-        sidebarSelectLocation(location);
     });
 }
 

@@ -66,38 +66,38 @@ $categories = $this->Nav->getCategories();
         </div>
     <?php endif; ?>
 
-    <?php if ($locations): ?>
-        <div class="locations">
-            <h2>
-                Locations
-            </h2>
-            <?php if ($locations): ?>
-                <form id="sidebar_select_location">
-                    <label class="sr-only" for="sidebar-locations">
-                        Select a location
-                    </label>
-                    <select class='form-control' name="locations" id="sidebar-locations">
-                        <option value="">
-                            Select a location...
+    <div class="locations">
+        <h2>
+            Locations
+        </h2>
+        <?php if ($locations): ?>
+            Browse upcoming events at...
+            <form id="sidebar_select_location">
+                <label class="sr-only" for="sidebar-locations">
+                    Select a location
+                </label>
+                <select class='form-control' name="locations" id="sidebar-locations">
+                    <option value="">
+                        Select a location...
+                    </option>
+                    <?php foreach ($locations as $location): ?>
+                        <option value="<?= $location['location'] ?>">
+                            <?= $location['location'] ?>
                         </option>
-                        <?php foreach ($locations as $location => $slug): ?>
-                            <option value="<?= $slug ?>">
-                                <?= $location ?>
-                            </option>
-                        <?php endforeach; ?>
-                        <option value=""></option>
-                        <option value="[past events]">
-                            Locations of past events...
-                        </option>
-                    </select>
-                </form>
-            <?php else: ?>
-                <span class="no_results">
-                    No locations found for upcoming events.
-                </span>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+        <?php endif; ?>
+        <p id="past-locations-link-parent">
+            <?= $this->Html->link(
+                'Locations of past events',
+                [
+                    'controller' => 'Events',
+                    'action' => 'locationsPast'
+                ]
+            ) ?>
+        </p>
+    </div>
 
     <?php if ($tags): ?>
         <div>
