@@ -129,24 +129,12 @@ class NavHelper extends Helper
     public function getLocations()
     {
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
-        $locations = $eventsTable
+
+        return $eventsTable
+            ->find('locations')
             ->find('future')
-            ->select(['location', 'location_slug']);
-
-        if (!$locations->count()) {
-            return [];
-        }
-
-        $slugs = [];
-        $locs = [];
-        foreach ($locations as $location) {
-            $locs[] = $location->location;
-            $slugs[] = $location->location_slug;
-        }
-        $retval = array_combine($locs, $slugs);
-        ksort($retval);
-
-        return $retval;
+            ->enableHydration(false)
+            ->toArray();
     }
 
     /**
