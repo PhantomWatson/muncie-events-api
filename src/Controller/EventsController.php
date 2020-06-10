@@ -512,14 +512,14 @@ class EventsController extends AppController
     /**
      * Page for viewing events taking place at a given location
      *
-     * @param null $location The name of the location
+     * @param null $locationSlug The slug of the location name
      * @param string $direction Either 'future' or 'past' (leave blank for 'future')
      * @return void
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function location($location = null, $direction = 'future')
+    public function location($locationSlug = null, $direction = 'future')
     {
-        if (!$location) {
+        if (!$locationSlug) {
             throw new BadRequestException('Error: No location name given.');
         }
 
@@ -535,7 +535,7 @@ class EventsController extends AppController
             ->find('published')
             ->find('withAllAssociated')
             ->find('ordered')
-            ->find('atLocation', ['location' => $location])
+            ->find('atLocation', ['location_slug' => $locationSlug])
             ->find($direction);
         $count = $primaryQuery->count();
         $events = $this->paginate($primaryQuery);
@@ -543,18 +543,20 @@ class EventsController extends AppController
         // For finding the count of results in the other (past/future) direction
         $secondaryQuery = $this->Events
             ->find('published')
-            ->find('atLocation', ['location' => $location])
+            ->find('atLocation', ['location_slug' => $locationSlug])
             ->find($direction == 'future' ? 'past' : 'future');
         $countOtherDirection = $secondaryQuery->count();
 
-        $pageTitle = $location == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $location;
+        $locationName = $this->Events->getFullLocationName($locationSlug);
+        $pageTitle = $locationName == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $locationSlug;
 
         $this->set([
             'count' => $count,
             'countOtherDirection' => $countOtherDirection,
             'direction' => $direction,
             'events' => $events,
-            'location' => $location,
+            'locationName' => $locationName,
+            'locationSlug' => $locationSlug,
             'pageTitle' => $pageTitle,
         ]);
     }

@@ -5,18 +5,19 @@
  * @var int $countOtherDirection
  * @var string $direction
  * @var string $headerText
- * @var string $location
+ * @var string $locationName
+ * @var string $locationSlug
  */
 
 use App\Model\Entity\Event;
 
-$isVirtual = ($location == Event::VIRTUAL_LOCATION);
+$isVirtual = ($locationName == Event::VIRTUAL_LOCATION);
 $eventNoun = __n('Event', 'Events', $count);
 $headerText = sprintf(
     '%s %s %s',
     $count,
     ($direction == 'future') ? 'Upcoming' : 'Past',
-    $isVirtual ? "Virtual $eventNoun" : "$eventNoun at $location"
+    $isVirtual ? "Virtual $eventNoun" : "$eventNoun at $locationName"
 );
 
 $eventNoun = __n(' event', ' events', $countOtherDirection);
@@ -24,7 +25,7 @@ $linkText = sprintf(
     '%s %s %s',
     $countOtherDirection,
     ($direction == 'future') ? 'past' : 'upcoming',
-    $isVirtual ? "virtual $eventNoun" : "$eventNoun at $location"
+    $isVirtual ? "virtual $eventNoun" : "$eventNoun at $locationName"
 );
 ?>
 
@@ -36,13 +37,13 @@ $linkText = sprintf(
     <?= $this->Html->link($linkText, [
         'controller' => 'Events',
         'action' => 'location',
-        'location' => $location,
+        'location' => $locationSlug,
         'direction' => ($direction == 'future') ? 'past' : 'future'
     ]) ?>
 <?php else: ?>
     <p class="light_text">
         There are no <?= (($direction == 'future') ? 'past' : 'upcoming') ?>
-        <?= $isVirtual ? 'virtual events' : "events at $location" ?>
+        <?= $isVirtual ? 'virtual events' : "events at $locationName" ?>
     </p>
 <?php endif; ?>
 

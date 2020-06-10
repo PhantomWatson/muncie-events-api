@@ -81,7 +81,7 @@ $categories = $this->Nav->getCategories();
                         Select a location...
                     </option>
                     <?php foreach ($locations as $location): ?>
-                        <option value="<?= $location['location'] ?>">
+                        <option value="<?= $location['location_slug'] ?>">
                             <?= $location['location'] ?>
                         </option>
                     <?php endforeach; ?>

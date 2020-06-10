@@ -23,8 +23,8 @@
                 <?php echo $this->Html->link($location['location'], [
                     'controller' => 'Events',
                     'action' => 'location',
-                    $location['location'],
-                    'past'
+                    'location' => $location['location_slug'],
+                    'direction' => 'past'
                 ]); ?>
             </li>
         <?php endforeach; ?>

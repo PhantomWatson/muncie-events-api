@@ -80,32 +80,31 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/today', ['controller' => 'Events', 'action' => 'today']);
     $routes->connect('/tomorrow', ['controller' => 'Events', 'action' => 'tomorrow']);
     $routes->connect(
+        '/virtual/:direction',
+        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION_SLUG],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->connect(
         '/virtual',
         [
             'controller' => 'Events',
             'action' => 'location',
-            'location' => Event::VIRTUAL_LOCATION,
-            'direction' => 'future'
+            'location' => Event::VIRTUAL_LOCATION_SLUG
         ],
         ['pass' => ['location', 'direction']]
     );
-    $routes->connect(
-        '/virtual/:direction',
-        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION],
-        ['pass' => ['location', 'direction']]
-    );
     $routes->redirect(
-        '/location/' . Event::VIRTUAL_LOCATION,
-        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION],
-        ['pass' => ['location', 'direction']]
-    );
-    $routes->connect(
-        '/location/:location',
-        ['controller' => 'Events', 'action' => 'location', 'direction' => 'future'],
+        '/location/' . Event::VIRTUAL_LOCATION_SLUG,
+        ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION_SLUG],
         ['pass' => ['location', 'direction']]
     );
     $routes->connect(
         '/location/:location/:direction',
+        ['controller' => 'Events', 'action' => 'location'],
+        ['pass' => ['location', 'direction']]
+    );
+    $routes->connect(
+        '/location/:location',
         ['controller' => 'Events', 'action' => 'location'],
         ['pass' => ['location', 'direction']]
     );

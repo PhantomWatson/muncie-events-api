@@ -609,7 +609,7 @@ class EventsTable extends Table
     }
 
     /**
-     * Finds events at the specified location
+     * Finds events at a location, specified by name or slug
      *
      * @param Query $query Query
      * @param array $options Array of options, with 'location' expected
@@ -618,12 +618,37 @@ class EventsTable extends Table
      */
     public function findAtLocation(Query $query, array $options)
     {
-        if (!array_key_exists('location', $options)) {
-            throw new InternalErrorException('\'location\' missing from findAtLocation()');
+        if (!array_key_exists('location', $options) && !array_key_exists('location_slug', $options)) {
+            throw new InternalErrorException('Either \'location\' or \'location_slug\' must be specified');
         }
 
-        $query->where(['location' => $options['location']]);
+        if (array_key_exists('location', $options)) {
+            $query->where(['location' => $options['location']]);
+        }
+        if (array_key_exists('location_slug', $options)) {
+            $query->where(['location_slug' => $options['location_slug']]);
+        }
 
         return $query;
+    }
+
+    /**
+     * Takes a location name slug and returns the full name of a location
+     *
+     * Pulls this full location name from an arbitrarily chosen event. This doesn't eliminate the possibility of
+     * nonunique location names with identical
+     *
+     * @param string $locationSlug Location name slug
+     * @return string
+     */
+    public function getFullLocationName($locationSlug)
+    {
+        /** @var Event $event */
+        $event = $this->find()
+            ->select(['location'])
+            ->where(['location_slug' => $locationSlug])
+            ->first();
+
+        return $event->location;
     }
 }

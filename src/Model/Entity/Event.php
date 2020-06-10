@@ -49,6 +49,7 @@ class Event extends Entity
 {
     const TIMEZONE = 'America/Indiana/Indianapolis';
     const VIRTUAL_LOCATION = 'Virtual Event';
+    const VIRTUAL_LOCATION_SLUG = 'virtual-event';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

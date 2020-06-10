@@ -36,9 +36,11 @@ use App\View\AppView;
                     <?= $this->Html->link(
                        $event->location,
                        [
+                           'plugin' => false,
+                           'prefix' => false,
                            'controller' => 'Events',
                            'action' => 'location',
-                           $event->location_slug
+                           'location' => $event->location_slug
                        ]
                     ) ?>
                     <?php if ($event->location_details): ?>

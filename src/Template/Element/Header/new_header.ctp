@@ -65,8 +65,7 @@ setupSearch();
                         'prefix' => false,
                         'controller' => 'Events',
                         'action' => 'location',
-                        'location' => Event::VIRTUAL_LOCATION,
-                        'direction' => 'future',
+                        'location' => Event::VIRTUAL_LOCATION_SLUG
                     ],
                     ['class' => 'nav-link']
                 ) ?>
