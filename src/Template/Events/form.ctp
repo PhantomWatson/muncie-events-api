@@ -270,7 +270,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
         </div>
     </div>
 
-    <div class="row form-group">
+    <div class="row form-group" id="location-row">
         <div class="col-md-3">
             <label for="location">
                 Location
