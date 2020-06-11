@@ -213,13 +213,20 @@ var TagManager = {
                 }
 
                 TagManager.tagAutoSuggestionRequest = $.ajax({
-                    url: '/tags/auto-complete',
+                    url: 'https://api.muncieevents.com/v1/tags/autocomplete',
                     dataType: 'json',
                     data: {
                         term: extractLast(request.term)
                     },
-                    success: function (data) {
-                        response(data.tags);
+                    success: function (apiResponse) {
+                        const data = apiResponse.data;
+                        let tagSuggestions = [];
+                        let tagName;
+                        for (let i = 0; i < data.length; i++) {
+                            tagName = data[i].attributes.name;
+                            tagSuggestions.push(tagName);
+                        }
+                        response(tagSuggestions);
                     }
                 });
             },
