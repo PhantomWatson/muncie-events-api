@@ -16,11 +16,41 @@ body {
         padding: inherit;
     }
 }
+
+#header-search {
+    background-image: url(/autoComplete.js/css/images/magnifier.svg);
+    background-repeat: no-repeat;
+    background-size: 1.2rem;
+    background-origin: border-box;
+    background-position: right 0.75rem center;
+}
+
+#header-search-results {
+    position: absolute;
+    z-index: 1000;
+    padding: 0;
+    left: 0;
+    right: 0;
+    margin-top: -10px;
+    transition: all 0.1s ease-in-out;
+    -webkit-transition: all -webkit-transform 0.1s ease;
+
+    > li {
+        max-width: inherit;
+
+        &:hover,
+        &:focus {
+            background-color: #fff;
+        }
+    }
+}
+
 #filter {
     display: inline-block;
     padding: 0.25rem 0.75rem;
     width: auto;
 }
+
 .header-nav {
     ul {
         li.nav-item {

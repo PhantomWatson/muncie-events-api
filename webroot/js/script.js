@@ -147,6 +147,7 @@ function setupSidebar() {
  * Prepares search form in header
  */
 function setupSearch() {
+    console.log('setting up search');
     var searchForm = $('#EventSearchForm');
     var inputField = searchForm.find('input[type="text"]');
 
@@ -159,8 +160,6 @@ function setupSearch() {
         return true;
     });
 
-    var apiUrlBase = 'https://api.' + window.location.hostname;
-
     // Automatically close search options
     inputField.focus(function () {
         var options = $('#search_options');
@@ -171,12 +170,66 @@ function setupSearch() {
 
     // Prevent navigation away from the field on tab when selecting an item
     inputField.bind('keydown', function (event) {
+        console.log('keydown done happened');
         if (event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
             event.preventDefault();
         }
     });
 
     // Setup autocomplete
+    new autoComplete({
+        data: {
+            src: async () => {
+                const query = document.getElementById('header-search').value;
+                const source = await fetch(`https://api.muncieevents.com/v1/tags/autocomplete?term=${query}`);
+                const apiResponse = await source.json();
+                const data = apiResponse.data;
+                let tagSuggestions = [];
+                let tagName;
+                for (let i = 0; i < data.length; i++) {
+                    tagName = data[i].attributes.name;
+                    tagSuggestions.push(tagName);
+                }
+                return tagSuggestions;
+            },
+            cache: false
+        },
+        selector: '#header-search',           // Input field selector              | (Optional)
+        threshold: 3,                        // Min. Chars length to start Engine | (Optional)
+        debounce: 300,                       // Post duration for engine to start | (Optional)
+        resultsList: {                       // Rendered results list object      | (Optional)
+            render: true,
+            container: source => {
+                source.setAttribute('id', 'header-search-results');
+                const searchForm = document.getElementById('EventSearchForm');
+                const rect = searchForm.getBoundingClientRect();
+                source.setAttribute('style', `top: ${rect.bottom}px;`);
+            },
+            destination: document.getElementById('header-search'),
+            position: 'afterend',
+            element: 'ul'
+        },
+        maxResults: 6,                         // Max. number of rendered results | (Optional)
+        highlight: true,                       // Highlight matching results      | (Optional)
+        resultItem: {                          // Rendered result item            | (Optional)
+            content: (data, source) => {
+                source.innerHTML = data.match;
+            },
+            element: 'li'
+        },
+        noResults: () => {                     // Action script on noResults      | (Optional)
+            const result = document.createElement('li');
+            result.setAttribute('class', 'no_result');
+            result.setAttribute('tabindex', '1');
+            result.innerHTML = 'No Results';
+            document.getElementById('autoComplete_list').appendChild(result);
+        },
+        onSelection: feedback => {             // Action script onSelection event | (Optional)
+            document.getElementById('header-search').value = feedback.selection.value;
+        }
+    });
+
+
     inputField.autocomplete({
         source: function (request, response) {
             $.getJSON(

@@ -17,44 +17,47 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
     <?php
-        echo $this->Html->meta('icon');
-        echo $this->fetch('meta');
-        echo $this->Html->css('/magnific-popup/magnific-popup.css');
-        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
-        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
-        echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
-        echo $this->Html->css('style');
-        echo $this->fetch('css');
+    echo $this->Html->meta('icon');
+    echo $this->fetch('meta');
+    echo $this->Html->css('/magnific-popup/magnific-popup.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
+    echo $this->Html->css('/autoComplete.js/css/autoComplete.css');
+    echo $this->Html->css('style');
+    echo $this->fetch('css');
     ?>
 </head>
 <body class="layout_<?= $this->getLayout() ?>">
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous">
-    </script>
-    <script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
-    <script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+</script>
+<script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
+<script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>
+<script src="/autoComplete.js/js/autoComplete.min.js"></script>
 
-    <?= $this->element('Header/new_header') ?>
+<?= $this->element('Header/new_header') ?>
 
-    <div id="divider"></div>
+<div id="divider"></div>
 
-    <div class="container">
-        <div class="row">
-            <noscript id="noscript" class="alert alert-warning">
-                <div>
-                    JavaScript is currently disabled in your browser.
-                    For full functionality of this website, JavaScript must be enabled.
-                    If you need assistance, <a href="http://www.enable-javascript.com/" target="_blank">Enable-JavaScript.com</a> provides instructions.
-                </div>
-            </noscript>
+<div class="container">
+    <div class="row">
+        <noscript id="noscript" class="alert alert-warning">
+            <div>
+                JavaScript is currently disabled in your browser.
+                For full functionality of this website, JavaScript must be enabled.
+                If you need assistance, <a href="http://www.enable-javascript.com/" target="_blank">Enable-JavaScript.com</a>
+                provides instructions.
+            </div>
+        </noscript>
 
-            <div id="content_wrapper" class="col-lg-9 col-md-8">
-                <div id="content" class="clearfix">
-                    <div id="flash-messages">
-                        <?= $this->Flash->render('flash') ?>
+        <div id="content_wrapper" class="col-lg-9 col-md-8">
+            <div id="content" class="clearfix">
+                <div id="flash-messages">
+                    <?= $this->Flash->render('flash') ?>
                     </div>
                     <?= $this->fetch('content') ?>
                 </div>

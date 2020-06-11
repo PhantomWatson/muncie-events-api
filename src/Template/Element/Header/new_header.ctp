@@ -164,8 +164,7 @@ setupSearch();
         <form class="form-inline my-2 my-lg-0" id="EventSearchForm" action="<?= $searchFormAction ?>">
             <div class="input-group">
                 <input class="form-control mr-2 my-2 my-sm-0" type="search" placeholder="Search events"
-                       aria-label="Search events"
-                       name="filter"/>
+                       aria-label="Search events" name="filter" id="header-search"/>
                 <div class="input-group-append btn-group">
                     <button type="submit" class="btn btn-light my-2 my-sm-0 d-none d-xl-inline">
                         Search
