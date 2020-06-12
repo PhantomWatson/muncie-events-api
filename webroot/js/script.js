@@ -179,10 +179,16 @@ function setupSearch() {
     new autoComplete({
         data: {
             src: async () => {
-                const query = document.getElementById('header-search').value;
+                const query = document.getElementById('header-search').value.trim();
+                if (query === '') {
+                    return [];
+                }
                 const source = await fetch(`https://api.muncieevents.com/v1/tags/autocomplete?term=${query}`);
                 const apiResponse = await source.json();
-                const data = apiResponse.data;
+                const data = apiResponse.hasOwnProperty('data') ? apiResponse.data : null;
+                if (!data) {
+                    return [];
+                }
                 let tagSuggestions = [];
                 let tagName;
                 for (let i = 0; i < data.length; i++) {
