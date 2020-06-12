@@ -141,48 +141,62 @@ function setupLocationAutocomplete() {
     if (eventForm.previousLocations.length === 0) {
         return;
     }
-    $('#location').bind('keydown', function (event) {
-        // don't navigate away from the field on tab when selecting an item
-        if (event.keyCode === $.ui.keyCode.TAB && $(this).data('is_open')) {
-            event.preventDefault();
-        }
-    }).bind('autocompleteopen', function (event, ui) {
-        $(this).data('is_open', true);
-    }).bind('autocompleteclose', function (event, ui) {
-        $(this).data('is_open', false);
-    }).autocomplete({
-        source: function (request, response) {
-            var term = request.term;
-            if (term === '') {
+    const locationFieldId = 'location';
+    const resultsContainerId = locationFieldId + '-results';
+
+    new autoComplete({
+        data: {
+            src: async () => {
+                const query = document.getElementById(locationFieldId).value.trim();
+                if (query === '') {
+                    return [];
+                }
                 return eventForm.previousLocations;
-            }
-            var pattern = new RegExp($.ui.autocomplete.escapeRegex(term), 'i');
-            var matches = jQuery.grep(eventForm.previousLocations, function (location) {
-                var locName = location.label;
-                return pattern.test(locName);
-            });
-            response(matches.slice(0, 10));
+            },
+            cache: false,
+            key: ['label'],
         },
-        delay: 0,
-        minLength: 1,
-        focus: function () {
-            // prevent value inserted on focus
-            return false;
+        selector: '#' + locationFieldId,
+        threshold: 2,
+        debounce: 100,
+        resultsList: {
+            render: true,
+            container: source => {
+                source.setAttribute('id', resultsContainerId);
+                document.getElementById(locationFieldId).addEventListener('autoComplete', function (event) {
+                    function hideSearchResults() {
+                        const searchResults = document.getElementById(resultsContainerId);
+                        while (searchResults.firstChild) {
+                            searchResults.removeChild(searchResults.firstChild);
+                        }
+                        document.removeEventListener('click', hideSearchResults);
+                    }
+
+                    document.addEventListener('click', hideSearchResults);
+                })
+            },
+            destination: document.getElementById(locationFieldId),
+            position: 'afterend',
+            element: 'ul'
         },
-        select: function (event, ui) {
-            // Add the selected term to 'selected tags'
-            var location = ui.item.label;
-            this.value = location;
+        searchEngine: 'strict',
+        maxResults: 6,
+        highlight: true,
+        resultItem: {
+            content: (data, source) => {
+                source.innerHTML = data.match;
+            },
+            element: 'li'
+        },
+        noResults: () => {
+        },
+        onSelection: feedback => {
+            // Update location name
+            document.getElementById(locationFieldId).value = feedback.selection.value.label;
 
-            // Update address (might be changed to blank)
-            var address = ui.item.value;
-            $('#EventAddress').val(address);
-
-            return false;
+            // Update address
+            document.getElementById('EventAddress').value = feedback.selection.value.value;
         }
-    }).focus(function () {
-        // Trigger autocomplete on field focus
-        $(this).autocomplete('search', $(this).val());
     });
 }
 
