@@ -38,7 +38,7 @@ if ($multipleDatesAllowed) {
 <?php $this->Html->scriptStart(['block' => true]); ?>
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
-TagManager.setupAutosuggest('#custom_tag_input');
+TagManager.setupAutosuggest('custom-tag-input');
 <?php if ($multipleDatesAllowed): ?>
     setupDatepickerMultiple(<?= json_encode($defaultDate) ?>, <?= json_encode($preselectedDates) ?>);
 <?php else: ?>
@@ -365,9 +365,9 @@ TagManager.setupAutosuggest('#custom_tag_input');
     </div>
 
     <?php if ($authUser): ?>
-        <div class="row form-group" id="custom_tag_input_wrapper">
+        <div class="row form-group" id="custom-tag-input-wrapper">
             <div class="col-md-3">
-                <label for="custom_tag_input">
+                <label for="custom-tag-input">
                     Add Tags
                     <span id="tag_autosuggest_loading" style="display: none;">
                         <img src="/img/loading_small.gif" alt="Working..." title="Working..."
@@ -425,7 +425,7 @@ TagManager.setupAutosuggest('#custom_tag_input');
             <div class="col-md-9">
                 <?= $this->Form->control('customTags', [
                     'class' => 'form-control',
-                    'id' => 'custom_tag_input',
+                    'id' => 'custom-tag-input',
                     'label' => false,
                 ]) ?>
                 <div class="text-muted">

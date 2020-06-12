@@ -1,6 +1,4 @@
 var TagManager = {
-    tagAutoSuggestionRequest: null,
-
     /**
      * @param data An array of tag objects
      * @param container $('#container_id')
@@ -201,61 +199,75 @@ var TagManager = {
         link.effect('transfer', options, 200, callback);
     },
 
-    setupAutosuggest: function (selector) {
-        $(selector).bind('keydown', function (event) {
-            if (event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
-                event.preventDefault();
-            }
-        }).autocomplete({
-            source: function (request, response) {
-                if (TagManager.tagAutoSuggestionRequest) {
-                    TagManager.tagAutoSuggestionRequest.abort();
-                }
-
-                TagManager.tagAutoSuggestionRequest = $.ajax({
-                    url: 'https://api.muncieevents.com/v1/tags/autocomplete',
-                    dataType: 'json',
-                    data: {
-                        term: extractLast(request.term)
-                    },
-                    success: function (apiResponse) {
-                        const data = apiResponse.data;
-                        let tagSuggestions = [];
-                        let tagName;
-                        for (let i = 0; i < data.length; i++) {
-                            tagName = data[i].attributes.name;
-                            tagSuggestions.push(tagName);
-                        }
-                        response(tagSuggestions);
+    setupAutosuggest: function (customTagInputId) {
+        const resultsContainerId = customTagInputId + '-results';
+        new autoComplete({
+            data: {
+                src: async () => {
+                    const customTags = document.getElementById(customTagInputId).value.trim();
+                    if (customTags === '') {
+                        return [];
                     }
-                });
+                    const query = split(customTags).pop();
+                    const source = await fetch(`https://api.muncieevents.com/v1/tags/autocomplete?term=${query}`);
+                    const apiResponse = await source.json();
+                    const data = apiResponse.hasOwnProperty('data') ? apiResponse.data : null;
+                    if (!data) {
+                        return [];
+                    }
+                    let tagSuggestions = [];
+                    let tagName;
+                    for (let i = 0; i < data.length; i++) {
+                        tagName = data[i].attributes.name;
+                        tagSuggestions.push(tagName);
+                    }
+                    return tagSuggestions;
+                },
+                cache: false
             },
-            delay: 0,
-            search: function () {
-                var term = extractLast(this.value);
-                if (term.length < 2) {
-                    return false;
-                }
-                $(selector).siblings('img.loading').show();
-            },
-            response: function () {
-                $(selector).siblings('img.loading').hide();
-                TagManager.tagAutoSuggestionRequest = null;
-            },
-            focus: function () {
-                return false;
-            },
-            select: function (event, ui) {
-                var tagName = ui.item.label;
-                var terms = split(this.value);
-                terms.pop();
-                terms.push(tagName);
+            selector: '#' + customTagInputId,    // Input field selector              | (Optional)
+            threshold: 3,                        // Min. Chars length to start Engine | (Optional)
+            debounce: 300,                       // Post duration for engine to start | (Optional)
+            resultsList: {                       // Rendered results list object      | (Optional)
+                render: true,
+                container: source => {
+                    source.setAttribute('id', resultsContainerId);
+                    document.getElementById(customTagInputId).addEventListener('autoComplete', function (event) {
+                        function hideSearchResults() {
+                            const searchResults = document.getElementById(resultsContainerId);
+                            while (searchResults.firstChild) {
+                                searchResults.removeChild(searchResults.firstChild);
+                            }
+                            document.removeEventListener('click', hideSearchResults);
+                        }
 
-                // Add placeholder to get the comma-and-space at the end
-                terms.push('');
-
-                this.value = terms.join(', ');
-                return false;
+                        document.addEventListener('click', hideSearchResults);
+                    })
+                },
+                destination: document.getElementById(customTagInputId),
+                position: 'afterend',
+                element: 'ul'
+            },
+            maxResults: 6,                         // Max. number of rendered results | (Optional)
+            highlight: true,                       // Highlight matching results      | (Optional)
+            resultItem: {                          // Rendered result item            | (Optional)
+                content: (data, source) => {
+                    source.innerHTML = data.match;
+                },
+                element: 'li'
+            },
+            noResults: () => {                     // Action script on noResults      | (Optional)
+                const result = document.createElement('li');
+                result.setAttribute('class', 'no_result autoComplete_result');
+                result.setAttribute('tabindex', '1');
+                result.innerHTML = 'No Results';
+                document.getElementById(resultsContainerId).appendChild(result);
+            },
+            onSelection: feedback => {             // Action script onSelection event | (Optional)
+                const customTagsField = document.getElementById(customTagInputId);
+                let customTags = split(customTagsField.value);
+                customTags[customTags.length - 1] = feedback.selection.value;
+                customTagsField.value = customTags.join(', ') + ', ';
             }
         });
     }
