@@ -238,42 +238,6 @@ function setupSearch() {
             document.getElementById('header-search').value = feedback.selection.value;
         }
     });
-
-
-    inputField.autocomplete({
-        source: function (request, response) {
-            $.getJSON(
-                apiUrlBase + '/v1/tags/autocomplete/',
-                {term: request.term},
-                function (data) {
-                    response($.map(data.data, function (item) {
-                        return {
-                            label: item.attributes.name,
-                            value: item.attributes.name
-                        }
-                    }));
-                }
-            );
-        },
-        search: function () {
-            // Enforce minimum length
-            if (this.value.length < 2) {
-                return false;
-            }
-            $('#search_autocomplete_loading').css('visibility', 'visible');
-        },
-        response: function () {
-            $('#search_autocomplete_loading').css('visibility', 'hidden');
-        },
-        focus: function () {
-            // Prevent value from being inserted on focus
-            return false;
-        },
-        select: function (event, ui) {
-            this.value = ui.item.value;
-            return false;
-        }
-    });
 }
 
 /**
