@@ -233,6 +233,9 @@ function setupSearch() {
             },
             element: 'li'
         },
+        searchEngine: function (query, record) {
+            return record;
+        },
         noResults: () => {                     // Action script on noResults      | (Optional)
             const result = document.createElement('li');
             result.setAttribute('class', 'no_result autoComplete_result');

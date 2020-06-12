@@ -248,6 +248,9 @@ var TagManager = {
                 position: 'afterend',
                 element: 'ul'
             },
+            searchEngine: function (query, record) {
+                return record;
+            },
             maxResults: 6,                         // Max. number of rendered results | (Optional)
             highlight: true,                       // Highlight matching results      | (Optional)
             resultItem: {                          // Rendered result item            | (Optional)
