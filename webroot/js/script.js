@@ -147,7 +147,6 @@ function setupSidebar() {
  * Prepares search form in header
  */
 function setupSearch() {
-    console.log('setting up search');
     var searchForm = $('#EventSearchForm');
     var inputField = searchForm.find('input[type="text"]');
 
@@ -219,10 +218,10 @@ function setupSearch() {
         },
         noResults: () => {                     // Action script on noResults      | (Optional)
             const result = document.createElement('li');
-            result.setAttribute('class', 'no_result');
+            result.setAttribute('class', 'no_result autoComplete_result');
             result.setAttribute('tabindex', '1');
             result.innerHTML = 'No Results';
-            document.getElementById('autoComplete_list').appendChild(result);
+            document.getElementById('header-search-results').appendChild(result);
         },
         onSelection: feedback => {             // Action script onSelection event | (Optional)
             document.getElementById('header-search').value = feedback.selection.value;
