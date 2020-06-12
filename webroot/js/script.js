@@ -203,6 +203,17 @@ function setupSearch() {
                 const searchForm = document.getElementById('EventSearchForm');
                 const rect = searchForm.getBoundingClientRect();
                 source.setAttribute('style', `top: ${rect.bottom}px;`);
+                document.getElementById('header-search').addEventListener('autoComplete', function (event) {
+                    function hideSearchResults() {
+                        const searchResults = document.getElementById('header-search-results');
+                        while (searchResults.firstChild) {
+                            searchResults.removeChild(searchResults.firstChild);
+                        }
+                        document.removeEventListener('click', hideSearchResults);
+                    }
+
+                    document.addEventListener('click', hideSearchResults);
+                })
             },
             destination: document.getElementById('header-search'),
             position: 'afterend',
