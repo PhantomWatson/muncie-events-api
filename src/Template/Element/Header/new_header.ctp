@@ -7,13 +7,6 @@
 use App\Model\Entity\Event;
 use App\View\AppView;
 use Cake\Routing\Router;
-
-$searchFormAction = Router::url(
-    array_merge(
-        ['controller' => 'Events', 'action' => 'search'],
-        $this->request->getParam('pass')
-    )
-);
 ?>
 
 <?php $this->Html->scriptStart(['block' => true]); ?>
@@ -161,7 +154,8 @@ setupSearch();
             </li>
         </ul>
         <img src="/img/loading_small_dark.gif" id="search_autocomplete_loading" alt="Loading..."/>
-        <form class="form-inline my-2 my-lg-0" id="EventSearchForm" action="<?= $searchFormAction ?>">
+        <form class="form-inline my-2 my-lg-0" id="EventSearchForm"
+              action="<?= Router::url(['controller' => 'Events', 'action' => 'search']) ?>">
             <div class="input-group">
                 <input class="form-control mr-2 my-2 my-sm-0" type="search" placeholder="Search events"
                        aria-label="Search events" name="filter" id="header-search"/>
