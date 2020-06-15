@@ -581,4 +581,51 @@ class EventsController extends AppController
             'pageTitle' => 'Locations of Past Events',
         ]);
     }
+
+    /**
+     * Search results page
+     *
+     * @return void
+     * @throws \Cake\Http\Exception\BadRequestException
+     */
+    public function search()
+    {
+        $this->set([
+            'pageTitle' => 'Search Results',
+        ]);
+        $searchTerm = $this->request->getQuery('q');
+        if (!$searchTerm) {
+            throw new BadRequestException('Please provide a search term');
+        }
+
+        $direction = $this->request->getQuery('direction') ?? 'future';
+        $counts = ['future' => 0, 'past' => 0, 'all' => 0];
+
+        // Get search results
+        $query = $this->Events->getSearchResultsQuery($searchTerm, $direction);
+        $counts[$direction] = $query->count();
+        $order = $direction == 'past' ? 'ASC' : 'DESC';
+        $query->epilog("ORDER BY Events__date $order, Events__time_start ASC");
+        $events = $this->paginate($query);
+
+        if ($direction == 'all') {
+            $currentDate = date('Y-m-d');
+            foreach ($events as $event) {
+                $key = $event->date->format('Y-m-d') >= $currentDate ? 'future' : 'past';
+                $counts[$key]++;
+            }
+        } else {
+            // Determine if there are events in the opposite direction
+            $otherDirection = ($direction == 'future') ? 'past' : 'future';
+            $otherDirectionQuery = $this->Events->getSearchResultsQuery($searchTerm, $otherDirection);
+            $counts[$otherDirection] = $otherDirectionQuery->count();
+        }
+        $this->set([
+            'counts' => $counts,
+            'direction' => $direction,
+            'directionAdjective' => ($direction == 'future') ? 'upcoming' : $direction,
+            'events' => $events,
+            'searchTerm' => $searchTerm,
+        ]);
+    }
 }

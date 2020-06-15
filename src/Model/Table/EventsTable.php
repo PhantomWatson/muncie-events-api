@@ -36,6 +36,7 @@ use Cake\Validation\Validator;
  * @method Event findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin TimestampBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class EventsTable extends Table
 {
@@ -54,7 +55,18 @@ class EventsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
         $this->addBehavior('Search.Search');
+        $this->searchManager()
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'field' => ['title', 'description', 'location']
+            ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -657,4 +669,65 @@ class EventsTable extends Table
 
         return $event->location;
     }
+
+    /**
+     * A custom general finder for searching for events by an arbitrary string
+     *
+     * Takes a 'q' search term and modifies the query to return events with searchable fields or associated models
+     * containing that term, which could be in a title, description, or tag.
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'q' expected
+     * @return Query
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function findBySearchableFields(Query $query, array $options)
+    {
+        if (!array_key_exists('q', $options)) {
+            throw new InternalErrorException('\'q\' search term not provided');
+        }
+
+        $searchTerm = $options['q'];
+        $query->where([
+            'OR' => [
+                function (QueryExpression $exp) use ($searchTerm) {
+                    return $exp->like('Events.title', "%$searchTerm%");
+                },
+                function (QueryExpression $exp) use ($searchTerm) {
+                    $exp->like('Events.location', "%$searchTerm%");
+                },
+                function (QueryExpression $exp) use ($searchTerm) {
+                    $exp->like('Events.description', "%$searchTerm%");
+                },
+            ]
+
+        ]);
+
+        return $query;
+    }
+
+    /**
+     * Returns a Query for event search results
+     *
+     * Making this a custom finder resulted in "maximum function nesting level reached" errors, suggesting that finders
+     * cannot be nested.
+     *
+     * @param string $searchTerm An arbitrary string to search for
+     * @param string $direction Either 'future', 'past', or 'all' (ignored) expected
+     * @return Query
+     */
+    public function getSearchResultsQuery($searchTerm, $direction)
+    {
+        $baseQuery = $this
+            ->find('published')
+            ->find('withAllAssociated');
+        if (in_array($direction, ['future', 'past'])) {
+            $baseQuery->find($direction);
+        }
+        $fieldsQuery = (clone $baseQuery)->find('search', ['search' => ['q' => $searchTerm]]);
+        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', ['tags' => [mb_strtolower($searchTerm)]]);
+
+        return $fieldsQuery->union($tagsQuery);
+    }
+
 }
