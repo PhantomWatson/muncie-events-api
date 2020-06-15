@@ -5,11 +5,11 @@ use Cake\Routing\Router;
 $this->Html->scriptBlock('setupSearch();', ['block' => true]);
 ?>
 <img src="/img/loading_small_dark.gif" id="search_autocomplete_loading" alt="Loading..."/>
-<form class="form-inline my-2 my-lg-0" id="EventSearchForm"
+<form class="form-inline my-2 my-lg-0" id="EventSearchForm" method="get"
       action="<?= Router::url(['controller' => 'Events', 'action' => 'search']) ?>">
     <div class="input-group">
         <input class="form-control mr-2 my-2 my-sm-0" type="search" placeholder="Search events"
-               aria-label="Search events" name="filter" id="header-search"/>
+               aria-label="Search events" name="q" id="header-search" required="required"/>
         <div class="input-group-append btn-group">
             <button type="submit" class="btn btn-light my-2 my-sm-0 d-none d-xl-inline">
                 Search
@@ -30,15 +30,16 @@ $this->Html->scriptBlock('setupSearch();', ['block' => true]);
                         Direction of events
                     </label>
                     <?= $this->Form->control('direction', [
+                        'hiddenField' => false,
+                        'label' => false,
+                        'legend' => false,
                         'options' => [
-                            'upcoming' => 'Upcoming',
+                            'future' => 'Upcoming',
                             'past' => 'Past Events',
                             'all' => 'All Events'
                         ],
-                        'default' => 'upcoming',
                         'type' => 'radio',
-                        'label' => false,
-                        'legend' => false
+                        'value' => 'future',
                     ]) ?>
                 </div>
             </div>
