@@ -70,4 +70,3 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
 
     <?php endif; ?>
 </div>
-
