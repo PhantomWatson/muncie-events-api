@@ -65,7 +65,7 @@ class EventsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'field' => ['title', 'description', 'location']
+                'field' => ['title', 'description', 'location'],
             ]);
 
         $this->belongsTo('Users', [
@@ -699,8 +699,7 @@ class EventsTable extends Table
                 function (QueryExpression $exp) use ($searchTerm) {
                     $exp->like('Events.description', "%$searchTerm%");
                 },
-            ]
-
+            ],
         ]);
 
         return $query;
@@ -729,5 +728,4 @@ class EventsTable extends Table
 
         return $fieldsQuery->union($tagsQuery);
     }
-
 }
