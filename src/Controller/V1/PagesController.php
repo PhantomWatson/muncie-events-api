@@ -80,7 +80,7 @@ class PagesController extends ApiController
         $page = new Page();
         $page->id = 'rules-events';
         $page->title = 'Rules for Posting Events';
-        $page->body = $this->getElement('Pages/rules_events');
+        $page->body = $this->getElement('Events/rules');
 
         $this->set([
             '_entities' => ['Page'],
