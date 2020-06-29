@@ -41,8 +41,8 @@ class AppController extends Controller
                 ],
                 'logoutRedirect' => [
                     'prefix' => false,
-                    'controller' => 'Pages',
-                    'action' => 'home',
+                    'controller' => 'Events',
+                    'action' => 'index',
                 ],
                 'authenticate' => [
                     'Form' => [

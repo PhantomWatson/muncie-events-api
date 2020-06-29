@@ -72,8 +72,8 @@ class UsersController extends AppController
                     $this->Auth->setUser($user);
 
                     return $this->redirect([
-                        'controller' => 'Pages',
-                        'action' => 'home',
+                        'controller' => 'Events',
+                        'action' => 'index',
                     ]);
                 }
 
