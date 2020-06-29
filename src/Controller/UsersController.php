@@ -60,34 +60,36 @@ class UsersController extends AppController
             'user' => $user,
         ]);
 
-        if ($this->request->is('post')) {
-            if ($this->Recaptcha->verify()) {
-                $user = $this->Users->patchEntity($user, $this->request->getData(), [
-                    'fields' => ['name', 'email', 'password'],
+        if (!$this->request->is('post')) {
+            return null;
+        }
+
+        if ($this->Recaptcha->verify()) {
+            $user = $this->Users->patchEntity($user, $this->request->getData(), [
+                'fields' => ['name', 'email', 'password'],
+            ]);
+            $user->role = 'user';
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Registration successful');
+                $this->Auth->setUser($user);
+
+                return $this->redirect([
+                    'controller' => 'Events',
+                    'action' => 'index',
                 ]);
-                $user->role = 'user';
-
-                if ($this->Users->save($user)) {
-                    $this->Flash->success('Registration successful');
-                    $this->Auth->setUser($user);
-
-                    return $this->redirect([
-                        'controller' => 'Events',
-                        'action' => 'index',
-                    ]);
-                }
-
-                $msg =
-                    'There was an error processing your registration. ' .
-                    'Please check for error messages and try again.';
-                $this->Flash->error($msg);
-            } else {
-                $this->Flash->error('CAPTCHA challenge failed. Please try again.');
             }
 
-            $this->request = $this->request->withData('password', '');
-            $this->request = $this->request->withData('confirm_password', '');
+            $this->Flash->error(
+                'There was an error processing your registration. ' .
+                'Please check for error messages and try again.'
+            );
+        } else {
+            $this->Flash->error('CAPTCHA challenge failed. Please try again.');
         }
+
+        $this->request = $this->request->withData('password', '');
+        $this->request = $this->request->withData('confirm_password', '');
 
         return null;
     }

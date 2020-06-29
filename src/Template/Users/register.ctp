@@ -1,30 +1,36 @@
 <?php
 /**
  * @var AppView $this
+ * @var string $pageTitle
  * @var User $user
  */
 
 use App\Model\Entity\User;
-use App\View\AppView; ?>
-<p>
-    After you create an account, you'll be able to use it to log in to both the API website <em>and</em> the main
-    website at <a href="https://muncieevents.com">https://MuncieEvents.com</a>.
-</p>
+use App\View\AppView;
 
-<p>
-    If you already have a Muncie Events account, you can
-    <?= $this->Html->link(
-        'log in with it now',
-        [
-            'controller' => 'Users',
-            'action' => 'login'
-        ]
-    ) ?>.
-</p>
+?>
+
+<h1 class="page_title">
+    <?= $pageTitle ?>
+</h1>
+
+<section class="alert alert-info">
+    <h4>Why register an account?</h4>
+    <p>
+        With an account, you can take ownership of the events that you post, which allows you to add custom tags and
+        images and edit them after posting.
+    </p>
+    <p>
+        Developers with registered accounts can also get an API key to develop their own applications powered by the
+        <a href="https://api.muncieevents.com/">Muncie Events API</a>.
+    </p>
+</section>
 
 <?= $this->Form->create($user) ?>
 
-<?= $this->Form->control('name') ?>
+<?= $this->Form->control('name', [
+    'label' => 'Your name (first and last) or organization'
+]) ?>
 
 <?= $this->Form->control('email') ?>
 
@@ -40,7 +46,7 @@ use App\View\AppView; ?>
 </div>
 
 <?= $this->Form->submit('Register', [
-    'class' => 'btn btn-default'
+    'class' => 'btn btn-primary'
 ]) ?>
 
 <?= $this->Form->end() ?>
