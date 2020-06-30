@@ -31,6 +31,24 @@ class UsersController extends ApiController
     ];
 
     /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow([
+            'events',
+            'forgotPassword',
+            'login',
+            'register',
+            'view',
+        ]);
+    }
+
+    /**
      * /user/register endpoint
      *
      * @return void

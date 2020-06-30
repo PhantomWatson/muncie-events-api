@@ -2090,8 +2090,6 @@ paths:
                             detail:
                               type: string
                               example: User not found
-      security:
-        - api_key: []
   /user/{userId}/events:
     get:
       tags:
@@ -2160,8 +2158,6 @@ paths:
                             detail:
                               type: string
                               example: "Error: User not found"
-      security:
-        - api_key: []
   /user/forgot-password:
     post:
       tags:
@@ -2212,8 +2208,6 @@ paths:
                             detail:
                               type: string
                               example: Please provide an email address
-      security:
-        - api_key: []
   /user/images:
     get:
       tags:
@@ -2357,8 +2351,6 @@ paths:
                             detail:
                               type: string
                               example: Email or password is incorrect
-      security:
-        - api_key: []
   /user/password:
     patch:
       tags:
@@ -2584,8 +2576,6 @@ paths:
                             detail:
                               type: string
                               example: This email address is already registered
-      security:
-        - api_key: []
 components:
   schemas:
     Category:
