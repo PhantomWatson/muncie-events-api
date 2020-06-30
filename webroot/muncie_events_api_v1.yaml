@@ -321,8 +321,6 @@ paths:
                             detail:
                               type: string
                               example: Event with ID 123 not found
-      security:
-        - api_key: []
     patch:
       tags:
         - events
@@ -624,8 +622,6 @@ paths:
                             detail:
                               type: string
                               example: The `start` parameter is required
-      security:
-        - api_key: []
   /events/category/{categoryId}:
     get:
       tags:
@@ -715,8 +711,6 @@ paths:
                             detail:
                               type: string
                               example: 'Category with ID {categoryId} not found'
-      security:
-        - api_key: []
   /events/future:
     get:
       tags:
@@ -772,8 +766,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: './docs/v1/errors/ErrorInvalidProtocol.yaml'
-      security:
-        - api_key: []
   /events/search:
     get:
       tags:
@@ -861,8 +853,6 @@ paths:
                             detail:
                               type: string
                               example: 'Category with ID {categoryId} not found'
-      security:
-        - api_key: []
   /events/search/past:
     get:
       tags:
