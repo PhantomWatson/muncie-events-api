@@ -123,8 +123,8 @@ class UsersControllerTest extends ApplicationTest
         ]);
         $this->assertResponseSuccess();
         $this->assertRedirect([
-            'controller' => 'Pages',
-            'action' => 'home',
+            'controller' => 'Events',
+            'action' => 'index',
         ]);
         $this->assertSession(null, 'Auth.User.email');
     }
