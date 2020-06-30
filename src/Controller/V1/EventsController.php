@@ -39,11 +39,11 @@ class EventsController extends ApiController
     {
         parent::initialize();
         $this->Auth->allow([
+            'category',
+            'future',
             'index',
             'search',
-            'category',
             'view',
-            'future',
         ]);
     }
 
