@@ -8,6 +8,7 @@ use Cake\Auth\FormAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -181,8 +182,9 @@ class UsersController extends ApiController
      * /user/forgot-password endpoint
      *
      * @return void
-     * @throws BadRequestException
-     * @throws MethodNotAllowedException
+     * @throws \Cake\Http\Exception\BadRequestException
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
+     * @throws \Cake\Http\Exception\NotFoundException
      */
     public function forgotPassword()
     {
@@ -200,7 +202,7 @@ class UsersController extends ApiController
             ->where(['email' => $email])
             ->first();
         if (!$user) {
-            throw new BadRequestException('No account was found matching that email address');
+            throw new NotFoundException('No account was found matching that email address');
         }
 
         $this->getMailer('Users')->send('forgotPassword', [$user]);
