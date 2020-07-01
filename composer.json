@@ -20,7 +20,8 @@
         "phantomwatson/cakephp-json-api": "dev-master",
         "ext-gd": "*",
         "ext-curl": "*",
-        "alek13/slack": "^1.10"
+        "alek13/slack": "^1.10",
+        "ozee31/cakephp-cors": "1"
     },
     "require-dev": {
         "psy/psysh": "@stable",

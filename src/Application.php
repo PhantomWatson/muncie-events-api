@@ -43,6 +43,7 @@ class Application extends BaseApplication
         $this->addPlugin('Recaptcha');
         $this->addPlugin('JsonApi');
         $this->addPlugin('Search');
+        $this->addPlugin('Cors', ['bootstrap' => true]);
 
         if (PHP_SAPI === 'cli') {
             try {
