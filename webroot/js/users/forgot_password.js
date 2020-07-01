@@ -9,7 +9,7 @@ const handleSubmit = async function (event) {
     alert.style.visibility = 'hidden';
     const response = await fetch(url, {
         method: 'POST',
-        mode: 'no-cors',
+        mode: 'cors',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'email=' + encodeURIComponent(email)
     });
