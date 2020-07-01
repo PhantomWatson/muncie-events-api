@@ -40,7 +40,10 @@ class UsersController extends AppController
         ]);
 
         $this->Auth->allow([
-            'register', 'login', 'logout',
+            'forgotPassword',
+            'login',
+            'logout',
+            'register',
         ]);
 
         return null;
@@ -174,6 +177,18 @@ class UsersController extends AppController
         $this->set([
             'apiKey' => $apiKey,
             'pageTitle' => $apiKey ? 'Your API Key' : 'Generate API Key',
+        ]);
+    }
+
+    /**
+     * Allows the user to enter their email address and get a link to reset their password
+     *
+     * @return void
+     */
+    public function forgotPassword()
+    {
+        $this->set([
+            'pageTitle' => 'Forgot Password',
         ]);
     }
 }

@@ -168,6 +168,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
     $routes->connect('/api-key', ['controller' => 'Users', 'action' => 'apiKey']);
+    $routes->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
 
     /**
      * Connect catchall routes for all controllers.
