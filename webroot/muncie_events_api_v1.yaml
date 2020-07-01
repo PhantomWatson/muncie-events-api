@@ -2184,20 +2184,25 @@ paths:
                               example: 400
                             detail:
                               type: string
-                              example: No account was found matching that email address
-                  - type: object
-                    properties:
-                      errors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: integer
-                              example: 400
-                            detail:
-                              type: string
                               example: Please provide an email address
+        '404':
+          description: Not Found
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                          example: 404
+                        detail:
+                          type: string
+                          example: No account was found matching that email address
   /user/images:
     get:
       tags:
