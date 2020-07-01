@@ -44,6 +44,7 @@ class Application extends BaseApplication
         $this->addPlugin('Recaptcha');
         $this->addPlugin('Search');
         $this->addPlugin('Calendar');
+        $this->addPlugin('Cors', ['bootstrap' => true]);
 
         if (PHP_SAPI === 'cli') {
             try {

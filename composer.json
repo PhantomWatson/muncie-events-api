@@ -21,7 +21,8 @@
         "ext-curl": "*",
         "alek13/slack": "^1.10",
         "dereuromark/cakephp-calendar": "0.*",
-        "sabre/vobject": "^4.0"
+        "sabre/vobject": "^4.0",
+        "ozee31/cakephp-cors": "1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
