@@ -1,10 +1,10 @@
 <?php
 namespace App\Error;
 
-use Cake\Error\ExceptionRenderer;
 use Cake\Http\Response;
+use Cors\Error\AppExceptionRenderer as CorsExceptionRenderer;
 
-class AppExceptionRenderer extends ExceptionRenderer
+class AppExceptionRenderer extends CorsExceptionRenderer
 {
     /**
      * Renders the response for the exception.

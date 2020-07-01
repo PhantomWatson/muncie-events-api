@@ -373,8 +373,8 @@ $config = [
     'eventImagePath' => env('EVENT_IMG_PATH'),
     'slackWebhook' => env('SLACK_WEBHOOK'),
     'Cors' => [
-        'exceptionRenderer' => 'App\Error\AppExceptionRenderer'
-    ]
+        'exceptionRenderer' => 'App\Error\AppExceptionRenderer',
+    ],
 ];
 
 // Use Debug EmailTransport in debug mode
