@@ -117,7 +117,7 @@ use App\View\AppView;
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'MailingList',
-                        'action' => 'join'
+                        'action' => 'index'
                     ],
                     ['class' => 'nav-link']
                 ) ?>
