@@ -30,6 +30,7 @@ var mailingList = {
     },
 
     toggleBasicOptions: function () {
+        mailingList.toggleFrequencyOptions();
         if ($('#settings-custom').is(':checked')) {
             $('#custom_options').slideDown(300);
         } else {
