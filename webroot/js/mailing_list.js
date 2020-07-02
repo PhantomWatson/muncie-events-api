@@ -8,8 +8,24 @@ var mailingList = {
         $('.category_options').change(function (event) {
             mailingList.toggleEventTypeOptions();
         });
-        $('.settings_options').change(function (event) {
+        $('.mailing-list-settings-option').change(function (event) {
             mailingList.toggleBasicOptions();
+        });
+        document.getElementById('MailingListForm').addEventListener('submit', function (event) {
+            if (!document.getElementById('settings-custom').checked) {
+                return true;
+            }
+            if (!document.getElementById('frequency-custom').checked) {
+                return true;
+            }
+
+            const selectedFreq = document.querySelectorAll('#custom_frequency_options input[type=checkbox]:checked');
+            if (selectedFreq.length === 0) {
+                event.preventDefault();
+                alert('Please select either "Weekly" or at least one day of the week.');
+            }
+
+            return false;
         });
     },
 
