@@ -134,7 +134,11 @@ class MailingListTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add(
+            $rules->isUnique(['email']),
+            'emailIsUnique',
+            ['message' => 'That email address is already subscribed to the mailing list']
+        );
 
         return $rules;
     }
