@@ -3,6 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
+use Cake\Utility\Security;
 
 /**
  * MailingList Entity
@@ -23,6 +24,7 @@ use Cake\ORM\Entity;
  * @property FrozenTime $modified
  * @property FrozenTime|null $processed_daily
  * @property FrozenTime|null $processed_weekly
+ * @property string $hash
  *
  * @property User[] $users
  * @property Category[] $categories
@@ -58,4 +60,17 @@ class MailingList extends Entity
         'users' => true,
         'categories' => true,
     ];
+
+    /**
+     * A virtual field that returns the salted hash of this mailing list subscription's ID
+     *
+     * Used to provide subscribers with links to control their subscription that can't be altered to iterate through
+     * other user IDs
+     *
+     * @return string
+     */
+    protected function _getHash()
+    {
+        return Security::hash($this->id, null, true);
+    }
 }
