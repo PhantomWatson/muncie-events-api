@@ -191,4 +191,39 @@ class UsersController extends AppController
             'pageTitle' => 'Forgot Password',
         ]);
     }
+
+    /**
+     * User's /account page
+     *
+     * @return void
+     */
+    public function account()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId);
+        if (!$this->request->is('get')) {
+            $this->Users->patchEntity($user, $this->request->getData(), ['fields' => ['name', 'email']]);
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Information updated.');
+            } else {
+                $this->Flash->error(
+                    'Sorry, there was an error updating your information. ' .
+                    'Check for error messages below, try again, and contact an administrator if you need assistance.'
+                );
+            }
+        }
+
+        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+        $subscription = $mailingListTable
+            ->find()
+            ->select(['id'])
+            ->where(['email' => $user->email])
+            ->first();
+
+        $this->set([
+            'pageTitle' => 'My Account',
+            'subscription' => $subscription,
+            'user' => $user,
+        ]);
+    }
 }
