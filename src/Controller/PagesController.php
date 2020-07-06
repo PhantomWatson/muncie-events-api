@@ -79,11 +79,11 @@ class PagesController extends AppController
     public function contact()
     {
         $this->set('pageTitle', 'Contact Us');
-        $validator = new ContactValidator();
-        if (! $this->request->is('post')) {
+        if (!$this->request->is('post')) {
             return null;
         }
 
+        $validator = new ContactValidator();
         $data = $this->request->getData();
         $errors = $validator->errors($data);
         $authorized = $this->request->getSession() || $this->Recaptcha->verify();

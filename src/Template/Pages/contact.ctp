@@ -1,11 +1,12 @@
 <?php
 /**
- * @var AppView $this
+ * @var App\View\AppView $this
  * @var string $pageTitle
  */
-use App\View\AppView;
 use Cake\Core\Configure;
+
 $adminEmail = Configure::read('adminEmail');
+$session = $this->request->getSession();
 ?>
 
 <h1 class="page_title">
@@ -21,7 +22,7 @@ $adminEmail = Configure::read('adminEmail');
 
 <?= $this->Form->create(null) ?>
 
-<div class="form-group col-lg-8 col-xs-12">
+<div class="form-group">
     <?= $this->Form->control('category', [
         'class' => 'form-control',
         'options' => [
@@ -31,29 +32,31 @@ $adminEmail = Configure::read('adminEmail');
     ] ) ?>
 </div>
 
-<div class='form-group col-lg-8 col-xs-12'>
+<div class="form-group">
     <?= $this->Form->control('name', [
-        'default' => $this->request->getSession()->read('Auth.User.name')
+        'default' => $session->read('Auth.User.name')
     ]) ?>
 </div>
 
-<div class='form-group col-lg-8 col-xs-12'>
+<div class='form-group'>
     <?= $this->Form->control('email', [
-        'default' => $this->request->getSession()->read('Auth.User.email')
+        'default' => $session->read('Auth.User.email')
     ]) ?>
 </div>
 
-<div class='form-group col-lg-8 col-xs-12'>
+<div class="form-group">
     <?= $this->Form->control('body', [
         'label' => 'Message',
         'type' => 'textarea'
     ]) ?>
 </div>
 
-<?php if (!$this->request->getSession()->read('Auth.User')): ?>
+<?php if (!$session->read('Auth.User')): ?>
     <?= $this->Recaptcha->display() ?>
 <?php endif; ?>
 
-<div class='form-group col-lg-8 col-xs-12'>
-    <?= $this->Form->submit('Send', ['class' => 'btn btn-default']) ?>
+<div class="form-group">
+    <?= $this->Form->submit('Send', ['class' => 'btn btn-primary']) ?>
 </div>
+
+<?= $this->Form->end() ?>
