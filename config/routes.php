@@ -136,6 +136,11 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     // MailingList
     $routes->connect('/unsubscribe', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
+    $routes->connect(
+        '/mailing-list/:id/:hash',
+        ['controller' => 'MailingList', 'action' => 'index'],
+        ['id' => '[0-9]+', 'pass' => ['id', 'hash']]
+    );
 
     // Pages
     $routes->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
