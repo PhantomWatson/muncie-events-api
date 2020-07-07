@@ -8,7 +8,6 @@ use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Utility\Security;
 use Cake\Validation\Validator;
 
 /**
@@ -172,16 +171,5 @@ class MailingListTable extends Table
         return $this->find()
             ->where(['email' => $email])
             ->first();
-    }
-
-    /**
-     * Returns the security hash for the specified mailing list subscriber ID
-     *
-     * @param int|null $subscriberId ID of record in mailing list table
-     * @return string
-     */
-    public function getHash(?int $subscriberId)
-    {
-        return Security::hash($subscriberId, null, true);
     }
 }

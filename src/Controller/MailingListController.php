@@ -204,8 +204,8 @@ class MailingListController extends AppController
 
             return $this->redirect('/');
         }
-        $hashIsValid = $hash == $this->MailingList->getHash($subscriberId);
-        if (!$hashIsValid) {
+        $subscription = $this->MailingList->get($subscriberId);
+        if (!$hash == $subscription->hash) {
             $this->Flash->error(
                 'It appears that you clicked on a broken link. If you copied and pasted a URL to get ' .
                 'here, you may not have copied the whole address. Please contact an administrator if you need ' .

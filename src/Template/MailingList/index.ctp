@@ -16,7 +16,6 @@ use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 
 $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
-$hash = $mailingListTable->getHash($subscription->id);
 ?>
 
 <h1 class="page_title">
@@ -170,7 +169,7 @@ $hash = $mailingListTable->getHash($subscription->id);
                 'controller' => 'MailingList',
                 'action' => 'unsubscribe',
                 $subscription->id,
-                $hash
+                $subscription->hash
             ],
             [
                 'class' => 'btn btn-danger',
