@@ -27,7 +27,7 @@
                     'Update Mailing List Settings',
                     [
                         'controller' => 'MailingList',
-                        'action' => 'settings',
+                        'action' => 'index',
                         $subscription->id,
                         $subscription->hash
                     ]
