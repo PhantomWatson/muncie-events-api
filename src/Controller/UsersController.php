@@ -226,4 +226,36 @@ class UsersController extends AppController
             'user' => $user,
         ]);
     }
+
+    /**
+     * Page for changing one's own account password
+     *
+     * @return null
+     */
+    public function changePass()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId);
+        $this->set('pageTitle', 'Change Password');
+
+        if ($this->request->is('get')) {
+            $this->set('user', $user);
+
+            return null;
+        }
+
+        $this->Users->patchEntity($user, $this->request->getData(), ['fields' => ['password', 'confirm_password']]);
+        if ($this->Users->save($user)) {
+            $this->Flash->success('Password changed.');
+        } else {
+            $this->Flash->error(
+                'Sorry, there was an error changing your password. ' .
+                'Check for error messages below, try again, and contact an administrator if you need assistance.'
+            );
+        }
+
+        $this->set('user', $user);
+
+        return null;
+    }
 }
