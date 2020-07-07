@@ -160,7 +160,7 @@ $hash = $mailingListTable->getHash($subscription->id);
 
     <?= $this->Form->button(
         isset($subscription->id) ? 'Update Subscription' : 'Join Event Mailing List',
-        ['class' => 'btn btn-secondary']
+        ['class' => 'btn btn-primary']
     ) ?>
     <?= $this->Form->end() ?>
     <?php if (isset($subscription->id)): ?>
