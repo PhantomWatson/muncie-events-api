@@ -24,7 +24,7 @@ foreach ($days as $code => $day) {
         $daysSelected[] = $code;
     }
 }
-if ($subscription->weekly && count($daysSelected) === 0) {
+if ($subscription->isNew() || $subscription->weekly && count($daysSelected) === 0) {
     $frequencyValue = 'weekly';
 } elseif (!$subscription->weekly && count($daysSelected) === 7) {
     $frequencyValue = 'daily';
