@@ -94,6 +94,11 @@ class AppController extends Controller
                 $this->response = $this->response->withExpiredCookie('CookieAuth');
             }
         }
+
+        // Replace "You are not authorized" error message with login prompt message if user is not logged in
+        if (!$this->Auth->user()) {
+            $this->Auth->setConfig('authError', 'You\'ll need to log in before accessing that page');
+        }
     }
 
     /**
