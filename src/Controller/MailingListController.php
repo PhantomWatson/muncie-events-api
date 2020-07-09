@@ -49,7 +49,7 @@ class MailingListController extends AppController
                 return $redirect;
             }
 
-            $subscription = $this->MailingList->get($subscriberId);
+            $subscription = $this->MailingList->get($subscriberId, ['contain' => ['Categories']]);
         } else {
             $subscription = $this->getCurrentUserSubscription() ?? $this->MailingList->newEntity();
         }
@@ -71,11 +71,19 @@ class MailingListController extends AppController
             );
         }
 
+        if ($this->request->is('get')) {
+            if ($subscription->isNew()) {
+                $subscription->event_categories = 'all';
+            } else {
+                $subscription->event_categories = $subscription->all_categories ? 'all' : 'custom';
+            }
+        }
+
         $this->loadModel('Categories');
         $this->set([
             'categories' => $this->Categories->find()->all(),
             'days' => $this->MailingList->getDays(),
-            'pageTitle' => $subscriberId ? 'Update Subscription' : 'Join Muncie Events Mailing List',
+            'pageTitle' => $subscription->isNew() ? 'Join Muncie Events Mailing List' : 'Update Subscription',
             'subscription' => $subscription,
         ]);
 
@@ -158,6 +166,7 @@ class MailingListController extends AppController
         return $this->MailingList
             ->find()
             ->where(['id' => $subscriberId])
+            ->contain(['Categories'])
             ->first();
     }
 

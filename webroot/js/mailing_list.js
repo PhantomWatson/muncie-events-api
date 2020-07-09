@@ -11,21 +11,29 @@ var mailingList = {
         $('.mailing-list-settings-option').change(function (event) {
             mailingList.toggleBasicOptions();
         });
+
         document.getElementById('MailingListForm').addEventListener('submit', function (event) {
             if (!document.getElementById('settings-custom').checked) {
-                return true;
-            }
-            if (!document.getElementById('frequency-custom').checked) {
-                return true;
+                return;
             }
 
-            const selectedFreq = document.querySelectorAll('#custom_frequency_options input[type=checkbox]:checked');
-            if (selectedFreq.length === 0) {
-                event.preventDefault();
-                alert('Please select either "Weekly" or at least one day of the week.');
+            const customFreq = document.getElementById('frequency-custom');
+            if (customFreq.checked) {
+                const selectedFreq = document.querySelectorAll('#custom_frequency_options input[type=checkbox]:checked');
+                if (selectedFreq.length === 0) {
+                    event.preventDefault();
+                    alert('Please select either "Weekly" or at least one day of the week.');
+                }
             }
 
-            return false;
+            const customCategories = document.getElementById('event-categories-custom');
+            if (customCategories.checked) {
+                const selectedCategories = document.querySelectorAll('#custom_event_type_options input[type=checkbox]:checked');
+                if (selectedCategories.length === 0) {
+                    event.preventDefault();
+                    alert('Please select at least one event category.');
+                }
+            }
         });
     },
 
@@ -47,6 +55,10 @@ var mailingList = {
 
     toggleBasicOptions: function () {
         mailingList.toggleFrequencyOptions();
+        const form = document.getElementById('MailingListForm');
+        if (!form.classList.contains('joining')) {
+            return;
+        }
         if ($('#settings-custom').is(':checked')) {
             $('#custom_options').slideDown(300);
         } else {

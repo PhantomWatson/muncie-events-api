@@ -219,6 +219,7 @@ table.calendar {
 .mailing-options {
     border: none;
 }
+
 div#custom_event_type_options {
     margin-left: 20px;
 
@@ -227,7 +228,15 @@ div#custom_event_type_options {
         padding: 1px;
     }
 }
+
+.all-categories-preselected {
+    div#custom_event_type_options {
+        display: none;
+    }
+}
+
 #custom_frequency_options {
+    display: none;
     margin-left: 20px;
 
     tr:first-child {
@@ -241,8 +250,10 @@ div#custom_event_type_options {
 }
 
 #MailingListForm {
-    #custom_options {
-        display: none;
+    &.joining {
+        #custom_options {
+            display: none;
+        }
     }
 }
 

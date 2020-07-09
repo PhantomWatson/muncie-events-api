@@ -16,6 +16,10 @@ use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 
 $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
+$formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
+if ($subscription->event_categories == 'all') {
+    $formClasses[] = 'all-categories-preselected';
+}
 ?>
 
 <h1 class="page_title">
@@ -23,25 +27,32 @@ $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
 </h1>
 
 <div id="mailing-list-form">
-    <?= $this->Form->create($subscription, ['id' => 'MailingListForm']) ?>
+    <?= $this->Form->create($subscription, [
+        'id' => 'MailingListForm',
+        'class' => implode(' ', $formClasses),
+    ]) ?>
     <?= $this->Form->control('email', [
         'class' => 'form-control',
-        'label' => 'Email address'
+        'label' => 'Email address',
     ]) ?>
-    <?= $this->Form->control('settings',
-        [
-            'type' => 'radio',
-            'options' => [
-                'default' => 'Default Settings',
-                'custom' => 'Customize'
-            ],
-            'default' => 'default',
-            'class' => 'mailing-list-settings-option',
-            'legend' => false,
-            'label' => false
-        ]
-    ) ?>
-    <div id="custom_options" style="display: none;">
+
+    <?php if ($subscription->isNew()): ?>
+        <?= $this->Form->control('settings',
+            [
+                'type' => 'radio',
+                'options' => [
+                    'default' => 'Default Settings',
+                    'custom' => 'Customize',
+                ],
+                'default' => 'default',
+                'class' => 'mailing-list-settings-option',
+                'legend' => false,
+                'label' => false,
+            ]
+        ) ?>
+    <?php endif; ?>
+
+    <div id="custom_options">
         <fieldset>
             <legend>Frequency</legend>
             <?php
@@ -128,10 +139,7 @@ $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
                     ['value' => 'all', 'text' => 'All Events'],
                     ['value' => 'custom', 'text' => 'Custom']
                 ],
-                [
-                    'class' => 'category_options',
-                    'value' => 'all'
-                ]
+                ['class' => 'category_options']
             ) ?>
             <div id="custom_event_type_options">
                 <?php if (isset($categoriesError)): ?>
