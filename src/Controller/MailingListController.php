@@ -149,13 +149,16 @@ class MailingListController extends AppController
      */
     private function getCurrentUserSubscription()
     {
-        if (!$this->Auth->user()) {
+        $subscriberId = $this->Auth->user('mailing_list_id');
+
+        if (!$subscriberId) {
             return null;
         }
 
-        $email = $this->Auth->user('email');
-
-        return $this->MailingList->getFromEmail($email);
+        return $this->MailingList
+            ->find()
+            ->where(['id' => $subscriberId])
+            ->first();
     }
 
     /**
