@@ -18,6 +18,19 @@ if ($subscription->event_categories == 'all') {
     $formClasses[] = 'all-categories-preselected';
 }
 $preselectedCategories = $subscription->isNew() ? [] : Hash::extract($subscription->categories, '{n}.id');
+$daysSelected = [];
+foreach ($days as $code => $day) {
+    if ($subscription->{"daily_$code"}) {
+        $daysSelected[] = $code;
+    }
+}
+if ($subscription->weekly && count($daysSelected) === 0) {
+    $frequencyValue = 'weekly';
+} elseif (!$subscription->weekly && count($daysSelected) === 7) {
+    $frequencyValue = 'daily';
+} else {
+    $frequencyValue = 'custom';
+}
 ?>
 
 <h1 class="page_title">
@@ -62,20 +75,20 @@ $preselectedCategories = $subscription->isNew() ? [] : Hash::extract($subscripti
                 [
                     [
                         'value' => 'weekly',
-                        'text' => 'Weekly (Thursday, next week\'s events)'
+                        'text' => 'Weekly (Thursday, next week\'s events)',
                     ],
                     [
                         'value' => 'daily',
-                        'text' => 'Daily (Every morning, today\'s events)'
+                        'text' => 'Daily (Every morning, today\'s events)',
                     ],
                     [
                         'value' => 'custom',
-                        'text' => 'Custom'
+                        'text' => 'Custom',
                     ],
                 ],
                 [
                     'class' => 'frequency_options',
-                    'value' => 'weekly'
+                    'value' => $frequencyValue,
                 ]
             ) ?>
 
