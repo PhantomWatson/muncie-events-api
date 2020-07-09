@@ -31,6 +31,9 @@ if ($subscription->weekly && count($daysSelected) === 0) {
 } else {
     $frequencyValue = 'custom';
 }
+if ($frequencyValue != 'custom') {
+    $formClasses[] = 'frequency-options-hidden';
+}
 ?>
 
 <h1 class="page_title">
