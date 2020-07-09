@@ -3,20 +3,16 @@
  * @var AppView $this
  * @var array $days
  * @var MailingList $subscription
- * @var MailingListTable $mailingListTable
  * @var ResultSet|Category[] $categories
  * @var string $pageTitle
  */
 
 use App\Model\Entity\Category;
 use App\Model\Entity\MailingList;
-use App\Model\Table\MailingListTable;
 use App\View\AppView;
 use Cake\ORM\ResultSet;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
-$mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
 $formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
 if ($subscription->event_categories == 'all') {
     $formClasses[] = 'all-categories-preselected';
