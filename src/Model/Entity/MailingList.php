@@ -73,4 +73,18 @@ class MailingList extends Entity
     {
         return Security::hash($this->id, null, true);
     }
+
+    /**
+     * Automatically trims and lowercases email
+     *
+     * @param string $email Email address
+     * @return bool|string
+     */
+    protected function _setEmail($email)
+    {
+        $email = trim($email);
+        $email = mb_strtolower($email);
+
+        return $email;
+    }
 }
