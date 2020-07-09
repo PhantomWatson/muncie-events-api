@@ -14,12 +14,14 @@ use App\Model\Table\MailingListTable;
 use App\View\AppView;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
 $formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
 if ($subscription->event_categories == 'all') {
     $formClasses[] = 'all-categories-preselected';
 }
+$preselectedCategories = $subscription->isNew() ? [] : Hash::extract($subscription->categories, '{n}.id');
 ?>
 
 <h1 class="page_title">
@@ -156,7 +158,7 @@ if ($subscription->event_categories == 'all') {
                                 'type' => 'checkbox',
                                 'label' => $this->Icon->category($category->name) . ' ' . $category->name,
                                 'hiddenField' => false,
-                                'checked' => true
+                                'checked' => $subscription->isNew() || in_array($category->id, $preselectedCategories)
                             ]
                         ) ?>
                     </div>
