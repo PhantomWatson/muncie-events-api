@@ -108,20 +108,19 @@ use App\View\AppView;
                         ['class' => 'nav-link']
                     ) ?>
                 </li>
+                <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
+                    <?= $this->Html->link(
+                        'Mailing List',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'MailingList',
+                            'action' => 'index'
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
             <?php endif; ?>
-
-            <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
-                <?= $this->Html->link(
-                    'Mailing List',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'MailingList',
-                        'action' => 'index'
-                    ],
-                    ['class' => 'nav-link']
-                ) ?>
-            </li>
 
             <li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
                 <?= $this->Html->link(
