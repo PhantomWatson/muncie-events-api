@@ -1,16 +1,12 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\Model\Entity\MailingList $subscription
+ * @var \App\View\AppView $this
+ * @var \Cake\ORM\ResultSet|\App\Model\Entity\Category[] $categories
  * @var array $days
- * @var MailingList $subscription
- * @var ResultSet|Category[] $categories
  * @var string $pageTitle
  */
 
-use App\Model\Entity\Category;
-use App\Model\Entity\MailingList;
-use App\View\AppView;
-use Cake\ORM\ResultSet;
 use Cake\Utility\Hash;
 
 $formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
