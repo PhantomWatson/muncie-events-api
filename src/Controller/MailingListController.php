@@ -43,17 +43,22 @@ class MailingListController extends AppController
      */
     public function index($subscriberId = null, $hash = null)
     {
+        // Redirect if hash is invalid
         if ($subscriberId) {
             $redirect = $this->validateIdAndHash($subscriberId, $hash);
             if ($redirect) {
                 return $redirect;
             }
+        }
 
+        // Get subscription entity
+        if ($subscriberId) {
             $subscription = $this->MailingList->get($subscriberId, ['contain' => ['Categories']]);
         } else {
             $subscription = $this->getCurrentUserSubscription() ?? $this->MailingList->newEntity();
         }
 
+        // Update with post data
         if ($this->request->is('post')) {
             $subscription = $this->updateSubscriptionFromRequest($subscription);
             if ($this->MailingList->save($subscription)) {
@@ -71,9 +76,16 @@ class MailingListController extends AppController
             );
         }
 
+        // Prep entity for form
+        $this->loadModel('Categories');
         if ($this->request->is('get')) {
+            // "Join" form
             if ($subscription->isNew()) {
                 $subscription->event_categories = 'all';
+                $subscription->weekly;
+                $subscription->all_categories = true;
+
+                // "Update subscription" form
             } else {
                 $subscription->event_categories = $subscription->all_categories ? 'all' : 'custom';
             }
@@ -98,8 +110,10 @@ class MailingListController extends AppController
      */
     private function updateSubscriptionFromRequest($subscription)
     {
-        $subscription->email = strtolower(trim($this->request->getData('email')));
-        $subscription->new_subscriber = !$this->MailingList->exists(['email' => $subscription->email]);
+        $this->MailingList->patchEntity($subscription, [
+            'email' => $this->request->getData('email'),
+            'new_subscriber' => $subscription->isNew(),
+        ]);
 
         // User is joining with default settings
         if ($this->request->getData('settings') == 'default') {
