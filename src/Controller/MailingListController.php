@@ -68,12 +68,24 @@ class MailingListController extends AppController
                 $subscription = $this->MailingList->newEntity();
             }
             $subscription = $this->updateSubscriptionFromRequest($subscription);
+
+            // Avoid saving category associations for all_categories subscriptions
+            if ($subscription->all_categories) {
+                $stashedCategorySelections = $subscription->categories;
+                $subscription->categories = [];
+            }
+
             if ($this->MailingList->save($subscription)) {
                 $this->Flash->success(
                     $subscriberId ? 'Subscription updated' : 'Thanks for joining the Muncie Events mailing list!'
                 );
 
                 return $this->redirect('/');
+            }
+
+            // Recall previous category selections if bouncing back from error
+            if ($subscription->all_categories) {
+                $subscription->categories = $stashedCategorySelections;
             }
 
             $this->Flash->error(
