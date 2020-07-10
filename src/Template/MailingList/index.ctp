@@ -14,7 +14,8 @@ use Cake\ORM\ResultSet;
 use Cake\Utility\Hash;
 
 $formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
-if ($subscription->event_categories == 'all') {
+$preselectedCategoriesMode = $this->request->is('get') ? 'all' : $this->request->getData('event_categories');
+if ($preselectedCategoriesMode == 'all') {
     $formClasses[] = 'all-categories-preselected';
 }
 $preselectedCategories = $subscription->isNew() ? [] : Hash::extract($subscription->categories, '{n}.id');
@@ -31,7 +32,7 @@ if ($subscription->weekly && count($daysSelected) === 0) {
 } else {
     $frequencyValue = 'custom';
 }
-$settingsValue = ($frequencyValue == 'weekly' && $subscription->event_categories) ? 'default' : 'custom';
+$settingsValue = ($frequencyValue == 'weekly' && $preselectedCategoriesMode == 'all') ? 'default' : 'custom';
 if ($frequencyValue != 'custom') {
     $formClasses[] = 'frequency-options-hidden';
 }

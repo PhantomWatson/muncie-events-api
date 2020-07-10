@@ -81,13 +81,8 @@ class MailingListController extends AppController
         if ($this->request->is('get')) {
             // "Join" form
             if ($subscription->isNew()) {
-                $subscription->event_categories = 'all';
                 $subscription->weekly = true;
                 $subscription->all_categories = true;
-
-                // "Update subscription" form
-            } else {
-                $subscription->event_categories = $subscription->all_categories ? 'all' : 'custom';
             }
         }
 
