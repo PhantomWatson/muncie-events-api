@@ -78,36 +78,28 @@ class MailingListTable extends Table
             ->requirePresence('all_categories', 'create');
 
         $validator
-            ->boolean('weekly')
-            ->requirePresence('weekly', 'create');
+            ->boolean('weekly');
 
         $validator
-            ->boolean('daily_sun')
-            ->requirePresence('daily_sun', 'create');
+            ->boolean('daily_sun');
 
         $validator
-            ->boolean('daily_mon')
-            ->requirePresence('daily_mon', 'create');
+            ->boolean('daily_mon');
 
         $validator
-            ->boolean('daily_tue')
-            ->requirePresence('daily_tue', 'create');
+            ->boolean('daily_tue');
 
         $validator
-            ->boolean('daily_wed')
-            ->requirePresence('daily_wed', 'create');
+            ->boolean('daily_wed');
 
         $validator
-            ->boolean('daily_thu')
-            ->requirePresence('daily_thu', 'create');
+            ->boolean('daily_thu');
 
         $validator
-            ->boolean('daily_fri')
-            ->requirePresence('daily_fri', 'create');
+            ->boolean('daily_fri');
 
         $validator
-            ->boolean('daily_sat')
-            ->requirePresence('daily_sat', 'create');
+            ->boolean('daily_sat');
 
         $validator
             ->boolean('new_subscriber')
