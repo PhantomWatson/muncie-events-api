@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Entity\MailingList;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\MailingListTable;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Response;
 use Exception;
@@ -55,11 +56,17 @@ class MailingListController extends AppController
         if ($subscriberId) {
             $subscription = $this->MailingList->get($subscriberId, ['contain' => ['Categories']]);
         } else {
-            $subscription = $this->getCurrentUserSubscription() ?? $this->MailingList->newEntityWithDefaults();
+            $subscription = $this->getCurrentUserSubscription();
+        }
+        if ($this->request->is('get') && !$subscription) {
+            $subscription = $this->MailingList->newEntityWithDefaults();
         }
 
         // Update with post data
         if ($this->request->is('post')) {
+            if (!$subscription) {
+                $subscription = $this->MailingList->newEntity();
+            }
             $subscription = $this->updateSubscriptionFromRequest($subscription);
             if ($this->MailingList->save($subscription)) {
                 $this->Flash->success(
@@ -95,56 +102,53 @@ class MailingListController extends AppController
      */
     private function updateSubscriptionFromRequest($subscription)
     {
-        $this->MailingList->patchEntity($subscription, [
+        $data = [
             'email' => $this->request->getData('email'),
             'new_subscriber' => $subscription->isNew(),
-        ]);
+        ];
 
         // User is joining with default settings
         if ($this->request->getData('settings') == 'default') {
-            $subscription->weekly = 1;
-            $subscription->all_categories = 1;
-
-            return $subscription;
-        }
-
-        // "All categories" is selected
-        if ($this->request->getData('event_categories') == 'all') {
-            $subscription->all_categories = 1;
-
-            // "Custom categories" is selected
+            $data['weekly'] = 1;
+            $data['all_categories'] = 1;
         } else {
-            // If the user individually selected every category, set 'all_categories' to true
+            $allCategoriesSelected = $this->request->getData('event_categories') == 'all';
             $selectedCategoryCount = count($this->request->getData('selected_categories'));
             $this->loadModel('Categories');
             $totalCategoryCount = $this->Categories->find()->count();
-            $subscription->all_categories = $selectedCategoryCount == $totalCategoryCount;
-        }
+            $data['all_categories'] = $allCategoriesSelected || $selectedCategoryCount == $totalCategoryCount;
 
-        if (!$subscription->all_categories) {
-            $subscription->categories['_ids'] = $this->request->getData('selected_categories');
-        }
+            $frequency = $this->request->getData('frequency');
+            $data['weekly'] = $frequency == 'weekly';
 
-        // "Weekly" is selected
-        $subscription->weekly = $this->request->getData('frequency') == 'weekly';
+            $days = $this->MailingList->getDays();
+            if ($frequency == 'daily') {
+                foreach ($days as $abbreviation => $day) {
+                    $data["daily_$abbreviation"] = 1;
+                }
+            }
 
-        // "Daily" is selected
-        $days = $this->MailingList->getDays();
-        $frequency = $this->request->getData('frequency');
-        if ($frequency == 'daily') {
-            foreach ($days as $abbreviation => $day) {
-                $subscription->{"daily_$abbreviation"} = 1;
+            if ($frequency == 'custom') {
+                foreach ($days as $abbreviation => $day) {
+                    $data["daily_$abbreviation"] = $this->request->getData("daily_$abbreviation");
+                }
+
+                $data['weekly'] = $this->request->getData('weekly');
             }
         }
 
-        // Custom frequency is selected
-        if ($frequency == 'custom') {
-            foreach ($days as $abbreviation => $day) {
-                $subscription->{"daily_$abbreviation"} = $this->request->getData("daily_$abbreviation");
-            }
+        $this->MailingList->patchEntity($subscription, $data);
 
-            $subscription->weekly = $this->request->getData('weekly');
-        }
+        /* Associated categories are always set to the $subscription->categories field so that the corresponding form
+         * checkboxes can be generated as either checked or unchecked, but if all_categories is TRUE, we won't actually
+         * save any of those category associations. */
+        $selectedCategoryIds = array_keys($this->request->getData('selected_categories'));
+        $subscription->categories = $this->Categories
+            ->find()
+            ->where(function (QueryExpression $exp) use ($selectedCategoryIds) {
+                return $exp->in('id', $selectedCategoryIds);
+            })
+            ->toArray();
 
         return $subscription;
     }
