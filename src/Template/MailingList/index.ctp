@@ -24,13 +24,14 @@ foreach ($days as $code => $day) {
         $daysSelected[] = $code;
     }
 }
-if ($subscription->isNew() || $subscription->weekly && count($daysSelected) === 0) {
+if ($subscription->weekly && count($daysSelected) === 0) {
     $frequencyValue = 'weekly';
 } elseif (!$subscription->weekly && count($daysSelected) === 7) {
     $frequencyValue = 'daily';
 } else {
     $frequencyValue = 'custom';
 }
+$settingsValue = ($frequencyValue == 'weekly' && $subscription->event_categories) ? 'default' : 'custom';
 if ($frequencyValue != 'custom') {
     $formClasses[] = 'frequency-options-hidden';
 }
@@ -62,6 +63,7 @@ if ($frequencyValue != 'custom') {
                 'class' => 'mailing-list-settings-option',
                 'legend' => false,
                 'label' => false,
+                'value' => $settingsValue,
             ]
         ) ?>
     <?php endif; ?>
