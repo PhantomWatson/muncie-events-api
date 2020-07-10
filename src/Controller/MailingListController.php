@@ -55,7 +55,7 @@ class MailingListController extends AppController
         if ($subscriberId) {
             $subscription = $this->MailingList->get($subscriberId, ['contain' => ['Categories']]);
         } else {
-            $subscription = $this->getCurrentUserSubscription() ?? $this->MailingList->newEntity();
+            $subscription = $this->getCurrentUserSubscription() ?? $this->MailingList->newEntityWithDefaults();
         }
 
         // Update with post data
@@ -74,16 +74,6 @@ class MailingListController extends AppController
                 ($subscriberId ? 'updating your subscription' : 'subscribing you to the mailing list') .
                 '. Please try again, or contact an administrator for assistance.'
             );
-        }
-
-        // Prep entity for form
-        $this->loadModel('Categories');
-        if ($this->request->is('get')) {
-            // "Join" form
-            if ($subscription->isNew()) {
-                $subscription->weekly = true;
-                $subscription->all_categories = true;
-            }
         }
 
         $this->loadModel('Categories');

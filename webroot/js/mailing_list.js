@@ -55,10 +55,6 @@ var mailingList = {
 
     toggleBasicOptions: function () {
         mailingList.toggleFrequencyOptions();
-        const form = document.getElementById('MailingListForm');
-        if (!form.classList.contains('joining')) {
-            return;
-        }
         if ($('#settings-custom').is(':checked')) {
             $('#custom_options').slideDown(300);
         } else {

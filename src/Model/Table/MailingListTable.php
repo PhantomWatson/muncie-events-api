@@ -164,4 +164,21 @@ class MailingListTable extends Table
             ->where(['email' => $email])
             ->first();
     }
+
+    /**
+     * Returns a new entity with fields set to default values
+     *
+     * @return \App\Model\Entity\MailingList
+     */
+    public function newEntityWithDefaults()
+    {
+        $subscription = $this->newEntity();
+        $subscription->weekly = true;
+        $subscription->all_categories = true;
+        $subscription->categories = $this->Categories
+            ->find()
+            ->toArray();
+
+        return $subscription;
+    }
 }

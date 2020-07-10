@@ -9,12 +9,13 @@
 
 use Cake\Utility\Hash;
 
-$formClasses = [$subscription->isNew() ? 'joining' : 'updating'];
-$preselectedCategoriesMode = $this->request->is('get') ? 'all' : $this->request->getData('event_categories');
+$formClasses = [];
+$preselectedCategoriesMode = $subscription->all_categories || count($subscription->categories) == count($categories)
+    ? 'all' : 'custom';
 if ($preselectedCategoriesMode == 'all') {
     $formClasses[] = 'all-categories-preselected';
 }
-$preselectedCategories = $subscription->isNew() ? [] : Hash::extract($subscription->categories, '{n}.id');
+$preselectedCategories = Hash::extract($subscription->categories, '{n}.id');
 $daysSelected = [];
 foreach ($days as $code => $day) {
     if ($subscription->{"daily_$code"}) {
@@ -29,6 +30,9 @@ if ($subscription->weekly && count($daysSelected) === 0) {
     $frequencyValue = 'custom';
 }
 $settingsValue = ($frequencyValue == 'weekly' && $preselectedCategoriesMode == 'all') ? 'default' : 'custom';
+if ($settingsValue == 'default') {
+    $formClasses[] = 'customize-options-hidden';
+}
 if ($frequencyValue != 'custom') {
     $formClasses[] = 'frequency-options-hidden';
 }
@@ -48,22 +52,20 @@ if ($frequencyValue != 'custom') {
         'label' => 'Email address',
     ]) ?>
 
-    <?php if ($subscription->isNew()): ?>
-        <?= $this->Form->control('settings',
-            [
-                'type' => 'radio',
-                'options' => [
-                    'default' => 'Default Settings',
-                    'custom' => 'Customize',
-                ],
-                'default' => 'default',
-                'class' => 'mailing-list-settings-option',
-                'legend' => false,
-                'label' => false,
-                'value' => $settingsValue,
-            ]
-        ) ?>
-    <?php endif; ?>
+    <?= $this->Form->control('settings',
+        [
+            'type' => 'radio',
+            'options' => [
+                'default' => 'Default Settings',
+                'custom' => 'Customize',
+            ],
+            'default' => 'default',
+            'class' => 'mailing-list-settings-option',
+            'legend' => false,
+            'label' => false,
+            'value' => $settingsValue,
+        ]
+    ) ?>
 
     <div id="custom_options">
         <fieldset>
@@ -150,9 +152,12 @@ if ($frequencyValue != 'custom') {
                 'event_categories',
                 [
                     ['value' => 'all', 'text' => 'All Events'],
-                    ['value' => 'custom', 'text' => 'Custom']
+                    ['value' => 'custom', 'text' => 'Custom'],
                 ],
-                ['class' => 'category_options']
+                [
+                    'class' => 'category_options',
+                    'value' => $preselectedCategoriesMode,
+                ]
             ) ?>
             <div id="custom_event_type_options">
                 <?php if (isset($categoriesError)): ?>
@@ -169,7 +174,7 @@ if ($frequencyValue != 'custom') {
                                 'type' => 'checkbox',
                                 'label' => $this->Icon->category($category->name) . ' ' . $category->name,
                                 'hiddenField' => false,
-                                'checked' => $subscription->isNew() || in_array($category->id, $preselectedCategories)
+                                'checked' => in_array($category->id, $preselectedCategories)
                             ]
                         ) ?>
                     </div>
