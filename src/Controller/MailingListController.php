@@ -75,12 +75,20 @@ class MailingListController extends AppController
                 $subscription->categories = [];
             }
 
+            $isNew = $subscription->isNew();
             if ($this->MailingList->save($subscription)) {
-                $this->Flash->success(
-                    $subscriberId ? 'Subscription updated' : 'Thanks for joining the Muncie Events mailing list!'
-                );
+                if ($isNew) {
+                    $this->Flash->success('Thanks for joining the Muncie Events mailing list!');
 
-                return $this->redirect('/');
+                    return $this->redirect('/');
+                }
+
+                $this->Flash->success('Subscription updated');
+
+                return $this->redirect([
+                    'controller' => 'Users',
+                    'action' => 'account',
+                ]);
             }
 
             // Recall previous category selections if bouncing back from error
