@@ -17,7 +17,7 @@
                 'Change Password',
                 [
                     'controller' => 'Users',
-                    'action' => 'changePass'
+                    'action' => 'changePass',
                 ]
             ) ?>
         </li>
@@ -28,8 +28,6 @@
                     [
                         'controller' => 'MailingList',
                         'action' => 'index',
-                        $subscription->id,
-                        $subscription->hash
                     ]
                 ) ?>
             </li>
@@ -38,7 +36,7 @@
 
     <?= $this->Form->create($user) ?>
     <?= $this->Form->control('name', [
-        'after' => '<div class="text-muted">Your first and last actual name, please</div>'
+        'after' => '<div class="text-muted">Your first and last actual name, please</div>',
     ]) ?>
     <?= $this->Form->control('email') ?>
     <?= $this->Form->submit('Update', ['class' => 'btn btn-primary']) ?>
