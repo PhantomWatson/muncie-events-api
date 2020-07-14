@@ -15,6 +15,7 @@ use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
 
@@ -53,6 +54,8 @@ class EventsController extends AppController
         if ($action === 'add') {
             $this->loadComponent('Recaptcha.Recaptcha');
         }
+        $this->loadComponent('Calendar.Calendar');
+        $this->RequestHandler->setConfig('viewClassMap', ['ics' => 'Calendar.Ical']);
     }
 
     /**
@@ -174,6 +177,12 @@ class EventsController extends AppController
             ->find('withAllAssociated')
             ->where(['Events.id' => $id])
             ->firstOrFail();
+
+        if ($this->request->getParam('_ext') == 'ics') {
+            $filename = sprintf('%s-%s.ics', Text::slug($event->title), date('m-d-Y', strtotime($event->date)));
+            $this->response = $this->response->withDownload($filename);
+        }
+
         $this->set([
             'event' => $event,
             'pageTitle' => $event->title,

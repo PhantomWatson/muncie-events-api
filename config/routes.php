@@ -42,7 +42,7 @@ use Cake\Routing\Route\DashedRoute;
  *
  */
 Router::defaultRouteClass(DashedRoute::class);
-Router::extensions(['json']);
+Router::extensions(['json', 'ics']);
 Router::scope('/', function (RouteBuilder $routes) {
     // Categories
     $categories = [

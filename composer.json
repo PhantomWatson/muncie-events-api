@@ -20,7 +20,9 @@
         "phantomwatson/cakephp-json-api": "dev-master",
         "ext-gd": "*",
         "ext-curl": "*",
-        "alek13/slack": "^1.10"
+        "alek13/slack": "^1.10",
+        "dereuromark/cakephp-calendar": "0.*",
+        "sabre/vobject": "^4.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
