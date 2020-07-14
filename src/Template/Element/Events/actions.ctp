@@ -74,28 +74,32 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
     <?php endif; ?>
     <?php if ($canEdit): ?>
         <?= $this->Html->link(
-            $this->Html->image('/img/icons/pencil.png', ['alt' => 'Edit this event']) . 'Edit',
+            'Edit',
             [
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'edit',
-                'id' => $event->id
+                'id' => $event->id,
             ],
-            ['escape' => false]
+            [
+                'class' => 'btn btn-sm btn-secondary',
+                'escape' => false,
+            ]
         ) ?>
         <?= $this->Form->postLink(
-            $this->Html->image('/img/icons/cross.png', ['alt' => 'Delete this event']) . 'Delete',
+            'Delete',
             [
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'delete',
-                'id' => $event->id
+                'id' => $event->id,
             ],
             [
+                'class' => 'btn btn-sm btn-secondary',
                 'confirm' => 'Are you sure you want to delete this event?',
-                'escape' => false
+                'escape' => false,
             ]
         ) ?>
     <?php endif; ?>

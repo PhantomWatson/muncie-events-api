@@ -80,7 +80,7 @@ $displayedEventFields = [
                 } else {
                     $editConfirm = false;
                 }
-                $editLabel = $this->Html->image('icons/pencil.png', ['alt' => 'Edit']) . 'Edit';
+                $editLabel = 'Edit';
 
                 $deleteUrl = [
                     'prefix' => 'admin',
@@ -97,7 +97,7 @@ $displayedEventFields = [
                     $deleteUrl[] = $eventId;
                     $deleteConfirm = 'Are you sure?';
                 }
-                $deleteLabel = $this->Html->image('icons/cross.png', ['alt' => 'Delete']) . 'Delete';
+                $deleteLabel = 'Delete';
 
                 $tagsList = [];
                 foreach ($event->tags as $tag) {
@@ -120,9 +120,10 @@ $displayedEventFields = [
                                     'prefix' => false,
                                     'controller' => 'Events',
                                     'action' => 'edit',
-                                    'id' => $eventId
+                                    'id' => $eventId,
                                 ],
                                 [
+                                    'class' => 'btn btn-sm btn-secondary',
                                     'escape' => false,
                                     'confirm' => $editConfirm
                                 ]
@@ -133,6 +134,7 @@ $displayedEventFields = [
                                 $deleteLabel,
                                 $deleteUrl,
                                 [
+                                    'class' => 'btn btn-sm btn-secondary',
                                     'escape' => false,
                                     'confirm' => $deleteConfirm
                                 ]

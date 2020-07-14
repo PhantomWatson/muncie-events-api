@@ -19,23 +19,27 @@ use App\View\AppView; ?>
     <?php if ($canEdit): ?>
         <div class="controls">
             <?= $this->Html->link(
-                $this->Html->image('/img/icons/pencil.png') . 'Edit',
+                'Edit',
                 [
                     'controller' => 'EventSeries',
                     'action' => 'edit',
-                    'id' => $eventSeries->id
+                    'id' => $eventSeries->id,
                 ],
-                ['escape' => false]
+                [
+                    'class' => 'btn btn-sm btn-secondary',
+                    'escape' => false,
+                ]
             ) ?>
 
             <?= $this->Form->postLink(
-                $this->Html->image('/img/icons/cross.png') . 'Delete',
+                'Delete',
                 [
                     'controller' => 'EventSeries',
                     'action' => 'delete',
-                    'id' => $eventSeries->id
+                    'id' => $eventSeries->id,
                 ],
                 [
+                    'class' => 'btn btn-sm btn-secondary',
                     'escape' => false,
                     'confirm' => 'Delete all of the events in this series?'
                 ]
