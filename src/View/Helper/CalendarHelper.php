@@ -225,6 +225,7 @@ class CalendarHelper extends Helper
         return 'https://calendar.google.com/calendar/render?action=TEMPLATE' .
             '&text=' . urlencode($event['title']) .
             '&dates=' . sprintf('%s/%s', $startTimeString, $endTimeString) .
+            '&ctz=America/New_York' .
             '&details=' . urlencode($description) .
             '&location=' . urlencode($location) .
             '&trp=false' .
@@ -248,7 +249,7 @@ class CalendarHelper extends Helper
             ->setTimezone(Event::TIMEZONE);
 
         return sprintf(
-            '%sT%sZ',
+            '%sT%s',
             $newTime->i18nFormat('yyyyMMdd', 'UTC'),
             $newTime->i18nFormat('HHmmss', 'UTC')
         );
