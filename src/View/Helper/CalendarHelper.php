@@ -180,12 +180,12 @@ class CalendarHelper extends Helper
     }
 
     /**
-     * Returns an <a> tag with label 'Google' with href set to a URL used for loading an event into Google Calendar
+     * Returns the URL used for loading an event into Google Calendar
      *
      * @param Event $event Event entity
      * @return string
      */
-    public static function getGoogleCalendarLink(Event $event)
+    public static function getGoogleCalendarUrl(Event $event)
     {
         // Clean up and truncate description
         $eventUrl = Router::url([
@@ -233,7 +233,7 @@ class CalendarHelper extends Helper
             '&sprop=' . urlencode('Muncie Events') .
             '&sprop=name:' . urlencode('https://muncieevents.com');
 
-        return sprintf('<a href="%s" title="Add to Google Calendar">Google</a>', $googleCalUrl);
+        return $googleCalUrl;
     }
 
     /**

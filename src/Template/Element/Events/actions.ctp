@@ -16,36 +16,47 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
 ?>
 <div class="actions">
     <div class="export_options_container">
-        <a href="#<?= $event->id ?>_options" id="export_event_<?= $event->id ?>" class="export_options_toggler"
-           data-toggle="collapse" data-target="#<?= $event->id ?>_options" aria-expanded="false"
-           aria-controls="<?= $event->id ?>_options">
-            <img src="/img/icons/calendar--arrow.png" alt="Export" title="Export to another calendar application" />
-            Export
-        </a>
-        <div class="export_options collapse" id="<?= $event->id ?>_options">
-            <?= $this->Html->link(
-                'iCal',
-                [
-                    'plugin' => false,
-                    'prefix' => false,
-                    'controller' => 'Events',
-                    'action' => 'ics',
-                    $event->id
-                ],
-                ['title' => 'Download iCalendar (.ICS) file']
-            ) ?>
-            <?= CalendarHelper::getGoogleCalendarLink($event) ?>
-            <?= $this->Html->link(
-                'Outlook',
-                [
-                    'plugin' => false,
-                    'prefix' => false,
-                    'controller' => 'Events',
-                    'action' => 'ics',
-                    $event->id
-                ],
-                ['title' => 'Add to Microsoft Outlook']
-            ) ?>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    title="Export to another calendar">
+                <i class="fas fa-cloud-download-alt"></i>
+                Export to...
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a href="<?= CalendarHelper::getGoogleCalendarUrl($event) ?>" title="Add to Google Calendar"
+                   class="dropdown-item">
+                    Google
+                </a>
+                <?= $this->Html->link(
+                    'Outlook',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'ics',
+                        $event->id,
+                    ],
+                    [
+                        'title' => 'Add to Microsoft Outlook',
+                        'class' => 'dropdown-item',
+                    ]
+                ) ?>
+                <?= $this->Html->link(
+                    'iCalendar (.ics) file',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'ics',
+                        $event->id,
+                    ],
+                    [
+                        'title' => 'Download iCalendar (.ICS) file',
+                        'class' => 'dropdown-item',
+                    ]
+                ) ?>
+            </div>
         </div>
     </div>
     <?php if ($isAdmin && !$isApproved): ?>
