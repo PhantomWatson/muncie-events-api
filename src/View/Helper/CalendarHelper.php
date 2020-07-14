@@ -94,9 +94,8 @@ class CalendarHelper extends Helper
 
         $headerShortDate = sprintf('<h2 class="short_date">%s</h2>', date('M j, Y', strtotime($date)));
         $headerDay = sprintf('<h2 class="day">%s</h2>', $day);
-        $headers = $headerShortDate . $headerDay;
 
-        return $headers;
+        return $headerShortDate . $headerDay;
     }
 
     /**
@@ -145,15 +144,14 @@ class CalendarHelper extends Helper
             ? sprintf('popup[%s]', $params['group'])
             : 'popup';
         $url = $baseUrl . 'full/' . $filename;
-        $link = sprintf(
+
+        return sprintf(
             '<a href="%s" rel="%s" class="%s" >%s</a>',
             $url,
             $rel,
             $class,
             $image
         );
-
-        return $link;
     }
 
     /**
@@ -224,7 +222,7 @@ class CalendarHelper extends Helper
             ? self::getDatetimeForGoogleCal($event->date, $event->time_end)
             : $startTimeString;
 
-        $googleCalUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' .
+        return 'https://calendar.google.com/calendar/render?action=TEMPLATE' .
             '&text=' . urlencode($event['title']) .
             '&dates=' . sprintf('%s/%s', $startTimeString, $endTimeString) .
             '&details=' . urlencode($description) .
@@ -232,8 +230,6 @@ class CalendarHelper extends Helper
             '&trp=false' .
             '&sprop=' . urlencode('Muncie Events') .
             '&sprop=name:' . urlencode('https://muncieevents.com');
-
-        return $googleCalUrl;
     }
 
     /**
