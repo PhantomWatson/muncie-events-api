@@ -29,30 +29,18 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                     Google
                 </a>
                 <?= $this->Html->link(
-                    'Outlook',
+                    'Outlook / iCalendar (.ics)',
                     [
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Events',
-                        'action' => 'ics',
-                        $event->id,
+                        'action' => 'view',
+                        'id' => $event->id,
+                        '_ext' => 'ics',
+
                     ],
                     [
-                        'title' => 'Add to Microsoft Outlook',
-                        'class' => 'dropdown-item',
-                    ]
-                ) ?>
-                <?= $this->Html->link(
-                    'iCalendar (.ics) file',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'Events',
-                        'action' => 'ics',
-                        $event->id,
-                    ],
-                    [
-                        'title' => 'Download iCalendar (.ICS) file',
+                        'title' => 'Download iCalendar (.ics) file to import into Microsoft Outlook or another calendar application',
                         'class' => 'dropdown-item',
                     ]
                 ) ?>
