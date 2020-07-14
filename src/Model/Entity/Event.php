@@ -38,6 +38,7 @@ use Exception;
  * @property FrozenTime $created
  * @property FrozenTime $modified
  * @property string $location_medium 'physical' or 'virtual'
+ * @property string $description_plaintext
  *
  * @property User $user
  * @property Category $category
@@ -344,5 +345,20 @@ class Event extends Entity
         }
 
         return 'physical';
+    }
+
+    /**
+     * A virtual field that returns this event's description in plain text, with HTML removed
+     *
+     * @return string
+     */
+    protected function _getDescriptionPlaintext()
+    {
+        $plaintext = $this->description;
+        $plaintext = str_replace(['<br>', '<br />'], '\n', $plaintext);
+        $plaintext = str_replace('</p>', '\n\n', $plaintext);
+        $plaintext = strip_tags($plaintext);
+
+        return trim($plaintext);
     }
 }
