@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $authUser
  * @var array $autocompleteLocations
  * @var array $categories
@@ -12,18 +12,14 @@
  * @var bool $hasEndTime
  * @var bool $hasSource
  * @var bool $multipleDatesAllowed
- * @var Event $event
- * @var EventsTable $eventsTable
+ * @var \App\Model\Entity\Event $event
+ * @var \App\Model\Table\EventsTable $eventsTable
  * @var string $action
  * @var string $defaultDate
  * @var string $filesizeLimit
  * @var string $pageTitle
  * @var string[] $preselectedDates
  */
-
-use App\Model\Entity\Event;
-use App\Model\Table\EventsTable;
-use App\View\AppView;
 
 $this->Form->setTemplates(['inputContainer' => '{{content}}']);
 
