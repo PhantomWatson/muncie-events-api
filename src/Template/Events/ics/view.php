@@ -28,9 +28,9 @@ $vcalendar = new VCalendar([
             'prefix' => false,
             'controller' => 'Events',
             'action' => 'view',
-            'id' => $event->id
+            'id' => $event->id,
         ], true),
-    ]
+    ],
 ]);
 
 echo $vcalendar->serialize();
