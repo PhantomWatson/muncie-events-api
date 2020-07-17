@@ -13,7 +13,6 @@ function setupEventForm() {
         event.preventDefault();
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
-        $('#eventform_hasendtime_boolinput').val('1');
 
         // Pre-select an end time one hour from the start time
         const timeStartHour = document.querySelector('select[name="time_start[hour]"]');
@@ -32,13 +31,14 @@ function setupEventForm() {
 
         timeEndHour.focus();
     });
+    const timeEndField = document.getElementById('flatpickr-time-end');
     $('#remove_end_time').click(function (event) {
         event.preventDefault();
         $('#eventform_noendtime').show();
         $('#eventform_hasendtime').hide();
-        $('#eventform_hasendtime_boolinput').val('0');
+        timeEndField.value = '';
     });
-    if ($('#eventform_hasendtime_boolinput').val() === '1') {
+    if (timeEndField.value.length > 0) {
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
     }
@@ -66,10 +66,6 @@ function setupEventForm() {
 
     var form = $('#EventForm').first();
     form.submit(function () {
-        if ($('#datepicker_hidden').val() === '') {
-            alert('Please select a date.');
-            return false;
-        }
         var description = CKEDITOR.instances.EventDescription.getData();
         if (description === '' || description === null) {
             alert('Please enter a description of this event.');
@@ -226,61 +222,74 @@ function setupAddressLookup() {
     });
 }
 
-function setupDatepickerMultiple(defaultDate, preselectedDates) {
-    var options = {
-        defaultDate: defaultDate,
-        altField: '#datepicker_hidden',
-        onSelect: function () {
-            var dates = $('#datepicker').multiDatesPicker('getDates');
-            if (dates.length > 1) {
-                showSeriesRow();
-                var seriesTitleField = $('#EventSeriesTitle');
-                seriesTitleField.attr('required', 'required');
-                console.log(seriesTitleField.val());
-                if (seriesTitleField.val() === '') {
-                    seriesTitleField.val($('#EventTitle').val());
+class EventForm {
+    constructor(options) {
+        this.mode = options.mode;
+        this.date = options.date;
+        this.startTime = options.startTime;
+        this.endTime = options.endTime;
+        this.setupDatePicker();
+    }
+
+    setupDatePicker() {
+        const datepickerDate = flatpickr('#flatpickr-date', {
+            altInput: true,
+            altFormat: "F j, Y",
+            conjunction: '; ',
+            dateFormat: "Y-m-d",
+            disable: [
+                (date) => {
+                    if (this.mode === 'add') {
+                        return date < new Date();
+                    }
+
+                    return false;
                 }
-            } else {
-                hideSeriesRow();
-                $('#EventSeriesTitle').removeAttr('required');
+            ],
+            enableTime: false,
+            mode: this.mode === 'add' ? 'multiple' : 'single',
+            onChange: () => {
+                if (this.mode !== 'add') {
+                    return;
+                }
+
+                if (datepickerDate.selectedDates.length > 1) {
+                    this.showSeriesRow();
+                } else {
+                    this.hideSeriesRow();
+                }
             }
+        });
+
+        const timeConfig = {
+            altInput: true,
+            altFormat: "h:iK",
+            dateFormat: "H:i",
+            defaultHour: '17', // 5pm
+            enableTime: true,
+            noCalendar: true,
+        };
+        flatpickr('#flatpickr-time-start', timeConfig);
+        flatpickr('#flatpickr-time-end', timeConfig);
+    }
+
+    showSeriesRow() {
+        const seriesTitleField = document.getElementById('EventSeriesTitle');
+        seriesTitleField.required = true;
+        if (seriesTitleField.value === '') {
+            const eventTitle = document.getElementById('EventTitle');
+            seriesTitleField.value = eventTitle.value;
         }
-    };
-    if (preselectedDates.length > 0) {
-        options.addDates = preselectedDates;
-    }
-    $('#datepicker').multiDatesPicker(options);
-}
 
-function showSeriesRow() {
-    var row = $('#series_row');
-    if (row.is(':visible')) {
-        return;
+        const row = document.getElementById('series_row');
+        row.style.display = 'flex';
     }
-    if (row.children().children('div.slide_helper').length === 0) {
-        row.children().wrapInner('<div class="slide_helper" />');
-    }
-    var slideHelpers = row.find('div.slide_helper');
-    slideHelpers.hide();
-    row.show();
-    slideHelpers.slideDown(300);
-}
 
-function hideSeriesRow() {
-    var row = $('#series_row');
-    if (row.children().children('div.slide_helper').length === 0) {
-        row.children().wrapInner('<div class="slide_helper" />');
-    }
-    row.find('div.slide_helper').slideUp(300, function () {
-        row.hide();
-    });
-}
+    hideSeriesRow() {
+        const seriesTitleField = document.getElementById('EventSeriesTitle');
+        seriesTitleField.required = false;
 
-function setupDatepickerSingle(defaultDate) {
-    $('#datepicker').datepicker({
-        defaultDate: defaultDate,
-        onSelect: function (date) {
-            $('#datepicker_hidden').val(date);
-        }
-    });
+        const row = document.getElementById('series_row');
+        row.style.display = 'none';
+    }
 }

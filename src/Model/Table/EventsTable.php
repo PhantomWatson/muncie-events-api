@@ -592,20 +592,6 @@ class EventsTable extends Table
     }
 
     /**
-     * Returns a new entity with fields set to default values
-     *
-     * @return Event
-     */
-    public function newEntityWithDefaults()
-    {
-        $event = $this->newEntity();
-        $event->time_start = new FrozenTime('12:00pm');
-        $event->time_end = null;
-
-        return $event;
-    }
-
-    /**
      * Returns the number of currently unapproved events
      *
      * @return int

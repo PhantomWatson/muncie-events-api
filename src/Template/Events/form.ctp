@@ -23,23 +23,26 @@
 
 $this->Form->setTemplates(['inputContainer' => '{{content}}']);
 
-// JS
+// JS & CSS
 $this->Html->script('tag_manager.js', ['block' => true]);
 $this->Tag->setup('#available_tags', $event);
 $this->Html->script('event_form.js', ['block' => true]);
 if ($multipleDatesAllowed) {
     $this->Html->script('jquery-ui.multidatespicker.js', ['block' => true]);
 }
+$this->Html->script('/flatpickr/flatpickr.min.js', ['block' => true]);
+$this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 ?>
 <?php $this->Html->scriptStart(['block' => true]); ?>
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
 TagManager.setupAutosuggest('custom-tag-input');
-<?php if ($multipleDatesAllowed): ?>
-    setupDatepickerMultiple(<?= json_encode($defaultDate) ?>, <?= json_encode($preselectedDates) ?>);
-<?php else: ?>
-    setupDatepickerSingle(<?= json_encode($event->date) ?>);
-<?php endif; ?>
+new EventForm({
+mode: <?= json_encode($action) ?>,
+date: <?= json_encode($event->date ? $event->date->format('Y-m-d') : null) ?>,
+startTime: <?= json_encode($event->time_start ? $event->time_start->format('H:i') : null) ?>,
+endTime: <?= json_encode($event->time_end ? $event->time_end->format('H:i') : null) ?>,
+});
 <?php $this->Html->scriptEnd(); ?>
 
 
@@ -162,14 +165,20 @@ TagManager.setupAutosuggest('custom-tag-input');
 
     <div class="row form-group">
         <span class="col-md-3 pseudo-label">
-            Date(s)
+            <?= $action == 'add' ? 'Date(s)' : 'Date' ?>
         </span>
         <div class="col-md-9">
             <div id="datepicker" class="<?= $multipleDatesAllowed ? 'multi' : 'single' ?>"></div>
-            <?= $this->Form->control('date', [
-                'id' => 'datepicker_hidden',
-                'type' => 'hidden'
-            ]) ?>
+            <?= $this->Form->control(
+                'date',
+                [
+                    'id' => 'flatpickr-date',
+                    'type' => 'text',
+                    'readonly' => true,
+                    'label' => false,
+                    'value' => $event->date ? $event->date->format('Y-m-d') : '',
+                ]
+            ) ?>
             <?php if ($multipleDatesAllowed): ?>
                 <div class="text-muted" id="datepicker_text">
                     Select more than one date to create multiple events connected by a series.
@@ -203,26 +212,14 @@ TagManager.setupAutosuggest('custom-tag-input');
             Time
         </span>
         <div class="col-md-9">
-            <label class="sr-only" for="time_start[hour]">
-                Hour
-            </label>
-            <label class="sr-only" for="time_start[minute]">
-                Minute
-            </label>
-            <label class="sr-only" for="time_start[meridian]">
-                AM or PM
-            </label>
             <div id="eventform_timestart_div" class="form-group form-inline">
-                <?= $this->Form->time(
+                <?= $this->Form->control(
                     'time_start',
                     [
                         'label' => false,
-                        'interval' => 5,
-                        'timeFormat' => '12',
-                        'hour' => ['class' => 'form-control event_time_form'],
-                        'minute' => ['class' => 'form-control event_time_form'],
-                        'meridian' => ['class' => 'form-control event_time_form'],
-                        'empty' => false
+                        'type' => 'text',
+                        'id' => 'flatpickr-time-start',
+                        'value' => $event->time_start ? $event->time_start->format('H:i') : '',
                     ]
                 ) ?>
                 <span id="eventform_noendtime" <?php if ($hasEndTime): ?>style="display: none;"<?php endif; ?>>
@@ -234,30 +231,15 @@ TagManager.setupAutosuggest('custom-tag-input');
             <div id="eventform_hasendtime" <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
                 to
                 <div class="form-group form-inline">
-                    <label class="sr-only" for="time_end[hour]">
-                        Hour
-                    </label>
-                    <label class="sr-only" for="time_end[minute]">
-                        Minute
-                    </label>
-                    <label class="sr-only" for="time_end[meridian]">
-                        AM or PM
-                    </label>
-                    <?= $this->Form->time('time_end', [
-                        'interval' => 5,
-                        'timeFormat' => '12',
-                        'hour' => [
-                            'class' => 'form-control event_time_form',
-                            'label' => true
-                        ],
-                        'minute' => ['class' => 'form-control event_time_form'],
-                        'meridian' => ['class' => 'form-control event_time_form'],
-                        'empty' => false
-                    ]) ?>
-                    <?= $this->Form->hidden('has_end_time', [
-                        'id' => 'eventform_hasendtime_boolinput',
-                        'value' => $hasEndTime ? 1 : 0
-                    ]) ?>
+                    <?= $this->Form->control(
+                        'time_end',
+                        [
+                            'label' => false,
+                            'type' => 'text',
+                            'id' => 'flatpickr-time-end',
+                            'value' => $event->time_end ? $event->time_end->format('H:i') : '',
+                        ]
+                    ) ?>
                     <button id="remove_end_time" class="btn btn-sm btn-secondary">
                         Remove end time
                     </button>

@@ -14,6 +14,8 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use Exception;
@@ -228,10 +230,18 @@ class EventsController extends AppController
      */
     public function add()
     {
-        // Create event entity
-        $event = $this->Events->newEntityWithDefaults();
+        $event = new Event();
+
         if ($this->request->is('post')) {
             $event = $this->Events->patchEntity($event, $this->request->getData());
+            $date = $this->request->getData('date');
+            $timeStart = $this->request->getData('time_start');
+            $timeEnd = $this->request->getData('time_end');
+            $event = $this->Events->patchEntity($event, [
+                'date' => $date ? new FrozenDate($date) : null,
+                'time_start' => $timeStart ? new FrozenTime($timeStart) : null,
+                'time_end' => $timeEnd ? new FrozenTime($timeEnd) : null,
+            ]);
         }
 
         // Set view variables
@@ -256,7 +266,7 @@ class EventsController extends AppController
         // Add an event(s)
         $eventForm = new EventForm();
         $addedEvents = [];
-        $dates = explode(',', $this->request->getData('date'));
+        $dates = explode('; ', $this->request->getData('date'));
         sort($dates);
         $data = $this->request->getData() + [
                 'images' => [],
