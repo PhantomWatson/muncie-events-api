@@ -233,15 +233,14 @@ class EventsController extends AppController
         $event = new Event();
 
         if ($this->request->is('post')) {
-            $event = $this->Events->patchEntity($event, $this->request->getData());
+            $data = $this->request->getData();
             $date = $this->request->getData('date');
             $timeStart = $this->request->getData('time_start');
             $timeEnd = $this->request->getData('time_end');
-            $event = $this->Events->patchEntity($event, [
-                'date' => $date ? new FrozenDate($date) : null,
-                'time_start' => $timeStart ? new FrozenTime($timeStart) : null,
-                'time_end' => $timeEnd ? new FrozenTime($timeEnd) : null,
-            ]);
+            $data['date'] = $date ? new FrozenDate($date) : null;
+            $data['time_start'] = $timeStart ? new FrozenTime($timeStart) : null;
+            $data['time_end'] = $timeEnd ? new FrozenTime($timeEnd) : null;
+            $event = $this->Events->patchEntity($event, $data);
         }
 
         // Set view variables
