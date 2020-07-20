@@ -230,14 +230,22 @@ class EventsController extends AppController
      */
     public function add()
     {
+        // Create an entity for passing back to the view
         $event = new Event();
 
         if ($this->request->is('post')) {
+            /* Update the entity that will be shown in the view.
+             * Note that the EventForm class handles database updates and doesn't make use of this entity.  */
             $data = $this->request->getData();
-            $date = $this->request->getData('date');
+
+            /* For validation, replace the date string with a FrozenDate object for only the first date.
+             * The selected date(s) will be accessed in the view directly from the request object. */
+            $dateDelimiter = '; ';
+            $dates = explode($dateDelimiter, $this->request->getData('date'));
+            $data['date'] = new FrozenDate($dates[0]);
+
             $timeStart = $this->request->getData('time_start');
             $timeEnd = $this->request->getData('time_end');
-            $data['date'] = $date ? new FrozenDate($date) : null;
             $data['time_start'] = $timeStart ? new FrozenTime($timeStart) : null;
             $data['time_end'] = $timeEnd ? new FrozenTime($timeEnd) : null;
             $event = $this->Events->patchEntity($event, $data);

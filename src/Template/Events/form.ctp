@@ -39,9 +39,6 @@ setupEventForm();
 TagManager.setupAutosuggest('custom-tag-input');
 new EventForm({
 mode: <?= json_encode($action) ?>,
-date: <?= json_encode($event->date ? $event->date->format('Y-m-d') : null) ?>,
-startTime: <?= json_encode($event->time_start ? $event->time_start->format('H:i') : null) ?>,
-endTime: <?= json_encode($event->time_end ? $event->time_end->format('H:i') : null) ?>,
 });
 <?php $this->Html->scriptEnd(); ?>
 
@@ -176,7 +173,9 @@ endTime: <?= json_encode($event->time_end ? $event->time_end->format('H:i') : nu
                     'type' => 'text',
                     'readonly' => true,
                     'label' => false,
-                    'value' => $event->date ? $event->date->format('Y-m-d') : '',
+                    'value' => $action == 'add'
+                        ? $this->request->getData('date')
+                        : ($event->date ? $event->date->format('Y-m-d') : ''),
                 ]
             ) ?>
             <?php if ($multipleDatesAllowed): ?>
