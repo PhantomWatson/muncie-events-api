@@ -80,16 +80,17 @@ class EventForm
      * Takes an array of events and creates a series to associate them with
      *
      * @param Event[] $events An array of events in this series
+     * @param string|null $seriesTitle Series title
      * @return Event[]
      * @throws BadRequestException
      */
-    public function addEventSeries(array $events)
+    public function addEventSeries(array $events, $seriesTitle = null)
     {
         // Create series
         $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
         $arbitraryEvent = $events[0];
         $series = $seriesTable->newEntity([
-            'title' => $arbitraryEvent->title,
+            'title' => $seriesTitle ? $seriesTitle : $arbitraryEvent->title,
             'user_id' => $arbitraryEvent->user_id,
             'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent),
         ]);
