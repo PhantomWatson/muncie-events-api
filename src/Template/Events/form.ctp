@@ -14,6 +14,7 @@
  * @var bool $hasEndTime
  * @var bool $hasSource
  * @var bool $multipleDatesAllowed
+ * @var bool $renderSeriesNameRow
  * @var bool $showSeriesNameRow
  * @var string $action
  * @var string $defaultDate
@@ -237,20 +238,22 @@ new EventForm({
         </div>
     </div>
 
-    <div class="row form-group" id="series_row" <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
-        <label class="col-md-3" for="EventSeriesTitle">
-            Series Name
-        </label>
-        <div class="col-md-9">
-            <?= $this->Form->control('series_title', [
-                'label' => false,
-                'class' => 'form-control',
-                'id' => 'EventSeriesTitle',
-                'value' => $this->request->getData('series_title')
-                    ?? ($event->event_series ? $event->event_series->title : null)
-            ]) ?>
+    <?php if ($renderSeriesNameRow): ?>
+        <div class="row form-group" id="series_row" <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
+            <label class="col-md-3" for="EventSeriesTitle">
+                Series Name
+            </label>
+            <div class="col-md-9">
+                <?= $this->Form->control('EventSeries.title', [
+                    'label' => false,
+                    'class' => 'form-control',
+                    'id' => 'EventSeriesTitle',
+                    'value' => $this->request->getData('EventSeries.title')
+                        ?? ($event->event_series ? $event->event_series->title : null)
+                ]) ?>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
 
     <div class="row form-group" id="location-row">
         <div class="col-md-3">

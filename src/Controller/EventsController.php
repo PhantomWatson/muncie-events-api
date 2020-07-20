@@ -288,7 +288,7 @@ class EventsController extends AppController
 
             // Associate events with a series, if applicable
             if (count($dates) > 1) {
-                $seriesTitle = $this->request->getData('series_title');
+                $seriesTitle = $this->request->getData('EventSeries.title');
                 $addedEvents = $eventForm->addEventSeries($addedEvents, $seriesTitle, $this->Auth->user());
             }
         } catch (BadRequestException $e) {
@@ -333,13 +333,17 @@ class EventsController extends AppController
         $action = $this->request->getParam('action');
         $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
         $firstEvent = isset($autoPublish) && !$autoPublish && $action == 'add';
+
+        // "Render" determines whether the code is rendered
+        $renderSeriesNameRow = $action == 'add' || $event->series_id;
+
+        // "Show" determines whether the element is made initially visible with CSS
         $date = $this->request->getData('date');
         $dateDelimiter = '; ';
         $preselectedDates = $date ? explode($dateDelimiter, $date) : [];
         $hasMultipleDates = count($preselectedDates) > 1;
-        $requestHasSeriesTitle = $this->request->getData('series_title');
-        $entityHasSeriesTitle = $event->event_series ? $event->event_series->title : null;
-        $showSeriesNameRow = $hasMultipleDates || $requestHasSeriesTitle || $entityHasSeriesTitle;
+        $showSeriesNameRow = $event->series_id || $hasMultipleDates;
+
         $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
@@ -380,6 +384,7 @@ class EventsController extends AppController
             'hasEndTime',
             'hasSource',
             'multipleDatesAllowed',
+            'renderSeriesNameRow',
             'showSeriesNameRow'
         ));
     }
@@ -432,8 +437,8 @@ class EventsController extends AppController
                 'tag_names' => [],
                 'time_end' => null,
             ];
-        if ($event->series_id) {
-            $data['event_series']['title'] = $this->request->getData('series_title');
+        if (!$event->series_id) {
+            unset($data['EventSeries']);
         }
 
         $event = $this->Events->patchEntity($event, $data);
