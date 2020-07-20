@@ -336,7 +336,10 @@ class EventsController extends AppController
         $date = $this->request->getData('date');
         $dateDelimiter = '; ';
         $preselectedDates = $date ? explode($dateDelimiter, $date) : [];
-        $showSeriesNameRow = count($preselectedDates) > 1 || $this->request->getData('series_title');
+        $hasMultipleDates = count($preselectedDates) > 1;
+        $requestHasSeriesTitle = $this->request->getData('series_title');
+        $entityHasSeriesTitle = $event->event_series ? $event->event_series->title : null;
+        $showSeriesNameRow = $hasMultipleDates || $requestHasSeriesTitle || $entityHasSeriesTitle;
         $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
@@ -407,7 +410,7 @@ class EventsController extends AppController
         }
 
         $event = $this->Events->get($eventId, [
-            'contain' => ['Images', 'Tags'],
+            'contain' => ['Images', 'Tags', 'EventSeries'],
         ]);
 
         // Check user permission
@@ -429,13 +432,16 @@ class EventsController extends AppController
                 'tag_names' => [],
                 'time_end' => null,
             ];
+        if ($event->series_id) {
+            $data['event_series']['title'] = $this->request->getData('series_title');
+        }
 
         $event = $this->Events->patchEntity($event, $data);
         $user = $this->Auth->user();
         $event->autoApprove($user);
         $event->autoPublish($user);
         $event->processTags($data['tag_ids'], $data['tag_names']);
-        $saved = $this->Events->save($event, ['associated' => ['Images', 'Tags']]);
+        $saved = $this->Events->save($event, ['associated' => ['Images', 'Tags', 'EventSeries']]);
         if ($saved) {
             $this->Flash->success('Event updated');
 

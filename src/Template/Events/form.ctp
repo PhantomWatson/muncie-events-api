@@ -228,21 +228,20 @@ mode: <?= json_encode($action) ?>,
         </div>
     </div>
 
-    <?php if ($action == 'add'): ?>
-        <div class="row form-group" id="series_row"
-             <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
-            <label class="col-md-3" for="EventSeriesTitle">
-                Series Name
-            </label>
-            <div class="col-md-9">
-                <?= $this->Form->control('series_title', [
-                    'label' => false,
-                    'class' => 'form-control',
-                    'id' => 'EventSeriesTitle'
-                ]) ?>
-            </div>
+    <div class="row form-group" id="series_row" <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
+        <label class="col-md-3" for="EventSeriesTitle">
+            Series Name
+        </label>
+        <div class="col-md-9">
+            <?= $this->Form->control('series_title', [
+                'label' => false,
+                'class' => 'form-control',
+                'id' => 'EventSeriesTitle',
+                'value' => $this->request->getData('series_title')
+                    ?? ($event->event_series ? $event->event_series->title : null)
+            ]) ?>
         </div>
-    <?php endif; ?>
+    </div>
 
     <div class="row form-group" id="location-row">
         <div class="col-md-3">
