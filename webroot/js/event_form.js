@@ -225,9 +225,6 @@ function setupAddressLookup() {
 class EventForm {
     constructor(options) {
         this.mode = options.mode;
-        this.date = options.date;
-        this.startTime = options.startTime;
-        this.endTime = options.endTime;
         this.setupDatePicker();
     }
 
