@@ -81,10 +81,11 @@ class EventForm
      *
      * @param Event[] $events An array of events in this series
      * @param string|null $seriesTitle Series title
+     * @param User|null $user A user entity, or null if user is anonymous
      * @return Event[]
      * @throws BadRequestException
      */
-    public function addEventSeries(array $events, $seriesTitle = null)
+    public function addEventSeries(array $events, $seriesTitle, $user)
     {
         // Create series
         $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
@@ -92,7 +93,7 @@ class EventForm
         $series = $seriesTable->newEntity([
             'title' => $seriesTitle ? $seriesTitle : $arbitraryEvent->title,
             'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($arbitraryEvent),
+            'published' => $arbitraryEvent->userIsAutoPublishable($user),
         ]);
         if (!$seriesTable->save($series)) {
             $adminEmail = Configure::read('adminEmail');
