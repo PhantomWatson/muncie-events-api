@@ -188,25 +188,6 @@ endTime: <?= json_encode($event->time_end ? $event->time_end->format('H:i') : nu
         </div>
     </div>
 
-    <?php if ($action == 'add'): ?>
-        <div class="row form-group" id="series_row"
-             <?php if (count($preselectedDates) < 2): ?>style="display: none;"<?php endif; ?>>
-            <label class="col-md-3" for="EventSeriesTitle">
-                Series Name
-            </label>
-            <div class="col-md-9">
-                <?= $this->Form->control('series_title', [
-                    'label' => false,
-                    'class' => 'form-control',
-                    'id' => 'EventSeriesTitle'
-                ]) ?>
-                <div class="text-muted">
-                    By default, the series and its events have the same title.
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
     <div class="row form-group">
         <span class="pseudo-label col-md-3">
             Time
@@ -247,6 +228,22 @@ endTime: <?= json_encode($event->time_end ? $event->time_end->format('H:i') : nu
             </div>
         </div>
     </div>
+
+    <?php if ($action == 'add'): ?>
+        <div class="row form-group" id="series_row"
+             <?php if (count($preselectedDates) < 2): ?>style="display: none;"<?php endif; ?>>
+            <label class="col-md-3" for="EventSeriesTitle">
+                Series Name
+            </label>
+            <div class="col-md-9">
+                <?= $this->Form->control('series_title', [
+                    'label' => false,
+                    'class' => 'form-control',
+                    'id' => 'EventSeriesTitle'
+                ]) ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div class="row form-group" id="location-row">
         <div class="col-md-3">
