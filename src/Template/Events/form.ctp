@@ -21,6 +21,16 @@
  * @var string $pageTitle
  */
 
+$dateValue = $action == 'add'
+    ? $this->request->getData('date')
+    : ($event->date ? $event->date->format('Y-m-d') : '');
+$timeStartValue = $event->time_start
+    ? (is_string($event->time_start) ? $event->time_start : $event->time_start->format('H:i'))
+    : '';
+$timeEndValue = $event->time_end
+    ? (is_string($event->time_end) ? $event->time_end : $event->time_end->format('H:i'))
+    : '';
+
 $this->Form->setTemplates(['inputContainer' => '{{content}}']);
 
 // JS & CSS
@@ -33,12 +43,13 @@ if ($multipleDatesAllowed) {
 $this->Html->script('/flatpickr/flatpickr.min.js', ['block' => true]);
 $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 ?>
+
 <?php $this->Html->scriptStart(['block' => true]); ?>
 eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
 setupEventForm();
 TagManager.setupAutosuggest('custom-tag-input');
 new EventForm({
-mode: <?= json_encode($action) ?>,
+    mode: <?= json_encode($action) ?>,
 });
 <?php $this->Html->scriptEnd(); ?>
 
@@ -173,9 +184,7 @@ mode: <?= json_encode($action) ?>,
                     'type' => 'text',
                     'readonly' => true,
                     'label' => false,
-                    'value' => $action == 'add'
-                        ? $this->request->getData('date')
-                        : ($event->date ? $event->date->format('Y-m-d') : ''),
+                    'value' => $dateValue,
                 ]
             ) ?>
             <?php if ($multipleDatesAllowed): ?>
@@ -199,7 +208,7 @@ mode: <?= json_encode($action) ?>,
                         'label' => false,
                         'type' => 'text',
                         'id' => 'flatpickr-time-start',
-                        'value' => $event->time_start ? $event->time_start->format('H:i') : '',
+                        'value' => $timeStartValue,
                     ]
                 ) ?>
                 <span id="eventform_noendtime" <?php if ($hasEndTime): ?>style="display: none;"<?php endif; ?>>
@@ -217,7 +226,7 @@ mode: <?= json_encode($action) ?>,
                             'label' => false,
                             'type' => 'text',
                             'id' => 'flatpickr-time-end',
-                            'value' => $event->time_end ? $event->time_end->format('H:i') : '',
+                            'value' => $timeEndValue,
                         ]
                     ) ?>
                     <button id="remove_end_time" class="btn btn-sm btn-secondary">
