@@ -1,5 +1,7 @@
 <?php
 /**
+ * @var \App\Model\Entity\Event $event
+ * @var \App\Model\Table\EventsTable $eventsTable
  * @var \App\View\AppView $this
  * @var array $authUser
  * @var array $autocompleteLocations
@@ -12,13 +14,11 @@
  * @var bool $hasEndTime
  * @var bool $hasSource
  * @var bool $multipleDatesAllowed
- * @var \App\Model\Entity\Event $event
- * @var \App\Model\Table\EventsTable $eventsTable
+ * @var bool $showSeriesNameRow
  * @var string $action
  * @var string $defaultDate
  * @var string $filesizeLimit
  * @var string $pageTitle
- * @var string[] $preselectedDates
  */
 
 $this->Form->setTemplates(['inputContainer' => '{{content}}']);
@@ -230,7 +230,7 @@ mode: <?= json_encode($action) ?>,
 
     <?php if ($action == 'add'): ?>
         <div class="row form-group" id="series_row"
-             <?php if (count($preselectedDates) < 2): ?>style="display: none;"<?php endif; ?>>
+             <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
             <label class="col-md-3" for="EventSeriesTitle">
                 Series Name
             </label>

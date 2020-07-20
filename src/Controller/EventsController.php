@@ -334,7 +334,9 @@ class EventsController extends AppController
         $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
         $firstEvent = isset($autoPublish) && !$autoPublish && $action == 'add';
         $date = $this->request->getData('date');
-        $preselectedDates = $date ? explode(',', $date) : [];
+        $dateDelimiter = '; ';
+        $preselectedDates = $date ? explode($dateDelimiter, $date) : [];
+        $showSeriesNameRow = count($preselectedDates) < 2 || $this->request->getData('series_title');
         $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
@@ -375,7 +377,7 @@ class EventsController extends AppController
             'hasEndTime',
             'hasSource',
             'multipleDatesAllowed',
-            'preselectedDates'
+            'showSeriesNameRow'
         ));
     }
 
