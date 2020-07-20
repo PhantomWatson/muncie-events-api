@@ -336,7 +336,7 @@ class EventsController extends AppController
         $date = $this->request->getData('date');
         $dateDelimiter = '; ';
         $preselectedDates = $date ? explode($dateDelimiter, $date) : [];
-        $showSeriesNameRow = count($preselectedDates) < 2 || $this->request->getData('series_title');
+        $showSeriesNameRow = count($preselectedDates) > 1 || $this->request->getData('series_title');
         $defaultDate = 0; // Today
         $hasEndTime = (bool)$event->time_end;
         $hasAddress = (bool)$event->address;
