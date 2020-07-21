@@ -2,6 +2,10 @@
 /**
  * @var string $pageTitle
  */
+
+use Cake\Core\Configure;
+
+$adminEmail = Configure::read('adminEmail');
 ?>
 
 <h1 class="page_title">
@@ -11,12 +15,11 @@
 <div id="api-info">
     <section>
         <p>
-            The Muncie Events API can be used to retrieve data from the <a href="https://muncieevents.com">MuncieEvents.com</a>
-            database. It currently has a small number of endpoints, but if your application would benefit from more being added,
-            such as an endpoint for retrieving events from a specific location or with a specific tag, feel free to contact us
-            at <a href="mailto:admin@muncieevents.com">admin@muncieevents.com</a> or
-            <a href="https://github.com/BallStateCBER/muncie-events-api/issues">open a new issue on GitHub</a> and request
-            additional development.
+            The Muncie Events API can be used as a way for your application to read from and write to the
+            MuncieEvents.com event database. If your application would benefit from a new endpoint being added, feel free to contact us at
+            <a href="mailto:<?= $adminEmail ?>>"><?= $adminEmail ?></a> or
+            <a href="https://github.com/BallStateCBER/muncie-events-api/issues">open a new issue on GitHub</a> and
+            request additional development.
         </p>
     </section>
 
@@ -34,8 +37,6 @@
                         'action' => 'register'
                     ]
                 ) ?>
-                <br />
-                (if you have an account on <a href="https://muncieevents.com">the main site</a>, you can log in with those credentials here)
             </li>
             <li>
                 <?= $this->Html->link(
