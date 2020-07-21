@@ -1,10 +1,11 @@
 <?php
-use App\View\AppView;
-use Cake\Routing\Router;
 /**
+ * @var \App\View\AppView $this
  * @var string $apiKey
- * @var AppView $this
+ * @var string $pageTitle
  */
+
+use Cake\Routing\Router;
 ?>
 <?php if ($apiKey): ?>
     <div class="card">

@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var string $pageTitle
+ */
+?>
+
+<h1 class="page_title">
+    <?= $pageTitle ?>
+</h1>
+
 <div id="api-info">
     <section>
         <p>
