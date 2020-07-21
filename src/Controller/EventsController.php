@@ -288,7 +288,7 @@ class EventsController extends AppController
 
             // Associate events with a series, if applicable
             if (count($dates) > 1) {
-                $seriesTitle = $this->request->getData('EventSeries.title');
+                $seriesTitle = $this->request->getData('event_series.title');
                 $addedEvents = $eventForm->addEventSeries($addedEvents, $seriesTitle, $this->Auth->user());
             }
         } catch (BadRequestException $e) {

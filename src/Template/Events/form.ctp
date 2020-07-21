@@ -244,11 +244,11 @@ new EventForm({
                 Series Name
             </label>
             <div class="col-md-9">
-                <?= $this->Form->control('EventSeries.title', [
+                <?= $this->Form->control('event_series.title', [
                     'label' => false,
                     'class' => 'form-control',
                     'id' => 'EventSeriesTitle',
-                    'value' => $this->request->getData('EventSeries.title')
+                    'value' => $this->request->getData('event_series.title')
                         ?? ($event->event_series ? $event->event_series->title : null)
                 ]) ?>
             </div>
