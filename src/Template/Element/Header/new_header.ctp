@@ -136,6 +136,18 @@ use App\View\AppView;
             </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'about') ?> nav-item">
                 <?= $this->Html->link(
+                    'API',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Pages',
+                        'action' => 'api',
+                    ],
+                    ['class' => 'nav-link']
+                ) ?>
+            </li>
+            <li class="<?= $this->Nav->getActiveLink('Pages', 'about') ?> nav-item">
+                <?= $this->Html->link(
                     'About',
                     [
                         'plugin' => false,
