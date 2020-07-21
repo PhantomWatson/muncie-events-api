@@ -30,12 +30,13 @@ $adminEmail = Configure::read('adminEmail');
         <ol>
             <li>
                 <?= $this->Html->link(
-                    'Register a Muncie Events account and log in',
+                    'Register and log in',
                     [
                         'prefix' => false,
                         'controller' => 'Users',
-                        'action' => 'register'
-                    ]
+                        'action' => 'register',
+                    ],
+                    ['class' => 'btn btn-primary mb-2']
                 ) ?>
             </li>
             <li>
@@ -43,8 +44,9 @@ $adminEmail = Configure::read('adminEmail');
                     'Get an API key',
                     [
                         'controller' => 'Users',
-                        'action' => 'apiKey'
-                    ]
+                        'action' => 'apiKey',
+                    ],
+                    ['class' => 'btn btn-primary mb-2']
                 ) ?>
             </li>
             <li>
@@ -52,8 +54,9 @@ $adminEmail = Configure::read('adminEmail');
                     'Read the docs',
                     [
                         'controller' => 'Pages',
-                        'action' => 'apiDocsV1'
-                    ]
+                        'action' => 'apiDocsV1',
+                    ],
+                    ['class' => 'btn btn-primary']
                 ) ?>
             </li>
         </ol>
