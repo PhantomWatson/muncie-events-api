@@ -4,8 +4,7 @@ servers:
     url: https://api.muncieevents.com/v1
 info:
   description: |
-    The API for
-    [MuncieEvents.com](https://muncieevents.com).
+    The API for interfacing with the [MuncieEvents.com](https://muncieevents.com) event database
   version: '1.0.0'
   title: Muncie Events API
   termsOfService: ''
