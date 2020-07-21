@@ -36,7 +36,7 @@ $adminEmail = Configure::read('adminEmail');
                         'controller' => 'Users',
                         'action' => 'register',
                     ],
-                    ['class' => 'btn btn-primary mb-2']
+                    ['class' => 'btn btn-secondary mb-2']
                 ) ?>
             </li>
             <li>
@@ -46,7 +46,7 @@ $adminEmail = Configure::read('adminEmail');
                         'controller' => 'Users',
                         'action' => 'apiKey',
                     ],
-                    ['class' => 'btn btn-primary mb-2']
+                    ['class' => 'btn btn-secondary mb-2']
                 ) ?>
             </li>
             <li>
@@ -56,7 +56,7 @@ $adminEmail = Configure::read('adminEmail');
                         'controller' => 'Pages',
                         'action' => 'apiDocsV1',
                     ],
-                    ['class' => 'btn btn-primary']
+                    ['class' => 'btn btn-secondary']
                 ) ?>
             </li>
         </ol>
