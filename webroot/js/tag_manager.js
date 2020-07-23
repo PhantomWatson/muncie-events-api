@@ -230,6 +230,8 @@ var TagManager = {
             debounce: 300,                       // Post duration for engine to start | (Optional)
             resultsList: {                       // Rendered results list object      | (Optional)
                 render: true,
+
+                // Make results automatically close upon clicking anywhere on the page
                 container: source => {
                     source.setAttribute('id', resultsContainerId);
                     document.getElementById(customTagInputId).addEventListener('autoComplete', function (event) {
@@ -244,6 +246,7 @@ var TagManager = {
                         document.addEventListener('click', hideSearchResults);
                     });
                 },
+
                 destination: document.getElementById(customTagInputId),
                 position: 'afterend',
                 element: 'ul'
