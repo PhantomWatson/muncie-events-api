@@ -242,7 +242,7 @@ var TagManager = {
                         }
 
                         document.addEventListener('click', hideSearchResults);
-                    })
+                    });
                 },
                 destination: document.getElementById(customTagInputId),
                 position: 'afterend',
