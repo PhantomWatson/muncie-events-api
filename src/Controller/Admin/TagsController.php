@@ -6,6 +6,7 @@ use App\Model\Entity\User;
 use App\Model\Table\TagsTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Utility\Hash;
 use Exception;
 
 /**
@@ -447,7 +448,7 @@ class TagsController extends AppController
                 },
             ];
             if (!empty($tags)) {
-                $tagIds = array_keys($tags);
+                $tagIds = Hash::extract($tags, '{n}.id');
                 $conditions[] = function (QueryExpression $exp) use ($tagIds) {
                     return $exp->notIn('id', $tagIds);
                 };
