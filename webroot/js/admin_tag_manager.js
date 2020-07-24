@@ -216,9 +216,9 @@ class AdminTagManager {
 
     setupTagArranger() {
         Ext.BLANK_IMAGE_URL = '/ext-2.0.1/resources/images/default/s.gif';
-        Ext.onReady(function(){
+        Ext.onReady(function () {
             const getnodesUrl = '/admin/tags/get_nodes/';
-            const reorderUrl = '/admin/tags/reorder/';
+            const reorderUrl = '/admin/tags/reorder.json';
             const reparentUrl = '/admin/tags/reparent/';
             const Tree = Ext.tree;
             const tree = new Tree.TreePanel({
@@ -241,11 +241,11 @@ class AdminTagManager {
             tree.setRootNode(root);
             let oldPosition = null;
             let oldNextSibling = null;
-            tree.on('startdrag', function(tree, node, event){
+            tree.on('startdrag', function (tree, node, event) {
                 oldPosition = node.parentNode.indexOf(node);
                 oldNextSibling = node.nextSibling;
             });
-            tree.on('movenode', function(tree, node, oldParent, newParent, position){
+            tree.on('movenode', function (tree, node, oldParent, newParent, position) {
                 let params;
                 let url;
                 if (oldParent == newParent) {
@@ -268,22 +268,22 @@ class AdminTagManager {
                 Ext.Ajax.request({
                     url: url,
                     params: params,
-                    success:function(response, request) {
-                        // if the first char of our response is not 1, then we fail the operation,
-                        // otherwise we re-enable the tree
-                        if (response.responseText.charAt(0) !== 1){
-                            alert(response.responseText);
+                    success: function (response, request) {
+                        const responseTextJson = JSON.parse(response.responseText);
+                        const success = responseTextJson.hasOwnProperty('success') ? responseTextJson.success : false;
+                        if (!success){
                             request.failure();
                         } else {
                             tree.enable();
                         }
                     },
-                    failure:function() {
+                    failure: function () {
+                        console.log('failure callback');
                         // we move the node back to where it was beforehand and
                         // we suspendEvents() so that we don't get stuck in a possible infinite loop
                         tree.suspendEvents();
                         oldParent.appendChild(node);
-                        if (oldNextSibling){
+                        if (oldNextSibling) {
                             oldParent.insertBefore(node, oldNextSibling);
                         }
                         tree.resumeEvents();
@@ -292,7 +292,7 @@ class AdminTagManager {
                     }
                 });
             });
-            // render the tree
+
             tree.render();
             root.expand();
         });

@@ -148,15 +148,17 @@ class TagsController extends AppController
         $nodeId = intval($_POST['node']);
         $delta = intval($_POST['delta']);
         $node = $this->Tags->get($nodeId);
+        $success = true;
 
         if ($delta > 0) {
-            $this->Tags->moveDown($node, abs($delta));
+            $success = (bool)$this->Tags->moveDown($node, abs($delta));
         } elseif ($delta < 0) {
-            $this->Tags->moveUp($node, abs($delta));
+            $success = (bool)$this->Tags->moveUp($node, abs($delta));
         }
-
-        // send success response
-        exit('1');
+        $this->set([
+            '_serialize' => ['success'],
+            'success' => $success ? 1 : 0,
+        ]);
     }
 
     /**
