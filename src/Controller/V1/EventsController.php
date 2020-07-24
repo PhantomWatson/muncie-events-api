@@ -3,11 +3,8 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Form\EventForm;
-use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Slack\Slack;
-use Cake\Core\Configure;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
@@ -347,123 +344,6 @@ class EventsController extends ApiController
     }
 
     /**
-     * Processes request data and adds a single event (not connected to a series)
-     *
-     * @param array $data Request data
-     * @param string $date A strtotime parsable date
-     * @param \App\Model\Entity\User|null $user A user entity, or null if user is anonymous
-     * @return \App\Model\Entity\Event
-     * @throws \Cake\Http\Exception\BadRequestException
-     */
-    private function addSingleEvent(array $data, $date, $user)
-    {
-        if (!is_string($date)) {
-            throw new BadRequestException(sprintf(
-                "Error: Dates must be passed as strings (%s provided)",
-                gettype($data['date'])
-            ));
-        }
-        $data['date'] = $this->parseDate($date);
-        foreach (['time_start', 'time_end'] as $timeField) {
-            if (!isset($data[$timeField])) {
-                continue;
-            }
-            $data[$timeField] = $this->parseTime($date, $data[$timeField]);
-        }
-        $event = $this->Events->newEntity($data);
-        $event->autoApprove($user);
-        $event->autoPublish($user);
-        $event->processTags($data['tag_ids'], $data['tag_names']);
-        $event->setImageJoinData($data['images']);
-        try {
-            $event->category = $this->Events->Categories->get($event->category_id);
-        } catch (RecordNotFoundException $e) {
-            throw new BadRequestException('Invalid category ID selected (#' . $event->category_id . ')');
-        }
-        try {
-            $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
-        } catch (RecordNotFoundException $e) {
-            throw new BadRequestException('Invalid user ID (#' . $event->user_id . ') associated with event');
-        }
-
-        $saved = $this->Events->save($event, [
-            'associated' => ['Images', 'Tags'],
-        ]);
-        if (!$saved) {
-            $msg = $this->getEventErrorMessage($event);
-            throw new BadRequestException($msg);
-        }
-
-        return $saved;
-    }
-
-    /**
-     * Takes an array of events and creates a series to associate them with
-     *
-     * @param Event[] $events An array of events in this series
-     * @return Event[]
-     * @throws BadRequestException
-     */
-    private function addEventSeries(array $events)
-    {
-        $seriesTable = TableRegistry::getTableLocator()->get('EventSeries');
-        $arbitraryEvent = $events[0];
-        $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $user = $arbitraryEvent->user_id ? $usersTable->get($arbitraryEvent->user_id) : null;
-        $series = $seriesTable->newEntity([
-            'title' => $arbitraryEvent->title,
-            'user_id' => $arbitraryEvent->user_id,
-            'published' => $arbitraryEvent->userIsAutoPublishable($user),
-        ]);
-        if (!$seriesTable->save($series)) {
-            $adminEmail = Configure::read('adminEmail');
-            $msg = 'The event could not be submitted. Please correct any errors and try again. If you need ' .
-                'assistance, please contact an administrator at ' . $adminEmail . '.';
-            throw new BadRequestException($msg);
-        }
-
-        // Associate events with the new series
-        foreach ($events as &$event) {
-            $this->Events->patchEntity($event, ['series_id' => $series->id]);
-            $event->event_series = $series;
-            if (!$this->Events->save($event)) {
-                throw new InternalErrorException('Temporary: Error associating series');
-            }
-        }
-
-        return $events;
-    }
-
-    /**
-     * Returns a message to be output to the user for an event with one or more errors
-     *
-     * @param Event $event Event entity
-     * @return string
-     */
-    private function getEventErrorMessage(Event $event)
-    {
-        $errors = $event->getErrors();
-        if ($errors) {
-            $msg = sprintf(
-                'Please correct the following %s and try again. ',
-                __n('error', 'errors', count($errors))
-            );
-            foreach ($errors as $field => $fieldErrors) {
-                $field = ucwords(str_replace('_', ' ', $field));
-                $msg .= "$field: " . implode('; ', $fieldErrors) . '. ';
-            }
-        } else {
-            $msg = 'There was an error submitting this event. ';
-        }
-        $msg .= sprintf(
-            'If you need assistance, please contact an administrator at %s.',
-            Configure::read('adminEmail')
-        );
-
-        return $msg;
-    }
-
-    /**
      * PATCH /event/{eventId} endpoint
      *
      * @param int|null $eventId Event ID
@@ -480,7 +360,6 @@ class EventsController extends ApiController
         if (!$eventExists) {
             throw new BadRequestException("Event with ID $eventId not found");
         }
-        /** @var Event $event */
         $event = $this->Events->get($eventId, [
             'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users'],
         ]);
