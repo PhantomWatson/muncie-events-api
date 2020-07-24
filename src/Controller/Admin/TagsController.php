@@ -69,7 +69,7 @@ class TagsController extends AppController
 
         $this->Flash->success("Done recovering tag tree (took $minutes minutes).");
 
-        return $this->redirect(['action' => 'manage']);
+        return $this->redirect(['action' => 'manage', '#' => 'tax-fix']);
     }
 
     /**
