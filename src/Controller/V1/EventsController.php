@@ -322,7 +322,8 @@ class EventsController extends ApiController
 
         // Associate events with a series, if applicable
         if (count($dates) > 1) {
-            $addedEvents = $eventForm->addEventSeries($addedEvents);
+            $seriesTitle = $data['title'];
+            $addedEvents = $eventForm->addEventSeries($addedEvents, $seriesTitle, $this->tokenUser);
         }
 
         // Send Slack notification
