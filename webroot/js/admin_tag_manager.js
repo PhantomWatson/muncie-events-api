@@ -8,22 +8,8 @@ class AdminTagManager {
             // Tabs
             $('#tag_management_tabs').tabs();
 
-            // Aranger
+            // Arranger
             this.setupTagArranger();
-
-            // Fix functions
-            $('#tab-fix a').click(function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url: this.href,
-                    success: function (data) {
-                        $('<div>' + data + '</div>').prependTo('#tab-fix .results');
-                    },
-                    error: function () {
-                        alert('The server returned an error.');
-                    }
-                });
-            });
 
             // Empty trash function
             $('#tab-remove a').click(function (event) {
