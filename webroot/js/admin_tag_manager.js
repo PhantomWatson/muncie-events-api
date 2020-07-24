@@ -219,7 +219,7 @@ class AdminTagManager {
         Ext.onReady(function () {
             const getnodesUrl = '/admin/tags/get_nodes/';
             const reorderUrl = '/admin/tags/reorder.json';
-            const reparentUrl = '/admin/tags/reparent/';
+            const reparentUrl = '/admin/tags/reparent.json';
             const Tree = Ext.tree;
             const tree = new Tree.TreePanel({
                 el: 'tree-div',

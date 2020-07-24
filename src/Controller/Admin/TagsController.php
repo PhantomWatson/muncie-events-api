@@ -202,10 +202,12 @@ class TagsController extends AppController
             }
         }
 
-        $this->Tags->save($tag);
+        $success = (bool)$this->Tags->save($tag);
 
-        // send success response
-        exit('1');
+        $this->set([
+            '_serialize' => ['success'],
+            'success' => $success ? 1 : 0,
+        ]);
     }
 
     /**
