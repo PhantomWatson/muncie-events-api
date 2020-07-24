@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Tag;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
@@ -28,6 +29,7 @@ use Cake\Validation\Validator;
  * @method Tag patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method Tag[] patchEntities($entities, array $data, array $options = [])
  * @method Tag findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Cake\ORM\Query findByName($name)
  *
  * @mixin TimestampBehavior
  * @mixin TreeBehavior
@@ -35,6 +37,7 @@ use Cake\Validation\Validator;
 class TagsTable extends Table
 {
     const UNLISTED_GROUP_ID = 1012;
+    const DELETE_GROUP_ID = 1011;
 
     /**
      * Initialize method
@@ -133,5 +136,42 @@ class TagsTable extends Table
             ->first();
 
         return $tag ? $tag : false;
+    }
+
+    /**
+     * Returns TRUE if the tag with the provided ID is a descendent of the "Unlisted" tag group
+     *
+     * @param int|null $tagId Tag ID
+     * @return bool
+     */
+    public function isUnderUnlistedGroup($tagId)
+    {
+        if (!$tagId) {
+            return false;
+        }
+
+        for ($n = 0; $n <= 100; $n++) {
+            try {
+                $tag = $this->get($tagId);
+            } catch (RecordNotFoundException $e) {
+                return false;
+            }
+
+            // Child of root
+            if (empty($tag->parent_id)) {
+                return false;
+            }
+
+            // Child of 'unlisted'
+            if ($tag->parent_id == self::UNLISTED_GROUP_ID) {
+                return true;
+            }
+
+            // Go up a level
+            $tagId = $tag->parent_id;
+        }
+
+        // Assume that after 100 levels, a circular path must have been found and exit
+        return false;
     }
 }
