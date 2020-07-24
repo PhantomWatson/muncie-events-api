@@ -9,6 +9,7 @@ use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Behavior\TreeBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -29,7 +30,7 @@ use Cake\Validation\Validator;
  * @method Tag patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method Tag[] patchEntities($entities, array $data, array $options = [])
  * @method Tag findOrCreate($search, callable $callback = null, $options = [])
- * @method \Cake\ORM\Query findByName($name)
+ * @method Query findByName($name)
  *
  * @mixin TimestampBehavior
  * @mixin TreeBehavior
@@ -111,6 +112,9 @@ class TagsTable extends Table
     {
         $rules->add($rules->existsIn(['parent_id'], 'ParentTags'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->isUnique(['name']), 'uniqueName', [
+            'message' => 'There is already another tag with that name.',
+        ]);
 
         return $rules;
     }
