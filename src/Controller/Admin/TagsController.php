@@ -195,7 +195,7 @@ class TagsController extends AppController
         if ($position == 0) {
             $this->Tags->moveUp($tag, true);
         } else {
-            $count = $this->Tags->find('children', ['for' => $parentId]);
+            $count = $this->Tags->find('children', ['for' => $parentId])->count();
             $delta = $count - $position - 1;
             if ($delta > 0) {
                 $this->Tags->moveUp($tag, $delta);
