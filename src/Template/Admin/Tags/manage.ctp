@@ -156,20 +156,6 @@ Vegetables
                 ) ?>
                 <br />If the tree structure in the database (lft and rght fields) has gotten screwed up
             </li>
-            <li>
-                <?= $this->Html->link(
-                    'Remove unlisted, unused, root-level, childless tags',
-                    ['controller' => 'Tags', 'action' => 'removeUnlistedUnused']
-                ) ?>
-                <br />These are probably just taking up space.
-            </li>
-            <li>
-                <?= $this->Html->link(
-                    'Remove duplicate tags',
-                    ['controller' => 'Tags', 'action' => 'duplicates']
-                ) ?>
-                <br />And merge associations into the retained tags
-            </li>
         </ul>
         <div class="results"></div>
     </div>
