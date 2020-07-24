@@ -625,9 +625,7 @@ class TagsController extends AppController
     public function add()
     {
         $this->viewbuilder()->setLayout('ajax');
-        if (!$this->request->is('post')) {
-            return;
-        }
+        $this->request->allowMethod('post');
         if (trim($this->request->getData('name')) == '') {
             $this->set([
                 'title' => 'Error',
