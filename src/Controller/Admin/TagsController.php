@@ -289,63 +289,44 @@ class TagsController extends AppController
      * Turns all associations with removed Tag into associations with retained Tag,
      * deletes the Tag designated for removal, and reparents any of its child tags to the retained Tag
      *
-     * @param string $removedTagName Name of tag to remove after merging
-     * @param string $retainedTagName Name of tag to retain after merging
      * @return null
      */
-    public function merge($removedTagName = '', $retainedTagName = '')
+    public function merge()
     {
-        $this->viewbuilder()->setLayout('ajax');
-        $removedTagName = trim($removedTagName);
-        $retainedTagName = trim($retainedTagName);
+        $redirectTo = ['action' => 'manage', '#' => 'tab-merge'];
+        $removedTagName = trim($this->request->getData('removed_tag_name'));
+        $retainedTagName = trim($this->request->getData('retained_tag_name'));
 
         // Verify input
         if ($removedTagName == '') {
-            $this->set([
-                'message' => 'No name provided for the tag to be removed.',
-                'class' => 'error',
-            ]);
+            $this->Flash->error('No name provided for the tag to be removed.');
 
-            return null;
+            return $this->redirect($redirectTo);
         } else {
             $removedTag = $this->Tags->findByName($removedTagName)->first();
             if (!$removedTag) {
-                $this->set([
-                    'message' => "The tag \"$removedTagName\" could not be found.",
-                    'class' => 'error',
-                ]);
+                $this->Flash->error("The tag \"$removedTagName\" could not be found.");
 
-                return null;
+                return $this->redirect($redirectTo);
             }
         }
         if ($retainedTagName == '') {
-            $this->set([
-                'message' => 'No name provided for the tag to be retained.',
-                'class' => 'error',
-            ]);
+            $this->Flash->error('No name provided for the tag to be retained.');
 
-            return null;
+            return $this->redirect($redirectTo);
         } else {
             $retainedTag = $this->Tags->findByName($retainedTagName)->first();
             if (!$retainedTag) {
-                $this->set([
-                    'message' => "The tag \"$retainedTagName\" could not be found.",
-                    'class' => 'error',
-                ]);
+                $this->Flash->error("The tag \"$retainedTagName\" could not be found.");
 
-                return null;
+                return $this->redirect($redirectTo);
             }
         }
         if ($removedTag->id == $retainedTag->id) {
-            $this->set([
-                'message' => "Cannot merge \"$retainedTagName\" into itself.",
-                'class' => 'error',
-            ]);
+            $this->Flash->error("Cannot merge \"$retainedTagName\" into itself.");
 
-            return null;
+            return $this->redirect($redirectTo);
         }
-
-        $class = 'success';
 
         // Switch event associations
         $this->loadModel('EventsTags');
@@ -360,14 +341,14 @@ class TagsController extends AppController
         }
         if ($associations) {
             $message = sprintf(
-                'Changed association with "%s" into "%s" in %s event%s.<br />',
+                'Changed association with "%s" into "%s" in %s event%s.\n',
                 $removedTagName,
                 $retainedTagName,
                 count($associations),
                 count($associations) == 1 ? '' : 's'
             );
         } else {
-            $message = 'No associated events to edit.<br />';
+            $message = 'No associated events to edit.\n';
         }
 
         // Move child tags
@@ -375,15 +356,15 @@ class TagsController extends AppController
             ->find()
             ->where(['parent_id' => $removedTag->id])
             ->all();
+        $success = true;
         if (!$children) {
-            $message .= 'No child-tags to move.<br />';
+            $message .= 'No child-tags to move.\n';
         } else {
             foreach ($children as $childTag) {
                 $this->Tags->patchEntity($childTag, ['parent_id' => $retainedTag->id]);
                 $success = (bool)$this->Tags->save($childTag);
-                $class = $success ? 'succes' : 'error';
                 $message .= sprintf(
-                    '%s "%s" from under "%s" to under "%s".<br />',
+                    '%s "%s" from under "%s" to under "%s".\n',
                     $success ? 'Moved' : 'Error moving',
                     $childTag->name,
                     $removedTagName,
@@ -393,23 +374,24 @@ class TagsController extends AppController
         }
 
         // Delete tag
-        if ($class == 'success') {
+        if ($success) {
             if ($this->Tags->delete($removedTag)) {
                 $message .= "Removed \"$removedTagName\".";
             } else {
                 $message .= "Error trying to delete \"$removedTagName\" from the database.";
-                $class = 'error';
+                $success = false;
             }
         } else {
             $message .= "\"$removedTagName\" not removed.";
         }
 
-        $this->set([
-            'message' => $message,
-            'class' => $class,
-        ]);
+        if ($success) {
+            $this->Flash->success($message);
+        } else {
+            $this->Flash->error($message);
+        }
 
-        return null;
+        return $this->redirect($redirectTo);
     }
 
     /**

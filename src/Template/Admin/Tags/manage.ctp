@@ -116,16 +116,15 @@ Vegetables
         <p>
             Start typing tag names:
         </p>
-        <form id="tag_merge_form">
-            Merge
-            <input type="text" id="tag_merge_from_field" class="search_field form-control" />
-            into
-            <input type="text" id="tag_merge_into_field" class="search_field form-control" />
-
-            <span class="footnote">(The first tag will be <strong>removed</strong>.)</span>
-            <br />
-            <input type="submit" value="Merge" class="btn btn-primary" />
-        </form>
+        <?= $this->Form->create(null, ['url' => ['action' => 'merge', 'id' => 'tag_merge_form']]) ?>
+        Merge
+        <input type="text" name="removed_tag_name" class="search_field form-control" />
+        into
+        <input type="text" name="retained_tag_name" class="search_field form-control" />
+        <span class="footnote">(The first tag will be <strong>removed</strong>.)</span>
+        <br />
+        <?= $this->Form->submit('Merge', ['class' => 'btn btn-primary']) ?>
+        <?= $this->Form->end() ?>
         <div class="results" id="merge_results"></div>
     </div>
 

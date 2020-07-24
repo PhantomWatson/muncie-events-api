@@ -184,22 +184,6 @@ class AdminTagManager {
                 });
             });
 
-            // Merge
-            $('#tag_merge_form').submit(function (event) {
-                event.preventDefault();
-                const removedTag = $('#tag_merge_from_field').val();
-                const retainedTag = $('#tag_merge_into_field').val();
-                $.ajax({
-                    url: '/admin/tags/merge/' + encodeURIComponent(removedTag) + '/' + encodeURIComponent(retainedTag),
-                    success: function (data) {
-                        $('<div>' + data + '</div>').prependTo('#tab-merge .results');
-                    },
-                    error: function () {
-                        alert('The server returned an error.');
-                    }
-                });
-            });
-
             // Add
             $('#tab-add form').ajaxForm({
                 target: '#add_results',
