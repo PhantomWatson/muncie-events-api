@@ -25,28 +25,6 @@ class AdminTagManager {
                 });
             });
 
-            // Autocomplete fields
-            /*$('.search_field').bind('keydown', function (event) {
-                // don't navigate away from the field on tab when selecting an item
-                if (event.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active) {
-                    event.preventDefault();
-                }
-            }).autocomplete({
-                // '/0/0' includes unlisted and unselectable tags
-                source: '/admin/tags/auto_complete/0/0',
-                search: function () {
-                    var term = extractLast(this.value);
-                },
-                focus: function () {
-                    // prevent value inserted on focus
-                    return false;
-                },
-                select: function (event, ui) {
-                    this.value = ui.item.label;
-                    return false;
-                }
-            });*/
-
             const tagAutocompleteFields = document.querySelectorAll('.search_field');
             tagAutocompleteFields.forEach((tagAcField) => {
                 if (typeof tagAcField.id === 'undefined' || tagAcField.id === '') {
