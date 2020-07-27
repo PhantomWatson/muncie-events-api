@@ -90,6 +90,7 @@ Vegetables
             [
                 'controller' => 'Tags',
                 'action' => 'emptyDeleteGroup',
+                '_ext' => 'json',
             ]
         ) ?>
         <p>

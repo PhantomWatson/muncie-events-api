@@ -17,7 +17,7 @@ class AdminTagManager {
                 $.ajax({
                     url: this.href,
                     success: function (data) {
-                        $('<div>' + data + '</div>').prependTo('#tab-remove .results');
+                        $('<p class="alert alert-success">' + data.message + '</p>').prependTo('#tab-remove .results');
                     },
                     error: function () {
                         alert('The server returned an error.');

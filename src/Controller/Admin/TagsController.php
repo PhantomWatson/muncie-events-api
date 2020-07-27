@@ -466,10 +466,10 @@ class TagsController extends AppController
         }
 
         $this->set([
-            'message' => 'Delete Group Emptied',
+            '_serialize' => ['message', 'class'],
+            'message' => 'Delete group emptied',
             'class' => 'success',
         ]);
-        $this->viewbuilder()->setLayout('ajax');
     }
 
     /**
