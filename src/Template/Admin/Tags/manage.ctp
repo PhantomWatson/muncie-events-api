@@ -85,9 +85,13 @@ Vegetables
         <p class="alert alert-info">
             Warning: If a tag is removed, all child-tags will also be removed. This cannot be undone.
         </p>
-        <?= $this->Html->link('Remove all tags in the "Delete" group', [
-            'controller' => 'Tags', 'action' => 'empty_delete_group',
-        ]) ?>
+        <?= $this->Html->link(
+            'Remove all tags in the "Delete" group',
+            [
+                'controller' => 'Tags',
+                'action' => 'emptyDeleteGroup',
+            ]
+        ) ?>
         <p>
             Or start typing a tag name:
         </p>
