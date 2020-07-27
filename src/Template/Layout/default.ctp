@@ -54,7 +54,7 @@
             </div>
         </noscript>
 
-        <div id="content_wrapper" class="col-lg-9 col-md-8">
+        <div id="content_wrapper" class="<?= ($hideSidebar ?? false ? '' : 'col-lg-9 col-md-8') ?>">
             <div id="content" class="clearfix">
                 <div id="flash-messages">
                     <?= $this->Flash->render('flash') ?>
