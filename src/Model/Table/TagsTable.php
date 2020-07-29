@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Tag;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Association\BelongsTo;
@@ -12,6 +13,7 @@ use Cake\ORM\Behavior\TreeBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -177,5 +179,43 @@ class TagsTable extends Table
 
         // Assume that after 100 levels, a circular path must have been found and exit
         return false;
+    }
+
+    /**
+     * Returns an array of the filtered and published Event IDs associated with the specified Tag
+     *
+     * @param int $tagId Tag ID
+     * @param int|null $categoryFilter Category ID
+     * @param string|null $locationFilter Location name
+     * @return array|array[]|\ArrayAccess|\ArrayAccess[]
+     */
+    public function getFilteredAssociatedEventIds($tagId, $categoryFilter, $locationFilter)
+    {
+        $results = $this
+            ->find()
+            ->where(['id' => $tagId])
+            ->select(['id'])
+            ->contain([
+                'Events' => function (Query $q) use ($categoryFilter, $locationFilter) {
+                    $q
+                        ->find('published')
+                        ->select(['id']);
+
+                    if ($categoryFilter) {
+                        $q->where(['category_id' => $categoryFilter]);
+                    }
+
+                    if ($locationFilter) {
+                        $q->where(function (QueryExpression $exp) use ($locationFilter) {
+                            return $exp->like('location', "%$locationFilter%");
+                        });
+                    }
+
+                    return $q;
+                },
+            ])
+            ->toArray();
+
+        return Hash::extract($results, '{n}.id');
     }
 }

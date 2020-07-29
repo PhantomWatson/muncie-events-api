@@ -9,13 +9,13 @@ use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -713,5 +713,125 @@ class EventsTable extends Table
         $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', ['tags' => [mb_strtolower($searchTerm)]]);
 
         return $fieldsQuery->union($tagsQuery);
+    }
+
+    /**
+     *
+     *
+     * @param Query $query Query
+     * @param array $options 'filters' required, 'startDate' optional, in YYYY-MM-DD format
+     * @return Query
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function findForWidget(Query $query, $options)
+    {
+        if (!isset($options['filters'])) {
+            throw new InternalErrorException('filters not passed to find(\'forWidget\')');
+        }
+
+        $startDate = $options['startDate'] ?? date('Y-m-d');
+        $filters = $options['filters'];
+        $datesPerPage = 7;
+        $dates = $this->getNextPopulatedDays($startDate, $datesPerPage, $filters);
+
+        $query
+            ->find('published')
+            ->find('ordered')
+            ->find('filteredForWidget', ['filters' => $filters])
+            ->select([
+                'id',
+                'title',
+                'location',
+                'date',
+                'time_start',
+            ])
+            ->where(function (QueryExpression $exp) use ($dates) {
+                return $exp->in('date', $dates);
+            })
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['id', 'name', 'slug']);
+                },
+                'Images',
+            ]);
+
+        return $query;
+    }
+
+    /**
+     * Returns the next $limit YYYY-MM-DD dates with events on and after $startDate, filtered by $filters
+     *
+     * @param string $startDate The earliest date that can be returned
+     * @param int $limit Limit of dates to retrieve
+     * @param array $filters Array of filters used by Widgets
+     * @return string[]
+     */
+    private function getNextPopulatedDays($startDate, $limit, $filters = [])
+    {
+        $results = $this
+            ->find('published')
+            ->find('filteredForWidget', ['filters' => $filters])
+            ->select(['date'])
+            ->distinct('date')
+            ->where([
+                function (QueryExpression $exp) use ($startDate) {
+                    return $exp->gte('date', $startDate);
+                },
+            ])
+            ->limit($limit)
+            ->orderAsc('date')
+            ->toArray();
+
+        return Hash::extract($results, '{n}.date');
+    }
+
+    /**
+     * Modifies a query to apply $options['filters'] to it
+     *
+     * @param Query $query Query
+     * @param array $options 'filters' required
+     * @return Query
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function findFilteredForWidget(Query $query, $options)
+    {
+        $categoryFilter = $filters['category'] ?? null;
+        if ($categoryFilter) {
+            $query->where(['category_id' => $categoryFilter]);
+        }
+
+        $locationFilter = $filters['location'] ?? null;
+        if ($locationFilter) {
+            $query->where(function (QueryExpression $exp) use ($locationFilter) {
+                return $exp->like('location', "%$locationFilter%");
+            });
+        }
+
+        /* If there are included/excluded tags,
+         * retrieve all potentially applicable event IDs that must / must not be part of the final results */
+        $eventIds = [];
+        foreach (['included', 'excluded'] as $foocluded) {
+            if (!isset($filters["tags_$foocluded"])) {
+                continue;
+            }
+            $tagId = $filters["tags_$foocluded"];
+            $eventIds[$foocluded] = $this->Tags->getFilteredAssociatedEventIds(
+                $tagId,
+                $categoryFilter,
+                $locationFilter
+            );
+        }
+        if (isset($eventIds['included'])) {
+            $query->where(function (QueryExpression $exp) use ($eventIds) {
+                return $exp->in('id', $eventIds['included']);
+            });
+        }
+        if (isset($eventIds['excluded'])) {
+            $query->where(function (QueryExpression $exp) use ($eventIds) {
+                return $exp->notIn('id', $eventIds['excluded']);
+            });
+        }
+
+        return $query;
     }
 }

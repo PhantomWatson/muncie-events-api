@@ -21,7 +21,7 @@ var version = $.ui.version = "1.12.1";
 
 
 /*!
- * jQuery UI Widget 1.12.1
+ * jQuery UI Widgets 1.12.1
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors
@@ -29,7 +29,7 @@ var version = $.ui.version = "1.12.1";
  * http://jquery.org/license
  */
 
-//>>label: Widget
+//>>label: Widgets
 //>>group: Core
 //>>description: Provides a factory for creating stateful widgets with a common API.
 //>>docs: http://api.jqueryui.com/jQuery.widget/
