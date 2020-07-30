@@ -160,4 +160,22 @@ class WidgetsController extends AppController
             '?' => $filteredParams,
         ]);
     }
+
+    /**
+     * Displays an event's details
+     *
+     * @param int $eventId Event ID
+     * @return void
+     */
+    public function event($eventId)
+    {
+        $event = $this->Events
+            ->find('withAllAssociated')
+            ->where(['Events.id' => $eventId])
+            ->first();
+
+        // Note: Both the 'feed' and 'month' widgets display their event details with the 'feed' layout
+        $this->viewbuilder()->setLayout($this->request->is('ajax') ? 'ajax' : 'Widgets' . DS . 'feed');
+        $this->set(compact('event'));
+    }
 }
