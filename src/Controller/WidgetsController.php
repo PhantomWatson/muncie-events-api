@@ -8,7 +8,7 @@ use Cake\Utility\Hash;
 /**
  * Widgets Controller
  *
- * @property \App\Widget\Widget $Widgets
+ * @property \App\Widget\Widget $Widget
  * @property \App\Model\Table\EventsTable $Events
  */
 class WidgetsController extends AppController
