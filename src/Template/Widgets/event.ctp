@@ -86,11 +86,14 @@ $this->Html->scriptBlock('setupEventActions(".event");', ['block' => true])
         <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
     </div>
     <div class="footer">
-        <?= $this->Html->link('Go to event page', $eventUrl) ?>
+        <p class="text-center">
+            <?= $this->Html->link('Go to event page', $eventUrl, ['class' => 'btn btn-primary']) ?>
+        </p>
         <?php if ($event->source): ?>
-            <br />
-            Source:
-            <?= $this->Text->autoLink($event->source) ?>
+            <p>
+                Source:
+                <?= $this->Text->autoLink($event->source) ?>
+            </p>
         <?php endif; ?>
     </div>
 </div>
