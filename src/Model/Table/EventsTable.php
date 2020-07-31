@@ -468,7 +468,7 @@ class EventsTable extends Table
         $month = str_pad($month, 2, '0', STR_PAD_LEFT);
         $query
             ->where(function (QueryExpression $exp) use ($year, $month) {
-                return $exp->like('time_start', "$year-$month-%");
+                return $exp->like('date', "$year-$month-%");
             })
             ->limit(31);
 
