@@ -716,17 +716,17 @@ class EventsTable extends Table
     }
 
     /**
-     * forWidget custom finder
+     * forFeedWidget custom finder
      *
      * @param Query $query Query
      * @param array $options 'filters' required, 'startDate' optional, in YYYY-MM-DD format
      * @return Query
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findForWidget(Query $query, $options)
+    public function findForFeedWidget(Query $query, $options)
     {
         if (!isset($options['filters'])) {
-            throw new InternalErrorException('filters not passed to find(\'forWidget\')');
+            throw new InternalErrorException('filters not passed to find(\'forFeedWidget\')');
         }
 
         $startDate = $options['startDate'] ?? date('Y-m-d');
@@ -836,6 +836,44 @@ class EventsTable extends Table
                 return $exp->notIn('id', $eventIds['excluded']);
             });
         }
+
+        return $query;
+    }
+
+    /**
+     * forMonthWidget custom finder
+     *
+     * @param Query $query Query
+     * @param array $options 'filters', 'year', and 'month required
+     * @return Query
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function findForMonthWidget(Query $query, $options)
+    {
+        foreach (['filters', 'year', 'month'] as $requiredParam) {
+            if (!isset($options[$requiredParam])) {
+                throw new InternalErrorException($requiredParam . ' not passed to find(\'forMonthWidget\')');
+            }
+        }
+
+        $query
+            ->find('inMonth', compact('year', 'month'))
+            ->find('published')
+            ->find('ordered')
+            ->find('filteredForWidget', ['filters' => $options['filters']])
+            ->select([
+                'id',
+                'title',
+                'location',
+                'date',
+                'time_start',
+            ])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['id', 'name', 'slug']);
+                },
+                'Images',
+            ]);
 
         return $query;
     }
