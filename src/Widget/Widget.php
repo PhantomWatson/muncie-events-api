@@ -301,6 +301,12 @@ class Widget
         return implode('; ', $iframeStyles);
     }
 
+    /**
+     *
+     *
+     * @param array $options Widget options
+     * @return void
+     */
     public function processCustomStyles($options)
     {
         if (empty($options)) {
@@ -320,6 +326,8 @@ class Widget
             }
             $val = trim($val);
             $var = trim($var);
+
+            // Skip blank values, default values, and unrecognized 'styles' options
             if ($val == '') {
                 continue;
             } elseif (isset($defaults['styles'][$var])) {
@@ -329,9 +337,9 @@ class Widget
             } else {
                 continue;
             }
-            if (method_exists($this, "style_$var")) {
-                $method = "style_$var";
-                $this->$method($val);
+
+            if (method_exists($this->WidgetStyles, $var)) {
+                $this->$var($val);
             }
         }
     }
