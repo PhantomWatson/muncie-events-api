@@ -716,7 +716,7 @@ class EventsTable extends Table
     }
 
     /**
-     *
+     * forWidget custom finder
      *
      * @param Query $query Query
      * @param array $options 'filters' required, 'startDate' optional, in YYYY-MM-DD format
@@ -733,6 +733,11 @@ class EventsTable extends Table
         $filters = $options['filters'];
         $datesPerPage = 7;
         $dates = $this->getNextPopulatedDays($startDate, $datesPerPage, $filters);
+
+        // There are no more populated dates, return a simple query that won't return any events
+        if (!$dates) {
+            return $query->where(['id' => -1]);
+        }
 
         $query
             ->find('published')
