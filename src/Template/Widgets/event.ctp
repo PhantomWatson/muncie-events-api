@@ -17,7 +17,7 @@ $eventUrl = Router::url([
     <h1 class="title">
         <?= $event->title ?>
     </h1>
-    <?= $this->element('Events/actions', ['event' => $event]) ?>
+    <?= $this->element('Events/actions', ['event' => $event, 'widget' => true]) ?>
     <div class="header_details">
         <table class="details">
             <tr>

@@ -13,6 +13,11 @@ $isAdmin = $authUser['role'] == 'admin';
 $isAuthor = $authUser['id'] == $event->user_id;
 $isApproved = (bool)$event->approved_by;
 $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
+$widget = $widget ?? false;
+$dropdownMenuClasses = 'dropdown-menu';
+if ($widget) {
+    $dropdownMenuClasses .= ' dropdown-menu-right';
+}
 ?>
 <div class="actions">
     <div class="export_options_container">
@@ -23,7 +28,7 @@ $canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
                 <i class="fas fa-cloud-download-alt"></i>
                 Export to...
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="<?= $dropdownMenuClasses ?>" aria-labelledby="dropdownMenuButton">
                 <a href="<?= CalendarHelper::getGoogleCalendarUrl($event) ?>" title="Add to Google Calendar"
                    class="dropdown-item">
                     Google
