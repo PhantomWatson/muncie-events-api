@@ -23,7 +23,13 @@ class WidgetsController extends AppController
     {
         parent::initialize();
 
-        $this->Auth->allow(['index']);
+        $this->Auth->allow([
+            'customize',
+            'event',
+            'feed',
+            'index',
+            'month',
+        ]);
         $this->loadModel('Events');
         $this->Widget = new Widget();
     }
