@@ -800,6 +800,7 @@ class EventsTable extends Table
      */
     public function findFilteredForWidget(Query $query, $options)
     {
+        $filters = $options['filters'];
         $categoryFilter = $filters['category'] ?? null;
         if ($categoryFilter) {
             $query->where(['category_id' => $categoryFilter]);
