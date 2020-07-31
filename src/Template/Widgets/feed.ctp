@@ -9,7 +9,7 @@ use App\View\Helper\CalendarHelper;
 use Cake\Routing\Router;
 ?>
 
-<?php if ($events): ?>
+<?php if ($events->count()): ?>
 
     <?php $eventsByDate = CalendarHelper::arrangeByDate($events->toArray()); ?>
 
