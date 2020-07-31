@@ -2,6 +2,7 @@
 /**
  * @var array $filters
  * @var string $allEventsUrl
+ * @var string[] $categories
  */
 ?>
 
