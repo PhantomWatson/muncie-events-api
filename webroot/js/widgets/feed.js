@@ -26,19 +26,6 @@ const muncieEventsFeedWidget = {
 		}
 	},
 
-	/**
-	 * Prepares the 'event actions' block (like on Facebook, export, edit, etc.)
-	 * @param containerSelector
-	 */
-	setupEventActions: function(containerSelector) {
-		$(containerSelector).find('.export_options_toggler').click(function (event) {
-			event.preventDefault();
-            const link = $(this);
-            link.parent('div').toggleClass('open');
-			link.next('.export_options').slideToggle(300);
-		});
-	},
-
 	showEvent: function(eid, elist) {
         const eventView = $('#event_' + eid);
         if (eventView.length > 0) {
@@ -56,7 +43,6 @@ const muncieEventsFeedWidget = {
 			},
 			success: function (data) {
 				elist.after($('<div id="event_' + eid + '" style="display: none;"></div>').html(data));
-				muncieEventsFeedWidget.setupEventActions('#event_' + eid);
 				elist.fadeOut(muncieEventsFeedWidget.fade_duration, function () {
                     const eventView = $('#event_' + eid);
                     const backLink = $('<a href="#" class="back">&larr; Back</a>').click(function (event) {

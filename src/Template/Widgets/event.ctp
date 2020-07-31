@@ -11,7 +11,6 @@ $eventUrl = Router::url([
     'action' => 'view',
     'id' => $event->id,
 ], true);
-$this->Html->scriptBlock('setupEventActions(".event");', ['block' => true])
 ?>
 
 <div class="event">
