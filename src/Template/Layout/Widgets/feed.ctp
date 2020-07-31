@@ -48,9 +48,6 @@
         <div></div>
         <div></div>
     </div>
-    <div id="load_more_events_wrapper">
-        <button id="load_more_events" class="btn btn-primary">&darr; More events &darr;</button>
-    </div>
     <noscript>
         <div id="noscript">
             JavaScript is currently disabled in your browser.

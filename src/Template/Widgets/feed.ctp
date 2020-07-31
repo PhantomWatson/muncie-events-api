@@ -85,6 +85,10 @@ use Cake\Routing\Router;
         );
     ?>
 
+    <div id="load_more_events_wrapper">
+        <button id="load_more_events" class="btn btn-primary">&darr; More events &darr;</button>
+    </div>
+
 <?php else: ?>
 
     <p class="no_events">

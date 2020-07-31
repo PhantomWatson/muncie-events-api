@@ -55,8 +55,6 @@ const muncieEventsFeedWidget = {
 				muncieEventsFeedWidget.loadingStart();
 			},
 			success: function (data) {
-                $('#load_more_events').hide();
-                $('#load_more_events_wrapper').hide();
 				elist.after($('<div id="event_' + eid + '" style="display: none;"></div>').html(data));
 				muncieEventsFeedWidget.setupEventActions('#event_' + eid);
 				elist.fadeOut(muncieEventsFeedWidget.fade_duration, function () {
@@ -66,8 +64,6 @@ const muncieEventsFeedWidget = {
                         $('#event_' + eid).fadeOut(muncieEventsFeedWidget.fade_duration, function () {
                             $('#event_list').fadeIn(muncieEventsFeedWidget.fade_duration);
                             $(window).scrollTop(eventLink.offset().top);
-                            $('#load_more_events').show();
-                            $('#load_more_events_wrapper').show();
                         });
                     });
                     eventView.prepend(backLink);
