@@ -1,27 +1,16 @@
 <?php
 /**
- * @var bool $isAjax
  * @var \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface $events
+ * @var bool $isAjax
+ * @var int[] $eventIds
  */
 
 use App\View\Helper\CalendarHelper;
 use Cake\Routing\Router;
 ?>
 
-<?php if (empty($events)): ?>
+<?php if ($events): ?>
 
-    <p class="no_events">
-        <?php if ($isAjax): ?>
-            No more events found.
-        <?php else: ?>
-            No upcoming events found.
-            <br />
-            <?= $this->Html->link('Add an upcoming event', ['controller' => 'Events', 'action' => 'add']) ?>
-        <?php endif; ?>
-    </p>
-    <?php $this->Html->scriptBlock("muncieEventsFeedWidget.setNoMoreEvents();", ['block' => true]); ?>
-
-<?php else: ?>
     <?php $eventsByDate = CalendarHelper::arrangeByDate($events->toArray()); ?>
 
     <?php foreach ($eventsByDate as $date => $daysEvents): ?>
@@ -95,4 +84,18 @@ use Cake\Routing\Router;
             ['block' => true]
         );
     ?>
+
+<?php else: ?>
+
+    <p class="no_events">
+        <?php if ($isAjax): ?>
+            No more events found.
+        <?php else: ?>
+            No upcoming events found.
+            <br />
+            <?= $this->Html->link('Add an upcoming event', ['controller' => 'Events', 'action' => 'add']) ?>
+        <?php endif; ?>
+    </p>
+    <?php $this->Html->scriptBlock("muncieEventsFeedWidget.setNoMoreEvents();", ['block' => true]); ?>
+
 <?php endif; ?>
