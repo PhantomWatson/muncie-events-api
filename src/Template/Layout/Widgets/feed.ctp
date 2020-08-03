@@ -15,7 +15,6 @@
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
-        echo $this->Html->css('style');
         echo $this->fetch('css');
         echo $this->Html->css('widgets/feed');
         echo $this->Html->script('widgets/feed');
