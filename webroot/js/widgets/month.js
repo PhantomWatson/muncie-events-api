@@ -80,7 +80,8 @@ const muncieEventsMonthWidget = {
                     muncieEventsMonthWidget.setupEventActions(`#event_${eventId}`);
                     $('#events').append(eventView);
                     $('#load_more_events').hide();
-                    const backLink = $('<a href="#" class="back">&larr; Back</a>').click(function (event) {
+                    const backLink = $('<button class="back btn btn-sm btn-primary mt-2 mb-2">&larr; Back</button>');
+                    backLink.click(function (event) {
                         event.preventDefault();
                         $(`#event_${eventId}`).fadeOut(muncieEventsMonthWidget.fadeDuration, function () {
                             calendarContainer.fadeIn(muncieEventsMonthWidget.fadeDuration);
