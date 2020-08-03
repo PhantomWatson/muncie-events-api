@@ -17,8 +17,8 @@
         echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
         echo $this->Html->css('style');
         echo $this->fetch('css');
-        echo $this->Html->css('widgets/feed');
-        echo $this->Html->script('widgets/feed');
+        echo $this->Html->css('widgets/month');
+        echo $this->Html->script('widgets/month');
     ?>
     <?= $this->element('Widgets/custom_styles') ?>
     <base target="_top" />
@@ -28,25 +28,21 @@
     <div class="header">
         <?= $this->element('Widgets/header') ?>
     </div>
-    <div id="event_list">
+    <div id="calendar_container">
         <?= $this->fetch('content') ?>
     </div>
+    <div id="event_lists" style="display: none;"></div>
+    <div id="events"></div>
     <div id="loading" style="display: none;">
         <div></div>
         <div></div>
     </div>
+    <?php $this->Html->scriptBlock('muncieEventsMonthWidget.prepareWidget();', ['block' => true]); ?>
     <?= $this->element('Widgets/noscript') ?>
-    <?= $this->element('bootstrap_css_local_fallback') ?>
-    <?= $this->element('bootstrap_js') ?>
-    <?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
     <?= $this->Html->script('script') ?>
+    <?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
     <?= $this->Html->script('image_popups') ?>
-    <?php $this->Html->scriptBlock(
-        'muncieEventsImagePopups.prepare(); ' .
-        'muncieEventsFeedWidget.prepareWidget(); ' .
-        'muncieEventsImagePopups.prepare();',
-        ['block' => true]
-    ); ?>
+    <?php $this->Html->scriptBlock('muncieEventsImagePopups.prepare();', ['block' => true]); ?>
     <?= $this->element('analytics') ?>
     <?= $this->fetch('script') ?>
 </body>

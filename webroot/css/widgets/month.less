@@ -1,0 +1,201 @@
+// out:month.css
+
+@import "common";
+@import "../icons";
+
+/* media query & responsive design vars */
+@x-small: ~"(max-width: 576px)";
+@small: ~"(min-width: 576px) and (max-width: 768px)";
+@medium: ~"(min-width: 768px) and (max-width: 992px)";
+@large: ~"(min-width: 992px) and (max-width: 1200px)";
+@x-large: ~"(min-width: 1200px)";
+
+@DefaultEventFontSize: 11px;
+
+table.calendar {
+    border: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 5px 0 0 0;
+    position: absolute;
+    table-layout: fixed;
+    width: 100%;
+
+    thead {
+        border: 1px solid @BorderColorDark;
+    }
+
+    tbody {
+        td {
+            padding: 0;
+
+            > div {
+                min-height: 50px;
+            }
+
+            &.today {
+            }
+
+            &.today a.date {
+                color: red;
+            }
+
+            &:hover .add {
+                display: block;
+            }
+
+            a.date {
+                display: inline-block;
+                font-weight: bold;
+                margin: 5px 0 0 5px;
+                text-decoration: none;
+            }
+
+            .add {
+                display: none;
+                float: right;
+                font-size: 15px;
+            }
+
+            .more {
+                display: block;
+                font-size: 0.8em;
+                text-align: right;
+            }
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            font-size: @DefaultEventFontSize;
+            list-style-type: none;
+            overflow: hidden;
+            padding: 5px 2px;
+            white-space: normal;
+            @media @x-small {
+                max-height: 10px;
+            }
+
+            &:nth-child(even) {
+                background-color: @BackgroundColorAlt;
+            }
+
+            img {
+                height: 12px;
+                float: left;
+                margin-left: -14px;
+                margin-top: 1px;
+                vertical-align: text-bottom;
+                width: 12px;
+            }
+        }
+    }
+
+    th {
+        &.month_name {
+            border: medium none;
+            cursor: default;
+            font-size: 1.2em;
+            font-weight: bold;
+            letter-spacing: 10px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        &.day_header {
+            font-size: 70%;
+            text-align: center;
+        }
+    }
+
+    td {
+        border: 1px solid @BorderColorDark;
+        cursor: default;
+        padding: 5px;
+        text-align: left;
+        vertical-align: top;
+
+        &.prev_month,
+        &.next_month {
+            border: none;
+            text-align: center;
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        &.spacer {
+        }
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .no_events {
+        font-size: @DefaultEventFontSize;
+    }
+
+    .icon:before {
+        font-size: 130%;
+        line-height: 100%;
+        margin-right: 5px;
+        vertical-align: bottom;
+    }
+}
+
+#event_lists {
+    h2 {
+        margin-top: 0;
+    }
+
+    a.event {
+        display: block;
+        margin-bottom: 5px;
+        padding-left: 85px;
+
+        &:nth-child(even) {
+            background-color: @BackgroundColorAlt;
+        }
+    }
+
+    .close {
+        background-color: @BackgroundColorAlt;
+        border: 1px solid @BorderColorLight;
+        display: block;
+        float: right;
+        font-size: 10px;
+        padding: 5px;
+        text-align: center;
+        text-transform: uppercase;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        .x {
+            display: block;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+    }
+
+    .time {
+        color: @TextColorDefault;
+        display: inline-block;
+        margin-left: -85px;
+        width: 85px;
+    }
+
+    .icon:before {
+        margin-right: 5px;
+    }
+}
