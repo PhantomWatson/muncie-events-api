@@ -45,7 +45,11 @@ const muncieEventsFeedWidget = {
 				elist.after($('<div id="event_' + eid + '" style="display: none;"></div>').html(data));
 				elist.fadeOut(muncieEventsFeedWidget.fade_duration, function () {
                     const eventView = $('#event_' + eid);
-                    const backLink = $('<button class="back btn btn-sm btn-primary mt-2 mb-2">&larr; Back</button>');
+                    const backLink = $(
+                        '<button class="back btn btn-sm btn-primary mt-2 mb-2">' +
+                        '<i class="fas fa-arrow-left"></i> Back' +
+                        '</button>'
+                    );
                     backLink.click(function (event) {
                         event.preventDefault();
                         $('#event_' + eid).fadeOut(muncieEventsFeedWidget.fade_duration, function () {

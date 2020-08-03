@@ -20,17 +20,17 @@ $eventsByDate = $events ? CalendarHelper::arrangeByDate($events->toArray()) : []
     <thead>
         <tr>
             <td class="prev_month">
-                <a href="#" class="prev_month" title="Previous month">
-                    &larr;
-                </a>
+                <button class="prev_month btn btn-primary" title="Previous month">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
             </td>
             <th colspan="5" class="month_name">
                 <?= $monthName ?>
             </th>
             <td class="next_month">
-                <a href="#" class="next_month" title="Next month">
-                    &rarr;
-                </a>
+                <button class="next_month btn btn-primary" title="Next month">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </td>
         </tr>
         <tr>

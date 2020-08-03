@@ -86,7 +86,11 @@ use Cake\Routing\Router;
     ?>
 
     <div id="load_more_events_wrapper">
-        <button id="load_more_events" class="btn btn-primary">&darr; More events &darr;</button>
+        <button id="load_more_events" class="btn btn-primary">
+            <i class="fas fa-arrow-down"></i>
+            More events
+            <i class="fas fa-arrow-down"></i>
+        </button>
     </div>
 
 <?php else: ?>

@@ -18,11 +18,11 @@ const muncieEventsMonthWidget = {
         const calendar = $(calendarSelector);
 
         // Prev / next links
-        calendar.find('thead a.prev_month').click(function (event) {
+        calendar.find('thead button.prev_month').click(function (event) {
             event.preventDefault();
             muncieEventsMonthWidget.goToPrevMonth();
         });
-        calendar.find('thead a.next_month').click(function (event) {
+        calendar.find('thead button.next_month').click(function (event) {
             event.preventDefault();
             muncieEventsMonthWidget.goToNextMonth();
         });
@@ -80,7 +80,11 @@ const muncieEventsMonthWidget = {
                     muncieEventsMonthWidget.setupEventActions(`#event_${eventId}`);
                     $('#events').append(eventView);
                     $('#load_more_events').hide();
-                    const backLink = $('<button class="back btn btn-sm btn-primary mt-2 mb-2">&larr; Back</button>');
+                    const backLink = $(
+                        '<button class="back btn btn-sm btn-primary mt-2 mb-2">' +
+                        '<i class="fas fa-arrow-left"></i> Back' +
+                        '</button>'
+                    );
                     backLink.click(function (event) {
                         event.preventDefault();
                         $(`#event_${eventId}`).fadeOut(muncieEventsMonthWidget.fadeDuration, function () {
@@ -169,7 +173,12 @@ const muncieEventsMonthWidget = {
             eventLink.append(event.title);
             eventList.append(eventLink);
         }
-        const backLink = $('<a href="#" class="back">&larr; Back</a>').click(function (event) {
+        const backLink = $(
+            '<button class="back btn btn-sm btn-primary mt-2 mb-2">' +
+            '<i class="fas fa-arrow-left"></i> Back' +
+            '</button>'
+        );
+        backLink.click(function (event) {
             event.preventDefault();
             eventList.fadeOut(muncieEventsMonthWidget.fadeDuration, function () {
                 calendarContainer.fadeIn(muncieEventsMonthWidget.fadeDuration);
