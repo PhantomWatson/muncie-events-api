@@ -26,6 +26,7 @@ class WidgetsController extends AppController
 
         $this->Auth->allow([
             'customize',
+            'customizeFeed',
             'event',
             'feed',
             'index',
@@ -283,7 +284,8 @@ class WidgetsController extends AppController
      *
      * @return void
      */
-    public function customizeFeed() {
+    public function customizeFeed()
+    {
         $this->setDemoData('feed');
         $this->set([
             'pageTitle' => 'Customize Feed Widget',
