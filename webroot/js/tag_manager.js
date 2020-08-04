@@ -203,7 +203,7 @@ var TagManager = {
         const resultsContainerId = customTagInputId + '-results';
         new autoComplete({
             data: {
-                src: async () => {
+                src: async function () {
                     const customTags = document.getElementById(customTagInputId).value.trim();
                     if (customTags === '') {
                         return [];
@@ -232,7 +232,7 @@ var TagManager = {
                 render: true,
 
                 // Make results automatically close upon clicking anywhere on the page
-                container: source => {
+                container: function (source) {
                     source.setAttribute('id', resultsContainerId);
                     document.getElementById(customTagInputId).addEventListener('autoComplete', function (event) {
                         function hideSearchResults() {
@@ -257,19 +257,19 @@ var TagManager = {
             maxResults: 6,                         // Max. number of rendered results | (Optional)
             highlight: true,                       // Highlight matching results      | (Optional)
             resultItem: {                          // Rendered result item            | (Optional)
-                content: (data, source) => {
+                content: function (data, source) {
                     source.innerHTML = data.match;
                 },
                 element: 'li'
             },
-            noResults: () => {                     // Action script on noResults      | (Optional)
+            noResults: function () {               // Action script on noResults      | (Optional)
                 const result = document.createElement('li');
                 result.setAttribute('class', 'no_result autoComplete_result');
                 result.setAttribute('tabindex', '1');
                 result.innerHTML = 'No Results';
                 document.getElementById(resultsContainerId).appendChild(result);
             },
-            onSelection: feedback => {             // Action script onSelection event | (Optional)
+            onSelection: function (feedback) {             // Action script onSelection event | (Optional)
                 const customTagsField = document.getElementById(customTagInputId);
                 let customTags = split(customTagsField.value);
                 customTags[customTags.length - 1] = feedback.selection.value;
