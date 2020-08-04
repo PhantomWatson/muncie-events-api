@@ -6555,6 +6555,9 @@ body.api > div.container {
   font-weight: bold;
   text-align: left;
 }
+.widget_controls .form-control {
+  height: auto;
+}
 #sidebar {
   float: right;
   padding-right: 10px;
