@@ -18,18 +18,12 @@ use Cake\Routing\Router;
     Click on
     <?= $this->Html->link(
         'Event Feed Widget',
-        [
-            'action' => 'customize',
-            'feed',
-        ]
+        ['action' => 'customizeFeed']
     ) ?>
     or
     <?= $this->Html->link(
         'Monthly Calendar Widget',
-        [
-            'action' => 'customize',
-            'month',
-        ]
+        ['action' => 'customizeMonth']
     ) ?>
     to see customization options and get the code to embed into your website.
 </p>
@@ -46,10 +40,7 @@ use Cake\Routing\Router;
         <h2 class="float-left">
             <?= $this->Html->link(
                 'Event Feed Widget',
-                [
-                    'action' => 'customize',
-                    'feed',
-                ]
+                ['action' => 'customizeFeed']
             ) ?>
         </h2>
         <iframe class="widgets" src="<?= Router::url(['action' => 'feed'], true) ?>"></iframe>
@@ -58,10 +49,7 @@ use Cake\Routing\Router;
         <h2 class="float-right">
             <?= $this->Html->link(
                 'Monthly Calendar Widget',
-                [
-                    'action' => 'customize',
-                    'month',
-                ]
+                ['action' => 'customizeMonth']
             ) ?>
         </h2>
         <iframe class="widgets" src="<?= Router::url(['action' => 'month'], true) ?>"></iframe>

@@ -277,4 +277,17 @@ class WidgetsController extends AppController
             'year'
         ));
     }
+
+    /**
+     * Page for customizing a feed widget
+     *
+     * @return void
+     */
+    public function customizeFeed() {
+        $this->setDemoData('feed');
+        $this->set([
+            'pageTitle' => 'Customize Feed Widget',
+            'hideSidebar' => true,
+        ]);
+    }
 }
