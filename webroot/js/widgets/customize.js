@@ -76,7 +76,7 @@ const widgetCustomizer = {
 
         // Max visible events (month widget)
         const eventsDisplayedPerDay = $('#WidgetEventsDisplayedPerDay');
-        if (eventsDisplayedPerDay) {
+        if (eventsDisplayedPerDay.length > 0) {
             options.push('events_displayed_per_day=' + encodeURIComponent(eventsDisplayedPerDay.val()));
         }
 
