@@ -3,6 +3,7 @@
  * @var string $pageTitle
  */
 ?>
+
 <h1 class="page_title">
     <?= $pageTitle ?>
 </h1>
@@ -66,6 +67,16 @@
     <div class="widget_demo col-lg-7" id="widget_demo"></div>
 </div>
 
-<?php
-    echo $this->Html->script('widgets/customize.js');
-    $this->Html->scriptBlock('widgetCustomizer.setupWidgetDemo(\'feed\');', ['block' => true]);
+<script>
+    // Abort for Internet Explorer, which doesn't support the tag autocomplete's async function
+    let userAgent = window.navigator.userAgent;
+    if (userAgent.indexOf('MSIE') !== -1 || userAgent.indexOf('Trident') !== -1) {
+        document.querySelector('.widget_controls_wrapper').innerHTML = '<p>Sorry, Internet Explorer is not supported ' +
+            'on this page. Please upgrade to a modern browser to continue.</p>';
+    } else {
+        document.write('<script type="text/javascript" src="/js/widgets/customize.js"><\/script>');
+        window.onload = function () {
+            widgetCustomizer.setupWidgetDemo('feed');
+        };
+    }
+</script>
