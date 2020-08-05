@@ -4,7 +4,7 @@ const widgetCustomizer = {
             options = '';
         }
         $.ajax({
-            url: '/widgets/demo_' + version + '/?' + options,
+            url: '/widgets/demo-' + version + '/?' + options,
             beforeSend: function () {
             },
             success: function (data) {
