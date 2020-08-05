@@ -148,32 +148,25 @@ class Widget
     }
 
     /**
-     * Takes an array of query string parameters for customizing a widget iframe and returns a formatted query string
-     * to be used in the iframe's src URL
+     * Takes an array of query string parameters for customizing a widget iframe and returns a formatted query param
+     * array to be used to build the query string for the iframe's src URL
      *
-     * @return string
+     * @param array $queryParameters Query parameters from the current request
+     * @return array
      */
-    public function getIframeQueryString()
+    public function getIframeQueryParams($queryParameters)
     {
-        if (empty($_SERVER['QUERY_STRING'])) {
-            return '';
+        if (empty($queryParameters)) {
+            return [];
         }
         $defaults = $this->getDefaults();
         $iframeParams = [];
-        $parameters = explode('&', urldecode($_SERVER['QUERY_STRING']));
-        foreach ($parameters as $option) {
-            $optionSplit = explode('=', $option);
-            if (count($optionSplit) != 2) {
-                continue;
-            }
-            list($key, $val) = $optionSplit;
-
+        foreach ($queryParameters as $key => $val) {
             // Clean up option and skip blanks
             $val = trim($val);
             if ($val == '') {
                 continue;
             }
-            $key = str_replace('amp;', '', $key);
 
             // Retain only valid params that differ from their default values
             if ($this->isValidNondefaultOption($key, $val)) {
@@ -185,7 +178,7 @@ class Widget
             }
         }
 
-        return http_build_query($iframeParams, '', '&amp;');
+        return $iframeParams;
     }
 
     /**

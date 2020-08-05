@@ -88,7 +88,8 @@ class WidgetsController extends AppController
     private function setDemoData($widgetType)
     {
         $this->Widget->setType($widgetType);
-        $iframeQueryString = $this->Widget->getIframeQueryString();
+        $queryParameters = $this->request->getQueryParams();
+        $iframeQueryParams = $this->Widget->getIframeQueryParams($queryParameters);
         $options = $this->getOptions();
         $iframeStyles = $this->Widget->getIframeStyles($options);
         $this->set([
@@ -97,12 +98,12 @@ class WidgetsController extends AppController
             'iframeUrl' => Router::url([
                 'controller' => 'Widgets',
                 'action' => $widgetType,
-                '?' => $iframeQueryString,
+                '?' => $iframeQueryParams,
             ], true),
             'codeUrl' => Router::url([
                 'controller' => 'Widgets',
                 'action' => $widgetType,
-                '?' => str_replace('&', '&amp;', $iframeQueryString),
+                '?' => $iframeQueryParams,
             ], true),
             'categories' => $this->Events->Categories
                 ->find()
