@@ -67,8 +67,5 @@
 </div>
 
 <?php
-    echo $this->Html->script('/jPicker/jpicker-1.1.6.js');
-    $this->Html->css('/jPicker/css/jPicker-1.1.6.min.css');
-    $this->Html->css('/jPicker/jPicker.css');
     echo $this->Html->script('widgets/customize.js');
     $this->Html->scriptBlock('widgetCustomizer.setupWidgetDemo(\'feed\');', ['block' => true]);

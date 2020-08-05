@@ -103,43 +103,6 @@ const widgetCustomizer = {
         // (so if the user enters stuff and refreshes, the demo looks like it should)
         this.updateWidgetDemo(version);
 
-        $('.color_input').each(function () {
-            const colorField = this;
-            const colorPicker = $('<span id="' + this.id + '_color_picker"></span>');
-            colorPicker.insertAfter($(colorField));
-            colorPicker.jPicker(
-                {
-                    window: {
-                        expandable: true,
-                        position: {
-                            x: 'screenCenter',
-                            y: 200
-                        },
-                        effects: {
-                            type: 'fade',
-                            speed: {
-                                show: '200',
-                                hide: '200'
-                            }
-                        },
-                        alphaSupport: true,
-                        alphaPrecision: 0
-                    },
-                    color: {
-                        active: $(colorField).val()
-                    }
-                },
-                // Commit
-                function (color, context) {
-                    widgetCustomizer.updateColorValue(colorField, color);
-                },
-                // Live
-                function (color, context) {
-                    widgetCustomizer.updateColorValue(colorField, color);
-                },
-            );
-        });
-
         // Expand control sections
         $('.widget_controls h3').each(function () {
             const header = $(this);

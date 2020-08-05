@@ -5,20 +5,20 @@ var TagManager = {
      * @returns
      */
     createTagList: function (data, container) {
-        var list = $('<ul></ul>');
-        for (var i = 0; i < data.length; i++) {
-            var tagId = data[i].id;
-            var tagName = data[i].name;
-            var children = data[i].children;
-            var hasChildren = (children.length > 0);
-            var isSelectable = data[i].selectable;
-            var listItem = $('<li id="available_tag_li_' + tagId + '"></li>');
-            var row = $('<div class="single_row"></div>');
+        const list = $('<ul></ul>');
+        for (let i = 0; i < data.length; i++) {
+            const tagId = data[i].id;
+            let tagName = data[i].name;
+            const children = data[i].children;
+            const hasChildren = (children.length > 0);
+            const isSelectable = data[i].selectable;
+            const listItem = $('<li id="available_tag_li_' + tagId + '"></li>');
+            const row = $('<div class="single_row"></div>');
             listItem.append(row);
             list.append(listItem);
 
             if (isSelectable) {
-                var tagLink = $('<a href="#" class="available_tag" title="Click to select" id="available_tag_' + tagId + '"></a>');
+                const tagLink = $('<a href="#" class="available_tag" title="Click to select" id="available_tag_' + tagId + '"></a>');
                 tagLink.append(tagName);
                 (function (tag_id) {
                     tagLink.click(function (event) {

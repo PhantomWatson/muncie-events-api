@@ -6558,6 +6558,11 @@ body.api > div.container {
 .widget_controls .form-control {
   height: auto;
 }
+.widget_controls input[type=color] {
+  border: none;
+  height: 2em;
+  padding: 0;
+}
 #sidebar {
   float: right;
   padding-right: 10px;
