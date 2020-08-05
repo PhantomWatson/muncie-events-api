@@ -80,7 +80,7 @@ const widgetCustomizer = {
             options.push('events_displayed_per_day=' + encodeURIComponent(eventsDisplayedPerDay.val()));
         }
 
-        return options.join('&amp;');
+        return options.join('&');
     },
 
     updateColorValue: function (field, color) {
