@@ -22,7 +22,7 @@ const widgetCustomizer = {
         const options = [];
 
         // Style (colors and dimensions) input
-        $('.widget_controls input[type=text].style').each(function () {
+        $('.widget_controls input[type=color].style, .widget_controls input[type=type].style').each(function () {
             const field = $(this);
             options.push(this.name + '=' + encodeURIComponent(field.val()));
         });
