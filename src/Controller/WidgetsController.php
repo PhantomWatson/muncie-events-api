@@ -95,12 +95,12 @@ class WidgetsController extends AppController
             'defaults' => $this->Widget->getDefaults(),
             'iframeStyles' => $iframeStyles,
             'iframeUrl' => Router::url([
-                'controller' => 'widgets',
+                'controller' => 'Widgets',
                 'action' => $widgetType,
                 '?' => $iframeQueryString,
             ], true),
             'codeUrl' => Router::url([
-                'controller' => 'widgets',
+                'controller' => 'Widgets',
                 'action' => $widgetType,
                 '?' => str_replace('&', '&amp;', $iframeQueryString),
             ], true),
@@ -291,5 +291,18 @@ class WidgetsController extends AppController
             'pageTitle' => 'Customize Feed Widget',
             'hideSidebar' => true,
         ]);
+    }
+
+    /**
+     * A page that renders an example of the feed widget
+     *
+     * @return \Cake\Http\Response
+     */
+    public function demoFeed()
+    {
+        $this->setDemoData('feed');
+        $this->viewbuilder()->setLayout('ajax');
+
+        return $this->render('customize_demo');
     }
 }
