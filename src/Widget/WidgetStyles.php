@@ -151,7 +151,7 @@ class WidgetStyles
             $this->addCustomStyle(
                 [
                     'table.calendar td',
-                    'table.calendar thead'
+                    'table.calendar thead',
                 ],
                 "border-color: $val;"
             );
