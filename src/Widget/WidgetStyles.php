@@ -233,7 +233,7 @@ class WidgetStyles
         );
         if ($this->type == 'feed') {
             $this->addCustomStyle(
-                '#event_list li a',
+                '#event_list li a.event_link',
                 "color: $val;"
             );
         } elseif ($this->type == 'month') {
