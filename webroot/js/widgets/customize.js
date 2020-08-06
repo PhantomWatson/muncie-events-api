@@ -112,6 +112,7 @@ const widgetCustomizer = {
                 event.preventDefault();
                 section.slideToggle(300);
             });
+            link.find('.fa-spinner').remove();
         });
 
         // 'All categories' checkbox

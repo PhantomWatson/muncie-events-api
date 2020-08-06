@@ -22,21 +22,30 @@
         <p>Expand the sections below to start customizing your widget</p>
         <form>
             <h3>
-                <button class="btn btn-light btn-block">Events</button>
+                <button class="btn btn-light btn-block">
+                    Events
+                    <i class="fas fa-spinner fa-spin"></i>
+                </button>
             </h3>
             <div id="WidgetFilterOptions">
                 <?= $this->element('Widgets/customize/events') ?>
             </div>
 
             <h3>
-                <button class="btn btn-light btn-block">Text</button>
+                <button class="btn btn-light btn-block">
+                    Text
+                    <i class="fas fa-spinner fa-spin"></i>
+                </button>
             </h3>
             <div class="text">
                 <?= $this->element('Widgets/customize/text') ?>
             </div>
 
             <h3>
-                <button class="btn btn-light btn-block">Borders</button>
+                <button class="btn btn-light btn-block">
+                    Borders
+                    <i class="fas fa-spinner fa-spin"></i>
+                </button>
             </h3>
             <div class="borders">
                 <?= $this->element('Widgets/customize/borders') ?>
@@ -47,14 +56,20 @@
             </div>
 
             <h3>
-                <button class="btn btn-light btn-block">Backgrounds</button>
+                <button class="btn btn-light btn-block">
+                    Backgrounds
+                    <i class="fas fa-spinner fa-spin"></i>
+                </button>
             </h3>
             <div class="backgrounds">
                 <?= $this->element('Widgets/customize/backgrounds') ?>
             </div>
 
             <h3>
-                <button class="btn btn-light btn-block">Size</button>
+                <button class="btn btn-light btn-block">
+                    Size
+                    <i class="fas fa-spinner fa-spin"></i>
+                </button>
             </h3>
             <div>
                 <?= $this->element('Widgets/customize/size') ?>
@@ -74,6 +89,11 @@
         document.querySelector('.widget_controls_wrapper').innerHTML = '<p>Sorry, Internet Explorer is not supported ' +
             'on this page. Please upgrade to a modern browser to continue.</p>';
     } else {
+        document.querySelectorAll('.widget_controls .btn-block').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+            });
+        });
         document.write('<script type="text/javascript" src="/js/widgets/customize.js"><\/script>');
         window.onload = function () {
             widgetCustomizer.setupWidgetDemo('feed');

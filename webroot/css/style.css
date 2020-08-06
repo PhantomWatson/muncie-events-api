@@ -6307,6 +6307,10 @@ iframe.widgets {
   border: 1px solid #666;
   margin-top: 0.5em;
 }
+.widget_controls .btn-block .fa-spinner {
+  float: right;
+  line-height: 1.5em;
+}
 .widget_controls .form-control {
   height: auto;
 }
