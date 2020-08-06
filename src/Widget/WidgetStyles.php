@@ -73,7 +73,12 @@ class WidgetStyles
     public function backgroundColorAlt($val)
     {
         $this->addCustomStyle(
-            '#widget_filters',
+            [
+                '#widget_filters',
+                '.btn-primary',
+                '.btn-primary:hover',
+                '.btn-primary:not(:disabled):not(.disabled):active',
+            ],
             "background-color: $val;"
         );
         if ($this->type == 'feed') {
@@ -124,6 +129,13 @@ class WidgetStyles
      */
     public function borderColorDark($val)
     {
+        $this->addCustomStyle(
+            [
+                '.btn-primary:hover',
+                '.btn-primary:not(:disabled):not(.disabled):active'
+            ],
+            "border: 1px solid $val;"
+        );
         if ($this->type == 'feed') {
             $this->addCustomStyle(
                 '#event_list li:hover',
@@ -161,7 +173,10 @@ class WidgetStyles
             "border-top: 1px solid $val;"
         );
         $this->addCustomStyle(
-            '#widget_filters',
+            [
+                '#widget_filters',
+                '.btn-primary',
+            ],
             "border: 1px solid $val;"
         );
         if ($this->type == 'feed') {
@@ -228,7 +243,12 @@ class WidgetStyles
     public function textColorDefault($val)
     {
         $this->addCustomStyle(
-            'body',
+            [
+                'body',
+                '.btn-primary',
+                '.btn-primary:hover',
+                '.btn-primary:not(:disabled):not(.disabled):active',
+            ],
             "color: $val;"
         );
         if ($this->type == 'feed') {
@@ -290,6 +310,13 @@ class WidgetStyles
         $this->addCustomStyle(
             'a',
             "color: $val;"
+        );
+        $this->addCustomStyle(
+            [
+                '.btn-primary:focus',
+                '.btn-primary:not(:disabled):not(.disabled):active:focus',
+            ],
+            "box-shadow: 0 0 0 0.2rem $val;"
         );
         if ($this->type == 'feed') {
             $this->addCustomStyle(

@@ -4727,3 +4727,20 @@ i.icon-general-events:before {
   cursor: progress;
   text-decoration: none;
 }
+.btn-primary {
+  background-color: #f0f0f0;
+  border: 1px solid #aaaaaa;
+  color: #000000;
+}
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #f0f0f0;
+  border: 1px solid #000000;
+  color: #000000;
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem #0b54a6;
+}
+.btn-primary:not(:disabled):not(.disabled):active:focus {
+  box-shadow: 0 0 0 0.2rem #0b54a6;
+}
