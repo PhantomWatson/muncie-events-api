@@ -332,7 +332,7 @@ class Widget
             }
 
             if (method_exists($this->WidgetStyles, $var)) {
-                $this->$var($val);
+                $this->WidgetStyles->$var($val);
             }
         }
     }

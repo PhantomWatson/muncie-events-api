@@ -94,6 +94,94 @@ class WidgetStyles
     }
 
     /**
+     * Sets primary background color value
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function backgroundColorDefault($val)
+    {
+        $this->addCustomStyle(
+            [
+                'html, body',
+                '#loading div:nth-child(1)',
+            ],
+            "background-color: $val;"
+        );
+        if ($this->type == 'month') {
+            $this->addCustomStyle(
+                '#event_lists > div > div',
+                "background-color: $val;"
+            );
+        }
+    }
+
+    /**
+     * Sets the dark border color
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function borderColorDark($val)
+    {
+        if ($this->type == 'feed') {
+            $this->addCustomStyle(
+                '#event_list li:hover',
+                "border-color: $val;"
+            );
+        } elseif ($this->type == 'month') {
+            $this->addCustomStyle(
+                [
+                    'table.calendar td',
+                    'table.calendar thead'
+                ],
+                "border-color: $val;"
+            );
+        }
+    }
+
+    /**
+     * Sets the light border color
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function borderColorLight($val)
+    {
+        $this->addCustomStyle(
+            'a.back:first-child',
+            "border-bottom: 1px solid $val;"
+        );
+        $this->addCustomStyle(
+            'a.back:last-child',
+            "border-top: 1px solid $val;"
+        );
+        $this->addCustomStyle(
+            '.event .description',
+            "border-top: 1px solid $val;"
+        );
+        $this->addCustomStyle(
+            '#widget_filters',
+            "border: 1px solid $val;"
+        );
+        if ($this->type == 'feed') {
+            $this->addCustomStyle(
+                '#event_list li',
+                "border-bottom-color: $val;"
+            );
+            $this->addCustomStyle(
+                '#event_list li:first-child',
+                "border-color: $val;"
+            );
+        } elseif ($this->type == 'month') {
+            $this->addCustomStyle(
+                '#event_lists .close',
+                "border-color: $val;"
+            );
+        }
+    }
+
+    /**
      * Sets font size
      *
      * @param string $val Font size
@@ -127,6 +215,86 @@ class WidgetStyles
             $this->addCustomStyle(
                 'table.calendar .icon:before',
                 "display:none;"
+            );
+        }
+    }
+
+    /**
+     * Sets the default text color
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function textColorDefault($val)
+    {
+        $this->addCustomStyle(
+            'body',
+            "color: $val;"
+        );
+        if ($this->type == 'feed') {
+            $this->addCustomStyle(
+                '#event_list li a',
+                "color: $val;"
+            );
+        } elseif ($this->type == 'month') {
+            $this->addCustomStyle(
+                ['table.calendar thead', '#event_lists .time'],
+                "color: $val;"
+            );
+        }
+    }
+
+    /**
+     * Sets the light text color
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function textColorLight($val)
+    {
+        $this->addCustomStyle(
+            [
+                'div.header',
+                'div.header a',
+                '.event table.details th',
+                '.event .footer',
+                '#widget_filters',
+                '#event_list li .icon:before',
+            ],
+            "color: $val;"
+        );
+        $this->addCustomStyle(
+            'ul.header li',
+            "border-right: 1px solid $val;"
+        );
+        if ($this->type == 'feed') {
+            $this->addCustomStyle(
+                [
+                    '#event_list h2.day',
+                    '#event_list p.no_events',
+                    '#load_more_events_wrapper.loading a',
+                ],
+                "color: $val;"
+            );
+        }
+    }
+
+    /**
+     * Sets the link text color
+     *
+     * @param string $val Color value
+     * @return void
+     */
+    private function textColorLink($val)
+    {
+        $this->addCustomStyle(
+            'a',
+            "color: $val;"
+        );
+        if ($this->type == 'feed') {
+            $this->addCustomStyle(
+                '#event_list li a.event_link .title',
+                "color: $val;"
             );
         }
     }
