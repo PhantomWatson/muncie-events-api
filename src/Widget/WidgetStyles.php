@@ -78,6 +78,10 @@ class WidgetStyles
                 '.btn-primary',
                 '.btn-primary:hover',
                 '.btn-primary:not(:disabled):not(.disabled):active',
+                '.btn-secondary',
+                '.btn-secondary:hover',
+                '.btn-secondary:not(:disabled):not(.disabled):active',
+                '.show > .btn-secondary.dropdown-toggle',
             ],
             "background-color: $val;"
         );
@@ -132,7 +136,9 @@ class WidgetStyles
         $this->addCustomStyle(
             [
                 '.btn-primary:hover',
-                '.btn-primary:not(:disabled):not(.disabled):active'
+                '.btn-primary:not(:disabled):not(.disabled):active',
+                '.btn-secondary:hover',
+                '.btn-secondary:not(:disabled):not(.disabled):active',
             ],
             "border: 1px solid $val;"
         );
@@ -176,6 +182,7 @@ class WidgetStyles
             [
                 '#widget_filters',
                 '.btn-primary',
+                '.btn-secondary',
             ],
             "border: 1px solid $val;"
         );
@@ -248,6 +255,10 @@ class WidgetStyles
                 '.btn-primary',
                 '.btn-primary:hover',
                 '.btn-primary:not(:disabled):not(.disabled):active',
+                '.btn-secondary',
+                '.btn-secondary:hover',
+                '.btn-secondary:not(:disabled):not(.disabled):active',
+                '.show > .btn-secondary.dropdown-toggle',
             ],
             "color: $val;"
         );
@@ -315,6 +326,8 @@ class WidgetStyles
             [
                 '.btn-primary:focus',
                 '.btn-primary:not(:disabled):not(.disabled):active:focus',
+                '.btn-secondary:focus',
+                '.btn-secondary:not(:disabled):not(.disabled):active:focus',
             ],
             "box-shadow: 0 0 0 0.2rem $val;"
         );

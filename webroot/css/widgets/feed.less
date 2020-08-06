@@ -132,7 +132,9 @@
     }
 }
 
-.btn-primary {
+.btn-primary,
+.btn-secondary
+{
     background-color: @BackgroundColorAlt;
     border: 1px solid @BorderColorLight;
     color: @TextColorDefault;
@@ -150,4 +152,9 @@
     &:not(:disabled):not(.disabled):active:focus {
         box-shadow: 0 0 0 0.2rem @TextColorLink;
     }
+}
+
+.show > .btn-secondary.dropdown-toggle {
+    background-color: @BackgroundColorAlt;
+    color: @TextColorDefault;
 }
