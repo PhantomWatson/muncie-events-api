@@ -99,7 +99,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function backgroundColorDefault($val)
+    public function backgroundColorDefault($val)
     {
         $this->addCustomStyle(
             [
@@ -122,7 +122,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function borderColorDark($val)
+    public function borderColorDark($val)
     {
         if ($this->type == 'feed') {
             $this->addCustomStyle(
@@ -146,7 +146,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function borderColorLight($val)
+    public function borderColorLight($val)
     {
         $this->addCustomStyle(
             'a.back:first-child',
@@ -225,7 +225,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function textColorDefault($val)
+    public function textColorDefault($val)
     {
         $this->addCustomStyle(
             'body',
@@ -250,7 +250,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function textColorLight($val)
+    public function textColorLight($val)
     {
         $this->addCustomStyle(
             [
@@ -285,7 +285,7 @@ class WidgetStyles
      * @param string $val Color value
      * @return void
      */
-    private function textColorLink($val)
+    public function textColorLink($val)
     {
         $this->addCustomStyle(
             'a',
