@@ -6223,15 +6223,6 @@ iframe.widgets {
     height: 375px;
   }
 }
-.jPicker .Icon {
-  bottom: 8px !important;
-  height: 33px !important;
-  position: relative !important;
-  width: 36px !important;
-}
-.jPicker .Image {
-  background-size: 100%;
-}
 #widgets_overview h2 {
   margin-top: 0;
 }
@@ -6309,6 +6300,18 @@ iframe.widgets {
 .widget_controls .form-control {
   background-color: transparent;
   display: inline-block;
+}
+.widget_controls .btn-block {
+  font-weight: bold;
+  text-align: left;
+}
+.widget_controls .form-control {
+  height: auto;
+}
+.widget_controls input[type=color] {
+  border: none;
+  height: 2em;
+  padding: 0;
 }
 #WidgetFilter_categories {
   margin-left: 10px;
@@ -6550,18 +6553,6 @@ body.api > div.container {
 #forgot-password-alert {
   margin-top: 1em;
   visibility: hidden;
-}
-.widget_controls .btn-block {
-  font-weight: bold;
-  text-align: left;
-}
-.widget_controls .form-control {
-  height: auto;
-}
-.widget_controls input[type=color] {
-  border: none;
-  height: 2em;
-  padding: 0;
 }
 #sidebar {
   float: right;
