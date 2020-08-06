@@ -6304,6 +6304,8 @@ iframe.widgets {
 .widget_controls .btn-block {
   font-weight: bold;
   text-align: left;
+  border: 1px solid #666;
+  margin-top: 0.5em;
 }
 .widget_controls .form-control {
   height: auto;
