@@ -19,7 +19,7 @@
 
 <div class="widget_controls_wrapper">
     <div class="widget_controls form-group col-lg-4">
-        <h2>Customize Your Widget</h2>
+        <p>Expand the sections below to start customizing your widget</p>
         <form>
             <h3>
                 <button class="btn btn-light btn-block">Events</button>
