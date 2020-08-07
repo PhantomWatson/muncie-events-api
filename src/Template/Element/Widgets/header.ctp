@@ -46,11 +46,7 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                                 $categoryName = $categories[$categoryId]->name;
                                 $categoryNames[] = $categoryName;
                             }
-                            echo str_replace(
-                                ' ,',
-                                ',',
-                                $this->Text->toList($categoryNames, ', and')
-                            );
+                            echo $this->Text->toList($categoryNames);
                         ?>
                     </li>
                 <?php endif; ?>
