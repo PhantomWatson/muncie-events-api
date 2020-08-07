@@ -44,7 +44,7 @@ class WidgetsController extends AppController
     public function index()
     {
         $this->set([
-            'pageTitle' => 'Website Widgets',
+            'pageTitle' => 'Muncie Events Calendar Widgets',
             'hideSidebar' => true,
         ]);
     }

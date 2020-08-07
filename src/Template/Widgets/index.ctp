@@ -4,14 +4,15 @@
  */
 
 use Cake\Routing\Router;
-
 ?>
+
 <h1 class="page_title">
     <?= $pageTitle ?>
 </h1>
 <p>
-    Have a website? Support your community by adding a Muncie Events widget to it
-    and keeping your visitors informed about local events.
+    Have a website? Enhance it and support your community by adding a Muncie Events calendar widget and keeping your
+    visitors informed about local events. They're free, update automatically, and can be customized in both their
+    appearance and in what events they display.
 </p>
 
 <p>
@@ -28,12 +29,26 @@ use Cake\Routing\Router;
     to see customization options and get the code to embed into your website.
 </p>
 
-<small>
-    Note: If you are using a content management system, it must allow you to use
-    <a href="https://en.wikipedia.org/wiki/HTML_element#Frames">iframes</a>. Have a CMS
-    that is incompatible with iframes? <a href="/contact">Let us know</a> and we'll develop a plugin for
-    you.
-</small>
+<p>
+    <strong>Using a content management system?</strong> Your CMS must allow you to use
+    <a href="https://en.wikipedia.org/wiki/HTML_element#Frames">iframes</a>.
+</p>
+
+<p>
+    <strong>Want to develop your own widget / application?</strong> Read about
+    <?= $this->Html->link(
+        'the Muncie Events API',
+        [
+            'plugin' => false,
+            'prefix' => false,
+            'controller' => 'Pages',
+            'action' => 'api',
+        ]
+    ) ?>
+    for more information about  building an application with direct access to the Muncie Events database.
+</p>
+
+<hr />
 
 <div id="widgets_overview row">
     <div class="col-xs-12 col-lg-4 float-left">
