@@ -803,7 +803,13 @@ class EventsTable extends Table
         $filters = $options['filters'];
         $categoryFilter = $filters['category'] ?? null;
         if ($categoryFilter) {
-            $query->where(['category_id' => $categoryFilter]);
+            $query->where(function (QueryExpression $exp) use ($categoryFilter) {
+                if (is_int($categoryFilter)) {
+                    $categoryFilter = [$categoryFilter];
+                }
+
+                return $exp->in('category_id', $categoryFilter);
+            });
         }
 
         $locationFilter = $filters['location'] ?? null;
