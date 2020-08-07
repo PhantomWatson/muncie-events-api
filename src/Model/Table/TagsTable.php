@@ -182,18 +182,20 @@ class TagsTable extends Table
     }
 
     /**
-     * Returns an array of the filtered and published Event IDs associated with the specified Tag
+     * Returns an array of the filtered and published Event IDs associated with the specified Tags
      *
-     * @param int $tagId Tag ID
+     * @param int[] $tagIds Tag IDs
      * @param int|null $categoryFilter Category ID
      * @param string|null $locationFilter Location name
      * @return array|array[]|\ArrayAccess|\ArrayAccess[]
      */
-    public function getFilteredAssociatedEventIds($tagId, $categoryFilter, $locationFilter)
+    public function getFilteredAssociatedEventIds($tagIds, $categoryFilter, $locationFilter)
     {
         $results = $this
             ->find()
-            ->where(['id' => $tagId])
+            ->where(function (QueryExpression $exp) use ($tagIds) {
+                return $exp->in('id', $tagIds);
+            })
             ->select(['id'])
             ->contain([
                 'Events' => function (Query $q) use ($categoryFilter, $locationFilter) {

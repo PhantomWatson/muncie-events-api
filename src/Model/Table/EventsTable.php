@@ -826,9 +826,9 @@ class EventsTable extends Table
             if (!isset($filters["tags_$foocluded"])) {
                 continue;
             }
-            $tagId = $filters["tags_$foocluded"];
+            $tagIds = $filters["tags_$foocluded"];
             $eventIds[$foocluded] = $this->Tags->getFilteredAssociatedEventIds(
-                $tagId,
+                $tagIds,
                 $categoryFilter,
                 $locationFilter
             );
