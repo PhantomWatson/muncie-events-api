@@ -38,6 +38,8 @@
     </div>
     <?php $this->Html->scriptBlock('muncieEventsMonthWidget.prepareWidget();', ['block' => true]); ?>
     <?= $this->element('Widgets/noscript') ?>
+    <?= $this->element('bootstrap_css_local_fallback') ?>
+    <?= $this->element('bootstrap_js') ?>
     <?= $this->Html->script('script') ?>
     <?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
     <?= $this->Html->script('image_popups') ?>
