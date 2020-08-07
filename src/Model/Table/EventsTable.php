@@ -835,10 +835,16 @@ class EventsTable extends Table
         }
         if (isset($eventIds['included'])) {
             $query->where(function (QueryExpression $exp) use ($eventIds) {
-                return $exp->in('Events.id', $eventIds['included']);
+                if ($eventIds['included']) {
+                    return $exp->in('Events.id', $eventIds['included']);
+                }
+
+                /* If no event IDs are to be included, then add an impossible condition because
+                 * "event ID in (empty set)" will generate an error */
+                return $exp->lt('Events.id', 0);
             });
         }
-        if (isset($eventIds['excluded'])) {
+        if (isset($eventIds['excluded']) && $eventIds['excluded']) {
             $query->where(function (QueryExpression $exp) use ($eventIds) {
                 return $exp->notIn('Events.id', $eventIds['excluded']);
             });
