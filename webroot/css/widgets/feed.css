@@ -181,6 +181,32 @@ p {
 #fb-root {
   display: none;
 }
+.btn-primary,
+.btn-secondary {
+  background-color: #f0f0f0;
+  border: 1px solid #aaaaaa;
+  color: #000000;
+}
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled):active {
+  background-color: #f0f0f0;
+  border: 1px solid #000000;
+  color: #000000;
+}
+.btn-primary:focus,
+.btn-secondary:focus {
+  box-shadow: 0 0 0 0.2rem #0b54a6;
+}
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-secondary:not(:disabled):not(.disabled):active:focus {
+  box-shadow: 0 0 0 0.2rem #0b54a6;
+}
+.show > .btn-secondary.dropdown-toggle {
+  background-color: #f0f0f0;
+  color: #000000;
+}
 @font-face {
   font-family: 'MuncieEventsIcons';
   src: url('/font/me-icons/muncie_events_icons.ttf');
@@ -4726,30 +4752,4 @@ i.icon-general-events:before {
   color: #666666;
   cursor: progress;
   text-decoration: none;
-}
-.btn-primary,
-.btn-secondary {
-  background-color: #f0f0f0;
-  border: 1px solid #aaaaaa;
-  color: #000000;
-}
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-primary:not(:disabled):not(.disabled):active,
-.btn-secondary:not(:disabled):not(.disabled):active {
-  background-color: #f0f0f0;
-  border: 1px solid #000000;
-  color: #000000;
-}
-.btn-primary:focus,
-.btn-secondary:focus {
-  box-shadow: 0 0 0 0.2rem #0b54a6;
-}
-.btn-primary:not(:disabled):not(.disabled):active:focus,
-.btn-secondary:not(:disabled):not(.disabled):active:focus {
-  box-shadow: 0 0 0 0.2rem #0b54a6;
-}
-.show > .btn-secondary.dropdown-toggle {
-  background-color: #f0f0f0;
-  color: #000000;
 }

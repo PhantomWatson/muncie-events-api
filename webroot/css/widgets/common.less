@@ -240,3 +240,30 @@ p {
 #fb-root {
     display: none;
 }
+
+.btn-primary,
+.btn-secondary
+{
+    background-color: @BackgroundColorAlt;
+    border: 1px solid @BorderColorLight;
+    color: @TextColorDefault;
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active
+    {
+        background-color: @BackgroundColorAlt;
+        border: 1px solid @BorderColorDark;
+        color: @TextColorDefault;
+    }
+    &:focus {
+        box-shadow: 0 0 0 0.2rem @TextColorLink;
+    }
+    &:not(:disabled):not(.disabled):active:focus {
+        box-shadow: 0 0 0 0.2rem @TextColorLink;
+    }
+}
+
+.show > .btn-secondary.dropdown-toggle {
+    background-color: @BackgroundColorAlt;
+    color: @TextColorDefault;
+}
