@@ -319,7 +319,10 @@ class WidgetStyles
     public function textColorLink($val)
     {
         $this->addCustomStyle(
-            'a',
+            [
+                'a',
+                'a:hover',
+            ],
             "color: $val;"
         );
         $this->addCustomStyle(
