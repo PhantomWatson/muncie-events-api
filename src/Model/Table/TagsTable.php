@@ -202,7 +202,13 @@ class TagsTable extends Table
                         ->select(['id']);
 
                     if ($categoryFilter) {
-                        $q->where(['category_id' => $categoryFilter]);
+                        $q->where(function (QueryExpression $exp) use ($categoryFilter) {
+                            if (is_int($categoryFilter)) {
+                                $categoryFilter = [$categoryFilter];
+                            }
+
+                            return $exp->in('category_id', $categoryFilter);
+                        });
                     }
 
                     if ($locationFilter) {
