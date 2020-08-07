@@ -194,14 +194,14 @@ class TagsTable extends Table
         $results = $this
             ->find()
             ->where(function (QueryExpression $exp) use ($tagIds) {
-                return $exp->in('id', $tagIds);
+                return $exp->in('Tags.id', $tagIds);
             })
-            ->select(['id'])
+            ->select(['Tags.id'])
             ->contain([
                 'Events' => function (Query $q) use ($categoryFilter, $locationFilter) {
                     $q
                         ->find('published')
-                        ->select(['id']);
+                        ->select(['Events.id']);
 
                     if ($categoryFilter) {
                         $q->where(function (QueryExpression $exp) use ($categoryFilter) {
@@ -224,6 +224,13 @@ class TagsTable extends Table
             ])
             ->toArray();
 
-        return Hash::extract($results, '{n}.id');
+        $eventIds = [];
+        foreach ($results as $tag) {
+            foreach ($tag->events as $event) {
+                $eventIds[] = $event->id;
+            }
+        }
+
+        return $eventIds;
     }
 }

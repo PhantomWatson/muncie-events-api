@@ -835,12 +835,12 @@ class EventsTable extends Table
         }
         if (isset($eventIds['included'])) {
             $query->where(function (QueryExpression $exp) use ($eventIds) {
-                return $exp->in('id', $eventIds['included']);
+                return $exp->in('Events.id', $eventIds['included']);
             });
         }
         if (isset($eventIds['excluded'])) {
             $query->where(function (QueryExpression $exp) use ($eventIds) {
-                return $exp->notIn('id', $eventIds['excluded']);
+                return $exp->notIn('Events.id', $eventIds['excluded']);
             });
         }
 
