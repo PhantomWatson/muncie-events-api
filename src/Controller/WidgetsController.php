@@ -306,4 +306,31 @@ class WidgetsController extends AppController
 
         return $this->render('customize_demo');
     }
+
+    /**
+     * Page for customizing a feed widget
+     *
+     * @return void
+     */
+    public function customizeMonth()
+    {
+        $this->setDemoData('month');
+        $this->set([
+            'pageTitle' => 'Customize Month Widget',
+            'hideSidebar' => true,
+        ]);
+    }
+
+    /**
+     * A page that renders an example of the month widget
+     *
+     * @return \Cake\Http\Response
+     */
+    public function demoMonth()
+    {
+        $this->setDemoData('month');
+        $this->viewbuilder()->setLayout('ajax');
+
+        return $this->render('customize_demo');
+    }
 }
