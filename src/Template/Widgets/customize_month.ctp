@@ -76,7 +76,7 @@
                     <label for="WidgetFontSize">
                         Font size:
                     </label>
-                    <input id="WidgetFontSize" value="1em" name="fontSize" type="text" class="style" />
+                    <input id="WidgetFontSize" value="0.8em" name="fontSize" type="text" class="style" />
                     <p class="text-muted">
                         Size of event titles. Can be in pixels, ems, percentages, or points (e.g. 10px, 0.9em, 90%, 8pt)
                     </p>

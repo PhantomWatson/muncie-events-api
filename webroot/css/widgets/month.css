@@ -4668,7 +4668,7 @@ table.calendar tbody ul {
   padding: 0;
 }
 table.calendar tbody li {
-  font-size: 11px;
+  font-size: 0.8em;
   list-style-type: none;
   overflow: hidden;
   padding: 5px 2px;
@@ -4726,7 +4726,7 @@ table.calendar a:hover {
   text-decoration: underline;
 }
 table.calendar .no_events {
-  font-size: 11px;
+  font-size: 0.8em;
 }
 table.calendar .icon:before {
   font-size: 130%;
