@@ -2,8 +2,12 @@
 /**
  * @var array $filters
  * @var string $allEventsUrl
- * @var string[] $categories
+ * @var \Cake\ORM\ResultSet $categories
  */
+
+use Cake\Utility\Hash;
+
+$categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
 ?>
 
 <ul class="header">
@@ -38,10 +42,15 @@
                         </strong>
                         <?php
                             $categoryNames = [];
-                            foreach ($filters['category'] as $catId) {
-                                $categoryNames[] = $categories[$catId];
+                            foreach ($filters['category'] as $categoryId) {
+                                $categoryName = $categories[$categoryId]->name;
+                                $categoryNames[] = $categoryName;
                             }
-                            echo $this->Text->toList($categoryNames);
+                            echo str_replace(
+                                ' ,',
+                                ',',
+                                $this->Text->toList($categoryNames, ', and')
+                            );
                         ?>
                     </li>
                 <?php endif; ?>
@@ -78,3 +87,4 @@
         </div>
     </div>
 <?php endif; ?>
+
