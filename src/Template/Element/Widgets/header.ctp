@@ -62,20 +62,20 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                         <?= $filters['location'] ?>
                     </li>
                 <?php endif; ?>
-                <?php if (isset($filters['tags_included'])): ?>
+                <?php if (isset($filters['tags_included_names'])): ?>
                     <li>
                         <strong>
-                            With <?= count($filters['tags_included']) == 1 ? 'tag' : 'tags' ?>:
+                            With <?= count($filters['tags_included_names']) == 1 ? 'tag' : 'tags' ?>:
                         </strong>
-                        <?= $this->Text->toList($filters['tags_included']) ?>
+                        <?= $this->Text->toList($filters['tags_included_names']) ?>
                     </li>
                 <?php endif; ?>
-                <?php if (isset($filters['tags_excluded'])): ?>
+                <?php if (isset($filters['tags_excluded_names'])): ?>
                     <li>
                         <strong>
-                            Without <?= count($filters['tags_excluded']) == 1 ? 'tag' : 'tags' ?>:
+                            Without <?= count($filters['tags_excluded_names']) == 1 ? 'tag' : 'tags' ?>:
                         </strong>
-                        <?= $this->Text->toList($filters['tags_excluded']) ?>
+                        <?= $this->Text->toList($filters['tags_excluded_names']) ?>
                     </li>
                 <?php endif; ?>
             </ul>

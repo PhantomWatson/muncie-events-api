@@ -119,6 +119,7 @@ class Widget
                 $tag = $tagsTable->findByName($tagName)->first();
                 if ($tag) {
                     $filters["tags_$foocluded"][$k] = $tag->id;
+                    $filters["tags_{$foocluded}_names"][$k] = $tag->name;
                 } else {
                     unset($filters["tags_$foocluded"][$k]);
                 }
