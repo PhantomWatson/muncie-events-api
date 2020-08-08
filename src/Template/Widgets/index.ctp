@@ -39,8 +39,6 @@ use Cake\Routing\Router;
     <?= $this->Html->link(
         'the Muncie Events API',
         [
-            'plugin' => false,
-            'prefix' => false,
             'controller' => 'Pages',
             'action' => 'api',
         ]
