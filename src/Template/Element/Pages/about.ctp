@@ -53,7 +53,6 @@ $yearsCount = date('Y') - 2009;
             '<a href="http://jquery.com/">jQuery</a> &amp; <a href="http://jqueryui.com/">jQuery UI</a>' => 'Front-end framework',
             '<a href="https://facebook.github.io/react-native/">React Native</a>' => 'Mobile app framework',
             '<a href="http://dimsemenov.com/plugins/magnific-popup/">Magnific Popup</a>' => 'Elegant media popups',
-            '<a href="http://www.digitalmagicpro.com/jPicker/">jPicker</a>' => 'Color picker',
             '<a href="http://recaptcha.net/">reCAPTCHA</a>' => 'Spam defense',
         ]
     ];
