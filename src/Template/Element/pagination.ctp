@@ -2,19 +2,20 @@
 /**
  * @var AppView $this
  */
+
 use App\View\AppView;
 $totalPages = $this->Paginator->counter(['format' => '{{pages}}']);
 $currentPage = $this->Paginator->counter(['format' => '{{page}}']);
-$first = $this->Paginator->first('&laquo; First', ['escape' => false, 'class' => 'page-link']);
+$first = $this->Paginator->first('&laquo;&nbsp;First', ['escape' => false, 'class' => 'page-link']);
 $hasPrev = $this->Paginator->hasPrev();
-$prev =  $hasPrev
-    ? $this->Paginator->prev('&lsaquo; Prev', ['escape' => false, 'class' => 'page-link'])
+$prev = $hasPrev
+    ? $this->Paginator->prev('&lsaquo;&nbsp;Prev', ['escape' => false, 'class' => 'page-link'])
     : null;
 $hasNext = $this->Paginator->hasNext();
 $next = $hasNext
-    ? $this->Paginator->next('Next &rsaquo;', ['escape' => false, 'class' => 'page-link'])
+    ? $this->Paginator->next('Next&nbsp;&rsaquo;', ['escape' => false, 'class' => 'page-link'])
     : null;
-$last = $this->Paginator->last('Last &raquo;', ['escape' => false, 'class' => 'page-link']);
+$last = $this->Paginator->last('Last&nbsp;&raquo;', ['escape' => false, 'class' => 'page-link']);
 ?>
 <div class="paginator">
     <ul class="pagination">
