@@ -12,6 +12,9 @@
 use App\Model\Entity\Event;
 use App\View\AppView;
 ?>
+
+<?= $this->element('Header/event_header') ?>
+
 <h1 class="page_title">
     <?php echo $pageTitle ?>
 </h1>

@@ -12,6 +12,9 @@ use App\Model\Entity\Image;
 use App\Model\Entity\Tag;
 use App\View\AppView;
 ?>
+
+<?= $this->element('Header/event_header') ?>
+
 <h1 class="page_title">
     <?= $pageTitle ?>
 </h1>

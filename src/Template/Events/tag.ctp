@@ -15,6 +15,8 @@ use App\View\AppView;
 use Cake\Utility\Text;
 ?>
 
+<?= $this->element('Header/event_header') ?>
+
 <h1 class="page_title">
     <?= sprintf(
         '%s %s %s with the %s tag',

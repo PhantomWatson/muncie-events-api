@@ -29,6 +29,8 @@ $linkText = sprintf(
 );
 ?>
 
+<?= $this->element('Header/event_header') ?>
+
 <h1 class="page_title">
     <?= $headerText ?>
 </h1>
