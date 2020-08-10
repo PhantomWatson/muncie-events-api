@@ -206,8 +206,8 @@ class EventsController extends AppController
         $day = str_pad($day, 2, '0', STR_PAD_LEFT);
         $date = "$year-$month-$day";
         $events = $this->Events
-            ->find('startingOn', compact('date'))
-            ->find('endingOn', compact('date'))
+            ->find()
+            ->where(['date' => $date])
             ->find('ordered')
             ->find('published')
             ->find('withAllAssociated')
