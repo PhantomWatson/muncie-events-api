@@ -62,6 +62,9 @@ a [class^="icon-"]:before,
 a [class*=" icon-"]:before {
   cursor: pointer !important;
 }
+#content_wrapper p > a {
+  font-weight: bold;
+}
 .light_text {
   color: #666;
 }
