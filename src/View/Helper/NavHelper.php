@@ -75,6 +75,10 @@ class NavHelper extends Helper
         $tomorrow = date('Y-m-d', strtotime('tomorrow'));
         $limit = 7;
         foreach ($populatedDates as $date) {
+            if ($date < $today) {
+                continue;
+            }
+
             if ($date == $today) {
                 $dayLinks[] = [
                     'label' => 'Today',
@@ -100,6 +104,7 @@ class NavHelper extends Helper
                 ];
                 continue;
             }
+
             list($year, $month, $day) = explode('-', $date);
             $dayLinks[] = [
                 'label' => date('D, M j', strtotime($date)),
@@ -113,6 +118,7 @@ class NavHelper extends Helper
                     $year,
                 ]),
             ];
+
             if (count($dayLinks) == $limit) {
                 break;
             }
