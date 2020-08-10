@@ -644,7 +644,7 @@ class EventsController extends AppController
         // Get search results
         $query = $this->Events->getSearchResultsQuery($searchTerm, $direction);
         $counts[$direction] = $query->count();
-        $order = $direction == 'past' ? 'ASC' : 'DESC';
+        $order = $direction == 'past' ? 'DESC' : 'ASC';
         $query->epilog("ORDER BY Events__date $order, Events__time_start ASC");
         $events = $this->paginate($query);
 
