@@ -1,34 +1,69 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
+ * @var bool $passQueryParams TRUE to add all current query parameters to pagination URLs
  */
 
-use App\View\AppView;
 $totalPages = $this->Paginator->counter(['format' => '{{pages}}']);
 $currentPage = $this->Paginator->counter(['format' => '{{page}}']);
-$first = $this->Paginator->first('&laquo;&nbsp;First', ['escape' => false, 'class' => 'page-link']);
+
+$passQueryParams = $passQueryParams ?? false;
+$url = ['?' => $passQueryParams ? $this->request->getQueryParams() : []];
+
+$first = $this->Paginator->first(
+    '&laquo;&nbsp;First',
+    [
+        'escape' => false,
+        'class' => 'page-link',
+        'url' => $url,
+    ]
+);
+
 $hasPrev = $this->Paginator->hasPrev();
-$prev = $hasPrev
-    ? $this->Paginator->prev('&lsaquo;&nbsp;Prev', ['escape' => false, 'class' => 'page-link'])
-    : null;
+$prevButton = $this->Paginator->prev(
+    '&lsaquo;&nbsp;Prev',
+    [
+        'escape' => false,
+        'class' => 'page-link',
+        'url' => $url,
+    ]
+);
+$prev = $hasPrev ? $prevButton : null;
+
 $hasNext = $this->Paginator->hasNext();
-$next = $hasNext
-    ? $this->Paginator->next('Next&nbsp;&rsaquo;', ['escape' => false, 'class' => 'page-link'])
-    : null;
-$last = $this->Paginator->last('Last&nbsp;&raquo;', ['escape' => false, 'class' => 'page-link']);
+$nextButton = $this->Paginator->next(
+    'Next&nbsp;&rsaquo;',
+    [
+        'class' => 'page-link',
+        'escape' => false,
+        'url' => $url,
+    ]
+);
+$next = $hasNext ? $nextButton : null;
+
+$last = $this->Paginator->last(
+    'Last&nbsp;&raquo;',
+    [
+        'escape' => false,
+        'class' => 'page-link',
+        'url' => $url,
+    ]
+);
 ?>
 <div class="paginator">
     <ul class="pagination">
         <?= $first ?>
         <?= $prev ?>
-        <?php if ($hasPrev || $hasNext): ?>
+        <?php if ($hasPrev || $hasNext) : ?>
             <label class="sr-only" for="paginator-page-select">
                 Go to page
             </label>
             <select class="custom-select" id="paginator-page-select">
-                <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+                <?php for ($p = 1; $p <= $totalPages; $p++) : ?>
                     <option
-                        <?php if ($p == $currentPage): ?>selected="selected"<?php endif; ?>
+                        <?php if ($p == $currentPage) :
+                            ?>selected="selected"<?php
+                        endif; ?>
                         data-url="<?= $this->Paginator->generateUrl(['page' => $p]) ?>"
                     >
                         <?= $p ?>

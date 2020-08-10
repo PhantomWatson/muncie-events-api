@@ -44,7 +44,7 @@ use Cake\Utility\Text;
 
 <?php if ($events): ?>
     <?= $this->element('Events/accordion/wrapper') ?>
-    <?= $this->element('pagination') ?>
+    <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 <?php else: ?>
     <p class="alert alert-info">
         No events found.

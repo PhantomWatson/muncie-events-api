@@ -51,11 +51,11 @@ $linkText = sprintf(
 
 <?php if (isset($events) && !empty($events)): ?>
 
-    <?= $this->element('pagination') ?>
+    <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
     <?= $this->element('Events/accordion/wrapper') ?>
 
-    <?= $this->element('pagination') ?>
+    <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
     <?php $this->Html->scriptBlock('setupEventAccordion();', ['block' => true]); ?>
 
