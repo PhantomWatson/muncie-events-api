@@ -134,7 +134,7 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="<?= $this->Nav->getActiveLink('Pages', 'about') ?> nav-item">
+            <li class="<?= $this->Nav->getActiveLink('Pages', 'api') ?> nav-item">
                 <?= $this->Html->link(
                     'API',
                     [
