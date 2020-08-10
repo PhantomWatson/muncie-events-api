@@ -528,8 +528,8 @@ class EventsTable extends Table
     /**
      * Returns an array of dates (YYYY-MM-DD) with published events, cached daily
      *
-     * @param string|int $month Month, zero-padded
-     * @param int $year Four-digit year
+     * @param string|int|null $month Month, zero-padded
+     * @param int|null $year Four-digit year
      * @return array
      * @throws InternalErrorException
      */
