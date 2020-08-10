@@ -5774,6 +5774,9 @@ ul.event_accordion .description p:first-of-type {
 ul.event_accordion .description p:last-child {
   margin-bottom: 0;
 }
+ul.event_accordion .description a {
+  font-weight: bold;
+}
 ul.event_accordion .actions {
   margin-left: 0;
   text-align: right;
