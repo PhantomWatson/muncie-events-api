@@ -70,9 +70,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 
 <p id="posting-rules-toggler-container">
     <span>Before continuing, please read the</span>
-    <a href="#posting_rules" id="posting_rules_toggler" data-toggle="collapse" class="btn btn-sm btn-secondary">
+    <button data-target="#posting_rules" id="posting_rules_toggler" data-toggle="collapse" class="btn btn-sm btn-secondary">
         Rules for Posting Events
-    </a>
+    </button>
 </p>
 
 <div id="posting_rules" class="alert alert-info collapse">
