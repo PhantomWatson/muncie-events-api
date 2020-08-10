@@ -10,15 +10,6 @@ $currentPage = $this->Paginator->counter(['format' => '{{page}}']);
 $passQueryParams = $passQueryParams ?? false;
 $url = ['?' => $passQueryParams ? $this->request->getQueryParams() : []];
 
-$first = $this->Paginator->first(
-    '&laquo;&nbsp;First',
-    [
-        'escape' => false,
-        'class' => 'page-link',
-        'url' => $url,
-    ]
-);
-
 $hasPrev = $this->Paginator->hasPrev();
 $prevButton = $this->Paginator->prev(
     '&lsaquo;&nbsp;Prev',
@@ -40,19 +31,9 @@ $nextButton = $this->Paginator->next(
     ]
 );
 $next = $hasNext ? $nextButton : null;
-
-$last = $this->Paginator->last(
-    'Last&nbsp;&raquo;',
-    [
-        'escape' => false,
-        'class' => 'page-link',
-        'url' => $url,
-    ]
-);
 ?>
 <div class="paginator">
     <ul class="pagination">
-        <?= $first ?>
         <?= $prev ?>
         <?php if ($hasPrev || $hasNext) : ?>
             <label class="sr-only" for="paginator-page-select">
@@ -72,7 +53,6 @@ $last = $this->Paginator->last(
             </select>
         <?php endif; ?>
         <?= $next ?>
-        <?= $last ?>
     </ul>
 </div>
 <?php $this->Html->scriptBlock('setupPagination();', ['block' => true]); ?>
