@@ -17,6 +17,7 @@ use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 use Cake\Utility\Text;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
@@ -296,7 +297,13 @@ class EventsController extends AppController
             if ($errors) {
                 foreach ($errors as $field => $fieldErrors) {
                     foreach ($fieldErrors as $error) {
-                        $this->Flash->error($error);
+                        if (is_string($error)) {
+                            $this->Flash->error($error);
+                        } else {
+                            foreach (array_values(Hash::flatten($error)) as $err) {
+                                $this->Flash->error($err);
+                            }
+                        }
                     }
                 }
             } else {

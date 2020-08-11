@@ -11,6 +11,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 use Exception;
 
 /**
@@ -184,6 +185,7 @@ class EventForm
             );
             foreach ($errors as $field => $fieldErrors) {
                 $field = ucwords(str_replace('_', ' ', $field));
+                $fieldErrors = Hash::flatten($fieldErrors);
                 $msg .= "$field: " . implode('; ', $fieldErrors) . '. ';
             }
         } else {
