@@ -10,6 +10,11 @@ use Cake\ORM\Table;
  */
 class MailingListLogTable extends Table
 {
+    public const EMAIL_SENT = 0;
+    public const ERROR_SENDING = 1;
+    public const NO_EVENTS = 2;
+    public const NO_APPLICABLE_EVENTS = 3;
+
     /**
      * Initialize hook method.
      *
