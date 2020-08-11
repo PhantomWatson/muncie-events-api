@@ -236,7 +236,7 @@ class Event extends Entity
         }
 
         if (isset($user['role']) && $user['role'] == 'admin') {
-            true;
+            return true;
         }
 
         // Users who have submitted events that were published by admins have all subsequent events auto-published
