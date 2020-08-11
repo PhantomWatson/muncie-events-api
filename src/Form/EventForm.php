@@ -57,6 +57,10 @@ class EventForm
             }
             $data[$timeField] = $this->parseTime($date, $data[$timeField]);
         }
+
+        // Remove event series data, because it's saved separately
+        unset($data['event_series']);
+
         $event = $this->Events->newEntity($data);
         $event->autoApprove($user);
         $event->autoPublish($user);
