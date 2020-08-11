@@ -112,7 +112,7 @@ class EventForm
             $this->Events->patchEntity($event, ['series_id' => $series->id]);
             $event->event_series = $series;
             if (!$this->Events->save($event)) {
-                throw new InternalErrorException('Temporary: Error associating series');
+                throw new InternalErrorException('Error associating event with series');
             }
         }
 
