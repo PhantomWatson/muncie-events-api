@@ -237,7 +237,7 @@ class EventForm {
             disable: [
                 (date) => {
                     if (this.mode === 'add') {
-                        return date < new Date();
+                        return date < (new Date()).setHours(0,0,0,0);
                     }
 
                     return false;
