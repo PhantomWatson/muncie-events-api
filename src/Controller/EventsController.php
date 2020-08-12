@@ -319,7 +319,31 @@ class EventsController extends AppController
             (new Slack())->sendNewEventAlert($addedEvents[0]->title);
         }
 
-        return $this->render('form');
+        $eventsCount = count($addedEvents);
+        /** @var Event $firstEvent */
+        $firstEvent = array_shift($addedEvents);
+        if ($firstEvent->published) {
+            $this->Flash->success(__n('Event', 'Events', $eventsCount) . ' added and published');
+
+            return $this->redirect([
+                'controller' => 'Events',
+                'action' => 'view',
+                'id' => $firstEvent->id,
+            ]);
+        } else {
+            $this->Flash->success(sprintf(
+                '%s submitted for review. Once %s approved by an administrator, %s will appear on the calendar. ' .
+                'Once you have an approved event, this will happen automatically as long as you\'re logged in.',
+                __n('Event', 'Events', $eventsCount),
+                __n('it\'s', 'they\'re', $eventsCount),
+                __n('it will', 'they will', $eventsCount)
+            ));
+
+            return $this->redirect([
+                'controller' => 'Events',
+                'action' => 'index',
+            ]);
+        }
     }
 
     /**
