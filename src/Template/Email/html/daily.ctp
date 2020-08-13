@@ -6,7 +6,7 @@
  */
 ?>
 <style>
-    <?php include('..' . DS . 'webroot' . DS . 'css' . DS . 'email.css'); ?>
+    <?php include(ROOT . DS . 'webroot' . DS . 'css' . DS . 'email.css'); ?>
 </style>
 
 <h1>
@@ -55,7 +55,7 @@
 <p class="footnote">
     <strong>Your settings...</strong><br />
     Frequency: <?= $settingsDisplay['frequency'] ?><br />
-    Events: <?= $settingsDisplay['event_types'] ?>
+    Events: <?= $settingsDisplay['eventTypes'] ?>
 </p>
 
 <p class="footnote">
