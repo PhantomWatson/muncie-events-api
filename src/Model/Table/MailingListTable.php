@@ -2,12 +2,16 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\MailingList;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -180,5 +184,68 @@ class MailingListTable extends Table
             ->toArray();
 
         return $subscription;
+    }
+
+    /**
+     * Returns a resultset of today's daily mailing list message recipients
+     *
+     * @param bool $testingMode Set to TRUE to only return subscriber #1
+     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     */
+    public function getDailyRecipients($testingMode = false)
+    {
+        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $query = $this
+            ->find()
+            ->where(['daily_' . strtolower(date('D')) => 1])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
+            ]);
+        if ($testingMode) {
+            $query->where(['MailingList.id' => 1]);
+        } else {
+            $query->where([
+                'OR' => [
+                    function (QueryExpression $exp) {
+                        return $exp->isNull('processed_daily');
+                    },
+                    'processed_daily <' => "$y-$m-$d 00:00:00",
+                ],
+            ]);
+        }
+
+        return $query->all();
+    }
+
+    /**
+     * Marks a daily mailing list subscriber as having been processed
+     *
+     * @param int $recipientId Mailing list subscriber ID
+     * @param int $result Code representing result of running this script for this recipient
+     * @return void
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function markDailyAsProcessed($recipientId, $result)
+    {
+        $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
+        $logEntry = $mailingListLogTable->newEntity([
+            'recipient_id' => $recipientId,
+            'result' => $result,
+            'is_daily' => 1,
+        ]);
+        if (!$mailingListLogTable->save($logEntry)) {
+            throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        $subscriber = $this->get($recipientId);
+        $this->patchEntity($subscriber, [
+            'processed_daily' => date('Y-m-d H:i:s'),
+            'new_subscriber' => 0,
+        ]);
+        if (!$this->save($subscriber)) {
+            throw new InternalErrorException('Failed to update subscriber record');
+        }
     }
 }

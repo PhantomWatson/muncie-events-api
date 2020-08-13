@@ -1,0 +1,227 @@
+<?php
+namespace App\Command;
+
+use App\Model\Table\MailingListLogTable;
+use BadMethodCallException;
+use Cake\Console\Arguments;
+use Cake\Console\Command;
+use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
+use Cake\Mailer\Exception\MissingActionException;
+use Cake\Mailer\MailerAwareTrait;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
+use Exception;
+
+/**
+ * SendMailingListMessages command.
+ *
+ * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Model\Table\MailingListTable $MailingList
+ * @property \Cake\Console\ConsoleIo $io
+ * @property bool $testing
+ */
+class SendMailingListMessagesCommand extends Command
+{
+    use MailerAwareTrait;
+
+    /**
+     * Command initialize method
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $this->MailingList = TableRegistry::getTableLocator()->get('MailingList');
+    }
+
+    /**
+     * Hook method for defining this command's option parser.
+     *
+     * @see https://book.cakephp.org/3.0/en/console-and-shells/commands.html#defining-arguments-and-options
+     *
+     * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
+     * @return \Cake\Console\ConsoleOptionParser The built parser.
+     */
+    public function buildOptionParser(ConsoleOptionParser $parser)
+    {
+        $parser = parent::buildOptionParser($parser);
+
+        $parser->addArgument('mode', [
+            'help' => 'daily or weekly',
+            'required' => true,
+            'choices' => ['daily', 'weekly'],
+        ]);
+
+        $parser->addOption('test', [
+            'help' => 'Only send email to subscriber #1',
+            'boolean' => true,
+        ]);
+
+        return $parser;
+    }
+
+    /**
+     * Implement this method with your command's logic.
+     *
+     * @param \Cake\Console\Arguments $args The command arguments.
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return void
+     * @throws \Exception
+     */
+    public function execute(Arguments $args, ConsoleIo $io)
+    {
+        $mode = $args->getArgument('mode');
+        $this->io = $io;
+        $this->testing = $args->getOption('test');
+        if ($this->testing) {
+            $this->io->info('Testing mode');
+        } elseif (Configure::read('debug')) {
+            $this->testing = true;
+            $this->io->info('Testing mode (application is in debug mode)');
+        }
+
+        switch ($mode) {
+            case 'daily':
+                $this->processDaily();
+
+                return;
+            case 'weekly':
+                $this->processWeekly();
+
+                return;
+        }
+
+        throw new Exception("Invalid mode: $mode");
+    }
+
+    /**
+     * Collects events and recipients for daily emails and sends emails if appropriate
+     *
+     * @return void
+     */
+    private function processDaily()
+    {
+        // Make sure there are recipients
+        $recipients = $this->MailingList->getDailyRecipients($this->testing);
+        if (!$recipients->count()) {
+            $this->io->out('No recipients found for today');
+
+            return;
+        }
+
+        // Make sure there are events to report
+        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $events = $this->Events
+            ->find('published')
+            ->find('ordered')
+            ->find('withAllAssociated')
+            ->where(['date' => "$y-$m-$d"])
+            ->toArray();
+
+        $eventCount = count($events);
+        $this->io->out(sprintf(
+            "%s %s today\n",
+            $eventCount,
+            __n('event', 'events', $eventCount)
+        ));
+
+        if (!$eventCount) {
+            foreach ($recipients as $recipient) {
+                $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::NO_EVENTS);
+            }
+            $this->io->out('No events to inform anyone about today');
+
+            return;
+        }
+
+        // Send emails
+        foreach ($recipients as $recipient) {
+            list($success, $message) = $this->sendDaily($recipient, $events);
+            $this->io->{$success ? 'success' : 'error'}($message);
+        }
+        $this->io->success("\n Done");
+    }
+
+    /**
+     * Sends the daily version of the event email
+     *
+     * @param \App\Model\Entity\MailingList $recipient Mailing list subscriber
+     * @param \App\Model\Entity\Event[] $events Array of events
+     * @return array
+     */
+    public function sendDaily($recipient, $events)
+    {
+        $categoryIds = Hash::extract($events, '{n}.category.id');
+
+        $this->io->out('Sending email to ' . $recipient->email . '...');
+        if ($this->testing && $recipient->id != 1) {
+            return [false, "Email not sent to $recipient->email because the mailing list is in testing mode."];
+        }
+
+        // Eliminate any events that this user isn't interested in
+        $events = $this->filterDaysEvents($recipient, $events);
+
+        // Make sure there are events left
+        if (empty($events)) {
+            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::NO_APPLICABLE_EVENTS);
+
+            $selected = 'Selected: ' . Hash::extract($recipient->categories, '{n}.id');
+            $available = 'Available: ' . implode(', ', $categoryIds);
+
+            return [
+                true,
+                "No events to report, resulting from $recipient->email's settings ($selected; $available)",
+            ];
+        }
+
+        try {
+            $this->getMailer('MailingList')->send('daily', [$recipient, $events]);
+            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::EMAIL_SENT);
+
+            return [true, 'Email sent to ' . $recipient->email];
+        } catch (MissingActionException | BadMethodCallException $e) {
+            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::ERROR_SENDING);
+
+            return [false, 'Error sending email to ' . $recipient->email . ': ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Returns an array of events filtered according to the recipient's mailing list settings
+     *
+     * @param \App\Model\Entity\MailingList $recipient Subscribers
+     * @param \App\Model\Entity\Event[] $events Array of events
+     * @return \App\Model\Entity\Event[]
+     */
+    private function filterDaysEvents($recipient, $events)
+    {
+        if ($recipient->all_categories) {
+            return $events;
+        }
+
+        $allowedCategoryIds = Hash::extract($recipient->categories, '{n}.id');
+        foreach ($events as $k => $event) {
+            $eventIsAllowed = in_array($event->category->id, $allowedCategoryIds);
+            if (!$eventIsAllowed) {
+                unset($events[$k]);
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Collects events and recipients for weekly emails and sends emails if appropriate
+     *
+     * @return void
+     */
+    private function processWeekly()
+    {
+
+    }
+}
