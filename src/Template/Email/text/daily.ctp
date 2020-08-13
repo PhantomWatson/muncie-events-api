@@ -6,7 +6,6 @@
  */
 
 use Cake\Routing\Router;
-
 ?>
 
 Events for <?= date('l, F jS, Y') ?> brought to you by https://MuncieEvents.com
@@ -25,7 +24,7 @@ Events for <?= date('l, F jS, Y') ?> brought to you by https://MuncieEvents.com
             Router::url([
                 'controller' => 'Events',
                 'action' => 'view',
-                'id' => $event->id
+                'id' => $event->id,
             ], true),
             $event->time_start->format('g:ia')
         );
@@ -39,20 +38,20 @@ Events for <?= date('l, F jS, Y') ?> brought to you by https://MuncieEvents.com
 Your settings...
 Frequency: <?= $settingsDisplay['frequency'] ?>
 
-Events: <?= $settingsDisplay['event_types'] ?>
+Events: <?= $settingsDisplay['eventTypes'] ?>
 
 This email was sent to <?= $recipient->email ?> on behalf of https://MuncieEvents.com
 
 Add Event: <?= Router::url([
     'controller' => 'Events',
-    'action' => 'add'
+    'action' => 'add',
 ], true) ?>
 
 Change Settings: <?= Router::url([
     'controller' => 'MailingList',
     'action' => 'settings',
     $recipient->id,
-    $recipient->hash
+    $recipient->hash,
 ], true) ?>
 
 Unsubscribe: <?= Router::url([
@@ -60,5 +59,5 @@ Unsubscribe: <?= Router::url([
     'action' => 'settings',
     $recipient->id,
     $recipient->hash,
-    '?' => 'unsubscribe'
+    '?' => 'unsubscribe',
 ], true) ?>
