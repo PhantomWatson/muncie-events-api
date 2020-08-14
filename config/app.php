@@ -389,6 +389,7 @@ $config = [
     'eventImagePath' => env('EVENT_IMG_PATH'),
     'slackWebhook' => env('SLACK_WEBHOOK'),
     'googleAnalyticsId' => 'UA-10610808-13',
+    'localTimezone' => 'America/Indiana/Indianapolis',
 ];
 
 // Use Debug EmailTransport in debug mode
