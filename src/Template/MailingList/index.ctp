@@ -189,19 +189,15 @@ if ($frequencyValue != 'custom') {
     ) ?>
     <?= $this->Form->end() ?>
     <?php if (isset($subscription->id)): ?>
-        <?= $this->Form->postButton(
+        <?= $this->Html->link(
             'Unsubscribe',
             [
                 'controller' => 'MailingList',
                 'action' => 'unsubscribe',
                 $subscription->id,
-                $subscription->hash
+                $subscription->hash,
             ],
-            [
-                'class' => 'btn btn-danger',
-                'confirm' => 'Are you sure that you want to unsubscribe from the mailing list?',
-                'method' => 'delete'
-            ]
+            ['class' => 'btn btn-secondary']
         ) ?>
     <?php endif; ?>
 </div>

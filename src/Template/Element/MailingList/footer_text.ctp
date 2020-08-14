@@ -30,5 +30,4 @@ Unsubscribe: <?= Router::url([
     'action' => 'unsubscribe',
     $recipient->id,
     $recipient->hash,
-    '?' => 'unsubscribe',
 ], true) ?>

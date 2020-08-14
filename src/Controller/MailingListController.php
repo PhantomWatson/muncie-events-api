@@ -32,6 +32,7 @@ class MailingListController extends AppController
             'index',
             'sendDaily',
             'sendWeekly',
+            'unsubscribe',
         ]);
     }
 
@@ -207,18 +208,28 @@ class MailingListController extends AppController
             return $redirect;
         }
 
-        $subscription = $this->MailingList->get($subscriberId);
+        if ($this->request->getQuery('confirm')) {
+            $subscription = $this->MailingList->get($subscriberId);
 
-        if ($this->MailingList->delete($subscription)) {
-            $this->Flash->success('You have been removed from the mailing list');
-        } else {
-            $this->Flash->error(
-                'Sorry, but there was an error trying to remove you from the mailing list. ' .
-                'Please try again, or contact an administrator for assistance.'
-            );
+            if ($this->MailingList->delete($subscription)) {
+                $this->Flash->success('You have been removed from the mailing list');
+
+                return $this->redirect('/');
+            } else {
+                $this->Flash->error(
+                    'Sorry, but there was an error trying to remove you from the mailing list. ' .
+                    'Please try again, or contact an administrator for assistance.'
+                );
+            }
         }
 
-        return $this->redirect('/');
+        $this->set([
+            'hash' => $hash,
+            'pageTitle' => 'Unsubscribe',
+            'subscriberId' => $subscriberId,
+        ]);
+
+        return null;
     }
 
     /**
