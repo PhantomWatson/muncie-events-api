@@ -16,7 +16,10 @@ class IconHelper extends Helper
     public static function category($categoryName, $mode = null)
     {
         if ($mode == 'email') {
-            $base = Configure::read('fullBaseUrl');
+            $base = Configure::read('App.fullBaseUrl');
+            if (substr($base, -1, 1) != '/') {
+                $base = $base . '/';
+            }
             $dir = $base . 'img/icons/categories/';
             $filename = 'meicon_' . strtolower(str_replace(' ', '_', $categoryName)) . '_32x32.png';
 
