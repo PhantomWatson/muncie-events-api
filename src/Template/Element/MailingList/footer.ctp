@@ -39,10 +39,9 @@
         'Unsubscribe',
         [
             'controller' => 'MailingList',
-            'action' => 'settings',
+            'action' => 'unsubscribe',
             $recipient->id,
             $recipient->hash,
-            '?' => 'unsubscribe',
             '_full' => true,
         ]
     ) ?>

@@ -14,20 +14,20 @@ Events: <?= $settingsDisplay['eventTypes'] ?>
 This email was sent to <?= $recipient->email ?> on behalf of https://MuncieEvents.com
 
 Add Event: <?= Router::url([
-    'controller' => 'events',
+    'controller' => 'Events',
     'action' => 'add',
 ], true) ?>
 
 Change Settings: <?= Router::url([
-    'controller' => 'mailing_list',
+    'controller' => 'MailingList',
     'action' => 'settings',
     $recipient->id,
     $recipient->hash,
 ], true) ?>
 
 Unsubscribe: <?= Router::url([
-    'controller' => 'mailing_list',
-    'action' => 'settings',
+    'controller' => 'MailingList',
+    'action' => 'unsubscribe',
     $recipient->id,
     $recipient->hash,
     '?' => 'unsubscribe',
