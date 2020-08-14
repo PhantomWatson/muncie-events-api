@@ -65,6 +65,9 @@ a [class*=" icon-"]:before {
 #content_wrapper p > a {
   font-weight: bold;
 }
+#content_wrapper p > a.btn {
+  font-weight: normal;
+}
 .light_text {
   color: #666;
 }
