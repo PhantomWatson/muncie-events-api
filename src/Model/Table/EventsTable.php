@@ -4,11 +4,13 @@ namespace App\Model\Table;
 use App\Model\Entity\Event;
 use App\Model\Entity\Tag;
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -887,6 +889,25 @@ class EventsTable extends Table
                 },
                 'Images',
             ]);
+
+        return $query;
+    }
+
+    /**
+     * Modifies a query to only return events taking place today and in the six days that follow
+     *
+     * @param Query $query Query
+     * @return Query
+     */
+    public function findUpcomingWeek(Query $query)
+    {
+        $timezone = Configure::read('localTimezone');
+        $startingDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $endingDate = (new FrozenTime('now + 6 days', $timezone))->format('Y-m-d');
+
+        $query
+            ->find('startingOn', ['date' => $startingDate])
+            ->find('endingOn', ['date' => $endingDate]);
 
         return $query;
     }
