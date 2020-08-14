@@ -7,27 +7,27 @@
 use Cake\Routing\Router;
 ?>
 Your settings...
-Frequency: <?php echo $settingsDisplay['frequency']; ?>
-Events: <?php echo $settingsDisplay['eventTypes']; ?>
+Frequency: <?= $settingsDisplay['frequency'] ?>
+Events: <?= $settingsDisplay['eventTypes'] ?>
 
-This email was sent to <?php echo $recipient->email; ?> on behalf of https://MuncieEvents.com
+This email was sent to <?= $recipient->email ?> on behalf of https://MuncieEvents.com
 
-Add Event: <?php echo Router::url([
+Add Event: <?= Router::url([
     'controller' => 'events',
     'action' => 'add',
-], true); ?>
+], true) ?>
 
-Change Settings: <?php echo Router::url([
+Change Settings: <?= Router::url([
     'controller' => 'mailing_list',
     'action' => 'settings',
     $recipient->id,
     $recipient->hash,
-], true); ?>
+], true) ?>
 
-Unsubscribe: <?php echo Router::url([
+Unsubscribe: <?= Router::url([
     'controller' => 'mailing_list',
     'action' => 'settings',
     $recipient->id,
     $recipient->hash,
     '?' => 'unsubscribe',
-], true); ?>
+], true) ?>
