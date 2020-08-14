@@ -8,9 +8,7 @@ use Cake\Routing\Router;
 ?>
 Your settings...
 Frequency: <?php echo $settingsDisplay['frequency']; ?>
-
-Events: <?php echo $settingsDisplay['event_types']; ?>
-
+Events: <?php echo $settingsDisplay['eventTypes']; ?>
 
 This email was sent to <?php echo $recipient->email; ?> on behalf of https://MuncieEvents.com
 
