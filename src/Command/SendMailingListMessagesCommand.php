@@ -25,6 +25,7 @@ use Exception;
 class SendMailingListMessagesCommand extends Command
 {
     use MailerAwareTrait;
+    const WEEKLY_DELIVERY_DAY = 'Thursday';
 
     /**
      * Command initialize method
@@ -164,7 +165,7 @@ class SendMailingListMessagesCommand extends Command
         }
 
         // Eliminate any events that this user isn't interested in
-        $events = $this->filterDaysEvents($recipient, $events);
+        $events = $this->filterEvents($recipient, $events);
 
         // Make sure there are events left
         if (empty($events)) {
@@ -198,7 +199,7 @@ class SendMailingListMessagesCommand extends Command
      * @param \App\Model\Entity\Event[] $events Array of events
      * @return \App\Model\Entity\Event[]
      */
-    private function filterDaysEvents($recipient, $events)
+    private function filterEvents($recipient, $events)
     {
         if ($recipient->all_categories) {
             return $events;
@@ -222,6 +223,89 @@ class SendMailingListMessagesCommand extends Command
      */
     private function processWeekly()
     {
+        // Make sure that today is the correct day
+        if (!$this->testing && !$this->isWeeklyDeliveryDay()) {
+            $this->io->out('Today is not the day of the week designated for delivering weekly emails.');
 
+            return;
+        }
+
+        // Make sure there are recipients
+        $recipients = $this->MailingList->getWeeklyRecipients($this->testing);
+        if (!$recipients->count()) {
+            $this->io->out('No recipients found for this week');
+        }
+
+        // Make sure there are events to report
+        $events = $this->Events
+            ->find('published')
+            ->find('ordered')
+            ->find('withAllAssociated')
+            ->find('upcomingWeek')
+            ->toArray();
+        if (empty($events)) {
+            foreach ($recipients as $recipient) {
+                $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::NO_EVENTS);
+            }
+            $this->io->out('No events to inform anyone about this week');
+
+            return;
+        }
+
+        // Send emails
+        foreach ($recipients as $recipient) {
+            list($success, $message) = $this->sendWeekly($recipient, $events);
+            $this->io->{$success ? 'success' : 'error'}($message);
+        }
+        $this->io->success("\nDone");
+    }
+
+    /**
+     * Returns TRUE if today is the day that weekly emails should be delivered
+     *
+     * @return bool
+     */
+    private function isWeeklyDeliveryDay()
+    {
+        return date('l') == self::WEEKLY_DELIVERY_DAY;
+    }
+
+    /**
+     * Sends the weekly version of the event mailing list email
+     *
+     * @param \App\Model\Entity\MailingList $recipient Subscriber entity
+     * @param \App\Model\Entity\Event[] $events Array of events
+     * @return array:boolean string
+     */
+    private function sendWeekly($recipient, $events)
+    {
+        $categoryIds = Hash::extract($events, '{n}.category.id');
+
+        // Eliminate any events that this user isn't interested in
+        $events = $this->filterEvents($recipient, $events);
+
+        // Make sure there are events left
+        if (empty($events)) {
+            // No events to report to this user today.
+            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::NO_APPLICABLE_EVENTS);
+            $selected = 'Selected: ' . Hash::extract($recipient->categories, '{n}.id');
+            $available = 'Available: ' . implode(', ', $categoryIds);
+
+            return [
+                true,
+                "No events to report, resulting from $recipient->email's settings ($selected; $available)",
+            ];
+        }
+
+        try {
+            $this->getMailer('MailingList')->send('weekly', [$recipient, $events]);
+            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::EMAIL_SENT);
+
+            return [true, 'Email sent to ' . $recipient->email];
+        } catch (MissingActionException | BadMethodCallException $e) {
+            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::ERROR_SENDING);
+
+            return [false, "Error sending email to $recipient->email: " . $e->getMessage()];
+        }
     }
 }

@@ -3,6 +3,7 @@ namespace App\Mailer;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 
 class MailingListMailer extends Mailer
@@ -18,11 +19,35 @@ class MailingListMailer extends Mailer
     public function daily($recipient, $events)
     {
         $this->viewBuilder()->setTemplate('daily');
-
+        $date = (new FrozenTime('now', Configure::read('localTimezone')))->format('l, M j');
         $this
             ->setTo($recipient->email)
             ->setFrom(Configure::read('automailer_address'), 'Muncie Events')
-            ->setSubject('Today in Muncie: ' . date("l, M j"))
+            ->setSubject("Today in Muncie: $date")
+            ->setViewVars([
+                'events' => $events,
+                'recipient' => $recipient,
+                'settingsDisplay' => $this->getSettingsDisplay($recipient),
+            ])
+            ->setEmailFormat('both');
+    }
+
+    /**
+     * Defines a weekly events mailing list email
+     *
+     * @param \App\Model\Entity\MailingList $recipient Mailing list subscriber
+     * @param \App\Model\Entity\Event[] $events Array of events
+     * @return void
+     * @throws InternalErrorException
+     */
+    public function weekly($recipient, $events)
+    {
+        $this->viewBuilder()->setTemplate('weekly');
+        $date = (new FrozenTime('now', Configure::read('localTimezone')))->format('l, M j');
+        $this
+            ->setTo($recipient->email)
+            ->setFrom(Configure::read('automailer_address'), 'Muncie Events')
+            ->setSubject("Upcoming Week in Muncie: $date")
             ->setViewVars([
                 'events' => $events,
                 'recipient' => $recipient,

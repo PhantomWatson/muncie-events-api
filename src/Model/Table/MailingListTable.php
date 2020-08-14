@@ -248,4 +248,68 @@ class MailingListTable extends Table
             throw new InternalErrorException('Failed to update subscriber record');
         }
     }
+
+    /**
+     * Returns a set of weekly mailing list subscribers
+     *
+     * @param bool $testing TRUE if currently in testing mode
+     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     */
+    public function getWeeklyRecipients(bool $testing)
+    {
+        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $query = $this
+            ->find()
+            ->where(['MailingList.weekly' => 1])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
+            ]);
+
+        if ($testing) {
+            $query->where(['MailingList.id' => 1]);
+        } else {
+            $query->where([
+                'OR' => [
+                    function (QueryExpression $exp) {
+                        return $exp->isNull('processed_daily');
+                    },
+                    'processed_daily <' => "$y-$m-$d 00:00:00",
+                ],
+            ]);
+        }
+
+        return $query->all();
+    }
+
+    /**
+     * Marks a weekly mailing list subscriber as having been processed
+     *
+     * @param int $recipientId Mailing list subscriber ID
+     * @param int $result Code representing result of running this script for this recipient
+     * @return void
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function markWeeklyAsProcessed($recipientId, $result)
+    {
+        $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
+        $logEntry = $mailingListLogTable->newEntity([
+            'recipient_id' => $recipientId,
+            'result' => $result,
+            'is_weekly' => 1,
+        ]);
+        if (!$mailingListLogTable->save($logEntry)) {
+            throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        $subscriber = $this->get($recipientId);
+        $this->patchEntity($subscriber, [
+            'processed_weekly' => date('Y-m-d H:i:s'),
+            'new_subscriber' => 0,
+        ]);
+        if (!$this->save($subscriber)) {
+            throw new InternalErrorException('Failed to update subscriber record');
+        }
+    }
 }
