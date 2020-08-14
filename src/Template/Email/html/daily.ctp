@@ -38,7 +38,7 @@
                     'controller' => 'events',
                     'action' => 'view',
                     'id' => $event->id,
-                    'fullBase' => true,
+                    '_full' => true,
                 ]
             ) ?>
             <br />

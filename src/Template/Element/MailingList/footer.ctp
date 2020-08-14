@@ -20,7 +20,7 @@
         [
             'controller' => 'Events',
             'action' => 'add',
-            'fullBase' => true,
+            '_full' => true,
         ]
     ) ?>
     &nbsp; | &nbsp;
@@ -31,7 +31,7 @@
             'action' => 'settings',
             $recipient->id,
             $recipient->hash,
-            'fullBase' => true,
+            '_full' => true,
         ]
     ) ?>
     &nbsp; | &nbsp;
@@ -43,7 +43,7 @@
             $recipient->id,
             $recipient->hash,
             '?' => 'unsubscribe',
-            'fullBase' => true,
+            '_full' => true,
         ]
     ) ?>
 </p>

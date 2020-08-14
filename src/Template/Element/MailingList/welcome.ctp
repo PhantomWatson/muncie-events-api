@@ -5,7 +5,7 @@
         [
             'controller' => 'Pages',
             'action' => 'contact',
-            'fullBase' => true,
+            '_full' => true,
         ]
     ) ?>
     if you have any questions, comments, or suggestions. Remember that at any time, you can adjust your
