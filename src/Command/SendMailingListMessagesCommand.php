@@ -25,6 +25,7 @@ use Exception;
 class SendMailingListMessagesCommand extends Command
 {
     use MailerAwareTrait;
+
     const WEEKLY_DELIVERY_DAY = 'Thursday';
 
     /**
