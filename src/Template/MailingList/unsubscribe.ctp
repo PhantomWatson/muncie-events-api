@@ -25,7 +25,7 @@
         'Change my settings',
         [
             'controller' => 'MailingList',
-            'action' => 'settings',
+            'action' => 'index',
             $subscriberId,
             $hash,
         ],
