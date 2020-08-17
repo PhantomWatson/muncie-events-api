@@ -30,7 +30,7 @@ class UsersMailer extends Mailer
                 'email' => $user->email,
                 'resetUrl' => $resetUrl,
             ])
-            ->setDomain('api.muncieevents.com')
+            ->setDomain('muncieevents.com')
             ->setEmailFormat('both');
     }
 }

@@ -30,6 +30,6 @@ class ContactMailer extends Mailer
             ->setFrom($data['email'], $data['name'])
             ->setSubject('Muncie Events contact form')
             ->setViewVars(['body' => $data['body']])
-            ->setDomain('api.muncieevents.com');
+            ->setDomain('muncieevents.com');
     }
 }
