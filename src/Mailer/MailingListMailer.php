@@ -29,7 +29,8 @@ class MailingListMailer extends Mailer
                 'recipient' => $recipient,
                 'settingsDisplay' => $this->getSettingsDisplay($recipient),
             ])
-            ->setEmailFormat('both');
+            ->setEmailFormat('both')
+            ->setDomain('muncieevents.com');
     }
 
     /**
@@ -53,7 +54,8 @@ class MailingListMailer extends Mailer
                 'recipient' => $recipient,
                 'settingsDisplay' => $this->getSettingsDisplay($recipient),
             ])
-            ->setEmailFormat('both');
+            ->setEmailFormat('both')
+            ->setDomain('muncieevents.com');
     }
 
     /**
