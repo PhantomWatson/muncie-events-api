@@ -134,7 +134,7 @@ class SendMailingListMessagesCommand extends Command
 
         if (!$eventCount) {
             foreach ($recipients as $recipient) {
-                $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::NO_EVENTS);
+                $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::NO_EVENTS);
             }
             $this->io->out('No events to inform anyone about today');
 
@@ -170,7 +170,7 @@ class SendMailingListMessagesCommand extends Command
 
         // Make sure there are events left
         if (empty($events)) {
-            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::NO_APPLICABLE_EVENTS);
+            $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::NO_APPLICABLE_EVENTS);
 
             $selected = 'Selected: ' . Hash::extract($recipient->categories, '{n}.id');
             $available = 'Available: ' . implode(', ', $categoryIds);
@@ -183,11 +183,11 @@ class SendMailingListMessagesCommand extends Command
 
         try {
             $this->getMailer('MailingList')->send('daily', [$recipient, $events]);
-            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::EMAIL_SENT);
+            $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
 
             return [true, 'Email sent to ' . $recipient->email];
         } catch (MissingActionException | BadMethodCallException $e) {
-            $this->MailingList->markDailyAsProcessed($recipient->id, MailingListLogTable::ERROR_SENDING);
+            $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::ERROR_SENDING);
 
             return [false, 'Error sending email to ' . $recipient->email . ': ' . $e->getMessage()];
         }
@@ -246,7 +246,7 @@ class SendMailingListMessagesCommand extends Command
             ->toArray();
         if (empty($events)) {
             foreach ($recipients as $recipient) {
-                $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::NO_EVENTS);
+                $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::NO_EVENTS);
             }
             $this->io->out('No events to inform anyone about this week');
 
@@ -288,7 +288,7 @@ class SendMailingListMessagesCommand extends Command
         // Make sure there are events left
         if (empty($events)) {
             // No events to report to this user today.
-            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::NO_APPLICABLE_EVENTS);
+            $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::NO_APPLICABLE_EVENTS);
             $selected = 'Selected: ' . Hash::extract($recipient->categories, '{n}.id');
             $available = 'Available: ' . implode(', ', $categoryIds);
 
@@ -300,11 +300,11 @@ class SendMailingListMessagesCommand extends Command
 
         try {
             $this->getMailer('MailingList')->send('weekly', [$recipient, $events]);
-            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::EMAIL_SENT);
+            $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
 
             return [true, 'Email sent to ' . $recipient->email];
         } catch (MissingActionException | BadMethodCallException $e) {
-            $this->MailingList->markWeeklyAsProcessed($recipient->id, MailingListLogTable::ERROR_SENDING);
+            $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::ERROR_SENDING);
 
             return [false, "Error sending email to $recipient->email: " . $e->getMessage()];
         }

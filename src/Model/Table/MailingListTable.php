@@ -222,16 +222,16 @@ class MailingListTable extends Table
     /**
      * Marks a daily mailing list subscriber as having been processed
      *
-     * @param int $recipientId Mailing list subscriber ID
+     * @param MailingList $subscriber Mailing list subscriber
      * @param int $result Code representing result of running this script for this recipient
      * @return void
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function markDailyAsProcessed($recipientId, $result)
+    public function markDailyAsProcessed($subscriber, $result)
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $recipientId,
+            'recipient_id' => $subscriber->id,
             'result' => $result,
             'is_daily' => 1,
         ]);
@@ -239,7 +239,6 @@ class MailingListTable extends Table
             throw new InternalErrorException('Failed to save mailing list log entry');
         }
 
-        $subscriber = $this->get($recipientId);
         $this->patchEntity($subscriber, [
             'processed_daily' => date('Y-m-d H:i:s'),
             'new_subscriber' => 0,
@@ -286,16 +285,16 @@ class MailingListTable extends Table
     /**
      * Marks a weekly mailing list subscriber as having been processed
      *
-     * @param int $recipientId Mailing list subscriber ID
+     * @param MailingList $subscriber Mailing list subscriber
      * @param int $result Code representing result of running this script for this recipient
      * @return void
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function markWeeklyAsProcessed($recipientId, $result)
+    public function markWeeklyAsProcessed($subscriber, $result)
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $recipientId,
+            'recipient_id' => $subscriber->id,
             'result' => $result,
             'is_weekly' => 1,
         ]);
@@ -303,7 +302,6 @@ class MailingListTable extends Table
             throw new InternalErrorException('Failed to save mailing list log entry');
         }
 
-        $subscriber = $this->get($recipientId);
         $this->patchEntity($subscriber, [
             'processed_weekly' => date('Y-m-d H:i:s'),
             'new_subscriber' => 0,
