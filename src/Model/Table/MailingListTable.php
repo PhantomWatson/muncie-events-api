@@ -222,7 +222,7 @@ class MailingListTable extends Table
     /**
      * Marks a daily mailing list subscriber as having been processed
      *
-     * @param MailingList $subscriber Mailing list subscriber
+     * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
      * @param int $result Code representing result of running this script for this recipient
      * @return void
      * @throws \Cake\Http\Exception\InternalErrorException
@@ -231,12 +231,16 @@ class MailingListTable extends Table
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $subscriber->id,
+            'recipient_id' => $subscriber ? $subscriber->id : null,
             'result' => $result,
             'is_daily' => 1,
         ]);
         if (!$mailingListLogTable->save($logEntry)) {
             throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        if (!$subscriber) {
+            return;
         }
 
         $this->patchEntity($subscriber, [
@@ -285,7 +289,7 @@ class MailingListTable extends Table
     /**
      * Marks a weekly mailing list subscriber as having been processed
      *
-     * @param MailingList $subscriber Mailing list subscriber
+     * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
      * @param int $result Code representing result of running this script for this recipient
      * @return void
      * @throws \Cake\Http\Exception\InternalErrorException
@@ -294,12 +298,16 @@ class MailingListTable extends Table
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $subscriber->id,
+            'recipient_id' => $subscriber ? $subscriber->id : null,
             'result' => $result,
             'is_weekly' => 1,
         ]);
         if (!$mailingListLogTable->save($logEntry)) {
             throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        if (!$subscriber) {
+            return;
         }
 
         $this->patchEntity($subscriber, [

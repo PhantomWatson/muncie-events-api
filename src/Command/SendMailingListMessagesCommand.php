@@ -133,9 +133,7 @@ class SendMailingListMessagesCommand extends Command
         ));
 
         if (!$eventCount) {
-            foreach ($recipients as $recipient) {
-                $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::NO_EVENTS);
-            }
+            $this->MailingList->markDailyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about today');
 
             return;
@@ -245,9 +243,7 @@ class SendMailingListMessagesCommand extends Command
             ->find('upcomingWeek')
             ->toArray();
         if (empty($events)) {
-            foreach ($recipients as $recipient) {
-                $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::NO_EVENTS);
-            }
+            $this->MailingList->markWeeklyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about this week');
 
             return;
