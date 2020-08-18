@@ -64,27 +64,6 @@ function setupEventForm() {
         title: 'Tips for Ball State locations'
     });
 
-    // If multi-date event is being submitted with a blank series title, insert event title into series title field
-    const submitButton = document.getElementById('event-form-submit');
-    submitButton.addEventListener('click', function () {
-        const seriesTitle = document.getElementById('EventSeriesTitle');
-        if (seriesTitle.required && seriesTitle.value === '') {
-            const eventTitle = document.getElementById('EventTitle');
-            seriesTitle.value = eventTitle.value;
-        }
-    });
-
-    var form = $('#EventForm').first();
-    form.submit(function () {
-        var description = CKEDITOR.instances.EventDescription.getData();
-        if (description === '' || description === null) {
-            alert('Please enter a description of this event.');
-            return false;
-        }
-
-        return true;
-    });
-
     $('#tag-rules-button').popover({
         content: function () {
             return $('#tag-rules-content').html();
@@ -236,6 +215,7 @@ class EventForm {
     constructor(options) {
         this.mode = options.mode;
         this.setupDatePicker();
+        this.setupSubmit();
     }
 
     setupDatePicker() {
@@ -298,5 +278,29 @@ class EventForm {
 
         const row = document.getElementById('series_row');
         row.style.display = 'none';
+    }
+
+    setupSubmit() {
+        // If multi-date event is being submitted with a blank series title, insert event title into series title field
+        const submitButton = document.getElementById('event-form-submit');
+        submitButton.addEventListener('click', function () {
+            const seriesTitle = document.getElementById('EventSeriesTitle');
+            if (seriesTitle.required && seriesTitle.value === '') {
+                const eventTitle = document.getElementById('EventTitle');
+                seriesTitle.value = eventTitle.value;
+            }
+        });
+
+        const form = document.getElementById('EventForm');
+        form.addEventListener('submit', function () {
+            const description = CKEDITOR.instances.EventDescription.getData();
+            if (description === '' || description === null) {
+                alert('Please enter a description of this event.');
+
+                return false;
+            }
+
+            return true;
+        });
     }
 }
