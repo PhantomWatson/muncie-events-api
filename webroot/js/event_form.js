@@ -64,6 +64,16 @@ function setupEventForm() {
         title: 'Tips for Ball State locations'
     });
 
+    // If multi-date event is being submitted with a blank series title, insert event title into series title field
+    const submitButton = document.getElementById('event-form-submit');
+    submitButton.addEventListener('click', function () {
+        const seriesTitle = document.getElementById('EventSeriesTitle');
+        if (seriesTitle.required && seriesTitle.value === '') {
+            const eventTitle = document.getElementById('EventTitle');
+            seriesTitle.value = eventTitle.value;
+        }
+    });
+
     var form = $('#EventForm').first();
     form.submit(function () {
         var description = CKEDITOR.instances.EventDescription.getData();
