@@ -18,7 +18,13 @@
 <p>
     <?= $this->Html->link(
         'Yes, please remove me from the mailing list',
-        ['?' => ['confirm' => 1]],
+        [
+            'controller' => 'MailingList',
+            'action' => 'unsubscribe',
+            $subscriberId,
+            $hash,
+            '?' => ['confirm' => 1]
+        ],
         ['class' => 'btn btn-primary']
     ) ?>
     <?= $this->Html->link(
