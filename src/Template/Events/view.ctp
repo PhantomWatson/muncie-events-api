@@ -42,7 +42,7 @@ use App\View\AppView;
                            'prefix' => false,
                            'controller' => 'Events',
                            'action' => 'location',
-                           'location' => $event->location_slug
+                           'location' => $event->location_slug,
                        ]
                     ) ?>
                     <?php if ($event->location_details): ?>
@@ -63,11 +63,11 @@ use App\View\AppView;
                         [
                             'controller' => 'Events',
                             'action' => 'category',
-                            $event->category->slug
+                            $event->category->slug,
                         ],
                         [
                             'escape' => false,
-                            'title' => 'View this category'
+                            'title' => 'View this category',
                         ]
                     ) ?>
                     <?= $this->Calendar->eventTags($event) ?>
@@ -94,7 +94,7 @@ use App\View\AppView;
                             [
                                 'controller' => 'EventSeries',
                                 'action' => 'view',
-                                'id' => $event->series_id
+                                'id' => $event->series_id,
                             ]
                         ) ?>
                     </td>
@@ -110,7 +110,7 @@ use App\View\AppView;
                         'filename' => $image->filename,
                         'caption' => $image->caption,
                         'group' => 'event' . $event->id,
-                        'alt' => $image->caption
+                        'alt' => $image->caption,
                     ]) ?>
                     <?php if ($image->caption): ?>
                         <span class="caption">
@@ -136,7 +136,7 @@ use App\View\AppView;
                     [
                         'controller' => 'Users',
                         'action' => 'view',
-                        'id' => $event->user->id
+                        'id' => $event->user->id,
                     ]
                 ) ?>
             <?php endif; ?>
