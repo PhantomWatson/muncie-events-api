@@ -6,7 +6,7 @@ $config = [
     'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
 
     'App' => [
-        'fullBaseUrl' => 'https://muncieevents.com',
+        'fullBaseUrl' => env('FULL_BASE_URL'),
     ],
 
     'Asset' => [
