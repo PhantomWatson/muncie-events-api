@@ -29,6 +29,8 @@ class MailingListController extends AppController
     {
         parent::initialize();
 
+        $this->loadModel('Categories');
+
         $this->Auth->allow([
             'index',
             'sendDaily',
@@ -105,7 +107,6 @@ class MailingListController extends AppController
             );
         }
 
-        $this->loadModel('Categories');
         $this->set([
             'categories' => $this->Categories->find()->all(),
             'days' => $this->MailingList->getDays(),
@@ -136,7 +137,6 @@ class MailingListController extends AppController
         } else {
             $allCategoriesSelected = $this->request->getData('event_categories') == 'all';
             $selectedCategoryCount = count($this->request->getData('selected_categories'));
-            $this->loadModel('Categories');
             $totalCategoryCount = $this->Categories->find()->count();
             $data['all_categories'] = $allCategoriesSelected || $selectedCategoryCount == $totalCategoryCount;
 
