@@ -21,7 +21,6 @@ use App\View\AppView;
 
 <div class="event">
     <?= $this->element('Events/actions', compact('event')) ?>
-    <?php $this->Html->scriptBlock("setupEventActions('.event');", ['block' => true]); ?>
 
     <div class="header_details">
         <table class="details">
