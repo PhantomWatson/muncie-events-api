@@ -5,6 +5,7 @@ use App\Event\ApiCallsListener;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
@@ -33,6 +34,8 @@ class ApiController extends Controller
     public function initialize()
     {
         parent::initialize();
+
+        Configure::write('App.fullBaseUrl', 'https://api.muncieevents.com/');
 
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
