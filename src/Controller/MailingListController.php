@@ -8,6 +8,7 @@ use App\Model\Table\MailingListTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Response;
+use Cake\ORM\TableRegistry;
 use Exception;
 
 /**
@@ -212,6 +213,16 @@ class MailingListController extends AppController
             $subscription = $this->MailingList->get($subscriberId);
 
             if ($this->MailingList->delete($subscription)) {
+                $usersTable = TableRegistry::getTableLocator()->get('Users');
+                /** @var \App\Model\Entity\User $user */
+                $user = $usersTable
+                    ->find()
+                    ->where(['mailing_list_id' => $subscriberId])
+                    ->first();
+                if ($user) {
+                    $user->mailing_list_id = null;
+                    $usersTable->save($user);
+                }
                 $this->Flash->success('You have been removed from the mailing list');
 
                 return $this->redirect('/');
