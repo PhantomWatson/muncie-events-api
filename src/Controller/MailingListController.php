@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Model\Entity\MailingList;
-use App\Model\Table\CategoriesTable;
-use App\Model\Table\MailingListTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Response;
-use Cake\ORM\TableRegistry;
 use Exception;
 
 /**
@@ -193,7 +190,13 @@ class MailingListController extends AppController
      */
     private function getCurrentUserSubscription()
     {
-        $subscriberId = $this->Auth->user('mailing_list_id');
+        // Fetch mailing_list_id from the database because it wouldn't be in the session if the user just subscribed
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()
+            ->select(['mailing_list_id'])
+            ->where(['id' => $this->Auth->user('id')])
+            ->first();
+        $subscriberId = $user ? $user->mailing_list_id : null;
 
         if (!$subscriberId) {
             return null;
