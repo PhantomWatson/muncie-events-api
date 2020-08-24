@@ -23,7 +23,7 @@ $displayedEventFields = [
     'address',
     'age_restriction',
     'cost',
-    'source'
+    'source',
 ];
 ?>
 <h1 class="page_title">
@@ -38,71 +38,71 @@ $displayedEventFields = [
         <ul>
             <?php foreach ($events as $event): ?>
                 <?php
-                // Prepare variables used in displaying this event
-                $eventId = $event->id;
-                $created = $event->created;
-                $modified = date('Y-m-d', strtotime($event->modified));
-                $published = $event->published;
-                $isSeries = isset($event->series_id);
-                $seriesPartEventIds = [];
+                    // Prepare variables used in displaying this event
+                    $eventId = $event->id;
+                    $created = $event->created;
+                    $modified = date('Y-m-d', strtotime($event->modified));
+                    $published = $event->published;
+                    $isSeries = isset($event->series_id);
+                    $seriesPartEventIds = [];
 
-                if ($isSeries) {
-                    $seriesId = $event->series_id;
-                    $count = count($identicalSeries[$seriesId][$modified]);
+                    if ($isSeries) {
+                        $seriesId = $event->series_id;
+                        $count = count($identicalSeries[$seriesId][$modified]);
 
-                    // If events in a series have been modified, they are separated out
-                    $countSeriesParts = count($identicalSeries[$seriesId]);
-                    $seriesPartEventIds = $identicalSeries[$seriesId][$modified];
-                }
+                        // If events in a series have been modified, they are separated out
+                        $countSeriesParts = count($identicalSeries[$seriesId]);
+                        $seriesPartEventIds = $identicalSeries[$seriesId][$modified];
+                    }
 
-                $approveUrl = [
-                    'prefix' => 'admin',
-                    'controller' => 'Events',
-                    'action' => 'approve'
-                ];
-                if ($isSeries) {
-                    $approveUrl = array_merge($approveUrl, $seriesPartEventIds);
-                } else {
-                    $approveUrl[] = $eventId;
-                }
-                $img = $this->Html->image(
-                    'icons/tick.png',
-                    ['alt' => 'Approve']
-                );
-                $approveLabel = $img . 'Approve' . ($published ? '' : ' and publish');
-
-                if ($isSeries && $count > 1) {
-                    $editConfirm = sprintf(
-                        'You will only be editing this event, and not the %n other %s in this series.',
-                        ($count - 1),
-                        __n('event', 'events', ($count - 1))
+                    $approveUrl = [
+                        'prefix' => 'admin',
+                        'controller' => 'Events',
+                        'action' => 'approve',
+                    ];
+                    if ($isSeries) {
+                        $approveUrl = array_merge($approveUrl, $seriesPartEventIds);
+                    } else {
+                        $approveUrl[] = $eventId;
+                    }
+                    $img = $this->Html->image(
+                        'icons/tick.png',
+                        ['alt' => 'Approve']
                     );
-                } else {
-                    $editConfirm = false;
-                }
-                $editLabel = 'Edit';
+                    $approveLabel = $img . 'Approve' . ($published ? '' : ' and publish');
 
-                $deleteUrl = [
-                    'prefix' => 'admin',
-                    'controller' => 'Events',
-                    'action' => 'delete'
-                ];
-                if ($isSeries && $count > 1) {
-                    $deleteUrl = array_merge($deleteUrl, $seriesPartEventIds);
-                    $deleteConfirm = ($countSeriesParts > 1)
-                        ? "All $count events in this part of the series will be deleted."
-                        : 'All events in this series will be deleted.';
-                    $deleteConfirm .= ' Are you sure?';
-                } else {
-                    $deleteUrl[] = $eventId;
-                    $deleteConfirm = 'Are you sure?';
-                }
-                $deleteLabel = 'Delete';
+                    if ($isSeries && $count > 1) {
+                        $editConfirm = sprintf(
+                            'You will only be editing this event, and not the %n other %s in this series.',
+                            ($count - 1),
+                            __n('event', 'events', ($count - 1))
+                        );
+                    } else {
+                        $editConfirm = false;
+                    }
+                    $editLabel = 'Edit';
 
-                $tagsList = [];
-                foreach ($event->tags as $tag) {
-                    $tagsList[] = $tag->name;
-                }
+                    $deleteUrl = [
+                        'prefix' => 'admin',
+                        'controller' => 'Events',
+                        'action' => 'delete',
+                    ];
+                    if ($isSeries && $count > 1) {
+                        $deleteUrl = array_merge($deleteUrl, $seriesPartEventIds);
+                        $deleteConfirm = ($countSeriesParts > 1)
+                            ? "All $count events in this part of the series will be deleted."
+                            : 'All events in this series will be deleted.';
+                        $deleteConfirm .= ' Are you sure?';
+                    } else {
+                        $deleteUrl[] = $eventId;
+                        $deleteConfirm = 'Are you sure?';
+                    }
+                    $deleteLabel = 'Delete';
+
+                    $tagsList = [];
+                    foreach ($event->tags as $tag) {
+                        $tagsList[] = $tag->name;
+                    }
                 ?>
                 <li>
                     <ul class="actions">
@@ -125,7 +125,7 @@ $displayedEventFields = [
                                 [
                                     'class' => 'btn btn-sm btn-secondary',
                                     'escape' => false,
-                                    'confirm' => $editConfirm
+                                    'confirm' => $editConfirm,
                                 ]
                             ) ?>
                         </li>
@@ -136,7 +136,7 @@ $displayedEventFields = [
                                 [
                                     'class' => 'btn btn-sm btn-secondary',
                                     'escape' => false,
-                                    'confirm' => $deleteConfirm
+                                    'confirm' => $deleteConfirm,
                                 ]
                             ) ?>
                         </li>
@@ -181,7 +181,7 @@ $displayedEventFields = [
                                         [
                                             'controller' => 'Users',
                                             'action' => 'view',
-                                            'id' => $event->user_id
+                                            'id' => $event->user_id,
                                         ]
                                     ) ?>
                                 <?php else: ?>
@@ -251,7 +251,7 @@ $displayedEventFields = [
                                             'filename' => $image->filename,
                                             'caption' => $image->caption,
                                             'group' => 'unapproved_event_' . $event->id,
-                                            'alt' => $image->caption
+                                            'alt' => $image->caption,
                                         ]) ?>
                                     <?php endforeach; ?>
                                 </td>
