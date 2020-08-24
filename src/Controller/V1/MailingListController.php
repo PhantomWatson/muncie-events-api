@@ -2,7 +2,6 @@
 namespace App\Controller\V1;
 
 use App\Controller\ApiController;
-use App\Model\Entity\Category;
 use App\Model\Entity\MailingList;
 use App\Model\Table\MailingListTable;
 use Cake\Http\Exception\BadRequestException;
@@ -67,12 +66,13 @@ class MailingListController extends ApiController
     }
 
     /**
-     * Returns an array of Category entities selected in the current request, or an empty array if "all" is selected
+     * Returns an array of Category IDs selected in the current request, or an empty array if "all" is selected
      *
      * Explanation: If a user selects "all categories", that bypasses category filters entirely instead of individually
      * associating their subscription with each category.
      *
-     * @return Category[]
+     * @return array
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     private function getSelectedCategories()
     {
