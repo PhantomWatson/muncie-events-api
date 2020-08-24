@@ -31,7 +31,7 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
         'your events',
         [
             'controller' => 'Events',
-            'action' => 'mine'
+            'action' => 'mine',
         ]
     ) ?>, you'll have to go to each event's individual edit page.
 </p>
@@ -46,19 +46,19 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                 'label' => false,
                 'class' => 'form-control',
                 'div' => false,
-                'value' => $eventSeries['title']
+                'value' => $eventSeries['title'],
             ]) ?>
         </td>
     </tr>
     <tr>
         <th>Events</th>
         <td>
-            <?php if (empty($eventSeries->events)): ?>
+            <?php if (empty($eventSeries->events)) : ?>
                 This event series doesn't actually have any events linked to it.
-            <?php else: ?>
+            <?php else : ?>
                 <table id="events_in_series" class="table">
                     <tbody>
-                    <?php foreach ($eventSeries->events as $i => $event): ?>
+                    <?php foreach ($eventSeries->events as $i => $event) : ?>
                         <tr class="display" id="eventinseries_display_<?= $event->id ?>">
                             <td class="action">
                                 <button class="btn btn-outline-primary btn-sm toggler"
@@ -93,17 +93,17 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                                                 'maxYear' => date('Y') + 1,
                                                 'year' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => $event->id . 'year'
+                                                    'id' => $event->id . 'year',
                                                 ],
                                                 'month' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => $event->id . 'month'
+                                                    'id' => $event->id . 'month',
                                                 ],
                                                 'day' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => $event->id . 'day'
+                                                    'id' => $event->id . 'day',
                                                 ],
-                                                'default' => $event->date
+                                                'default' => $event->date,
                                             ]) ?>
                                         </td>
                                     </tr>
@@ -116,17 +116,17 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                                                 'timeFormat' => '12',
                                                 'hour' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => $event->id . 'hour'
+                                                    'id' => $event->id . 'hour',
                                                 ],
                                                 'minute' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => $event->id . 'minute'
+                                                    'id' => $event->id . 'minute',
                                                 ],
                                                 'meridian' => [
                                                     'class' => 'form-control event_time_form',
-                                                    'id' => '' . $event->id . 'meridian'
+                                                    'id' => '' . $event->id . 'meridian',
                                                 ],
-                                                'default' => $event->time_start
+                                                'default' => $event->time_start,
                                             ]) ?>
                                         </td>
                                     </tr>
@@ -137,7 +137,7 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                                                 'class' => 'form-control',
                                                 'id' => $event->id . 'title',
                                                 'label' => false,
-                                                'default' => $event->title
+                                                'default' => $event->title,
                                             ]) ?>
                                         </td>
                                     </tr>
@@ -149,14 +149,14 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                                             <?= $this->Form->checkbox("events.$i.delete", [
                                                 'id' => 'eventinseries_delete_' . $event->id,
                                                 'class' => 'delete_event',
-                                                'data-event-id' => $event->id
+                                                'data-event-id' => $event->id,
                                             ]) ?>
                                             <?= $this->Form->hidden("events.$i.edited", [
                                                 'id' => 'eventinseries_edited_' . $event->id,
-                                                'value' => 0
+                                                'value' => 0,
                                             ]) ?>
                                             <?= $this->Form->hidden("events.$i.id", [
-                                                'value' => $event->id
+                                                'value' => $event->id,
                                             ]) ?>
                                         </td>
                                     </tr>
@@ -179,12 +179,12 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                 [
                     'controller' => 'EventSeries',
                     'action' => 'delete',
-                    'id' => $eventSeries->id
+                    'id' => $eventSeries->id,
                 ],
                 [
                     'escape' => false,
                     'class' => 'btn btn-danger',
-                    'confirm' => 'Delete all of the events in this series?'
+                    'confirm' => 'Delete all of the events in this series?',
                 ]
             ) ?>
         </td>

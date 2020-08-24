@@ -16,7 +16,7 @@ use App\View\AppView; ?>
 </h1>
 
 <div class="event_series">
-    <?php if ($canEdit): ?>
+    <?php if ($canEdit) : ?>
         <div class="controls">
             <?= $this->Html->link(
                 'Edit',
@@ -41,19 +41,19 @@ use App\View\AppView; ?>
                 [
                     'class' => 'btn btn-sm btn-secondary',
                     'escape' => false,
-                    'confirm' => 'Delete all of the events in this series?'
+                    'confirm' => 'Delete all of the events in this series?',
                 ]
             ) ?>
         </div>
     <?php endif; ?>
 
-    <?php foreach ($dividedEvents as $section => $events): ?>
+    <?php foreach ($dividedEvents as $section => $events) : ?>
         <h2>
             <?= ucwords($section) ?> Events
         </h2>
         <table>
             <tbody>
-                <?php foreach ($events as $key => $event): ?>
+                <?php foreach ($events as $key => $event) : ?>
                     <tr>
                         <td class="date">
                             <?= $event->date->format('M j, Y') ?>
@@ -69,7 +69,7 @@ use App\View\AppView; ?>
                                     'prefix' => false,
                                     'controller' => 'Events',
                                     'action' => 'view',
-                                    'id' => $event->id
+                                    'id' => $event->id,
                                 ]
                             ) ?>
                         </td>
@@ -80,7 +80,7 @@ use App\View\AppView; ?>
     <?php endforeach; ?>
 
     <p class="author">
-        <?php if (isset($eventSeries->user->name)): ?>
+        <?php if (isset($eventSeries->user->name)) : ?>
             Author:
             <?= $this->Html->link(
                 $eventSeries->user->name,
@@ -89,10 +89,10 @@ use App\View\AppView; ?>
                     'prefix' => false,
                     'controller' => 'Users',
                     'action' => 'view',
-                    'id' => $eventSeries->user->id
+                    'id' => $eventSeries->user->id,
                 ]
             ) ?>
-        <?php else: ?>
+        <?php else : ?>
             This event series was posted anonymously.
         <?php endif; ?>
     </p>

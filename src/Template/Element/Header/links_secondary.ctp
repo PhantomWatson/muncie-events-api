@@ -5,7 +5,7 @@
  */
 use App\View\AppView;
 ?>
-<?php if ($authUser): ?>
+<?php if ($authUser) : ?>
     <li class="nav-item">
         <?= $this->Html->link(
             'Log out',
@@ -13,9 +13,9 @@ use App\View\AppView;
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Users',
-                'action' => 'logout'
+                'action' => 'logout',
             ],
-            ['class'=>'nav-link']
+            ['class' => 'nav-link']
         ) ?>
     </li>
     <li class="<?= $this->Nav->getActiveLink('Users', 'account') ?> nav-item">
@@ -25,12 +25,12 @@ use App\View\AppView;
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Users',
-                'action' => 'account'
+                'action' => 'account',
             ],
-            ['class'=>'nav-link']
+            ['class' => 'nav-link']
         ) ?>
     </li>
-<?php else: ?>
+<?php else : ?>
     <li class="<?= $this->Nav->getActiveLink('Users', 'login') ?> nav-item">
         <?= $this->Html->link(
             'Log in',
@@ -38,9 +38,9 @@ use App\View\AppView;
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
             ],
-            ['class'=>'nav-link']
+            ['class' => 'nav-link']
         ) ?>
     </li>
     <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item">
@@ -51,7 +51,7 @@ use App\View\AppView;
                 'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'register'],
-            ['class'=>'nav-link']
+            ['class' => 'nav-link']
         ) ?>
     </li>
 <?php endif; ?>
@@ -62,7 +62,7 @@ use App\View\AppView;
             'plugin' => false,
             'prefix' => false,
             'controller' => 'Pages',
-            'action' => 'contact'
+            'action' => 'contact',
         ],
         ['class' => 'nav-link']
     ) ?>
@@ -74,7 +74,7 @@ use App\View\AppView;
             'plugin' => false,
             'prefix' => false,
             'controller' => 'Pages',
-            'action' => 'about'
+            'action' => 'about',
         ],
         ['class' => 'nav-link']
     ) ?>

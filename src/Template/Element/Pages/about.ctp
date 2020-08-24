@@ -1,6 +1,7 @@
 <?php
 // The contents of this page are returned by the API endpoint /pages/about
 use Cake\ORM\TableRegistry;
+
 $eventsTable = TableRegistry::getTableLocator()->get('Events');
 $eventCount = $eventsTable->find()->count();
 $yearsCount = date('Y') - 2009;
@@ -46,7 +47,7 @@ $yearsCount = date('Y') - 2009;
         ],
         'Organizations' => [
             '<a href="https://munciearts.org">Muncie Arts and Culture Council</a>' => '',
-            '<a href="http://bsu.edu/cber">Center for Business and Economic Research</a>' => ''
+            '<a href="http://bsu.edu/cber">Center for Business and Economic Research</a>' => '',
         ],
         'Software' => [
             '<a href="http://cakephp.org">CakePHP</a>' => 'Back-end framework',
@@ -54,17 +55,17 @@ $yearsCount = date('Y') - 2009;
             '<a href="https://facebook.github.io/react-native/">React Native</a>' => 'Mobile app framework',
             '<a href="http://dimsemenov.com/plugins/magnific-popup/">Magnific Popup</a>' => 'Elegant media popups',
             '<a href="http://recaptcha.net/">reCAPTCHA</a>' => 'Spam defense',
-        ]
+        ],
     ];
-?>
+    ?>
 
 <ul id="credits">
-    <?php foreach ($credits as $category => $members): ?>
+    <?php foreach ($credits as $category => $members) : ?>
         <li class="category">
             <?= $category ?>
             <br class="break" />
         </li>
-        <?php foreach ($members as $name => $position): ?>
+        <?php foreach ($members as $name => $position) : ?>
             <li class="row">
                 <div class="name"><?= $name ?></div>
                 <div class="position"><?= $position ?></div>

@@ -79,7 +79,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     <?= $this->element('Events/rules') ?>
 </div>
 
-<?php if (!$authUser): ?>
+<?php if (!$authUser) : ?>
     <div class="alert alert-info">
         <p>
             <strong>You're not currently logged in</strong>. You can still submit this event, but...
@@ -98,7 +98,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                     'register an account',
                     [
                         'controller' => 'Users',
-                        'action' => 'register'
+                        'action' => 'register',
                     ]
                 ) ?>
             </strong>
@@ -108,14 +108,14 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                     'log in',
                     [
                         'controller' => 'Users',
-                        'action' => 'login'
+                        'action' => 'login',
                     ]
                 ) ?>
             </strong>
             to skip the hassle.
         </p>
     </div>
-<?php elseif ($firstEvent): ?>
+<?php elseif ($firstEvent) : ?>
     <div class="alert alert-info">
         <p>
             <strong>Thanks for registering an account!</strong> Unfortunately, to combat spam, your first event will
@@ -129,7 +129,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     $event,
     [
         'id' => 'EventForm',
-        'type' => 'file'
+        'type' => 'file',
     ]
 ) ?>
 
@@ -162,7 +162,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
             <?= $this->Form->control('title', [
                 'class' => 'form-control',
                 'id' => 'EventTitle',
-                'label' => false
+                'label' => false,
             ]) ?>
         </div>
     </div>
@@ -176,7 +176,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                 'class' => 'form-control',
                 'id' => 'category-id',
                 'label' => false,
-                'options' => $categories
+                'options' => $categories,
             ]) ?>
         </div>
     </div>
@@ -197,7 +197,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                     'value' => $dateValue,
                 ]
             ) ?>
-            <?php if ($multipleDatesAllowed): ?>
+            <?php if ($multipleDatesAllowed) : ?>
                 <div class="text-muted" id="datepicker_text">
                     Select more than one date to create multiple events connected by a series.
                 </div>
@@ -221,13 +221,17 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                         'value' => $timeStartValue,
                     ]
                 ) ?>
-                <span id="eventform_noendtime" <?php if ($hasEndTime): ?>style="display: none;"<?php endif; ?>>
+                <span id="eventform_noendtime" <?php if ($hasEndTime) :
+                    ?>style="display: none;"<?php
+                                               endif; ?>>
                     <button id="add_end_time" class="btn btn-sm btn-secondary">
                         Add end time
                     </button>
                 </span>
             </div>
-            <div id="eventform_hasendtime" <?php if (!$hasEndTime): ?>style="display: none;"<?php endif; ?>>
+            <div id="eventform_hasendtime" <?php if (!$hasEndTime) :
+                ?>style="display: none;"<?php
+                                           endif; ?>>
                 to
                 <div class="form-group form-inline">
                     <?= $this->Form->control(
@@ -247,8 +251,10 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </div>
     </div>
 
-    <?php if ($renderSeriesNameRow): ?>
-        <div class="row form-group" id="series_row" <?php if (!$showSeriesNameRow): ?>style="display: none;"<?php endif; ?>>
+    <?php if ($renderSeriesNameRow) : ?>
+        <div class="row form-group" id="series_row" <?php if (!$showSeriesNameRow) :
+            ?>style="display: none;"<?php
+                                                    endif; ?>>
             <label class="col-md-3" for="EventSeriesTitle">
                 Series Name
             </label>
@@ -258,8 +264,8 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                     'class' => 'form-control',
                     'id' => 'EventSeriesTitle',
                     'value' => $this->request->getData('event_series.title')
-                        ?? ($event->event_series ? $event->event_series->title : null)
-                ]) ?>
+                        ?? ($event->event_series ? $event->event_series->title : null),
+                                                    ]) ?>
             </div>
         </div>
     <?php endif; ?>
@@ -298,7 +304,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
             <?= $this->Form->control('location_details', [
                 'class' => 'form-control',
                 'label' => false,
-                'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)'
+                'placeholder' => 'Location details (e.g. upstairs, room 149, etc.)',
             ]) ?>
         </div>
     </div>
@@ -311,7 +317,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
             <?= $this->Form->control('address', [
                 'class' => 'form-control',
                 'label' => false,
-                'id' => 'EventAddress'
+                'id' => 'EventAddress',
             ]) ?>
         </div>
     </div>
@@ -323,7 +329,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         <div class="col-md-9">
             <?= $this->Form->control('description', [
                 'label' => false,
-                'id' => 'EventDescription'
+                'id' => 'EventDescription',
             ]) ?>
         </div>
     </div>
@@ -358,7 +364,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </div>
     </div>
 
-    <?php if ($authUser): ?>
+    <?php if ($authUser) : ?>
         <div class="row form-group" id="custom-tag-input-wrapper">
             <div class="col-md-3">
                 <label for="custom-tag-input">
@@ -429,7 +435,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </div>
     <?php endif ?>
 
-    <?php if ($authUser): ?>
+    <?php if ($authUser) : ?>
         <div class="row form-group">
             <div class="col-md-3">
                 <span class="pseudo-label">
@@ -523,7 +529,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </div>
     </div>
 
-    <?php if ($action == 'add' && !$authUser): ?>
+    <?php if ($action == 'add' && !$authUser) : ?>
         <div class="row form-group">
             <span class="pseudo-label col-md-3">
                 Spam Protection
@@ -542,7 +548,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
             </label>
             <?= $this->Form->submit('Submit', [
                 'class' => 'btn btn-primary',
-                'id' => 'event-form-submit'
+                'id' => 'event-form-submit',
             ]) ?>
         </div>
     </div>

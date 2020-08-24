@@ -60,7 +60,7 @@ if ($widget) {
                 'prefix' => false,
                 'controller' => 'Events',
                 'action' => 'approve',
-                'id' => $event->id
+                'id' => $event->id,
             ],
             ['escape' => false]
         ) ?>

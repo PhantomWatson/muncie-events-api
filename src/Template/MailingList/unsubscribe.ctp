@@ -23,7 +23,7 @@
             'action' => 'unsubscribe',
             $subscriberId,
             $hash,
-            '?' => ['confirm' => 1]
+            '?' => ['confirm' => 1],
         ],
         ['class' => 'btn btn-primary']
     ) ?>

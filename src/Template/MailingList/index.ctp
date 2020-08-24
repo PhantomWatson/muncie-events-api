@@ -54,7 +54,8 @@ if ($frequencyValue != 'custom') {
         'value' => ($subscription->isNew() && isset($authUser['email'])) ? $authUser['email'] : null,
     ]) ?>
 
-    <?= $this->Form->control('settings',
+    <?= $this->Form->control(
+        'settings',
         [
             'type' => 'radio',
             'options' => [
@@ -99,7 +100,7 @@ if ($frequencyValue != 'custom') {
             ) ?>
 
             <div id="custom_frequency_options">
-                <?php if (isset($frequencyError)): ?>
+                <?php if (isset($frequencyError)) : ?>
                     <div class="error">
                         <?= $frequencyError ?>
                     </div>
@@ -114,7 +115,7 @@ if ($frequencyValue != 'custom') {
                                 'weekly',
                                 [
                                     'type' => 'checkbox',
-                                    'label' => ' Thursday'
+                                    'label' => ' Thursday',
                                 ]
                             ) ?>
                         </td>
@@ -124,13 +125,13 @@ if ($frequencyValue != 'custom') {
                             Daily:
                         </th>
                         <td>
-                            <?php foreach ($days as $code => $day): ?>
+                            <?php foreach ($days as $code => $day) : ?>
                                 <?= $this->Form->control(
                                     "daily_$code",
                                     [
                                         'type' => 'checkbox',
                                         'label' => false,
-                                        'id' => "daily_$code"
+                                        'id' => "daily_$code",
                                     ]
                                 ) ?>
                                 <label for="daily_<?= $code ?>">
@@ -162,12 +163,12 @@ if ($frequencyValue != 'custom') {
                 ]
             ) ?>
             <div id="custom_event_type_options">
-                <?php if (isset($categoriesError)): ?>
+                <?php if (isset($categoriesError)) : ?>
                     <div class="error">
                         <?= $categoriesError ?>
                     </div>
                 <?php endif; ?>
-                <?php foreach ($categories as $category): ?>
+                <?php foreach ($categories as $category) : ?>
                     <div class="form-control mailing-options">
                         <?= $this->Form->control(
                             "selected_categories.$category->id",
@@ -176,7 +177,7 @@ if ($frequencyValue != 'custom') {
                                 'type' => 'checkbox',
                                 'label' => $this->Icon->category($category->name) . ' ' . $category->name,
                                 'hiddenField' => false,
-                                'checked' => in_array($category->id, $preselectedCategories)
+                                'checked' => in_array($category->id, $preselectedCategories),
                             ]
                         ) ?>
                     </div>
@@ -190,7 +191,7 @@ if ($frequencyValue != 'custom') {
         ['class' => 'btn btn-primary']
     ) ?>
     <?= $this->Form->end() ?>
-    <?php if (isset($subscription->id)): ?>
+    <?php if (isset($subscription->id)) : ?>
         <?= $this->Html->link(
             'Unsubscribe',
             [

@@ -35,22 +35,21 @@ $linkText = sprintf(
     <?= $headerText ?>
 </h1>
 
-<?php if ($countOtherDirection): ?>
+<?php if ($countOtherDirection) : ?>
     <?= $this->Html->link($linkText, [
         'controller' => 'Events',
         'action' => 'location',
         'location' => $locationSlug,
-        'direction' => ($direction == 'future') ? 'past' : 'future'
+        'direction' => ($direction == 'future') ? 'past' : 'future',
     ]) ?>
-<?php else: ?>
+<?php else : ?>
     <p class="light_text">
         There are no <?= (($direction == 'future') ? 'past' : 'upcoming') ?>
         <?= $isVirtual ? 'virtual events' : "events at $locationName" ?>
     </p>
 <?php endif; ?>
 
-<?php if (isset($events) && !empty($events)): ?>
-
+<?php if (isset($events) && !empty($events)) : ?>
     <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
     <?= $this->element('Events/accordion/wrapper') ?>
@@ -59,7 +58,7 @@ $linkText = sprintf(
 
     <?php $this->Html->scriptBlock('setupEventAccordion();', ['block' => true]); ?>
 
-<?php else: ?>
+<?php else : ?>
     <p class="alert alert-info">
         No events found.
     </p>

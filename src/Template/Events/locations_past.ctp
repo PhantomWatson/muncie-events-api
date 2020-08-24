@@ -25,7 +25,7 @@
                     'controller' => 'Events',
                     'action' => 'location',
                     'location' => $location['location_slug'],
-                    'direction' => 'past'
+                    'direction' => 'past',
                 ]); ?>
             </li>
         <?php endforeach; ?>

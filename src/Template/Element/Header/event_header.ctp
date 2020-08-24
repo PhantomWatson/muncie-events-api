@@ -39,7 +39,7 @@ $dayLinks = $this->Nav->getDayLinks();
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Events',
-                'action' => 'add'
+                'action' => 'add',
             ],
             ['class' => 'btn btn-dark']
         ) ?>

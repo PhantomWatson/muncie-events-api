@@ -36,7 +36,7 @@ $this->Html->scriptBlock('setupSearch();', ['block' => true]);
                         'options' => [
                             'future' => 'Upcoming',
                             'past' => 'Past Events',
-                            'all' => 'All Events'
+                            'all' => 'All Events',
                         ],
                         'type' => 'radio',
                         'value' => 'future',

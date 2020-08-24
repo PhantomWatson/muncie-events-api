@@ -36,7 +36,7 @@ use App\View\AppView;
             'action' => 'add',
             'm' => $month,
             'd' => $day,
-            'y' => $year
+            'y' => $year,
         ]) ?>.
     </p>
 <?php else: ?>

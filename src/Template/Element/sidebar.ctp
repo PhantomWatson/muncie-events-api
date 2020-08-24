@@ -14,7 +14,7 @@ $tags = $this->Nav->getUpcomingTags();
 $categories = $this->Nav->getCategories();
 ?>
 <div id="sidebar" class="col-lg-3 col-md-4">
-    <?php if ($authUser && $authUser['role'] == 'admin'): ?>
+    <?php if ($authUser && $authUser['role'] == 'admin') : ?>
         <div>
             <h2>Admin</h2>
             <ul class="admin_actions">
@@ -23,9 +23,9 @@ $categories = $this->Nav->getCategories();
                         'plugin' => false,
                         'prefix' => 'admin',
                         'controller' => 'Events',
-                        'action' => 'moderate'
+                        'action' => 'moderate',
                     ]) ?>
-                    <?php if ($unapprovedCount): ?>
+                    <?php if ($unapprovedCount) : ?>
                         <span class="count">
                             <?= $unapprovedCount ?>
                         </span>
@@ -36,24 +36,24 @@ $categories = $this->Nav->getCategories();
                         'plugin' => false,
                         'prefix' => 'admin',
                         'controller' => 'Tags',
-                        'action' => 'manage'
+                        'action' => 'manage',
                     ]) ?>
                 </li>
             </ul>
         </div>
     <?php endif; ?>
 
-    <?php if ($categories): ?>
+    <?php if ($categories) : ?>
         <div class="categories">
             <h2>Categories</h2>
             <ul>
-                <?php foreach ($categories as $category): ?>
+                <?php foreach ($categories as $category) : ?>
                     <li>
                         <a href="<?= $category->url ?>" class="with_icon">
                             <span class="category_name">
                                 <?= $category->name ?>
                             </span>
-                            <?php if ($category->count): ?>
+                            <?php if ($category->count) : ?>
                                 <span class="upcoming_events_count" title="<?= $category->upcomingEventsTitle ?>">
                                     <?= $category->count ?>
                                 </span>
@@ -70,7 +70,7 @@ $categories = $this->Nav->getCategories();
         <h2>
             Locations
         </h2>
-        <?php if ($locations): ?>
+        <?php if ($locations) : ?>
             Browse upcoming events at...
             <form id="sidebar_select_location">
                 <label class="sr-only" for="sidebar-locations">
@@ -80,7 +80,7 @@ $categories = $this->Nav->getCategories();
                     <option value="">
                         Select a location...
                     </option>
-                    <?php foreach ($locations as $location): ?>
+                    <?php foreach ($locations as $location) : ?>
                         <option value="<?= $location['location_slug'] ?>">
                             <?= $location['location'] ?>
                         </option>
@@ -93,13 +93,13 @@ $categories = $this->Nav->getCategories();
                 'Locations of past events',
                 [
                     'controller' => 'Events',
-                    'action' => 'locationsPast'
+                    'action' => 'locationsPast',
                 ]
             ) ?>
         </p>
     </div>
 
-    <?php if ($tags): ?>
+    <?php if ($tags) : ?>
         <div>
             <h2>
                 Tags
@@ -109,16 +109,17 @@ $categories = $this->Nav->getCategories();
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Tags',
-                        'action' => 'index'
+                        'action' => 'index',
                     ],
-                    ['class' => 'see_all'])
+                    ['class' => 'see_all']
+                )
                 ?>
             </h2>
             <?= $this->element(
                 'Tags/cloud',
                 [
                     'class' => 'form-control',
-                    'tags' => $tags
+                    'tags' => $tags,
                 ]
             ) ?>
         </div>
@@ -135,7 +136,7 @@ $categories = $this->Nav->getCategories();
                     'plugin' => false,
                     'prefix' => false,
                     'controller' => 'MailingList',
-                    'action' => 'index'
+                    'action' => 'index',
                 ]
             ) ?>
             and get daily or weekly emails about all upcoming events or only the categories
@@ -156,7 +157,7 @@ $categories = $this->Nav->getCategories();
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Widgets',
-                        'action' => 'index'
+                        'action' => 'index',
                     ]
                 ) ?>
             </strong>

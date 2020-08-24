@@ -18,14 +18,12 @@
     If you need assistance, please
     <?= $this->Html->link('contact us', [
         'controller' => 'Pages',
-        'action' => 'contact'
+        'action' => 'contact',
     ]) ?>.
 </p>
 
 <?php
-echo $this->Form->create(null, [
-    'id' => 'forgot-password'
-]);
+echo $this->Form->create(null, ['id' => 'forgot-password']);
 echo $this->Form->control('email', [
     'id' => 'forgot-password-field',
     'required' => true,

@@ -14,7 +14,7 @@ $phrases = [
     'welcoME hoME',
     'have unforgettable moMEnts',
     'a time to reMEmber',
-    'seize the moMEnt'
+    'seize the moMEnt',
 ];
 $phrase = $phrases[array_rand($phrases)];
 if (in_array(substr($phrase, -1), ['.', '?', '!'])) {

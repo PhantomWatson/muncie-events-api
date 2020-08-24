@@ -28,7 +28,7 @@ use App\View\AppView;
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Events',
-                        'action' => 'index'
+                        'action' => 'index',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
@@ -40,7 +40,7 @@ use App\View\AppView;
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Events',
-                        'action' => 'add'
+                        'action' => 'add',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
@@ -53,13 +53,13 @@ use App\View\AppView;
                         'prefix' => false,
                         'controller' => 'Events',
                         'action' => 'location',
-                        'location' => Event::VIRTUAL_LOCATION_SLUG
+                        'location' => Event::VIRTUAL_LOCATION_SLUG,
                     ],
                     ['class' => 'nav-link']
                 ) ?>
             </li>
 
-            <?php if ($authUser): ?>
+            <?php if ($authUser) : ?>
                 <li class="nav-item">
                     <?= $this->Html->link(
                         'Log out',
@@ -67,7 +67,7 @@ use App\View\AppView;
                             'plugin' => false,
                             'prefix' => false,
                             'controller' => 'Users',
-                            'action' => 'logout'
+                            'action' => 'logout',
                         ],
                         ['class' => 'nav-link']
                     ) ?>
@@ -79,12 +79,12 @@ use App\View\AppView;
                             'plugin' => false,
                             'prefix' => false,
                             'controller' => 'Users',
-                            'action' => 'account'
+                            'action' => 'account',
                         ],
                         ['class' => 'nav-link']
                     ) ?>
                 </li>
-            <?php else: ?>
+            <?php else : ?>
                 <li class="<?= $this->Nav->getActiveLink('Users', 'login') ?> nav-item">
                     <?= $this->Html->link(
                         'Log in',
@@ -92,7 +92,7 @@ use App\View\AppView;
                             'plugin' => false,
                             'prefix' => false,
                             'controller' => 'Users',
-                            'action' => 'login'
+                            'action' => 'login',
                         ],
                         ['class' => 'nav-link']
                     ) ?>
@@ -115,7 +115,7 @@ use App\View\AppView;
                             'plugin' => false,
                             'prefix' => false,
                             'controller' => 'MailingList',
-                            'action' => 'index'
+                            'action' => 'index',
                         ],
                         ['class' => 'nav-link']
                     ) ?>
@@ -129,7 +129,7 @@ use App\View\AppView;
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Pages',
-                        'action' => 'contact'
+                        'action' => 'contact',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
@@ -153,7 +153,7 @@ use App\View\AppView;
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Pages',
-                        'action' => 'about'
+                        'action' => 'about',
                     ],
                     ['class' => 'nav-link']
                 ) ?>

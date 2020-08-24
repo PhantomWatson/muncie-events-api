@@ -12,11 +12,11 @@ $defaultOgMetaTags = [
     'og:site_name' => 'Muncie Events',
     'fb:admins' => [
         '20721049', // Graham Watson
-        '681411028' // Mary Ogle
+        '681411028', // Mary Ogle
     ],
     'fb:app_id' => '496726620385625',
     'og:description' => 'Upcoming events in Muncie, IN',
-    'og:locale' => 'en_US'
+    'og:locale' => 'en_US',
 ];
 
 // Add tags set in viewVars

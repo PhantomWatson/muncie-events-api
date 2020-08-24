@@ -15,19 +15,19 @@ use Cake\Routing\Router;
 $url = Router::url([
     'controller' => 'Events',
     'action' => 'view',
-    'id' => $event->id
+    'id' => $event->id,
 ], true);
 $class = empty($event->images) ? '' : 'with_images';
 ?>
 
 <li class="<?= $class ?>">
-    <?php if (!empty($event->images)): ?>
+    <?php if (!empty($event->images)) : ?>
         <span class="tiny_thumbnails">
-            <?php foreach ($event->images as $image): ?>
+            <?php foreach ($event->images as $image) : ?>
                 <?= CalendarHelper::thumbnail('tiny', [
                     'filename' => $image->filename,
                     'caption' => $image->caption,
-                    'group' => 'event' . $event->id . '_tiny_tn'
+                    'group' => 'event' . $event->id . '_tiny_tn',
                 ]) ?>
             <?php endforeach; ?>
         </span>
@@ -47,13 +47,13 @@ $class = empty($event->images) ? '' : 'with_images';
         <span class="where">
             <?= $event->location ?: '&nbsp;' ?>
 
-            <?php if ($event->location_details): ?>
+            <?php if ($event->location_details) : ?>
                 <span class="location_details">
                     <?= $event->location_details ?>
                 </span>
             <?php endif; ?>
 
-            <?php if ($event->address): ?>
+            <?php if ($event->address) : ?>
                 <span class="address">
                      <?= $event->address ?>
                 </span>
@@ -68,15 +68,15 @@ $class = empty($event->images) ? '' : 'with_images';
         </div>
 
         <div class="description">
-            <?php if (!empty($event->images)): ?>
+            <?php if (!empty($event->images)) : ?>
                 <div class="images">
-                    <?php foreach ($event->images as $image): ?>
+                    <?php foreach ($event->images as $image) : ?>
                         <?= CalendarHelper::thumbnail('small', [
                             'filename' => $image['filename'],
                             'caption' => $image->caption,
-                            'group' => 'event' . $event->id
+                            'group' => 'event' . $event->id,
                         ]) ?>
-                        <?php if ($image->caption): ?>
+                        <?php if ($image->caption) : ?>
                             <span class="caption">
                                 <?= $image->caption ?>
                             </span>
@@ -85,14 +85,14 @@ $class = empty($event->images) ? '' : 'with_images';
                 </div>
             <?php endif; ?>
 
-            <?php if ($event->description): ?>
+            <?php if ($event->description) : ?>
                 <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
             <?php endif; ?>
 
-            <?php if ($event->cost || $event->age_restriction): ?>
+            <?php if ($event->cost || $event->age_restriction) : ?>
                 <div class="details">
                     <table>
-                        <?php if ($event->cost): ?>
+                        <?php if ($event->cost) : ?>
                             <tr class="cost">
                                 <th>Cost:</th>
                                 <td>
@@ -101,7 +101,7 @@ $class = empty($event->images) ? '' : 'with_images';
                             </tr>
                         <?php endif; ?>
 
-                        <?php if ($event->age_restriction): ?>
+                        <?php if ($event->age_restriction) : ?>
                             <tr class="age_restriction detail" id="age_restriction_<?= $event->id ?>">
                                 <th>Ages:</th>
                                 <td>
@@ -116,7 +116,7 @@ $class = empty($event->images) ? '' : 'with_images';
 
         <div class="card-footer">
             <table class="details">
-                <?php if (!empty($event->tags)): ?>
+                <?php if (!empty($event->tags)) : ?>
                     <tr class="tags">
                         <th>Tags:</th>
                         <td>
@@ -125,20 +125,20 @@ $class = empty($event->images) ? '' : 'with_images';
                     </tr>
                 <?php endif; ?>
 
-                <?php if (!empty($event->series_id) && !empty($event->event_series->title)): ?>
+                <?php if (!empty($event->series_id) && !empty($event->event_series->title)) : ?>
                     <tr class="tags">
                         <th>Series:</th>
                         <td>
                             <?= $this->Html->link($event->event_series->title, [
                                 'controller' => 'EventSeries',
                                 'action' => 'view',
-                                $event->series_id
+                                $event->series_id,
                             ]) ?>
                         </td>
                     </tr>
                 <?php endif; ?>
 
-                <?php if ($event->source): ?>
+                <?php if ($event->source) : ?>
                     <tr class="source">
                         <th>Source:</th>
                         <td>
@@ -154,7 +154,7 @@ $class = empty($event->images) ? '' : 'with_images';
                     </td>
                 </tr>
 
-                <?php if (isset($event->user->name) && $event->user->name): ?>
+                <?php if (isset($event->user->name) && $event->user->name) : ?>
                     <tr class="author">
                         <th>
                             Author:
@@ -163,7 +163,7 @@ $class = empty($event->images) ? '' : 'with_images';
                             <?= $this->Html->link($event->user->name, [
                                 'controller' => 'Users',
                                 'action' => 'view',
-                                'id' => $event->user->id
+                                'id' => $event->user->id,
                             ]) ?>
                         </td>
                     </tr>

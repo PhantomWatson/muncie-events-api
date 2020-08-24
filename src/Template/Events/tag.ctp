@@ -38,14 +38,14 @@ use Cake\Utility\Text;
         'controller' => 'Events',
         'action' => 'tag',
         'slug' => $tag->id . '-' . Text::slug($tag->name),
-        'direction' => $oppositeDirection
+        'direction' => $oppositeDirection,
     ]
 ); ?>
 
-<?php if ($events): ?>
+<?php if ($events) : ?>
     <?= $this->element('Events/accordion/wrapper') ?>
     <?= $this->element('pagination', ['passQueryParams' => true]) ?>
-<?php else: ?>
+<?php else : ?>
     <p class="alert alert-info">
         No events found.
     </p>

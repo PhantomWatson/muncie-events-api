@@ -9,7 +9,7 @@ $googleAnalyticsId = Configure::read('googleAnalyticsId');
 $debug = Configure::read('debug');
 $gaConfig = [
     'page_location' => $this->request->getUri()->__toString(),
-    'page_path' => $this->request->getUri()->getPath()
+    'page_path' => $this->request->getUri()->getPath(),
 ];
 if (isset($titleForLayout) && $titleForLayout) {
     $gaConfig['page_title'] = $titleForLayout;

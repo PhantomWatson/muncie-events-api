@@ -60,7 +60,6 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
     </p>
 
     <?php if (isset($events) && !empty($events)): ?>
-
         <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
         <?= $this->element('Events/accordion/wrapper') ?>
@@ -68,6 +67,5 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
         <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
         <?php $this->Html->scriptBlock('setupEventAccordion();', ['block' => true]); ?>
-
     <?php endif; ?>
 </div>

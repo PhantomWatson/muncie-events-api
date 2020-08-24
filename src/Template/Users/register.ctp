@@ -29,7 +29,7 @@ use App\View\AppView;
 <?= $this->Form->create($user) ?>
 
 <?= $this->Form->control('name', [
-    'label' => 'Your name (first and last) or organization'
+    'label' => 'Your name (first and last) or organization',
 ]) ?>
 
 <?= $this->Form->control('email') ?>
@@ -38,7 +38,7 @@ use App\View\AppView;
 
 <?= $this->Form->control('confirm_password', [
     'type' => 'password',
-    'required' => true
+    'required' => true,
 ]) ?>
 
 <div class="form-group">
@@ -46,7 +46,7 @@ use App\View\AppView;
 </div>
 
 <?= $this->Form->submit('Register', [
-    'class' => 'btn btn-primary'
+    'class' => 'btn btn-primary',
 ]) ?>
 
 <?= $this->Form->end() ?>

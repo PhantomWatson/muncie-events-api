@@ -11,7 +11,7 @@ use App\View\AppView;
 use Cake\Core\Configure;
 
 $this->Form->setTemplates([
-    'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}" id="{{name}}" {{attrs}}>'
+    'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}" id="{{name}}" {{attrs}}>',
 ]);
 
 $userId = $authUser['id'] ?? null;
@@ -44,14 +44,14 @@ ImageManager.setupManager();
         <div id="image_select_container"></div>
 
         <ul id="selected_images" class="form-inline">
-            <?php if ($event->images): ?>
-                <?php foreach ($event->images as $eventImage): ?>
+            <?php if ($event->images) : ?>
+                <?php foreach ($event->images as $eventImage) : ?>
                     <?php $id = $eventImage->id; ?>
                     <li id="selectedimage_<?= $id ?>" data-image-id="<?= $id ?>" class="row">
                         <div class="col-md-2">
                             <?= $this->Calendar->thumbnail('tiny', [
                                 'filename' => $eventImage->filename,
-                                'class' => 'selected_image'
+                                'class' => 'selected_image',
                             ]) ?>
                         </div>
                         <div class="col-md-10">
@@ -64,7 +64,7 @@ ImageManager.setupManager();
                                 'label' => false,
                                 'placeholder' => 'Enter a caption for this image',
                                 'type' => 'text',
-                                'value' => $eventImage->_joinData['caption']
+                                'value' => $eventImage->_joinData['caption'],
                             ]) ?>
                         </div>
                         <button type="button" class="remove btn btn-danger" title="Remove">

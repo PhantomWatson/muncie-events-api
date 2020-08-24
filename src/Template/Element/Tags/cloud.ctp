@@ -26,7 +26,7 @@ $fontSizeRange = $maxFontSize - $minFontSize;
 ?>
 <div class="tag_cloud">
     <ul class="list-group">
-        <?php foreach ($tags as $tag): ?>
+        <?php foreach ($tags as $tag) : ?>
             <?php
                 $fontSize = $minFontSize + round(
                     $fontSizeRange * (($tag->count - $minCount) / $countRange)
@@ -42,11 +42,11 @@ $fontSizeRange = $maxFontSize - $minFontSize;
                         'prefix' => false,
                         'controller' => 'Events',
                         'action' => 'tag',
-                        'slug' => $tag->slug
+                        'slug' => $tag->slug,
                     ],
                     [
                         'escape' => false,
-                        'id' => 'filter_tag_' . $tag->id
+                        'id' => 'filter_tag_' . $tag->id,
                     ]
                 );
             ?>

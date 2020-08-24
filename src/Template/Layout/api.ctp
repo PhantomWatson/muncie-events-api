@@ -33,7 +33,7 @@ use App\View\AppView;
             'Muncie Events API Docs',
             [
                 'controller' => 'Pages',
-                'action' => 'apiDocsV1'
+                'action' => 'apiDocsV1',
             ],
             ['class' => 'navbar-brand']
         ) ?>

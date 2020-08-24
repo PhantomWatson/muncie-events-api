@@ -22,7 +22,7 @@ use App\View\AppView;
         'auto_login',
         [
             'label' => 'Keep me logged in on this computer',
-            'type' => 'checkbox'
+            'type' => 'checkbox',
         ]
     );
     echo $this->Form->button(
@@ -30,19 +30,19 @@ use App\View\AppView;
         ['class' => 'btn btn-primary']
     );
     echo $this->Form->end();
-?>
+    ?>
 
 <p>
     <?= $this->Html->link('Register an account', [
         'controller' => 'Users',
-        'action' => 'register'
+        'action' => 'register',
     ]) ?>
     <br />
     <?= $this->Html->link(
         'Forgot password?',
         [
             'controller' => 'Users',
-            'action' => 'forgotPassword'
+            'action' => 'forgotPassword',
         ]
     ) ?>
 </p>

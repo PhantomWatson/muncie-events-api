@@ -29,13 +29,13 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
         <tr>
             <th>Time</th>
             <td class="direction">
-                <?php foreach (['upcoming', 'past'] as $dir): ?>
+                <?php foreach (['upcoming', 'past'] as $dir) : ?>
                     <?= $this->Html->link(
                         ucfirst($dir) . ' Events',
                         [
                             'controller' => 'Tags',
                             'action' => 'index',
-                            $dir
+                            $dir,
                         ],
                         ['class' => ($direction == $dir ? 'selected' : '')]
                     ) ?>
@@ -52,15 +52,15 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
                             [
                                 'controller' => 'Tags',
                                 'action' => 'index',
-                                $direction
+                                $direction,
                             ],
                             [
                                 'data-category' => 'all',
-                                'class' => ($categoryId ? '' : 'selected')
+                                'class' => ($categoryId ? '' : 'selected'),
                             ]
                         ) ?>
                     </li>
-                    <?php foreach ($categories as $id => $cat): ?>
+                    <?php foreach ($categories as $id => $cat) : ?>
                         <li>
                             <?= $this->Html->link(
                                 $this->Icon->category($cat),
@@ -68,12 +68,12 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
                                     'controller' => 'Tags',
                                     'action' => 'index',
                                     $direction,
-                                    $id
+                                    $id,
                                 ],
                                 [
                                     'title' => $cat,
                                     'class' => ($categoryId == $id ? 'selected' : ''),
-                                    'escape' => false
+                                    'escape' => false,
                                 ]
                             ) ?>
                         </li>
@@ -90,24 +90,24 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
                             All Tags
                         </button>
                     </li>
-                    <?php foreach ($letters as $letter): ?>
+                    <?php foreach ($letters as $letter) : ?>
                         <li>
                             <?php
-                                if (isset($tagsByFirstLetter[$letter])) {
-                                    $title = sprintf(
-                                        'View only tags for %s events beginning with %s',
-                                        $direction,
-                                        $letter == 'nonalpha' ? 'numbers or symbols' : strtoupper($letter)
-                                    );
-                                    $disabled = null;
-                                } else {
-                                    $title = sprintf(
-                                        'No tags for %s events beginning with %s',
-                                        $direction,
-                                        $letter == 'nonalpha' ? 'numbers or symbols' : strtoupper($letter)
-                                    );
-                                    $disabled = 'disabled="disabled"';
-                                }
+                            if (isset($tagsByFirstLetter[$letter])) {
+                                $title = sprintf(
+                                    'View only tags for %s events beginning with %s',
+                                    $direction,
+                                    $letter == 'nonalpha' ? 'numbers or symbols' : strtoupper($letter)
+                                );
+                                $disabled = null;
+                            } else {
+                                $title = sprintf(
+                                    'No tags for %s events beginning with %s',
+                                    $direction,
+                                    $letter == 'nonalpha' ? 'numbers or symbols' : strtoupper($letter)
+                                );
+                                $disabled = 'disabled="disabled"';
+                            }
                             ?>
                             <button class="btn-link" title="<?= $title ?>"
                                     data-tag-list="<?= $letter ?>" <?= $disabled ?>
@@ -123,33 +123,33 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
 </div>
 
 <div id="tag_index_cloud">
-    <?php if (!$tags): ?>
+    <?php if (!$tags) : ?>
         <p class="alert alert-info">
             No tags found for any <?= $direction ?> events.
         </p>
-    <?php else: ?>
-        <?php foreach ($tags as $tagName => $tag): ?>
+    <?php else : ?>
+        <?php foreach ($tags as $tagName => $tag) : ?>
             <?= $this->Html->link(
                 $tagName,
                 [
                     'controller' => 'Events',
                     'action' => 'tag',
                     'slug' => $tag->slug,
-                    'direction' => $direction == 'upcoming' ? null : $direction
+                    'direction' => $direction == 'upcoming' ? null : $direction,
                 ],
                 [
                     'title' => sprintf('%s %s', $tag->count, __n('event', 'events', $tag->count)),
-                    'style' => sprintf("font-size: %s%%", $calculateFontSize($tag->count))
+                    'style' => sprintf("font-size: %s%%", $calculateFontSize($tag->count)),
                 ]
             ) ?>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
 
-<?php if (!empty($tags)): ?>
-    <?php foreach ($tagsByFirstLetter as $letter => $tagsUnderLetter): ?>
+<?php if (!empty($tags)) : ?>
+    <?php foreach ($tagsByFirstLetter as $letter => $tagsUnderLetter) : ?>
         <ul id="tag_sublist_<?= $letter ?>" class="tag_sublist" style="display: none;">
-            <?php foreach ($tagsUnderLetter as $tagName => $tag): ?>
+            <?php foreach ($tagsUnderLetter as $tagName => $tag) : ?>
                 <li>
                     <?= $this->Html->link(
                         $tagName,
@@ -157,7 +157,7 @@ $this->Html->scriptBlock('setupTagIndex();', ['block' => true]);
                             'controller' => 'Events',
                             'action' => 'tag',
                             'slug' => $tag->slug,
-                            'direction' => $direction
+                            'direction' => $direction,
                         ]
                     ) ?>
                     <span class="count">

@@ -4,6 +4,7 @@
  * @var array $headerVars
  */
 use App\View\AppView;
+
 $populatedDates = $this->Nav->getPopulatedDates();
 $dayLinks = $this->Nav->getDayLinks();
 ?>
@@ -15,19 +16,20 @@ $dayLinks = $this->Nav->getDayLinks();
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Events',
-                'action' => 'index'
+                'action' => 'index',
             ],
-            ['class' => 'nav-link'])
-        ?>
+            ['class' => 'nav-link']
+        )
+?>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="date_picker_toggler" data-toggle="collapse" href="#header_nav_datepicker"
            aria-controls="header_nav_datepicker">Go to Date...</a>
         <div id="header_nav_datepicker" class="collapse" aria-labelledby="date_picker_toggler">
             <div>
-                <?php if (!empty($dayLinks)): ?>
+                <?php if (!empty($dayLinks)) : ?>
                     <ul>
-                        <?php foreach ($dayLinks as $dayLink): ?>
+                        <?php foreach ($dayLinks as $dayLink) : ?>
                             <li>
                                 <a href="<?= $dayLink['url'] ?>">
                                     <?= $dayLink['label'] ?>
@@ -47,7 +49,7 @@ $dayLinks = $this->Nav->getDayLinks();
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Events',
-                'action' => 'add'
+                'action' => 'add',
             ],
             ['class' => 'nav-link']
         ) ?>
@@ -59,7 +61,7 @@ $dayLinks = $this->Nav->getDayLinks();
                 'plugin' => false,
                 'prefix' => false,
                 'controller' => 'Widgets',
-                'action' => 'index'
+                'action' => 'index',
             ],
             ['class' => 'nav-link']
         ) ?>
