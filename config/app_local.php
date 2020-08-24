@@ -1,5 +1,6 @@
 <?php
 
+use App\Error\AppExceptionRenderer;
 use Cake\Cache\Engine\FileEngine;
 
 $config = [
@@ -37,6 +38,10 @@ $config = [
             'database' => 'test_myapp',
             'encoding' => 'utf8mb4',
         ],
+    ],
+
+    'Error' => [
+        'exceptionRenderer' => AppExceptionRenderer::class,
     ],
 
     'Log' => [
