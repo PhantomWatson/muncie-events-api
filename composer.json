@@ -14,7 +14,6 @@
         "crabstudio/recaptcha": "^2.0",
         "xety/cake3-cookieauth": "1.*",
         "bcrowe/cakephp-api-pagination": "^1.1",
-        "ext-xdebug": "*",
         "ext-json": "*",
         "friendsofcake/search": "^5.0",
         "phantomwatson/cakephp-json-api": "dev-master",
@@ -30,7 +29,8 @@
         "cakephp/bake": "^1.9.0",
         "phpunit/phpunit": "^5.7|^6.0",
         "ext-fileinfo": "*",
-        "cakephp/cakephp-codesniffer": "^3.3.0"
+        "cakephp/cakephp-codesniffer": "^3.3.0",
+        "ext-xdebug": "*"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
