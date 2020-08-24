@@ -3,8 +3,6 @@ namespace App\Mailer;
 
 use App\Model\Entity\User;
 use Cake\Core\Configure;
-use Cake\Http\Exception\InternalErrorException;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 
 class UsersMailer extends Mailer
@@ -13,8 +11,7 @@ class UsersMailer extends Mailer
      * Defines a "forgot password" email
      *
      * @param User $user User entity
-     * @return Email
-     * @throws InternalErrorException
+     * @return \Cake\Mailer\Mailer
      */
     public function forgotPassword($user)
     {

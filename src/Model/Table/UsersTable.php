@@ -279,7 +279,7 @@ class UsersTable extends Table
      * Returns a list of images associated with the specified user
      *
      * @param int $userId User ID
-     * @return Image[]
+     * @return \Cake\Datasource\ResultSetInterface|Image[]
      */
     public function getImagesList($userId)
     {
