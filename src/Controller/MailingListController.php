@@ -14,8 +14,9 @@ use Exception;
 /**
  * MailingLists Controller
  *
- * @property MailingListTable $MailingList
- * @property CategoriesTable $Categories
+ * @property \App\Model\Table\CategoriesTable $Categories
+ * @property \App\Model\Table\MailingListTable $MailingList
+ * @property \App\Model\Table\UsersTable $Users
  */
 class MailingListController extends AppController
 {
@@ -30,6 +31,7 @@ class MailingListController extends AppController
         parent::initialize();
 
         $this->loadModel('Categories');
+        $this->loadModel('Users');
 
         $this->Auth->allow([
             'index',
@@ -82,6 +84,15 @@ class MailingListController extends AppController
             $isNew = $subscription->isNew();
             if ($this->MailingList->save($subscription)) {
                 if ($isNew) {
+                    /** @var \App\Model\Entity\User $user */
+                    $user = $this->Users
+                        ->find()
+                        ->where(['id' => $this->Auth->user('id')])
+                        ->first();
+                    if ($user) {
+                        $user->mailing_list_id = $subscription->id;
+                        $this->Users->save($user);
+                    }
                     $this->Flash->success('Thanks for joining the Muncie Events mailing list!');
 
                     return $this->redirect('/');
@@ -213,15 +224,14 @@ class MailingListController extends AppController
             $subscription = $this->MailingList->get($subscriberId);
 
             if ($this->MailingList->delete($subscription)) {
-                $usersTable = TableRegistry::getTableLocator()->get('Users');
                 /** @var \App\Model\Entity\User $user */
-                $user = $usersTable
+                $user = $this->Users
                     ->find()
                     ->where(['mailing_list_id' => $subscriberId])
                     ->first();
                 if ($user) {
                     $user->mailing_list_id = null;
-                    $usersTable->save($user);
+                    $this->Users->save($user);
                 }
                 $this->Flash->success('You have been removed from the mailing list');
 
