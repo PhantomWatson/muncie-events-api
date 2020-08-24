@@ -1,7 +1,8 @@
 <?php
 /**
- * @var string $pageTitle
  * @var array $locations
+ * @var int $count
+ * @var string $pageTitle
  */
 ?>
 <h1 class="page_title">

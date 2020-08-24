@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var \App\Model\Entity\Tag[] $tags
  * @var AppView $this
  * @var array $tagsByFirstLetter
  * @var callable $calculateFontSize
