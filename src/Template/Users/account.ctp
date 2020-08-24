@@ -11,26 +11,24 @@
 </h1>
 
 <div id="my_account">
-    <ul>
-        <li>
-            <?= $this->Html->link(
-                'Change Password',
-                [
-                    'controller' => 'Users',
-                    'action' => 'changePass',
-                ]
-            ) ?>
-        </li>
-        <li>
-            <?= $this->Html->link(
-                $hasSubscription ? 'Update Mailing List Settings' : 'Join Mailing List',
-                [
-                    'controller' => 'MailingList',
-                    'action' => 'index',
-                ]
-            ) ?>
-        </li>
-    </ul>
+    <p>
+        <?= $this->Html->link(
+            'Change Password',
+            [
+                'controller' => 'Users',
+                'action' => 'changePass',
+            ],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+        <?= $this->Html->link(
+            $hasSubscription ? 'Update Mailing List Settings' : 'Join Mailing List',
+            [
+                'controller' => 'MailingList',
+                'action' => 'index',
+            ],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </p>
 
     <?= $this->Form->create($user) ?>
     <?= $this->Form->control('name', [
