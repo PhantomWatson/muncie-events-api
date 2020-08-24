@@ -589,7 +589,7 @@ class EventsTable extends Table
         return $query
             ->find('published')
             ->select(['location', 'location_slug', 'address'])
-            ->distinct('location')
+            ->distinct(['location', 'location_slug', 'address'])
             ->orderAsc('location');
     }
 
