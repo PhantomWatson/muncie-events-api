@@ -1,7 +1,7 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "https://cakephp.org",
+    "name": "BallStateCBER/muncie-events-api",
+    "description": "Muncie Events",
+    "homepage": "https://muncieevents.com",
     "type": "project",
     "license": "MIT",
     "require": {
