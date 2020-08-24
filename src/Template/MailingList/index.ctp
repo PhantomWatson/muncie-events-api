@@ -3,6 +3,7 @@
  * @var \App\Model\Entity\MailingList $subscription
  * @var \App\View\AppView $this
  * @var \Cake\ORM\ResultSet|\App\Model\Entity\Category[] $categories
+ * @var array $authUser
  * @var array $days
  * @var string $pageTitle
  */
@@ -50,6 +51,7 @@ if ($frequencyValue != 'custom') {
     <?= $this->Form->control('email', [
         'class' => 'form-control',
         'label' => 'Email address',
+        'value' => ($subscription->isNew() && isset($authUser['email'])) ? $authUser['email'] : null,
     ]) ?>
 
     <?= $this->Form->control('settings',
