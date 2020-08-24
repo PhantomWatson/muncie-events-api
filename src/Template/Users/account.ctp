@@ -1,8 +1,8 @@
 <?php
 /**
- * @var \App\Model\Entity\MailingList|null $subscription
  * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
+ * @var bool $hasSubscription
  * @var string $pageTitle
  */
 ?>
@@ -21,17 +21,15 @@
                 ]
             ) ?>
         </li>
-        <?php if ($subscription): ?>
-            <li>
-                <?= $this->Html->link(
-                    'Update Mailing List Settings',
-                    [
-                        'controller' => 'MailingList',
-                        'action' => 'index',
-                    ]
-                ) ?>
-            </li>
-        <?php endif; ?>
+        <li>
+            <?= $this->Html->link(
+                $hasSubscription ? 'Update Mailing List Settings' : 'Join Mailing List',
+                [
+                    'controller' => 'MailingList',
+                    'action' => 'index',
+                ]
+            ) ?>
+        </li>
     </ul>
 
     <?= $this->Form->create($user) ?>

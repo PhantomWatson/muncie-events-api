@@ -213,16 +213,9 @@ class UsersController extends AppController
             }
         }
 
-        $mailingListTable = TableRegistry::getTableLocator()->get('MailingList');
-        $subscription = $mailingListTable
-            ->find()
-            ->select(['id'])
-            ->where(['email' => $user->email])
-            ->first();
-
         $this->set([
             'pageTitle' => 'My Account',
-            'subscription' => $subscription,
+            'hasSubscription' => (bool)$user->mailing_list_id,
             'user' => $user,
         ]);
     }
