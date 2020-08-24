@@ -6526,11 +6526,6 @@ iframe.widgets {
 .userPhoto img {
   max-width: 100%;
 }
-/* Account */
-#my_account .fb_footnote {
-  color: #666;
-  font-size: 80%;
-}
 /* Api */
 body.api > div.container {
   margin-top: 30px;
