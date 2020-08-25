@@ -57,7 +57,7 @@ class MailingListCommand extends Command
         $parser->addArgument('mode', [
             'help' => 'daily or weekly',
             'required' => true,
-            'choices' => ['daily', 'weekly'],
+            'choices' => ['send_daily', 'send_weekly'],
         ]);
 
         $parser->addOption('r', [
@@ -97,11 +97,11 @@ class MailingListCommand extends Command
         }
 
         switch ($mode) {
-            case 'daily':
+            case 'send_daily':
                 $this->processDaily();
 
                 return;
-            case 'weekly':
+            case 'send_weekly':
                 $this->processWeekly();
 
                 return;
