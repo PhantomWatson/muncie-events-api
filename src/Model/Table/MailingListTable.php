@@ -269,7 +269,7 @@ class MailingListTable extends Table
                         return $exp->isNull('processed_daily');
                     },
                     'processed_daily <' => "$y-$m-$d 00:00:00",
-                ]
+                ],
             ])
             ->contain([
                 'Categories' => function (Query $q) {
