@@ -123,7 +123,10 @@ class MailingListCommand extends Command
         if (!$recipients->count()) {
             $this->io->out('No recipients found for today');
             if ($this->recipientEmail) {
-                $this->io->out('The specified user\'s settings may be preventing an email from being sent out today.');
+                $this->io->out(
+                    'The specified user\'s settings may be preventing an email from being sent out today, ' .
+                    'or they may not be subscribed.'
+                );
             }
 
             return;
