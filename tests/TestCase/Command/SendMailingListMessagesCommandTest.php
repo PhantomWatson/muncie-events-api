@@ -5,9 +5,9 @@ use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\SendMailingListMessagesCommand Test Case
+ * App\Command\MailingListCommand Test Case
  *
- * @uses \App\Command\SendMailingListMessagesCommand
+ * @uses \App\Command\MailingListCommand
  */
 class SendMailingListMessagesCommandTest extends TestCase
 {

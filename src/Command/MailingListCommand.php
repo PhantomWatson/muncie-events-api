@@ -23,7 +23,7 @@ use Exception;
  * @property boolean $overrideWeekly
  * @property string $recipientEmail
  */
-class SendMailingListMessagesCommand extends Command
+class MailingListCommand extends Command
 {
     use MailerAwareTrait;
 
@@ -66,7 +66,7 @@ class SendMailingListMessagesCommand extends Command
 
         $parser->addOption('override-weekly', [
             'help' => 'Overrides the restriction on which day weekly emails can be sent out',
-            'boolean' => 'true'
+            'boolean' => 'true',
         ]);
 
         return $parser;
