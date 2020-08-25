@@ -144,7 +144,8 @@ class MailingListController extends AppController
             $data['all_categories'] = 1;
         } else {
             $allCategoriesSelected = $this->request->getData('event_categories') == 'all';
-            $selectedCategoryCount = count($this->request->getData('selected_categories'));
+            $selectedCategories = $this->request->getData('selected_categories');
+            $selectedCategoryCount = $selectedCategories ? count($selectedCategories) : 0;
             $totalCategoryCount = $this->Categories->find()->count();
             $data['all_categories'] = $allCategoriesSelected || $selectedCategoryCount == $totalCategoryCount;
 
