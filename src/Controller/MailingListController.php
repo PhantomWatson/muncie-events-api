@@ -137,6 +137,7 @@ class MailingListController extends AppController
             'email' => $this->request->getData('email'),
             'new_subscriber' => $subscription->isNew(),
         ];
+        $selectedCategories = $this->request->getData('selected_categories');
 
         // User is joining with default settings
         if ($this->request->getData('settings') == 'default') {
@@ -144,7 +145,6 @@ class MailingListController extends AppController
             $data['all_categories'] = 1;
         } else {
             $allCategoriesSelected = $this->request->getData('event_categories') == 'all';
-            $selectedCategories = $this->request->getData('selected_categories');
             $selectedCategoryCount = $selectedCategories ? count($selectedCategories) : 0;
             $totalCategoryCount = $this->Categories->find()->count();
             $data['all_categories'] = $allCategoriesSelected || $selectedCategoryCount == $totalCategoryCount;
@@ -173,13 +173,17 @@ class MailingListController extends AppController
         /* Associated categories are always set to the $subscription->categories field so that the corresponding form
          * checkboxes can be generated as either checked or unchecked, but if all_categories is TRUE, we won't actually
          * save any of those category associations. */
-        $selectedCategoryIds = array_keys($this->request->getData('selected_categories'));
-        $subscription->categories = $this->Categories
-            ->find()
-            ->where(function (QueryExpression $exp) use ($selectedCategoryIds) {
-                return $exp->in('id', $selectedCategoryIds);
-            })
-            ->toArray();
+        $selectedCategoryIds = $selectedCategories ? array_keys($selectedCategories) : [];
+        if ($selectedCategoryIds) {
+            $subscription->categories = $this->Categories
+                ->find()
+                ->where(function (QueryExpression $exp) use ($selectedCategoryIds) {
+                    return $exp->in('id', $selectedCategoryIds);
+                })
+                ->toArray();
+        } else {
+            $subscription->categories = [];
+        }
 
         return $subscription;
     }
