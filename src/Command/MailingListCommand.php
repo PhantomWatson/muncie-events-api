@@ -28,6 +28,7 @@ class MailingListCommand extends Command
     use MailerAwareTrait;
 
     const WEEKLY_DELIVERY_DAY = 'Thursday';
+    const DEFAULT_RECIPIENT_EMAIL = 'graham@phantomwatson.com';
 
     /**
      * Command initialize method
@@ -92,7 +93,7 @@ class MailingListCommand extends Command
                 'You\'ll need to specify a single email address.'
             );
             while (!$this->recipientEmail) {
-                $this->recipientEmail = $this->io->ask('Email address');
+                $this->recipientEmail = $this->io->ask('Email address', self::DEFAULT_RECIPIENT_EMAIL);
             }
         }
 
