@@ -20,7 +20,8 @@ use Exception;
  * @property \App\Model\Table\EventsTable $Events
  * @property \App\Model\Table\MailingListTable $MailingList
  * @property \Cake\Console\ConsoleIo $io
- * @property bool $testing
+ * @property boolean $overrideWeekly
+ * @property string $recipientEmail
  */
 class SendMailingListMessagesCommand extends Command
 {
@@ -59,9 +60,13 @@ class SendMailingListMessagesCommand extends Command
             'choices' => ['daily', 'weekly'],
         ]);
 
-        $parser->addOption('test', [
-            'help' => 'Only send email to subscriber #1',
-            'boolean' => true,
+        $parser->addOption('r', [
+            'help' => 'Only send to a single recipient, specified by their email address',
+        ]);
+
+        $parser->addOption('override-weekly', [
+            'help' => 'Overrides the restriction on which day weekly emails can be sent out',
+            'boolean' => 'true'
         ]);
 
         return $parser;
@@ -79,12 +84,16 @@ class SendMailingListMessagesCommand extends Command
     {
         $mode = $args->getArgument('mode');
         $this->io = $io;
-        $this->testing = $args->getOption('test');
-        if ($this->testing) {
-            $this->io->info('Testing mode');
-        } elseif (Configure::read('debug')) {
-            $this->testing = true;
-            $this->io->info('Testing mode (application is in debug mode)');
+        $this->recipientEmail = $args->getOption('r');
+        $this->overrideWeekly = $args->getOption('override-weekly');
+        if (Configure::read('debug')) {
+            $this->io->info(
+                'Application is in debug mode, so sending messages to the entire list is disabled. ' .
+                'You\'ll need to specify a single email address.'
+            );
+            while (!$this->recipientEmail) {
+                $this->recipientEmail = $this->io->ask('Email address');
+            }
         }
 
         switch ($mode) {
@@ -109,9 +118,12 @@ class SendMailingListMessagesCommand extends Command
     private function processDaily()
     {
         // Make sure there are recipients
-        $recipients = $this->MailingList->getDailyRecipients($this->testing);
+        $recipients = $this->MailingList->getDailyRecipients($this->recipientEmail);
         if (!$recipients->count()) {
             $this->io->out('No recipients found for today');
+            if ($this->recipientEmail) {
+                $this->io->out('The specified user\'s settings may be preventing an email from being sent out today.');
+            }
 
             return;
         }
@@ -159,9 +171,6 @@ class SendMailingListMessagesCommand extends Command
         $categoryIds = Hash::extract($events, '{n}.category.id');
 
         $this->io->out('Sending email to ' . $recipient->email . '...');
-        if ($this->testing && $recipient->id != 1) {
-            return [false, "Email not sent to $recipient->email because the mailing list is in testing mode."];
-        }
 
         // Eliminate any events that this user isn't interested in
         $events = $this->filterEvents($recipient, $events);
@@ -223,16 +232,19 @@ class SendMailingListMessagesCommand extends Command
     private function processWeekly()
     {
         // Make sure that today is the correct day
-        if (!$this->testing && !$this->isWeeklyDeliveryDay()) {
+        if (!$this->overrideWeekly && !$this->isWeeklyDeliveryDay()) {
             $this->io->out('Today is not the day of the week designated for delivering weekly emails.');
 
             return;
         }
 
         // Make sure there are recipients
-        $recipients = $this->MailingList->getWeeklyRecipients($this->testing);
+        $recipients = $this->MailingList->getWeeklyRecipients($this->recipientEmail);
         if (!$recipients->count()) {
             $this->io->out('No recipients found for this week');
+            if ($this->recipientEmail) {
+                $this->io->out('The specified user\'s settings may be preventing an email from being sent out today.');
+            }
         }
 
         // Make sure there are events to report

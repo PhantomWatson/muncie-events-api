@@ -189,31 +189,30 @@ class MailingListTable extends Table
     /**
      * Returns a resultset of today's daily mailing list message recipients
      *
-     * @param bool $testingMode Set to TRUE to only return subscriber #1
+     * @param string|null $email Optional specific email address
      * @return \Cake\Datasource\ResultSetInterface|MailingList[]
      */
-    public function getDailyRecipients($testingMode = false)
+    public function getDailyRecipients($email = null)
     {
         list($y, $m, $d) = [date('Y'), date('m'), date('d')];
         $query = $this
             ->find()
-            ->where(['daily_' . strtolower(date('D')) => 1])
-            ->contain([
-                'Categories' => function (Query $q) {
-                    return $q->select(['Categories.id', 'Categories.name']);
-                },
-            ]);
-        if ($testingMode) {
-            $query->where(['MailingList.id' => 1]);
-        } else {
-            $query->where([
+            ->where([
+                'daily_' . strtolower(date('D')) => 1,
                 'OR' => [
                     function (QueryExpression $exp) {
                         return $exp->isNull('processed_daily');
                     },
                     'processed_daily <' => "$y-$m-$d 00:00:00",
                 ],
+            ])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
             ]);
+        if ($email) {
+            $query->where(['email' => $email]);
         }
 
         return $query->all();
@@ -255,32 +254,30 @@ class MailingListTable extends Table
     /**
      * Returns a set of weekly mailing list subscribers
      *
-     * @param bool $testing TRUE if currently in testing mode
+     * @param string|null $email Optional specific email address
      * @return \Cake\Datasource\ResultSetInterface|MailingList[]
      */
-    public function getWeeklyRecipients(bool $testing)
+    public function getWeeklyRecipients($email = null)
     {
         list($y, $m, $d) = [date('Y'), date('m'), date('d')];
         $query = $this
             ->find()
-            ->where(['MailingList.weekly' => 1])
-            ->contain([
-                'Categories' => function (Query $q) {
-                    return $q->select(['Categories.id', 'Categories.name']);
-                },
-            ]);
-
-        if ($testing) {
-            $query->where(['MailingList.id' => 1]);
-        } else {
-            $query->where([
+            ->where([
+                'MailingList.weekly' => 1,
                 'OR' => [
                     function (QueryExpression $exp) {
                         return $exp->isNull('processed_daily');
                     },
                     'processed_daily <' => "$y-$m-$d 00:00:00",
-                ],
+                ]
+            ])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
             ]);
+        if ($email) {
+            $query->where(['email' => $email]);
         }
 
         return $query->all();
