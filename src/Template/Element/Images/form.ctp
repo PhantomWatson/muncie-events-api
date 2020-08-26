@@ -58,7 +58,7 @@ ImageManager.setupManager();
                             <label for="caption-image-<?= $id ?>" class="sr-only">
                                 Caption
                             </label>
-                            <?= $this->Form->control("data.Image.$id", [
+                            <?= $this->Form->control("images.$id", [
                                 'div' => false,
                                 'id' => "caption-image-$id",
                                 'label' => false,
