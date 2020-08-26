@@ -433,7 +433,7 @@ class EventsController extends AppController
     /**
      * Edits an event
      *
-     * @param int $eventId The ID of an event
+     * @param int|null $eventId The ID of an event
      * @return Response
      * @throws ForbiddenException
      */
