@@ -38,7 +38,7 @@ class EventForm
      *
      * @param array $data Request data
      * @param string $date A strtotime parsable date
-     * @param User|null $user A user entity, or null if user is anonymous
+     * @param array|null $user An array of user data, or null if user is anonymous
      * @return Event
      * @throws BadRequestException
      */
@@ -67,7 +67,7 @@ class EventForm
         $event->processTags($data['tag_ids'], $data['tag_names']);
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
-        $event->user = $event->user_id ? $this->Events->Users->get($event->user_id) : null;
+        $event->user_id = $user['id'] ?? null;
 
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags'],
