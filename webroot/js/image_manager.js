@@ -36,7 +36,7 @@ var ImageManager = {
 
     getCaptionField: function (imageId) {
         return $(
-            '<input class="form-control" type="text" name="data[Image][' + imageId + ']" ' +
+            '<input class="form-control" type="text" name="images[' + imageId + ']" ' +
             'id="caption-image-' + imageId + '" placeholder="Enter a caption for this image" value="" />'
         );
     },
