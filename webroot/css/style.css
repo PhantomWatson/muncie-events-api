@@ -5255,6 +5255,7 @@ i.icon-general-events:before {
   display: inline-block;
 }
 #image_select_container {
+  max-height: 300px;
   overflow: auto;
 }
 #image_select_container button {
