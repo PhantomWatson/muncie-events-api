@@ -116,27 +116,20 @@ class Event extends Entity
     {
         $this->images = [];
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
-        foreach ($imagesData as $i => $imageData) {
-            if (!is_array($imageData)) {
-                throw new BadRequestException(sprintf(
-                    'Invalid image data provided: %s provided instead of array',
-                    gettype($imageData)
-                ));
-            }
-            if (!isset($imageData['id'])) {
-                throw new BadRequestException('Image ID not provided');
-            }
+        $weight = 1;
+        foreach ($imagesData as $imageId => $caption) {
             try {
-                $image = $imagesTable->get($imageData['id']);
+                $image = $imagesTable->get($imageId);
             } catch (RecordNotFoundException $e) {
-                throw new BadRequestException('Invalid image ID selected (#' . $imageData['id'] . ')');
+                throw new BadRequestException("Invalid image ID selected (#$imageId)");
             }
 
             $image->_joinData = new Entity([
-                'weight' => $i + 1,
-                'caption' => $imageData['caption'],
+                'weight' => $weight,
+                'caption' => $caption,
             ]);
             $this->images[] = $image;
+            $weight++;
         }
     }
 
