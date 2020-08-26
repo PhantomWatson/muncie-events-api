@@ -477,6 +477,7 @@ class EventsController extends AppController
         $event->autoApprove($user);
         $event->autoPublish($user);
         $event->processTags($data['tag_ids'], $data['tag_names']);
+        $event->setImageJoinData($data['images']);
         $saved = $this->Events->save($event, ['associated' => ['Images', 'Tags', 'EventSeries']]);
         if ($saved) {
             $this->Flash->success('Event updated');
