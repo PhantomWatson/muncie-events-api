@@ -28,6 +28,14 @@
             ],
             ['class' => 'btn btn-secondary']
         ) ?>
+        <?= $this->Html->link(
+            'My Events',
+            [
+                'controller' => 'Events',
+                'action' => 'mine',
+            ],
+            ['class' => 'btn btn-secondary']
+        ) ?>
     </p>
 
     <?= $this->Form->create($user) ?>
