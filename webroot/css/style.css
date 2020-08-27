@@ -6565,6 +6565,10 @@ body.api > div.container {
   margin-top: 1em;
   visibility: hidden;
 }
+#my-events td.date,
+#my-events td.actions {
+  white-space: nowrap;
+}
 #sidebar {
   float: right;
   padding-right: 10px;

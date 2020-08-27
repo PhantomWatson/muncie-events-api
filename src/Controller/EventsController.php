@@ -700,4 +700,23 @@ class EventsController extends AppController
             'searchTerm' => $searchTerm,
         ]);
     }
+
+    /**
+     * Displays a page with this user's events
+     *
+     * @return void
+     */
+    public function mine()
+    {
+        $query = $this->Events
+            ->find('ordered', ['direction' => 'DESC'])
+            ->where(['user_id' => $this->Auth->user('id')]);
+
+        $events = $this->paginate($query);
+
+        $this->set([
+            'events' => $events,
+            'pageTitle' => 'My Events',
+        ]);
+    }
 }
