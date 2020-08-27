@@ -311,6 +311,17 @@ class Event extends Entity
             }
             $this->tags[] = $newTag;
         }
+
+        // Remove duplicates
+        $tagIds = [];
+        foreach ($this->tags as $k => $tag) {
+            if (in_array($tag->id, $tagIds)) {
+                unset($this->tags[$k]);
+                continue;
+            }
+
+            $tagIds[] = $tag->id;
+        }
     }
 
     /**
