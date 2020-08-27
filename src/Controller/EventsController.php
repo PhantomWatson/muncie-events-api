@@ -542,7 +542,7 @@ class EventsController extends AppController
             'The event could not be deleted. Please try again or contact an administrator for assistance.'
         );
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->referer());
     }
 
     /**
