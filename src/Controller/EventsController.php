@@ -535,8 +535,10 @@ class EventsController extends AppController
 
         if ($this->Events->delete($event)) {
             $this->Flash->success('The event has been deleted.');
+            $redirectUrl = $this->request->getQuery('redirect');
+            $redirectUrl = $redirectUrl ? $redirectUrl : '/';
 
-            return $this->redirect('/');
+            return $this->redirect($redirectUrl);
         }
         $this->Flash->error(
             'The event could not be deleted. Please try again or contact an administrator for assistance.'
