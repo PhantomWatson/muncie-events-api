@@ -108,7 +108,7 @@ class Event extends Entity
     /**
      * Takes an array of image data and sets proper join data for the next save operation
      *
-     * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] arrays
+     * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] or [$imageId => $caption] arrays
      * @return void
      * @throws \Cake\Http\Exception\BadRequestException
      */
@@ -117,7 +117,15 @@ class Event extends Entity
         $this->images = [];
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
         $weight = 1;
-        foreach ($imagesData as $imageId => $caption) {
+        foreach ($imagesData as $key => $value) {
+            if (is_array($value)) {
+                $imageId = $value['id'];
+                $caption = $value['caption'];
+            } else {
+                $imageId = $key;
+                $caption = $value;
+            }
+
             try {
                 $image = $imagesTable->get($imageId);
             } catch (RecordNotFoundException $e) {
