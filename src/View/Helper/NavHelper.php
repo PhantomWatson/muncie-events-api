@@ -137,8 +137,11 @@ class NavHelper extends Helper
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
 
         return $eventsTable
-            ->find('locations')
+            ->find('published')
             ->find('future')
+            ->select(['location', 'location_slug'])
+            ->distinct(['location', 'location_slug'])
+            ->orderAsc('location')
             ->enableHydration(false)
             ->toArray();
     }

@@ -579,21 +579,6 @@ class EventsTable extends Table
     }
 
     /**
-     * Modifies a query to just return ordered unique location information for published events
-     *
-     * @param Query $query Query
-     * @return Query
-     */
-    public function findLocations(Query $query)
-    {
-        return $query
-            ->find('published')
-            ->select(['location', 'location_slug', 'address'])
-            ->distinct(['location', 'location_slug', 'address'])
-            ->orderAsc('location');
-    }
-
-    /**
      * Returns the number of currently unapproved events
      *
      * @return int

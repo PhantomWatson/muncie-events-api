@@ -385,15 +385,25 @@ class EventsController extends AppController
         $categories = $categoriesTable->find('list')->orderAsc('weight');
         $autocompleteLocations = [];
         $locations = $this->Events
-            ->find('locations')
+            ->find('published')
+            ->select(['location', 'address'])
+            ->distinct(['location', 'address'])
+            ->order([
+                'location' => 'ASC',
+                'created' => 'DESC',
+            ])
             ->enableHydration(false)
             ->toArray();
         foreach ($locations as $location) {
-            $autocompleteLocations[] = [
+            if (isset($autocompleteLocations[$location['location']])) {
+                continue;
+            }
+            $autocompleteLocations[$location['location']] = [
                 'label' => $location['location'],
                 'value' => $location['address'],
             ];
         }
+        //$autocompleteLocations = array_values($autocompleteLocations);
         $uploadMax = ini_get('upload_max_filesize');
         $postMax = ini_get('post_max_size');
         $serverFilesizeLimit = min($uploadMax, $postMax);
@@ -643,8 +653,11 @@ class EventsController extends AppController
     public function locationsPast()
     {
         $locations = $this->Events
-            ->find('locations')
+            ->find('published')
             ->find('past')
+            ->select(['location', 'location_slug'])
+            ->distinct(['location', 'location_slug'])
+            ->orderAsc('location')
             ->enableHydration(false)
             ->toArray();
         $count = count($locations);
