@@ -154,20 +154,24 @@ $class = empty($event->images) ? '' : 'with_images';
                     </td>
                 </tr>
 
-                <?php if (isset($event->user->name) && $event->user->name) : ?>
-                    <tr class="author">
-                        <th>
-                            Author:
-                        </th>
-                        <td>
+                <tr class="author">
+                    <th>
+                        Author:
+                    </th>
+                    <td>
+                        <?php if (!$event->user): ?>
+                            Anonymous
+                        <?php elseif (!isset($event->user->name)): ?>
+                            A user whose account was removed
+                        <?php else: ?>
                             <?= $this->Html->link($event->user->name, [
                                 'controller' => 'Users',
                                 'action' => 'view',
                                 'id' => $event->user->id,
                             ]) ?>
-                        </td>
-                    </tr>
-                <?php endif; ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
