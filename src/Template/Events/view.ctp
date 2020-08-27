@@ -127,7 +127,7 @@ use App\View\AppView;
         <p>
             <?php if (!$event->user): ?>
                 Added anonymously
-            <?php elseif (!$event->user->name): ?>
+            <?php elseif (!isset($event->user->name)): ?>
                 Added by a user whose account no longer exists
             <?php else: ?>
                 Author:
