@@ -38,7 +38,7 @@ class EventForm
      *
      * @param array $data Request data
      * @param string $date A strtotime parsable date
-     * @param array|null $user An array of user data, or null if user is anonymous
+     * @param array|null|User $user An array of user data, or null if user is anonymous
      * @return Event
      * @throws BadRequestException
      */
