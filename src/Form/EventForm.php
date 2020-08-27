@@ -73,6 +73,14 @@ class EventForm
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
         $event->user_id = $user['id'] ?? null;
+        if ($event->user_id) {
+            $usersTable = TableRegistry::getTableLocator()->get('Users');
+            if ($usersTable->exists(['id' => $event->user_id])) {
+                $event->user = $usersTable->get($event->user_id);
+            } else {
+                throw new BadRequestException("Invalid user ID: $event->user_id");
+            }
+        }
 
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags'],
