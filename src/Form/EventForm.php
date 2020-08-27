@@ -52,7 +52,7 @@ class EventForm
         }
         $data['date'] = $this->parseDate($date);
         foreach (['time_start', 'time_end'] as $timeField) {
-            if ($data[$timeField] == '') {
+            if (isset($data[$timeField]) && $data[$timeField] == '') {
                 $data[$timeField] = null;
             }
             if (!isset($data[$timeField])) {
