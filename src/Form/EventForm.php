@@ -67,7 +67,9 @@ class EventForm
         $event = $this->Events->newEntity($data);
         $event->autoApprove($user);
         $event->autoPublish($user);
-        $event->processTags($data['tags']['_ids'], $data['customTags']);
+        $tagIds = $data['tags']['_ids'] ?? ($data['tag_ids'] ?? []);
+        $tagNames = $data['customTags'] ?? ($data['tag_names'] ?? []);
+        $event->processTags($tagIds, $tagNames);
         $event->setImageJoinData($data['images']);
         $event->category = $this->Events->Categories->get($event->category_id);
         $event->user_id = $user['id'] ?? null;
