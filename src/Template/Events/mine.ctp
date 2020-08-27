@@ -66,12 +66,12 @@ use Cake\Routing\Router;
                                     'redirect' => Router::url([
                                         'controller' => 'Events',
                                         'action' => 'mine',
-                                    ])
-                                ]
+                                    ]),
+                                ],
                             ],
                             [
                                 'class' => 'btn btn-sm btn-danger',
-                                'confirm' => 'Are you sure you want to delete this event?'
+                                'confirm' => 'Are you sure you want to delete this event?',
                             ]
                         ) ?>
                     </td>
