@@ -87,7 +87,7 @@ class TagsController extends AppController
         }
 
         // Create a function for determining each tag's individual font size in the cloud
-        $maxCount = max(Hash::extract($tags, '{s}.count'));
+        $maxCount = $tags ? max(Hash::extract($tags, '{s}.count')) : 0;
         $calculateFontSize = function ($tagCount) use ($maxCount) {
             $minFontSize = 75;
             $maxFontSize = 150;
