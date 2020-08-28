@@ -211,8 +211,8 @@ paths:
             example: URL of Facebook event
         - in: header
           name: images
-          description: "Array of image objects, each containing `id` and `caption` properties, in the order the images
-            should be displayed"
+          description: "Array of image objects, each containing `id` and optional `caption` properties, in the order the
+            images should be displayed"
           schema:
             type: array
             items:
@@ -414,8 +414,8 @@ paths:
             example: URL of Facebook event
         - in: header
           name: images
-          description: "Array of image objects, each containing `id` and `caption` properties, in the order the images
-                should be displayed"
+          description: "Array of image objects, each containing `id` and optional `caption` properties, in the order the
+            images should be displayed"
           schema:
             type: array
             items:

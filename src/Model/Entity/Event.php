@@ -120,7 +120,7 @@ class Event extends Entity
         foreach ($imagesData as $key => $value) {
             if (is_array($value)) {
                 $imageId = $value['id'];
-                $caption = $value['caption'];
+                $caption = $value['caption'] ?? '';
             } else {
                 $imageId = $key;
                 $caption = $value;
