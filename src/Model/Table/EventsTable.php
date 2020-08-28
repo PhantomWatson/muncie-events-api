@@ -640,7 +640,7 @@ class EventsTable extends Table
             ->where(['location_slug' => $locationSlug])
             ->first();
 
-        return $event->location;
+        return $event ? $event->location : '';
     }
 
     /**
