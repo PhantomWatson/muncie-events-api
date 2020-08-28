@@ -29,15 +29,7 @@ class UsersController extends AppController
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
-        $this->loadComponent('Recaptcha.Recaptcha', [
-            'enable' => (bool)$this->request->getEnv('RECAPTCHA_ENABLED', true),
-            'sitekey' => env('RECAPTCHA_SITE_KEY'),
-            'secret' => env('RECAPTCHA_SECRET'),
-            'type' => 'image',
-            'theme' => 'light',
-            'lang' => 'en',
-            'size' => 'normal',
-        ]);
+        $this->loadRecaptcha();
 
         $this->Auth->allow([
             'forgotPassword',

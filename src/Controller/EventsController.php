@@ -55,7 +55,7 @@ class EventsController extends AppController
 
         $action = $this->request->getParam('action');
         if ($action === 'add') {
-            $this->loadComponent('Recaptcha.Recaptcha');
+            $this->loadRecaptcha();
         }
         $this->loadComponent('Calendar.Calendar');
         $this->RequestHandler->setConfig('viewClassMap', ['ics' => 'Calendar.Ical']);

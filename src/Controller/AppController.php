@@ -130,4 +130,23 @@ class AppController extends Controller
 
         return false;
     }
+
+    /**
+     * Loads the Recaptcha component
+     *
+     * @throws \Exception
+     * @return void
+     */
+    protected function loadRecaptcha()
+    {
+        $this->loadComponent('Recaptcha.Recaptcha', [
+            'enable' => (bool)$this->request->getEnv('RECAPTCHA_ENABLED', true),
+            'sitekey' => env('RECAPTCHA_SITE_KEY'),
+            'secret' => env('RECAPTCHA_SECRET'),
+            'type' => 'image',
+            'theme' => 'light',
+            'lang' => 'en',
+            'size' => 'normal',
+        ]);
+    }
 }

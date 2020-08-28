@@ -44,7 +44,7 @@ class PagesController extends AppController
         $this->Auth->allow();
 
         if ($this->request->getParam('action') === 'contact') {
-            $this->loadComponent('Recaptcha.Recaptcha');
+            $this->loadRecaptcha();
         }
 
         return null;
