@@ -22,7 +22,13 @@ use App\View\AppView;
     </p>
     <p>
         Developers with registered accounts can also get an API key to develop their own applications powered by the
-        <a href="https://api.muncieevents.com/">Muncie Events API</a>.
+        <?= $this->Html->link(
+            'Muncie Events API',
+            [
+                'controller' => 'Pages',
+                'action' => 'api',
+            ]
+        ) ?>.
     </p>
 </section>
 

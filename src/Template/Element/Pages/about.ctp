@@ -19,7 +19,14 @@ $yearsCount = date('Y') - 2009;
     websites and mobile apps to be part of the same event promotion network. Event information collected by Muncie
     Events gets distributed to every website displaying
     <a href="https://muncieevents.com/widgets">a Muncie Events calendar</a>, to apps using
-    <a href="https://api.muncieevents.com">the Muncie Events API</a>, and to
+    <?= $this->Html->link(
+        'the Muncie Events API',
+        [
+            'controller' => 'Pages',
+            'action' => 'api',
+            '_full' => true,
+        ]
+    ) ?>, and to
     <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>.
 </p>
 
