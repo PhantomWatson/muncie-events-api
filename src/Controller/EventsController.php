@@ -632,6 +632,9 @@ class EventsController extends AppController
         $countOtherDirection = $secondaryQuery->count();
 
         $locationName = $this->Events->getFullLocationName($locationSlug);
+        if ($locationName == '') {
+            $locationName = $locationSlug;
+        }
         $pageTitle = $locationName == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $locationSlug;
 
         $this->set([
