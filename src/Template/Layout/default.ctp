@@ -39,7 +39,7 @@
 <script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>
 <script src="/autoComplete.js/js/autoComplete.min.js"></script>
 
-<?= $this->element('Header/new_header') ?>
+<?= $this->element('Header/header') ?>
 
 <div id="divider"></div>
 
