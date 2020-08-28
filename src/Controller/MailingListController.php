@@ -32,8 +32,6 @@ class MailingListController extends AppController
 
         $this->Auth->allow([
             'index',
-            'sendDaily',
-            'sendWeekly',
             'unsubscribe',
         ]);
     }
