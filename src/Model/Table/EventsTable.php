@@ -632,7 +632,7 @@ class EventsTable extends Table
      * @param string $locationSlug Location name slug
      * @return string
      */
-    public function getFullLocationName($locationSlug)
+    public function getFullLocationName(string $locationSlug)
     {
         /** @var Event $event */
         $event = $this->find()
