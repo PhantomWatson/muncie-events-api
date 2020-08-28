@@ -234,17 +234,20 @@ var TagManager = {
                 // Make results automatically close upon clicking anywhere on the page
                 container: function (source) {
                     source.setAttribute('id', resultsContainerId);
-                    document.getElementById(customTagInputId).addEventListener('autoComplete', function (event) {
-                        function hideSearchResults() {
-                            const searchResults = document.getElementById(resultsContainerId);
-                            while (searchResults.firstChild) {
-                                searchResults.removeChild(searchResults.firstChild);
+                    const customTagInput = document.getElementById(customTagInputId);
+                    if (customTagInput) {
+                        customTagInput.addEventListener('autoComplete', function (event) {
+                            function hideSearchResults() {
+                                const searchResults = document.getElementById(resultsContainerId);
+                                while (searchResults.firstChild) {
+                                    searchResults.removeChild(searchResults.firstChild);
+                                }
+                                document.removeEventListener('click', hideSearchResults);
                             }
-                            document.removeEventListener('click', hideSearchResults);
-                        }
 
-                        document.addEventListener('click', hideSearchResults);
-                    });
+                            document.addEventListener('click', hideSearchResults);
+                        });
+                    }
                 },
 
                 destination: document.getElementById(customTagInputId),
