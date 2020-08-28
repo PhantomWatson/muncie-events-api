@@ -120,7 +120,7 @@ class WidgetsController extends AppController
      *
      * @return array
      */
-    public function getOptions()
+    private function getOptions()
     {
         $queryParams = $this->request->getQueryParams();
         if (!$queryParams) {
