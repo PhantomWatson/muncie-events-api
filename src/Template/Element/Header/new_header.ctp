@@ -58,70 +58,6 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-
-            <?php if ($authUser) : ?>
-                <li class="nav-item">
-                    <?= $this->Html->link(
-                        'Log out',
-                        [
-                            'plugin' => false,
-                            'prefix' => false,
-                            'controller' => 'Users',
-                            'action' => 'logout',
-                        ],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-                <li class="<?= $this->Nav->getActiveLink('Users', 'account') ?> nav-item">
-                    <?= $this->Html->link(
-                        'Account',
-                        [
-                            'plugin' => false,
-                            'prefix' => false,
-                            'controller' => 'Users',
-                            'action' => 'account',
-                        ],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-            <?php else : ?>
-                <li class="<?= $this->Nav->getActiveLink('Users', 'login') ?> nav-item">
-                    <?= $this->Html->link(
-                        'Log in',
-                        [
-                            'plugin' => false,
-                            'prefix' => false,
-                            'controller' => 'Users',
-                            'action' => 'login',
-                        ],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-                <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item d-sm-block d-lg-none d-xl-block">
-                    <?= $this->Html->link(
-                        'Register',
-                        [
-                            'plugin' => false,
-                            'prefix' => false,
-                            'controller' => 'Users',
-                            'action' => 'register'],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-                <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
-                    <?= $this->Html->link(
-                        'Mailing List',
-                        [
-                            'plugin' => false,
-                            'prefix' => false,
-                            'controller' => 'MailingList',
-                            'action' => 'index',
-                        ],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-            <?php endif; ?>
-
             <li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
                 <?= $this->Html->link(
                     'Contact',
@@ -165,6 +101,70 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
+
+            <?php if ($authUser) : ?>
+                <li class="<?= $this->Nav->getActiveLink('Users', 'account') ?> nav-item">
+                    <?= $this->Html->link(
+                        'Account',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'Users',
+                            'action' => 'account',
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link(
+                        'Log out',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'Users',
+                            'action' => 'logout',
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+            <?php else : ?>
+                <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
+                    <?= $this->Html->link(
+                        'Mailing List',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'MailingList',
+                            'action' => 'index',
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+                <li class="<?= $this->Nav->getActiveLink('Users', 'login') ?> nav-item">
+                    <?= $this->Html->link(
+                        'Log in',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'Users',
+                            'action' => 'login',
+                        ],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+                <li class="<?= $this->Nav->getActiveLink('Users', 'register') ?> nav-item d-sm-block d-lg-none d-xl-block">
+                    <?= $this->Html->link(
+                        'Register',
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'Users',
+                            'action' => 'register'],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+            <?php endif; ?>
+
         </ul>
         <?= $this->element('Header/search') ?>
     </div>
