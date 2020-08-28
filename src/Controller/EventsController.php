@@ -386,8 +386,8 @@ class EventsController extends AppController
         $autocompleteLocations = [];
         $locations = $this->Events
             ->find('published')
-            ->select(['location', 'address'])
-            ->distinct(['location', 'address'])
+            ->select(['location', 'address', 'created'])
+            ->distinct(['location', 'address', 'created'])
             ->order([
                 'location' => 'ASC',
                 'created' => 'DESC',
