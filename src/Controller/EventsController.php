@@ -49,7 +49,11 @@ class EventsController extends AppController
             'day',
             'index',
             'location',
+            'locationsPast',
+            'search',
             'tag',
+            'today',
+            'tomorrow',
             'view',
         ]);
 
