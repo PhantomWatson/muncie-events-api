@@ -27,6 +27,9 @@ class WidgetsController extends AppController
         $this->Auth->allow([
             'customize',
             'customizeFeed',
+            'customizeMonth',
+            'demoFeed',
+            'demoMonth',
             'event',
             'feed',
             'index',
