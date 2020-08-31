@@ -55,8 +55,8 @@ class MailingListCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
-        $parser->addArgument('mode', [
-            'help' => 'daily or weekly',
+        $parser->addArgument('action', [
+            'help' => 'send_daily or send_weekly',
             'required' => true,
             'choices' => ['send_daily', 'send_weekly'],
         ]);
@@ -83,7 +83,7 @@ class MailingListCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $mode = $args->getArgument('mode');
+        $action = $args->getArgument('action');
         $this->io = $io;
         $this->recipientEmail = $args->getOption('r');
         $this->overrideWeekly = $args->getOption('override-weekly');
@@ -97,7 +97,7 @@ class MailingListCommand extends Command
             }
         }
 
-        switch ($mode) {
+        switch ($action) {
             case 'send_daily':
                 $this->processDaily();
 
@@ -108,7 +108,7 @@ class MailingListCommand extends Command
                 return;
         }
 
-        throw new Exception("Invalid mode: $mode");
+        throw new Exception("Invalid action: $action");
     }
 
     /**
