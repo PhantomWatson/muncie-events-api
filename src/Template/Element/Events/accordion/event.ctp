@@ -18,6 +18,7 @@ $url = Router::url([
     'id' => $event->id,
 ], true);
 $class = empty($event->images) ? '' : 'with_images';
+$isVirtual = $event->location == Event::VIRTUAL_LOCATION;
 ?>
 
 <li class="<?= $class ?>">
@@ -46,7 +47,7 @@ $class = empty($event->images) ? '' : 'with_images';
 
         <span class="where">
             <?= $event->location ?: '&nbsp;' ?>
-            <?php if ($event->location != Event::VIRTUAL_LOCATION): ?>
+            <?php if (!$isVirtual): ?>
                 <?php if ($event->location_details): ?>
                     <span class="location_details" id="location_details_<?= $event->id ?>">
                         <?= $event->location_details ?>
@@ -66,10 +67,10 @@ $class = empty($event->images) ? '' : 'with_images';
         <div class="card-header">
             <?= $this->element('Events/actions', compact('event')); ?>
 
-            <?php if ($event->cost || $event->age_restriction || $event->location == Event::VIRTUAL_LOCATION) : ?>
+            <?php if ($event->cost || $event->age_restriction || $isVirtual) : ?>
                 <div class="details">
                     <table>
-                        <?php if ($event->location == Event::VIRTUAL_LOCATION): ?>
+                        <?php if ($isVirtual): ?>
                             <tr class="cost">
                                 <th>URL:</th>
                                 <td>
