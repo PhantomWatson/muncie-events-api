@@ -5555,6 +5555,7 @@ i.icon-general-events:before {
 }
 .card {
   border: none;
+  clear: both;
 }
 .card-footer {
   border-top: none;
