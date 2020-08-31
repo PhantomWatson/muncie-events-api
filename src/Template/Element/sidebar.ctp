@@ -92,6 +92,8 @@ $categories = $this->Nav->getCategories();
             <?= $this->Html->link(
                 'Locations of past events',
                 [
+                    'plugin' => false,
+                    'prefix' => false,
                     'controller' => 'Events',
                     'action' => 'locationsPast',
                 ]
