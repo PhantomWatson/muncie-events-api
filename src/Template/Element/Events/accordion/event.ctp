@@ -65,29 +65,6 @@ $class = empty($event->images) ? '' : 'with_images';
     <div class="card">
         <div class="card-header">
             <?= $this->element('Events/actions', compact('event')); ?>
-        </div>
-
-        <div class="description">
-            <?php if (!empty($event->images)) : ?>
-                <div class="images">
-                    <?php foreach ($event->images as $image) : ?>
-                        <?= CalendarHelper::thumbnail('small', [
-                            'filename' => $image['filename'],
-                            'caption' => $image->caption,
-                            'group' => 'event' . $event->id,
-                        ]) ?>
-                        <?php if ($image->caption) : ?>
-                            <span class="caption">
-                                <?= $image->caption ?>
-                            </span>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($event->description) : ?>
-                <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
-            <?php endif; ?>
 
             <?php if ($event->cost || $event->age_restriction || $event->location == Event::VIRTUAL_LOCATION) : ?>
                 <div class="details">
@@ -97,9 +74,9 @@ $class = empty($event->images) ? '' : 'with_images';
                                 <th>URL:</th>
                                 <td>
                                     <?=
-                                        $event->address
-                                            ? $this->Text->autoLinkUrls($event->address)
-                                            : 'URL not provided'
+                                    $event->address
+                                        ? $this->Text->autoLinkUrls($event->address)
+                                        : 'URL not provided'
                                     ?>
                                 </td>
                             </tr>
@@ -124,6 +101,30 @@ $class = empty($event->images) ? '' : 'with_images';
                     </table>
                 </div>
             <?php endif; ?>
+        </div>
+
+        <div class="description">
+            <?php if (!empty($event->images)) : ?>
+                <div class="images">
+                    <?php foreach ($event->images as $image) : ?>
+                        <?= CalendarHelper::thumbnail('small', [
+                            'filename' => $image['filename'],
+                            'caption' => $image->caption,
+                            'group' => 'event' . $event->id,
+                        ]) ?>
+                        <?php if ($image->caption) : ?>
+                            <span class="caption">
+                                <?= $image->caption ?>
+                            </span>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($event->description) : ?>
+                <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
+            <?php endif; ?>
+
         </div>
 
         <div class="card-footer">

@@ -45,13 +45,12 @@ use App\View\AppView;
                            'location' => $event->location_slug,
                        ]
                     ) ?>
-                    <?php if ($event->location_details): ?>
+                    <?php if ($event->location == Event::VIRTUAL_LOCATION): ?>
                         <br />
-                        <?= $event->location_details ?>
-                    <?php endif; ?>
-                    <?php if ($event->address): ?>
-                        <br />
-                        <?= $event->address ?>
+                        <?= $event->address ? $this->Text->autoLinkUrls($event->address) : 'URL not provided' ?>
+                    <?php else: ?>
+                        <?= $event->location_details ? '<br />' . $event->location_details : null ?>
+                        <?= $event->address ? '<br />' . $event->address : null ?>
                     <?php endif; ?>
                 </td>
             </tr>
