@@ -21,7 +21,7 @@ class NavHelper extends Helper
      *
      * @param string $controller Name of a controller to compare to the current request
      * @param string $action Name of an action to compare to the current request
-     * @param string $pass Passed parameter
+     * @param string|array $pass Passed parameter, optionally as a key-value pair
      * @return string|null
      */
     public function getActiveLink($controller, $action, $pass = null)
