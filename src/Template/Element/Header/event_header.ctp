@@ -14,7 +14,7 @@ $dayLinks = $this->Nav->getDayLinks();
     </span>
     <span class="actions">
         <button id="date_picker_toggler" data-toggle="collapse" data-target="#header_nav_datepicker"
-                aria-controls="header_nav_datepicker" class="btn btn-dark">
+                aria-controls="header_nav_datepicker" class="btn btn-secondary">
             Go to Date...
         </button>
         <div id="header_nav_datepicker" class="collapse" aria-labelledby="date_picker_toggler">
@@ -41,7 +41,7 @@ $dayLinks = $this->Nav->getDayLinks();
                 'controller' => 'Events',
                 'action' => 'add',
             ],
-            ['class' => 'btn btn-dark']
+            ['class' => 'btn btn-secondary']
         ) ?>
     </span>
 </div>
