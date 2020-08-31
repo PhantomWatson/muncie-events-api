@@ -162,7 +162,9 @@ $isVirtual = $event->location == Event::VIRTUAL_LOCATION;
                 <?php endif; ?>
 
                 <tr class="link">
-                    <th>Link:</th>
+                    <th>
+                        <?= $isVirtual ? 'Muncie Events Link:' : 'Link:' ?>
+                    </th>
                     <td>
                         <?= $this->Html->link($url, $url); ?>
                     </td>
