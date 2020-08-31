@@ -11,5 +11,10 @@ All other content &copy; <?= date('Y') ?> Muncie Events.
 
 <?= $this->Html->link(
     'Terms of Use and Privacy Policy',
-    ['controller' => 'Pages', 'action' => 'terms']
+    [
+        'plugin' => false,
+        'prefix' => false,
+        'controller' => 'Pages',
+        'action' => 'terms'
+    ]
 ) ?>
