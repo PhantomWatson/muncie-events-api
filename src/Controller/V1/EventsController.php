@@ -412,6 +412,7 @@ class EventsController extends ApiController
         ]);
         $event->processTags($data['tag_ids'] ?? [], $data['tag_names'] ?? []);
         $event->setImageJoinData($data['images'] ?? []);
+        $event->setLocationSlug();
         $event->category = $this->Events->Categories->get($event->category_id);
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags'],
