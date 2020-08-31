@@ -266,9 +266,9 @@ class MailingListTable extends Table
                 'MailingList.weekly' => 1,
                 'OR' => [
                     function (QueryExpression $exp) {
-                        return $exp->isNull('processed_daily');
+                        return $exp->isNull('processed_weekly');
                     },
-                    'processed_daily <' => "$y-$m-$d 00:00:00",
+                    'processed_weekly <' => "$y-$m-$d 00:00:00",
                 ],
             ])
             ->contain([
