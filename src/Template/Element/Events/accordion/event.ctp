@@ -46,17 +46,17 @@ $class = empty($event->images) ? '' : 'with_images';
 
         <span class="where">
             <?= $event->location ?: '&nbsp;' ?>
-
-            <?php if ($event->location_details) : ?>
-                <span class="location_details">
-                    <?= $event->location_details ?>
-                </span>
-            <?php endif; ?>
-
-            <?php if ($event->address) : ?>
-                <span class="address">
-                     <?= $event->address ?>
-                </span>
+            <?php if ($event->location != Event::VIRTUAL_LOCATION): ?>
+                <?php if ($event->location_details): ?>
+                    <span class="location_details" id="location_details_<?= $event->id ?>">
+                        <?= $event->location_details ?>
+                    </span>
+                <?php endif; ?>
+                <?php if ($event->address): ?>
+                    <span class="address" id="address_<?= $event->id ?>">
+                        <?= $event->address ?>
+                    </span>
+                <?php endif; ?>
             <?php endif; ?>
         </span>
     </a>
@@ -89,9 +89,21 @@ $class = empty($event->images) ? '' : 'with_images';
                 <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
             <?php endif; ?>
 
-            <?php if ($event->cost || $event->age_restriction) : ?>
+            <?php if ($event->cost || $event->age_restriction || $event->location == Event::VIRTUAL_LOCATION) : ?>
                 <div class="details">
                     <table>
+                        <?php if ($event->location == Event::VIRTUAL_LOCATION): ?>
+                            <tr class="cost">
+                                <th>URL:</th>
+                                <td>
+                                    <?=
+                                        $event->address
+                                            ? $this->Text->autoLinkUrls($event->address)
+                                            : 'URL not provided'
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                         <?php if ($event->cost) : ?>
                             <tr class="cost">
                                 <th>Cost:</th>
