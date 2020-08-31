@@ -6558,6 +6558,10 @@ body.api > div.container {
   float: right;
   font-size: 150%;
 }
+#home-actions .tagline .icon-me-logo {
+  font-size: 1.2em;
+  vertical-align: bottom;
+}
 #forgot-password-button i {
   display: none;
   margin-left: 0.5em;
