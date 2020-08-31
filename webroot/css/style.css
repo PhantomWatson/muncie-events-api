@@ -715,6 +715,9 @@ body.layout_default {
 .navbar-brand > span {
   vertical-align: text-bottom;
 }
+nav.navbar {
+  background-color: #C85028;
+}
 @font-face {
   font-family: 'MuncieEventsIcons';
   src: url('/font/me-icons/muncie_events_icons.ttf');

@@ -8,7 +8,7 @@ use App\Model\Entity\Event;
 use App\View\AppView;
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
     <a href="/" class="navbar-brand">
         <i class="icon-me-logo"></i>
         <span>Muncie Events</span>
