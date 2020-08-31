@@ -130,7 +130,7 @@ use App\View\AppView;
                     ) ?>
                 </li>
             <?php else : ?>
-                <li class="<?= $this->Nav->getActiveLink('MailingList', 'join') ?> nav-item">
+                <li class="<?= $this->Nav->getActiveLink('MailingList', 'index') ?> nav-item">
                     <?= $this->Html->link(
                         'Mailing List',
                         [
