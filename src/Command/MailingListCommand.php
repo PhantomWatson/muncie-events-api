@@ -8,6 +8,7 @@ use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\Exception\MissingActionException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
@@ -133,12 +134,12 @@ class MailingListCommand extends Command
         }
 
         // Make sure there are events to report
-        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $timezone = Configure::read('localTimezone');
         $events = $this->Events
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
-            ->where(['date' => "$y-$m-$d"])
+            ->where(['date' => (new FrozenTime('now', $timezone))->format('Y-m-d')])
             ->toArray();
 
         $eventCount = count($events);
@@ -280,7 +281,9 @@ class MailingListCommand extends Command
      */
     private function isWeeklyDeliveryDay()
     {
-        return date('l') == self::WEEKLY_DELIVERY_DAY;
+        $timezone = Configure::read('localTimezone');
+
+        return (new FrozenTime('now', $timezone))->format('l') == self::WEEKLY_DELIVERY_DAY;
     }
 
     /**

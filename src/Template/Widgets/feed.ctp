@@ -6,7 +6,13 @@
  */
 
 use App\View\Helper\CalendarHelper;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
+
+$timezone = Configure::read('localTimezone');
+$now = (new FrozenTime('now', $timezone))->format('Y-m-d');
+$tomorrow = (new FrozenTime('tomorrow', $timezone))->format('Y-m-d');
 ?>
 
 <?php if ($events->count()): ?>
@@ -15,9 +21,9 @@ use Cake\Routing\Router;
 
     <?php foreach ($eventsByDate as $date => $daysEvents): ?>
         <?php
-            if ($date == date('Y-m-d')) {
+            if ($date == $now) {
                 $day = 'Today';
-            } elseif ($date == date('Y-m-d', strtotime('tomorrow'))) {
+            } elseif ($date == $tomorrow) {
                 $day = 'Tomorrow';
             } else {
                 $day = date('l', strtotime($date));

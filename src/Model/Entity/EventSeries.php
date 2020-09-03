@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
@@ -53,8 +54,10 @@ class EventSeries extends Entity
             return;
         }
 
+        $timezone = Configure::read('localTimezone');
+        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
         foreach ($this->events as $event) {
-            $property = $event->date->format('Y-m-d') < date('Y-m-d')
+            $property = $event->date->format('Y-m-d') < $today
                 ? 'pastEvents'
                 : 'upcomingEvents';
             $this->$property[] = $event;

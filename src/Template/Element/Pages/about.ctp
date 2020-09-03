@@ -1,11 +1,14 @@
 <?php
 // The contents of this page are returned by the API endpoint /pages/about
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 $eventsTable = TableRegistry::getTableLocator()->get('Events');
 $eventCount = $eventsTable->find()->count();
-$yearsCount = date('Y') - 2009;
+$timezone = Configure::read('localTimezone');
+$yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
 ?>
 
 <h1 class="page_title">

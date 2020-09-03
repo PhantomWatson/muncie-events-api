@@ -5,6 +5,10 @@
  * @var string $resetUrl
  */
 use App\View\AppView;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
+
+$timezone = Configure::read('localTimezone');
 ?>
 <?= $email ?>,
 
@@ -14,7 +18,7 @@ If you go to the following URL, you'll be prompted to enter in a new password to
 <?= $resetUrl ?>
 
 
-NOTE: That link will only work for the rest of <?= date('F Y') ?>. If you need to reset your password after
+NOTE: That link will only work for the rest of <?= (new FrozenTime('now', $timezone))->format('F Y') ?>. If you need to reset your password after
 that, you'll need to request another password reset link.
 
 

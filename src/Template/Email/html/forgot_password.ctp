@@ -5,6 +5,11 @@
  * @var string $resetUrl
  */
 use App\View\AppView;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
+
+$timezone = Configure::read('localTimezone');
+$now = (new FrozenTime('now', $timezone));
 ?>
 <h1>
     <a href="https://muncieevents.com">
@@ -29,7 +34,7 @@ use App\View\AppView;
 </p>
 
 <p>
-    <strong>NOTE: That link will only work for the rest of <?= date('F Y') ?>.</strong>
+    <strong>NOTE: That link will only work for the rest of <?= $now->format('F Y') ?>.</strong>
     If you need to reset your password after that, you'll need to request another password reset link.
 </p>
 

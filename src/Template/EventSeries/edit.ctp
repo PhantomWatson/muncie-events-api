@@ -7,6 +7,8 @@
 
 use App\Model\Entity\EventSeries;
 use App\View\AppView;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\Utility\Hash;
 
 echo $this->Html->script('eventSeriesEdit');
@@ -19,6 +21,7 @@ $this->Html->scriptBlock(
 
 $i = 0;
 $this->Form->setTemplates(['submitContainer' => '{{content}}']);
+$timezone = Configure::read('localTimezone');
 ?>
 <h1 class="page_title">
     <?= $pageTitle; ?>
@@ -90,7 +93,7 @@ $this->Form->setTemplates(['submitContainer' => '{{content}}']);
                                         <td>
                                             <?= $this->Form->date("events.$i.date", [
                                                 'label' => false,
-                                                'maxYear' => date('Y') + 1,
+                                                'maxYear' => (new FrozenTime('now + 1 year', $timezone))->format('Y'),
                                                 'year' => [
                                                     'class' => 'form-control event_time_form',
                                                     'id' => $event->id . 'year',

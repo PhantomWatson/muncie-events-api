@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\View\Helper\CalendarHelper;
 use App\Widget\Widget;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 
@@ -202,8 +204,9 @@ class WidgetsController extends AppController
         $this->setDemoData('month');
 
         // Process various date information
+        $timezone = Configure::read('localTimezone');
         if (!$yearMonth) {
-            $yearMonth = date('Y-m');
+            $yearMonth = (new FrozenTime('now', $timezone))->format('Y-m');
         }
         $split = explode('-', $yearMonth);
         $year = reset($split);
@@ -217,7 +220,7 @@ class WidgetsController extends AppController
         $prevMonth = ($month == 1) ? 12 : $month - 1;
         $nextYear = ($month == 12) ? $year + 1 : $year;
         $nextMonth = ($month == 12) ? 1 : $month + 1;
-        $today = date('Y') . date('m') . date('j');
+        $today = (new FrozenTime('now', $timezone))->format('Ymj');
 
         $options = $this->request->getQueryParams();
         $filters = $this->Widget->getEventFilters($options);

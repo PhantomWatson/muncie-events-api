@@ -120,7 +120,8 @@ class User extends Entity
     public function getResetPasswordHash()
     {
         $salt = Configure::read('password_reset_salt');
-        $month = date('my');
+        $timezone = Configure::read('localTimezone');
+        $month = (new FrozenTime('now', $timezone))->format('my');
 
         return md5($this->id . $this->email . $salt . $month);
     }

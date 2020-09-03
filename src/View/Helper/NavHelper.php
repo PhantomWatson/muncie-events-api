@@ -3,6 +3,8 @@ namespace App\View\Helper;
 
 use App\Model\Entity\Tag;
 use App\Model\Table\EventsTable;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\View\Helper;
@@ -71,8 +73,9 @@ class NavHelper extends Helper
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         $populatedDates = $eventsTable->getPopulatedDates();
         $dayLinks = [];
-        $today = date('Y-m-d');
-        $tomorrow = date('Y-m-d', strtotime('tomorrow'));
+        $timezone = Configure::read('localTimezone');
+        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $tomorrow = (new FrozenTime('tomorrow', $timezone))->format('Y-m-d');
         $limit = 7;
         foreach ($populatedDates as $date) {
             if ($date < $today) {

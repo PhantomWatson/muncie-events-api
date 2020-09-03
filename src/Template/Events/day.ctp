@@ -11,6 +11,10 @@
 
 use App\Model\Entity\Event;
 use App\View\AppView;
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
+
+$timezone = Configure::read('localTimezone');
 ?>
 
 <?= $this->element('Header/event_header') ?>
@@ -27,7 +31,7 @@ use App\View\AppView;
 <?php if (empty($events)): ?>
     <p class="alert alert-info">
         Sorry, but no events
-        <?= ("$month$day$year" >= date('mdY') ? 'have been' : 'were') ?>
+        <?= ("$month$day$year" >= (new FrozenTime('now', $timezone))->format('mdY') ? 'have been' : 'were') ?>
         posted for this date.
         <br />
         If you know of an event happening on this date,

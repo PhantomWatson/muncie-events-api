@@ -5,10 +5,15 @@
  * @var array $settingsDisplay
  */
 
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
+
+$timezone = Configure::read('localTimezone');
+$now = new FrozenTime('now', $timezone);
 ?>
 
-Events for <?= date('l, F jS, Y') ?> brought to you by https://MuncieEvents.com
+Events for <?= $now->format('l, F jS, Y') ?> brought to you by https://MuncieEvents.com
 
 <?php if ($recipient->new_subscriber): ?>
     <?= $this->element('MailingList/welcome_text') ?>

@@ -4,6 +4,13 @@
  * @var \App\Model\Entity\Event[] $events
  * @var array $settingsDisplay
  */
+
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
+
+$timezone = Configure::read('localTimezone');
+$now = new FrozenTime('now', $timezone);
+
 ?>
 <style>
     <?php include(ROOT . DS . 'webroot' . DS . 'css' . DS . 'email.css'); ?>
@@ -23,9 +30,9 @@
     <h3 class="day">
         <?= sprintf(
             '%s <span class="date">%s<sup>%s</sup></span>',
-            date('l'),
-            date('F j'),
-            date('S')
+            $now->format('l'),
+            $now->format('F j'),
+            $now->format('S')
         ) ?>
     </h3>
     <?php foreach ($events as $event): ?>

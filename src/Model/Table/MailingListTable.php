@@ -2,9 +2,11 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\MailingList;
+use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -194,16 +196,19 @@ class MailingListTable extends Table
      */
     public function getDailyRecipients($email = null)
     {
-        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $timezone = Configure::read('localTimezone');
+        $now = new FrozenTime('now', $timezone);
+        $currentDate = $now->format('Y-m-d');
+        $dayAbbrev = $now->format('D');
         $query = $this
             ->find()
             ->where([
-                'daily_' . strtolower(date('D')) => 1,
+                'daily_' . strtolower($dayAbbrev) => 1,
                 'OR' => [
                     function (QueryExpression $exp) {
                         return $exp->isNull('processed_daily');
                     },
-                    'processed_daily <' => "$y-$m-$d 00:00:00",
+                    'processed_daily <' => "$currentDate 00:00:00",
                 ],
             ])
             ->contain([
@@ -259,7 +264,8 @@ class MailingListTable extends Table
      */
     public function getWeeklyRecipients($email = null)
     {
-        list($y, $m, $d) = [date('Y'), date('m'), date('d')];
+        $timezone = Configure::read('localTimezone');
+        $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
         $query = $this
             ->find()
             ->where([
@@ -268,7 +274,7 @@ class MailingListTable extends Table
                     function (QueryExpression $exp) {
                         return $exp->isNull('processed_weekly');
                     },
-                    'processed_weekly <' => "$y-$m-$d 00:00:00",
+                    'processed_weekly <' => "$currentDate 00:00:00",
                 ],
             ])
             ->contain([

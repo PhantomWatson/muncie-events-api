@@ -77,22 +77,26 @@ class CalendarHelper extends Helper
      */
     public static function getDateHeader(string $date)
     {
-        $today = date('Y-m-d');
-        $tomorrow = date('Y-m-d', strtotime('+1 day'));
+        $timezone = Configure::read('localTimezone');
+        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $tomorrow = (new FrozenTime('now + 1 day', $timezone))->format('Y-m-d');
         $namedDates = [
             $today => 'Today',
             $tomorrow => 'Tomorrow',
         ];
-        $endOfWeek = date('Y-m-d', strtotime('today + 6 days'));
+        $endOfWeek = (new FrozenTime('now + 6 days', $timezone))->format('Y-m-d');
         $thisWeek = ($date >= $today && $date < $endOfWeek);
 
         if (isset($namedDates[$date])) {
             $day = $namedDates[$date];
         } else {
-            $day = ($thisWeek ? 'This ' : '') . date('l', strtotime($date));
+            $day = ($thisWeek ? 'This ' : '') . (new FrozenTime($date, $timezone))->format('l');
         }
 
-        $headerShortDate = sprintf('<h2 class="short_date">%s</h2>', date('M j, Y', strtotime($date)));
+        $headerShortDate = sprintf(
+            '<h2 class="short_date">%s</h2>',
+            date('M j, Y', strtotime($date))
+        );
         $headerDay = sprintf('<h2 class="day">%s</h2>', $day);
 
         return $headerShortDate . $headerDay;

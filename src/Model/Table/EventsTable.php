@@ -342,7 +342,9 @@ class EventsTable extends Table
         return $query
             ->where([
                 function (QueryExpression $exp) {
-                    return $exp->gte('date', date('Y-m-d'));
+                    $timezone = Configure::read('localTimezone');
+
+                    return $exp->gte('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -360,7 +362,9 @@ class EventsTable extends Table
         return $query
             ->where([
                 function (QueryExpression $exp) {
-                    return $exp->lt('date', date('Y-m-d'));
+                    $timezone = Configure::read('localTimezone');
+
+                    return $exp->lt('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -716,7 +720,9 @@ class EventsTable extends Table
             throw new InternalErrorException('filters not passed to find(\'forFeedWidget\')');
         }
 
-        $startDate = $options['startDate'] ?? date('Y-m-d');
+        $timezone = Configure::read('localTimezone');
+        $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $startDate = $options['startDate'] ?? $defaultStartDate;
         $filters = $options['filters'];
         $datesPerPage = 7;
         $dates = $this->getNextPopulatedDays($startDate, $datesPerPage, $filters);

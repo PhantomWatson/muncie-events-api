@@ -8,6 +8,7 @@ use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use App\Slack\Slack;
+use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
@@ -74,7 +75,9 @@ class EventsController extends AppController
     public function index($startDate = null)
     {
         $pageSize = '1 month';
-        $startDate = $startDate ?? date('Y-m-d');
+        $timezone = Configure::read('localTimezone');
+        $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $startDate = $startDate ?? $defaultStartDate;
         $endDate = date('Y-m-d', strtotime($startDate . ' + ' . $pageSize));
         $events = $this->Events
             ->find('ordered')
@@ -704,7 +707,8 @@ class EventsController extends AppController
         $events = $this->paginate($query);
 
         if ($direction == 'all') {
-            $currentDate = date('Y-m-d');
+            $timezone = Configure::read('localTimezone');
+            $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
             foreach ($events as $event) {
                 $key = $event->date->format('Y-m-d') >= $currentDate ? 'future' : 'past';
                 $counts[$key]++;
