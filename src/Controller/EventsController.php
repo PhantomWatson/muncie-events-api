@@ -528,7 +528,7 @@ class EventsController extends AppController
         }
 
         // An event's author may edit
-        if ($event->user_id != $this->Auth->user('id')) {
+        if ($event->user_id == $this->Auth->user('id')) {
             return true;
         }
 
