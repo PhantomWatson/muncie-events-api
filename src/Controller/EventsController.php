@@ -138,6 +138,16 @@ class EventsController extends AppController
      */
     public function tag($idAndSlug = '', $direction = null)
     {
+        // If request uses underscored URL, respond with redirect to dashed URL
+        if (strpos($idAndSlug, '_') !== false && strpos($idAndSlug, '-') === false) {
+            $correctedIdAndSlug = str_replace('_', '-', $idAndSlug);
+
+            return $this->redirect([
+                'slug' => $correctedIdAndSlug,
+                'direction' => $direction,
+            ]);
+        }
+
         $this->loadModel('Tags');
         $tag = $this->Tags->getFromIdSlug($idAndSlug);
         if (!$tag) {
