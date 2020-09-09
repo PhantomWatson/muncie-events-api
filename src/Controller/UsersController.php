@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Table\UsersTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -36,6 +37,7 @@ class UsersController extends AppController
             'login',
             'logout',
             'register',
+            'view',
         ]);
 
         return null;
@@ -240,6 +242,46 @@ class UsersController extends AppController
         }
 
         $this->set('user', $user);
+
+        return null;
+    }
+
+    /**
+     * Page displaying a user's submitted events
+     *
+     * @param null $userId User ID
+     * @return \Cake\Http\Response|null
+     */
+    public function view($userId = null)
+    {
+        try {
+            $user = $this->Users->get($userId);
+        } catch (RecordNotFoundException $e) {
+            $this->Flash->error(
+                'Sorry, we couldn\'t find that user. ' .
+                'You may have followed a link to a user profile that has been removed.'
+            );
+
+            return $this->redirect('/');
+        }
+
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $query = $eventsTable
+            ->find('published')
+            ->find('ordered', ['direction' => 'DESC'])
+            ->find('withAllAssociated')
+            ->where(['Events.user_id' => $userId]);
+
+        $events = $this->paginate($query);
+        $totalCount = $query->count();
+
+        $this->set([
+            'events' => $events,
+            'loggedIn' => (bool)$this->Auth->user(),
+            'pageTitle' => $user->name,
+            'totalCount' => $totalCount,
+            'user' => $user,
+        ]);
 
         return null;
     }
