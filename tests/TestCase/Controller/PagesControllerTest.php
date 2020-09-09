@@ -16,6 +16,22 @@ class PagesControllerTest extends ApplicationTest
     use IntegrationTestTrait;
 
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.Events',
+        'app.Users',
+        'app.Categories',
+        'app.EventSeries',
+        'app.Images',
+        'app.Tags',
+        'app.EventsImages',
+        'app.EventsTags',
+    ];
+
+    /**
      * Sets up this set of tests
      *
      * @return void
