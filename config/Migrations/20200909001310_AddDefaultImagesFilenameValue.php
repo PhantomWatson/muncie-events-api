@@ -13,6 +13,7 @@ class AddDefaultImagesFilenameValue extends AbstractMigration
     {
         $this
             ->table('images')
-            ->changeColumn('filename', 'string', ['default' => '']);
+            ->changeColumn('filename', 'string', ['default' => ''])
+            ->update();
     }
 }
