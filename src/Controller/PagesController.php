@@ -85,7 +85,7 @@ class PagesController extends AppController
         $validator = new ContactValidator();
         $data = $this->request->getData();
         $errors = $validator->errors($data);
-        $authorized = $this->request->getSession() || $this->Recaptcha->verify();
+        $authorized = $this->Recaptcha->verify();
         if (!empty($errors) || !$authorized) {
             $this->Flash->error('Message could not be sent. Please check for error messages and try again');
 

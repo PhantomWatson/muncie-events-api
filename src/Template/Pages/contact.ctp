@@ -51,9 +51,7 @@ $session = $this->request->getSession();
     ]) ?>
 </div>
 
-<?php if (!$session->read('Auth.User')) : ?>
-    <?= $this->Recaptcha->display() ?>
-<?php endif; ?>
+<?= $this->Recaptcha->display() ?>
 
 <div class="form-group">
     <?= $this->Form->submit('Send', ['class' => 'btn btn-primary']) ?>
