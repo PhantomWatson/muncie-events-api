@@ -37,7 +37,6 @@ $eventsByDate = CalendarHelper::arrangeByDate($events->toArray());
         ['block' => true]
     ); ?>
 <?php else: ?>
-    <?php $this->Html->scriptBlock('setNoMoreEvents();', ['block' => true]); ?>
     <p class="no_events alert alert-info" id="no_events">
         <?php if ($this->request->getQuery('page')): ?>
             No more events found.
