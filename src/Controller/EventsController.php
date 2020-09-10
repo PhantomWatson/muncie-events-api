@@ -730,7 +730,7 @@ class EventsController extends AppController
         $counts[$direction] = $query->count();
         $order = $direction == 'past' ? 'DESC' : 'ASC';
         $query->epilog("ORDER BY Events__date $order, Events__time_start ASC");
-        $events = $this->paginate($query);
+        $events = $query->all();
 
         if ($direction == 'all') {
             $timezone = Configure::read('localTimezone');
