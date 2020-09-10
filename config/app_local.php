@@ -118,4 +118,10 @@ if ($config['debug']) {
     }
 }
 
+// Disable deprecated code warnings when running PHPUnit
+$phpUnitRunning = defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING;
+if ($phpUnitRunning) {
+    $config['Error']['errorLevel'] = E_ALL & ~E_USER_DEPRECATED;
+}
+
 return $config;
