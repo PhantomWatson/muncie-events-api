@@ -669,7 +669,7 @@ class EventsController extends AppController
         if ($locationName == '') {
             $locationName = $locationSlug;
         }
-        $pageTitle = $locationName == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $locationSlug;
+        $pageTitle = $locationName == Event::VIRTUAL_LOCATION ? 'Virtual Events' : $locationName;
 
         $this->set([
             'count' => $count,
