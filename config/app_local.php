@@ -23,6 +23,13 @@ $config = [
         ],
     ],
 
+    'Cors' => [
+        'AllowOrigin' => [
+            'https://muncieevents.com',
+            'https://api.muncieevents.com',
+        ],
+    ],
+
     'Datasources' => [
         'default' => [
             'username' => env('DB_USERNAME') ?: 'root',
