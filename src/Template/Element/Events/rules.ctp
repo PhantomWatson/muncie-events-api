@@ -47,9 +47,8 @@ $adminEmail = Configure::read('adminEmail');
     </li>
     <li>
         <strong>Formatting</strong>: An event's title should not redundantly include
-        information entered into other fields, such as location name, address, cost, or age
-        restrictions. Using CAPS LOCK FOR EMPHASIS and other obnoxiously-formatted text
-        (administrators' discretion) is not allowed.
+        information entered into other fields, such as location name, date, address, cost.
+        Using CAPS LOCK FOR EMPHASIS and other unpleasantly-formatted text is not allowed.
     </li>
     <li>
         <strong>Questions?</strong> Please email <a href="mailto:<?= $adminEmail ?>"><?= $adminEmail ?></a> if you have
