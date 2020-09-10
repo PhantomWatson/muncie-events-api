@@ -5450,6 +5450,12 @@ i.icon-general-events:before {
 #posting_rules ul {
   padding-left: 20px;
 }
+#posting_rules li {
+  margin-bottom: 1em;
+}
+#posting_rules li:last-child {
+  margin-bottom: 0;
+}
 .input.date.required {
   display: none;
 }
