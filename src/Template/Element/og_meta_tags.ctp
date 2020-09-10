@@ -17,6 +17,10 @@ $defaultOgMetaTags = [
     'og:locale' => 'en_US',
 ];
 
+if (!isset($ogMetaTags['og:title']) && isset($pageTitle)) {
+    $ogMetaTags['og:title'] = $pageTitle;
+}
+
 // Add tags set in viewVars
 if (isset($ogMetaTags)) {
     foreach ($ogMetaTags as $property => $contents) {
