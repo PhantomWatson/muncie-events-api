@@ -1,6 +1,7 @@
 <?php
 /**
  * @var AppView $this
+ * @var array $ogMetaTags
  */
 use App\View\AppView;
 use Cake\Utility\Text;
@@ -8,12 +9,9 @@ use Cake\Utility\Text;
 $defaultOgMetaTags = [
     'og:title' => 'Muncie Events',
     'og:type' => 'website',
-    'og:image' => '/img/logo/facebook_logo.png',
+    'og:image' => $this->Url->image('/img/logo/facebook_logo.png'),
+    'og:url' => $this->request->getUri(),
     'og:site_name' => 'Muncie Events',
-    'fb:admins' => [
-        '20721049', // Graham Watson
-        '681411028', // Mary Ogle
-    ],
     'fb:app_id' => '496726620385625',
     'og:description' => 'Upcoming events in Muncie, IN',
     'og:locale' => 'en_US',
