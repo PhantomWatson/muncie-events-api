@@ -213,7 +213,7 @@ class EventsController extends AppController
             'event' => $event,
             'pageTitle' => $event->title,
             'ogMetaTags' => [
-                'og:title' => $event->title . ' - ' . $event->date->format('F j, Y'),
+                'og:title' => $event->title . ' - ' . $event->date->format('M j, Y'),
                 'og:type' => 'article',
                 'og:image' => $ogImages,
                 'og:url' => $this->request->getUri(),
