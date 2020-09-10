@@ -29,6 +29,9 @@ if (isset($ogMetaTags)) {
                     ['exact' => false]
                 );
             }
+            if ($property == 'og:title') {
+                $content .= ' - Muncie Events';
+            }
             echo sprintf('<meta property="%s" content="%s" />', $property, htmlentities($content));
         }
     }
