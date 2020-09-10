@@ -20,7 +20,10 @@ $adminEmail = Configure::read('adminEmail');
     </li>
     <li>
         <strong>Virtual Events:</strong> Virtual events may be posted if they are live video broadcasts being made from
-        a location in Muncie or virtual meetings hosted by Muncie groups that are open to the public to attend.
+        a location in Muncie or virtual meetings hosted by Muncie groups that are open to the public to attend. Live
+        broadcasts should be performances, educational presentations, or otherwise beneficial and interesting to the
+        general public. Streams of a personal nature, gaming streams, and streams which are primarily for a non-local
+        audience are not a great fit for promotion through Muncie Events.
     </li>
     <li>
         <strong>Significant Events:</strong> Ongoing events that take place very frequently (such as
