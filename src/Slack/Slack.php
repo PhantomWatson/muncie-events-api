@@ -33,7 +33,7 @@ class Slack
      */
     public function sendNewEventAlert($title)
     {
-        $moderationUrl = 'https://muncieevents.com/moderate';
+        $moderationUrl = 'https://muncieevents.com/admin/moderate';
         $message = $this->client->createMessage()->setText(sprintf(
             'New event added: *%s*. <%s|Go to moderation page>',
             $title,
