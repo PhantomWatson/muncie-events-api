@@ -28,6 +28,7 @@ $config = [
             'https://muncieevents.com',
             'https://api.muncieevents.com',
         ],
+        'exceptionRenderer' => AppExceptionRenderer::class,
     ],
 
     'Datasources' => [
