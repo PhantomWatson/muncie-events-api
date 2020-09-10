@@ -203,9 +203,25 @@ class EventsController extends AppController
             $this->response = $this->response->withDownload($filename);
         }
 
+        $baseUrl = Configure::read('eventImageBaseUrl');
+        $ogImages = [];
+        foreach ($event->images as $image) {
+            $ogImages[] = $baseUrl . 'full/' . $image->filename;
+        }
+
         $this->set([
             'event' => $event,
             'pageTitle' => $event->title,
+            'ogMetaTags' => [
+                'og:title' => $event->title,
+                'og:type' => 'article',
+                'og:image' => $ogImages,
+                'og:url' => $this->request->getUri(),
+                'og:site_name' => 'Muncie Events',
+                'fb:app_id' => '496726620385625',
+                'og:description' => $event->description,
+                'article:author' => $event->user->name ?? 'Anonymous',
+            ],
         ]);
     }
 
