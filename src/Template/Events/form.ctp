@@ -125,15 +125,14 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     </div>
 <?php endif; ?>
 
-<?= $this->Form->create(
-    $event,
-    [
-        'id' => 'EventForm',
-        'type' => 'file',
-    ]
-) ?>
-
 <div class="event_form">
+    <?= $this->Form->create(
+        $event,
+        [
+            'id' => 'EventForm',
+            'type' => 'file',
+        ]
+    ) ?>
     <div class="row form-group">
         <label class="col-md-3" for="event-medium">
             Type
@@ -549,9 +548,34 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
             <?= $this->Form->submit('Submit', [
                 'class' => 'btn btn-primary',
                 'id' => 'event-form-submit',
+                'div' => ['class' => 'float-left'],
             ]) ?>
         </div>
     </div>
-</div>
+    <?= $this->Form->end() ?>
 
-<?= $this->Form->end() ?>
+    <?php if ($action == 'edit') : ?>
+        <div class="row form-group" id="delete-btn-row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <label class="sr-only" for="event-form-delete">
+                    Delete
+                </label>
+                <?= $this->Form->postButton(
+                    'Delete',
+                    [
+                        'controller' => 'Events',
+                        'action' => 'delete',
+                        'id' => $event->id,
+                    ],
+                    [
+                        'class' => 'btn btn-secondary',
+                        'id' => 'event-form-delete',
+                        'block' => true,
+                        'confirm' => 'Are you sure you want to delete this event?',
+                    ]
+                ) ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

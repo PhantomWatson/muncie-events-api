@@ -5281,6 +5281,10 @@ i.icon-general-events:before {
 .event_form {
   width: 100%;
 }
+.event_form > div.row > div.col-md-3:last-child,
+.event_form > div.row > div.col-md-9:last-child {
+  padding-bottom: 0;
+}
 .event_form #add_end_time,
 .event_form #remove_end_time {
   margin-left: 10px;
@@ -5353,6 +5357,9 @@ i.icon-general-events:before {
 .event_form .pseudo-label {
   font-weight: bold;
   font-size: 120%;
+}
+#delete-btn-row {
+  padding: 0.5em;
 }
 #eventform_noaddress.loading {
   background-image: url('/img/loading_small.gif');

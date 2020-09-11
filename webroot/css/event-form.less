@@ -141,6 +141,14 @@
 .event_form {
     width: 100%;
 
+    > div.row {
+        > div.col-md-3,
+        > div.col-md-9 {
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
     #add_end_time,
     #remove_end_time {
         margin-left: 10px;
@@ -214,6 +222,11 @@
         font-size: 120%;
     }
 }
+
+#delete-btn-row {
+    padding: 0.5em;
+}
+
 #eventform_noaddress.loading {
     .AddressLoadingIndicator;
     padding-right: 20px;
