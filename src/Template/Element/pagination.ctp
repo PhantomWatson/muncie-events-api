@@ -45,7 +45,7 @@ $next = $hasNext ? $nextButton : null;
                         <?php if ($p == $currentPage) :
                             ?>selected="selected"<?php
                         endif; ?>
-                        data-url="<?= $this->Paginator->generateUrl(['page' => $p]) ?>"
+                        data-url="<?= $this->Paginator->generateUrl($url + ['page' => $p]) ?>"
                     >
                         <?= $p ?>
                     </option>
