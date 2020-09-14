@@ -1,7 +1,7 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "https://cakephp.org",
+    "name": "ballstatecber/muncie-events-api",
+    "description": "Muncie Events",
+    "homepage": "https://muncieevents.com",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -20,16 +20,18 @@
         "ext-gd": "*",
         "ext-curl": "*",
         "alek13/slack": "^1.10",
-        "ozee31/cakephp-cors": "1",
-        "ext-fileinfo": "*"
+        "dereuromark/cakephp-calendar": "0.*",
+        "sabre/vobject": "^4.0",
+        "ozee31/cakephp-cors": "1"
     },
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "^3.17.0",
         "cakephp/bake": "^1.9.0",
         "phpunit/phpunit": "^5.7|^6.0",
-        "ext-xdebug": "*",
-        "cakephp/cakephp-codesniffer": "^3.3.0"
+        "ext-fileinfo": "*",
+        "cakephp/cakephp-codesniffer": "^3.3.0",
+        "ext-xdebug": "*"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",

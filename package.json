@@ -6,24 +6,27 @@
   "dependencies": {
       "commander": "^3.0.2",
       "dateformat": "^3.0.3",
+      "flatpickr": "^4.6.3",
       "gulp": "^4.0.2",
-    "gulp-jshint": "^2.1.0",
+      "gulp-jshint": "^2.1.0",
       "gulp-less": "^4.0.1",
-    "gulp-notify": "^3.2.0",
+      "gulp-notify": "^3.2.0",
       "gulp-phpcs": "^3.1.0",
       "gulp-phpunit": "^0.26.0",
-    "gulp-util": "^3.0.8",
+      "gulp-util": "^3.0.8",
       "jquery": "^3.4.1",
       "jshint": "^2.10.2",
-    "jshint-stylish": "^2.2.1",
+      "jshint-stylish": "^2.2.1",
     "less-plugin-clean-css": "^1.5.1",
-      "lodash": "^4.17.15",
-      "lodash.template": "^4.5.0",
-      "semver": "^6.3.0",
-      "through2": "^3.0.1",
-      "uglify-js": "^3.6.0"
+    "lodash": "^4.17.15",
+    "lodash.template": "^4.5.0",
+    "semver": "^6.3.0",
+    "through2": "^3.0.1",
+    "uglify-js": "^3.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "@fortawesome/fontawesome-free": "^5.10.1"
+  },
   "repository": {
     "type": "",
     "url": ""

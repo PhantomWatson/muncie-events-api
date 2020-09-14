@@ -1,0 +1,269 @@
+@TextColorDefault: #000000;
+@TextColorLight: #666666;
+@TextColorLink: #0b54a6;
+
+@BorderColorLight: #aaaaaa;
+@BorderColorDark: #000000;
+
+@BackgroundColorDefault: #ffffff;
+@BackgroundColorAlt: #f0f0f0;
+
+html, body {
+    background-color: @BackgroundColorDefault;
+    font-family: "Lucida Sans", Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: @TextColorDefault;
+}
+
+div.header {
+    color: @TextColorLight;
+    font-size: 80%;
+    text-align: center;
+
+    a {
+        color: @TextColorLight;
+        text-decoration: underline;
+    }
+}
+
+ul.header {
+    margin: 0;
+    padding: 0;
+
+    li {
+        border-right: 1px solid @TextColorLight;
+        display: inline-block;
+        list-style-type: none;
+        margin: 0 10px 0 0;
+        padding: 0 10px 0 0;
+
+        &:last-child {
+            border-right: 0;
+            margin-right: 0;
+            padding-right: 0;
+        }
+    }
+
+    i.icon {
+        font-size: 140%;
+        line-height: 0;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+}
+
+#widget_filters {
+    background-color: @BackgroundColorAlt;
+    border: 1px solid @BorderColorLight;
+    border-radius: 5px;
+    color: @TextColorLight;
+    font-size: 80%;
+    margin: 5px;
+    text-align: left;
+
+    > div {
+        padding: 10px;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    a {
+        display: block;
+        text-align: center;
+    }
+}
+
+a {
+    color: @TextColorLink;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &.thumbnail {
+        cursor: zoom-in;
+        display: inline-block;
+
+        img {
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+        }
+    }
+
+    &.back {
+        display: block;
+        font-size: 150%;
+        text-align: left;
+    }
+}
+
+p {
+    margin: 0;
+    padding: 0 5px;
+}
+
+#loading {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    div {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+
+    div:nth-child(1) {
+        background-color: @BackgroundColorDefault;
+        opacity: 0.5;
+        z-index: 3;
+    }
+
+    div:nth-child(2) {
+        background-image: url("/img/loading.gif");
+        background-position: center center;
+        background-repeat: no-repeat;
+        z-index: 4;
+    }
+}
+
+.event {
+    h1.title {
+        font-size: 120%;
+    }
+
+    table.details {
+        th {
+            color: @TextColorLight;
+            font-weight: normal;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        td {
+            font-size: 90%;
+        }
+    }
+
+    .description {
+        border-top: 1px solid @BorderColorLight;
+        line-height: 1.6;
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+
+    .footer {
+        color: @TextColorLight;
+        font-size: 80%;
+        margin-top: 15px;
+    }
+
+    .what {
+        .icon:before {
+            cursor: default;
+            font-size: 120%;
+            margin-right: 5px;
+            vertical-align: bottom;
+        }
+    }
+
+    .actions {
+        font-size: 80%;
+        margin-bottom: 10px;
+
+        a {
+            margin-right: 15px;
+            vertical-align: top;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        img {
+            margin-right: 5px;
+            vertical-align: text-bottom;
+        }
+
+        iframe {
+            vertical-align: bottom;
+        }
+
+        .fb_iframe_widget {
+            vertical-align: top;
+        }
+
+        .open {
+            border-color: #aaa;
+        }
+    }
+}
+
+.export_options_container {
+    border: 1px solid transparent;
+    display: inline-block;
+    transition: all .3s;
+}
+
+.export_options {
+    padding: 0 5px;
+}
+
+.tags {
+    font-size: 80%;
+}
+
+#events {
+    a.back {
+        &:first-child {
+            border-bottom: 1px solid @BorderColorLight;
+        }
+
+        &:last-child {
+            border-top: 1px solid @BorderColorLight;
+        }
+    }
+}
+
+#fb-root {
+    display: none;
+}
+
+.btn-primary,
+.btn-secondary
+{
+    background-color: @BackgroundColorAlt;
+    border: 1px solid @BorderColorLight;
+    color: @TextColorDefault;
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active
+    {
+        background-color: @BackgroundColorAlt;
+        border: 1px solid @BorderColorDark;
+        color: @TextColorDefault;
+    }
+    &:focus {
+        box-shadow: 0 0 0 0.2rem @TextColorLink;
+    }
+    &:not(:disabled):not(.disabled):active:focus {
+        box-shadow: 0 0 0 0.2rem @TextColorLink;
+    }
+}
+
+.show > .btn-secondary.dropdown-toggle {
+    background-color: @BackgroundColorAlt;
+    color: @TextColorDefault;
+}

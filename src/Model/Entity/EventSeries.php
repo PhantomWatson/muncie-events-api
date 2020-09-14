@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
@@ -16,6 +17,8 @@ use Cake\ORM\Entity;
  *
  * @property User $user
  * @property Event[] $events
+ * @property Event[] $pastEvents
+ * @property Event[] $upcomingEvents
  */
 class EventSeries extends Entity
 {
@@ -37,4 +40,28 @@ class EventSeries extends Entity
         'modified' => true,
         'user' => true,
     ];
+
+    /**
+     * Reads the property `events` and sets the properties `pastEvents` and `upcomingEvents`
+     *
+     * @return void
+     */
+    public function splitEventsPastFuture()
+    {
+        $this->upcomingEvents = [];
+        $this->pastEvents = [];
+        if (!$this->events) {
+            return;
+        }
+
+        $timezone = Configure::read('localTimezone');
+        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        foreach ($this->events as $event) {
+            $property = $event->date->format('Y-m-d') < $today
+                ? 'pastEvents'
+                : 'upcomingEvents';
+            $this->$property[] = $event;
+        }
+        rsort($this->pastEvents);
+    }
 }

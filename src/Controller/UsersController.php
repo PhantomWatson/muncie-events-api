@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Table\UsersTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -29,18 +30,14 @@ class UsersController extends AppController
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
-        $this->loadComponent('Recaptcha.Recaptcha', [
-            'enable' => (bool)$this->request->getEnv('RECAPTCHA_ENABLED', true),
-            'sitekey' => '6LeDpjoUAAAAADAE8vX2DOVuuRYQSmSqRhvxIr5G',
-            'secret' => env('RECAPTCHA_SECRET'),
-            'type' => 'image',
-            'theme' => 'light',
-            'lang' => 'en',
-            'size' => 'normal',
-        ]);
+        $this->loadRecaptcha();
 
         $this->Auth->allow([
-            'register', 'login', 'logout',
+            'forgotPassword',
+            'login',
+            'logout',
+            'register',
+            'view',
         ]);
 
         return null;
@@ -60,34 +57,36 @@ class UsersController extends AppController
             'user' => $user,
         ]);
 
-        if ($this->request->is('post')) {
-            if ($this->Recaptcha->verify()) {
-                $user = $this->Users->patchEntity($user, $this->request->getData(), [
-                    'fields' => ['name', 'email', 'password'],
+        if (!$this->request->is('post')) {
+            return null;
+        }
+
+        if ($this->Recaptcha->verify()) {
+            $user = $this->Users->patchEntity($user, $this->request->getData(), [
+                'fields' => ['name', 'email', 'password'],
+            ]);
+            $user->role = 'user';
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Registration successful');
+                $this->Auth->setUser($user);
+
+                return $this->redirect([
+                    'controller' => 'Events',
+                    'action' => 'index',
                 ]);
-                $user->role = 'user';
-
-                if ($this->Users->save($user)) {
-                    $this->Flash->success('Registration successful');
-                    $this->Auth->setUser($user);
-
-                    return $this->redirect([
-                        'controller' => 'Pages',
-                        'action' => 'home',
-                    ]);
-                }
-
-                $msg =
-                    'There was an error processing your registration. ' .
-                    'Please check for error messages and try again.';
-                $this->Flash->error($msg);
-            } else {
-                $this->Flash->error('CAPTCHA challenge failed. Please try again.');
             }
 
-            $this->request = $this->request->withData('password', '');
-            $this->request = $this->request->withData('confirm_password', '');
+            $this->Flash->error(
+                'There was an error processing your registration. ' .
+                'Please check for error messages and try again.'
+            );
+        } else {
+            $this->Flash->error('CAPTCHA challenge failed. Please try again.');
         }
+
+        $this->request = $this->request->withData('password', '');
+        $this->request = $this->request->withData('confirm_password', '');
 
         return null;
     }
@@ -173,5 +172,117 @@ class UsersController extends AppController
             'apiKey' => $apiKey,
             'pageTitle' => $apiKey ? 'Your API Key' : 'Generate API Key',
         ]);
+    }
+
+    /**
+     * Allows the user to enter their email address and get a link to reset their password
+     *
+     * @return void
+     */
+    public function forgotPassword()
+    {
+        $this->set([
+            'pageTitle' => 'Forgot Password',
+        ]);
+    }
+
+    /**
+     * User's /account page
+     *
+     * @return void
+     */
+    public function account()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId);
+        if (!$this->request->is('get')) {
+            $this->Users->patchEntity($user, $this->request->getData(), ['fields' => ['name', 'email']]);
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Information updated.');
+            } else {
+                $this->Flash->error(
+                    'Sorry, there was an error updating your information. ' .
+                    'Check for error messages below, try again, and contact an administrator if you need assistance.'
+                );
+            }
+        }
+
+        $this->set([
+            'pageTitle' => 'My Account',
+            'hasSubscription' => (bool)$user->mailing_list_id,
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * Page for changing one's own account password
+     *
+     * @return null
+     */
+    public function changePass()
+    {
+        $userId = $this->Auth->user('id');
+        $user = $this->Users->get($userId);
+        $this->set('pageTitle', 'Change Password');
+
+        if ($this->request->is('get')) {
+            $this->set('user', $user);
+
+            return null;
+        }
+
+        $this->Users->patchEntity($user, $this->request->getData(), ['fields' => ['password', 'confirm_password']]);
+        if ($this->Users->save($user)) {
+            $this->Flash->success('Password changed.');
+        } else {
+            $this->Flash->error(
+                'Sorry, there was an error changing your password. ' .
+                'Check for error messages below, try again, and contact an administrator if you need assistance.'
+            );
+        }
+
+        $this->set('user', $user);
+
+        return null;
+    }
+
+    /**
+     * Page displaying a user's submitted events
+     *
+     * @param null $userId User ID
+     * @return \Cake\Http\Response|null
+     */
+    public function view($userId = null)
+    {
+        try {
+            $user = $this->Users->get($userId);
+        } catch (RecordNotFoundException $e) {
+            $this->Flash->error(
+                'Sorry, we couldn\'t find that user. ' .
+                'You may have followed a link to a user profile that has been removed.'
+            );
+
+            return $this->redirect('/');
+        }
+
+        $eventsTable = TableRegistry::getTableLocator()->get('Events');
+        $query = $eventsTable
+            ->find('published')
+            ->find('ordered', ['direction' => 'DESC'])
+            ->find('withAllAssociated')
+            ->where(['Events.user_id' => $userId]);
+
+        $events = $this->paginate($query);
+        $totalCount = $query->count();
+
+        $this->set([
+            'events' => $events,
+            'loggedIn' => (bool)$this->Auth->user(),
+            'pageTitle' => $user->name,
+            'totalCount' => $totalCount,
+            'user' => $user,
+        ]);
+
+        return null;
     }
 }

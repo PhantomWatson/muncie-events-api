@@ -2,12 +2,18 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\MailingList;
+use Cake\Core\Configure;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -78,36 +84,28 @@ class MailingListTable extends Table
             ->requirePresence('all_categories', 'create');
 
         $validator
-            ->boolean('weekly')
-            ->requirePresence('weekly', 'create');
+            ->boolean('weekly');
 
         $validator
-            ->boolean('daily_sun')
-            ->requirePresence('daily_sun', 'create');
+            ->boolean('daily_sun');
 
         $validator
-            ->boolean('daily_mon')
-            ->requirePresence('daily_mon', 'create');
+            ->boolean('daily_mon');
 
         $validator
-            ->boolean('daily_tue')
-            ->requirePresence('daily_tue', 'create');
+            ->boolean('daily_tue');
 
         $validator
-            ->boolean('daily_wed')
-            ->requirePresence('daily_wed', 'create');
+            ->boolean('daily_wed');
 
         $validator
-            ->boolean('daily_thu')
-            ->requirePresence('daily_thu', 'create');
+            ->boolean('daily_thu');
 
         $validator
-            ->boolean('daily_fri')
-            ->requirePresence('daily_fri', 'create');
+            ->boolean('daily_fri');
 
         $validator
-            ->boolean('daily_sat')
-            ->requirePresence('daily_sat', 'create');
+            ->boolean('daily_sat');
 
         $validator
             ->boolean('new_subscriber')
@@ -133,8 +131,194 @@ class MailingListTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add(
+            $rules->isUnique(['email']),
+            'emailIsUnique',
+            ['message' => 'That email address is already subscribed to the mailing list']
+        );
 
         return $rules;
+    }
+
+    /**
+     * Returns an array of days of the week, with abbreviations as keys
+     *
+     * @return array
+     */
+    public function getDays()
+    {
+        return [
+            'sun' => 'Sunday',
+            'mon' => 'Monday',
+            'tue' => 'Tuesday',
+            'wed' => 'Wednesday',
+            'thu' => 'Thursday',
+            'fri' => 'Friday',
+            'sat' => 'Saturday',
+        ];
+    }
+
+    /**
+     * Returns a mailing list record matching the provided email address, or null if none is found
+     *
+     * @param string $email Email address
+     * @return MailingList|null|EntityInterface
+     */
+    public function getFromEmail($email)
+    {
+        return $this->find()
+            ->where(['email' => $email])
+            ->first();
+    }
+
+    /**
+     * Returns a new entity with fields set to default values
+     *
+     * @return \App\Model\Entity\MailingList
+     */
+    public function newEntityWithDefaults()
+    {
+        $subscription = $this->newEntity();
+        $subscription->weekly = true;
+        $subscription->all_categories = true;
+        $subscription->categories = $this->Categories
+            ->find()
+            ->toArray();
+
+        return $subscription;
+    }
+
+    /**
+     * Returns a resultset of today's daily mailing list message recipients
+     *
+     * @param string|null $email Optional specific email address
+     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     */
+    public function getDailyRecipients($email = null)
+    {
+        $timezone = Configure::read('localTimezone');
+        $now = new FrozenTime('now', $timezone);
+        $currentDate = $now->format('Y-m-d');
+        $dayAbbrev = $now->format('D');
+        $query = $this
+            ->find()
+            ->where([
+                'daily_' . strtolower($dayAbbrev) => 1,
+                'OR' => [
+                    function (QueryExpression $exp) {
+                        return $exp->isNull('processed_daily');
+                    },
+                    'processed_daily <' => "$currentDate 00:00:00",
+                ],
+            ])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
+            ]);
+        if ($email) {
+            $query->where(['email' => $email]);
+        }
+
+        return $query->all();
+    }
+
+    /**
+     * Marks a daily mailing list subscriber as having been processed
+     *
+     * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
+     * @param int $result Code representing result of running this script for this recipient
+     * @return void
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function markDailyAsProcessed($subscriber, $result)
+    {
+        $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
+        $logEntry = $mailingListLogTable->newEntity([
+            'recipient_id' => $subscriber ? $subscriber->id : null,
+            'result' => $result,
+            'is_daily' => 1,
+        ]);
+        if (!$mailingListLogTable->save($logEntry)) {
+            throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        if (!$subscriber) {
+            return;
+        }
+
+        $this->patchEntity($subscriber, [
+            'processed_daily' => date('Y-m-d H:i:s'),
+            'new_subscriber' => 0,
+        ]);
+        if (!$this->save($subscriber)) {
+            throw new InternalErrorException('Failed to update subscriber record');
+        }
+    }
+
+    /**
+     * Returns a set of weekly mailing list subscribers
+     *
+     * @param string|null $email Optional specific email address
+     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     */
+    public function getWeeklyRecipients($email = null)
+    {
+        $timezone = Configure::read('localTimezone');
+        $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $query = $this
+            ->find()
+            ->where([
+                'MailingList.weekly' => 1,
+                'OR' => [
+                    function (QueryExpression $exp) {
+                        return $exp->isNull('processed_weekly');
+                    },
+                    'processed_weekly <' => "$currentDate 00:00:00",
+                ],
+            ])
+            ->contain([
+                'Categories' => function (Query $q) {
+                    return $q->select(['Categories.id', 'Categories.name']);
+                },
+            ]);
+        if ($email) {
+            $query->where(['email' => $email]);
+        }
+
+        return $query->all();
+    }
+
+    /**
+     * Marks a weekly mailing list subscriber as having been processed
+     *
+     * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
+     * @param int $result Code representing result of running this script for this recipient
+     * @return void
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function markWeeklyAsProcessed($subscriber, $result)
+    {
+        $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
+        $logEntry = $mailingListLogTable->newEntity([
+            'recipient_id' => $subscriber ? $subscriber->id : null,
+            'result' => $result,
+            'is_weekly' => 1,
+        ]);
+        if (!$mailingListLogTable->save($logEntry)) {
+            throw new InternalErrorException('Failed to save mailing list log entry');
+        }
+
+        if (!$subscriber) {
+            return;
+        }
+
+        $this->patchEntity($subscriber, [
+            'processed_weekly' => date('Y-m-d H:i:s'),
+            'new_subscriber' => 0,
+        ]);
+        if (!$this->save($subscriber)) {
+            throw new InternalErrorException('Failed to update subscriber record');
+        }
     }
 }

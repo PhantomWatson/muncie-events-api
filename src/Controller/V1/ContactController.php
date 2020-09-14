@@ -5,6 +5,7 @@ use App\Controller\ApiController;
 use App\Model\Table\CategoriesTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Mailer\MailerAwareTrait;
+use Exception;
 
 /**
  * Class ContactController
@@ -14,6 +15,18 @@ use Cake\Mailer\MailerAwareTrait;
 class ContactController extends ApiController
 {
     use MailerAwareTrait;
+
+    /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
 
     /**
      * /contact endpoint

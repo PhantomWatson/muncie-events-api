@@ -89,3 +89,16 @@ gulp.task('less', function () {
         .pipe(gulp.dest('webroot/css'))
         .pipe(customNotify('LESS compiled'));
 });
+
+
+/********************
+ * NPM DEPENDENCIES *
+ ********************/
+gulp.task('copy_npm_dep', function () {
+    gulp.src('./node_modules/flatpickr/dist/flatpickr.min.css')
+        .pipe(gulp.dest('./webroot/flatpickr/'));
+
+    gulp.src('./node_modules/flatpickr/dist/flatpickr.min.js')
+        .pipe(gulp.dest('./webroot/flatpickr/'))
+        .pipe(customNotify('Files copied'));
+});

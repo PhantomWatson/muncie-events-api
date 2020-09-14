@@ -1,0 +1,133 @@
+@import "common";
+@import "../icons";
+
+#event_list {
+    h2 {
+        font-size: 100%;
+        font-weight: normal;
+        letter-spacing: 3px;
+        margin: 10px 0 0 5px;
+        text-transform: uppercase;
+
+        &.day {
+            color: @TextColorLight;
+            float: right;
+        }
+
+        &.short_date {
+            float: left;
+        }
+    }
+
+    ul {
+        clear: both;
+        margin: 0 0 5px 0;
+        padding: 0;
+    }
+
+    li {
+        background-color: @BackgroundColorAlt;
+        border-color: transparent transparent @BorderColorLight transparent;
+        border-style: solid;
+        border-width: 1px 0;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+
+        &.with_images {
+            a.event_link {
+                min-height: 50px;
+                margin-right: 55px;
+            }
+        }
+
+        a.thumbnail {
+            margin: 5px;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        &:first-child {
+            border-color: @BorderColorLight;
+        }
+
+        &:hover {
+            border-color: @BorderColorDark;
+            border-width: 1px 0;
+            -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+            z-index: 2;
+
+            .title {
+                text-decoration: underline;
+            }
+        }
+
+        .icon:before {
+            color: @TextColorLight;
+            float: left;
+            font-size: 150%;
+            margin-left: -30px;
+            margin-right: 5px;
+            vertical-align: bottom;
+        }
+
+        a.event_link {
+            color: @TextColorDefault;
+            display: block;
+            margin: 0;
+            padding: 5px 5px 5px 35px;
+            text-decoration: none;
+            vertical-align: top;
+
+            &:hover {
+                text-decoration: none;
+
+                .title {
+                    text-decoration: underline;
+                }
+            }
+
+            .title {
+                color: @TextColorLink;
+            }
+        }
+    }
+
+    p.no_events {
+        color: @TextColorLight;
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    div.when_where {
+        font-size: 80%;
+    }
+}
+
+.hidden_images {
+    display: none;
+}
+
+#load_more_events_wrapper {
+    text-align: center;
+
+    a {
+        margin-top: 20px;
+    }
+
+    &.loading {
+        background-image: url("/img/loading_small.gif");
+        background-position: center top;
+        background-repeat: no-repeat;
+
+        a {
+            color: @TextColorLight;
+            cursor: progress;
+            text-decoration: none;
+        }
+    }
+}

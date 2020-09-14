@@ -205,17 +205,17 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that requests with invalid API keys are rejected
+     * Tests that requests with no API keys are not rejected
      *
      * @return void
      * @throws Exception
      */
-    public function testFutureFailInvalidApiKey()
+    public function testFutureSuccessNoApiKey()
     {
         $url = $this->futureUrl;
-        $url['?']['apikey'] = 'invalid key';
+        unset($url['?']['apikey']);
         $this->get($url);
-        $this->assertResponseError();
+        $this->assertResponseOk();
     }
 
     /**
@@ -577,6 +577,7 @@ class EventsControllerTest extends ApplicationTest
             'approved_by',
             'created',
             'modified',
+            'location_slug',
         ];
         $expectedFields = array_diff(array_keys($eventsFixture->fields), $excludedFields);
         foreach ($expectedFields as $field) {

@@ -5,6 +5,7 @@ use App\Model\Entity\EventSeries;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -47,7 +48,8 @@ class EventSeriesTable extends Table
             'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Events')
-            ->setForeignKey('series_id');
+            ->setForeignKey('series_id')
+            ->setDependent(true);
     }
 
     /**
@@ -85,5 +87,51 @@ class EventSeriesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    /**
+     * Returns an event series and all of its associated events for the /event-series/edit page
+     *
+     * @param Query $query Query object
+     * @return array|EntityInterface|null
+     */
+    public function findForEdit(Query $query)
+    {
+        return $query
+            ->contain([
+                'Events' => function (Query $q) {
+                    return $q->find('ordered');
+                },
+            ]);
+    }
+
+    /**
+     * Alters a query to include ordered, published events with associated data
+     *
+     * @param Query $query Query object
+     * @return array|Query
+     */
+    public function findForView(Query $query)
+    {
+        return $query
+            ->contain([
+                'Events' => function (Query $q) {
+                    return $q
+                        ->find('ordered')
+                        ->find('published')
+                        ->find('withAllAssociated')
+                        ->select([
+                            'date',
+                            'id',
+                            'series_id',
+                            'time_end',
+                            'time_start',
+                            'title',
+                        ]);
+                },
+                'Users' => function (Query $q) {
+                    return $q->select(['id', 'name']);
+                },
+            ]);
     }
 }

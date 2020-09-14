@@ -9,4 +9,4 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 }
 
 use App\View\AppView; ?>
-<div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div>
+<div class="alert alert-success" onclick="this.classList.add('hidden')"><?= $message ?></div>

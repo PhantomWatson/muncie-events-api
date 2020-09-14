@@ -11,13 +11,19 @@ use PHPUnit\Exception;
  */
 class UsersControllerTest extends ApplicationTest
 {
-
     /**
      * Fixtures
      *
      * @var array
      */
     public $fixtures = [
+        'app.Categories',
+        'app.Events',
+        'app.EventSeries',
+        'app.EventsImages',
+        'app.EventsTags',
+        'app.Images',
+        'app.Tags',
         'app.Users',
     ];
 
@@ -63,8 +69,8 @@ class UsersControllerTest extends ApplicationTest
         $this->assertResponseNotContains('Email or password is incorrect');
         $this->assertSession(1, 'Auth.User.id');
         $this->assertRedirect([
-            'controller' => 'Pages',
-            'action' => 'home',
+            'controller' => 'Events',
+            'action' => 'index',
         ]);
     }
 
@@ -117,8 +123,8 @@ class UsersControllerTest extends ApplicationTest
         ]);
         $this->assertResponseSuccess();
         $this->assertRedirect([
-            'controller' => 'Pages',
-            'action' => 'home',
+            'controller' => 'Events',
+            'action' => 'index',
         ]);
         $this->assertSession(null, 'Auth.User.email');
     }

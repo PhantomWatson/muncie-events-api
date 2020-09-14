@@ -1,11 +1,36 @@
 <?php
-use App\View\AppView;
-use Cake\Routing\Router;
 /**
+ * @var \App\View\AppView $this
  * @var string $apiKey
- * @var AppView $this
+ * @var string $pageTitle
  */
+
+use Cake\Routing\Router;
 ?>
+
+<h1 class="page_title">
+    <?= $pageTitle ?>
+</h1>
+
+<p class="mt-2">
+    <?= $this->Html->link(
+        'About the API',
+        [
+            'controller' => 'Pages',
+            'action' => 'api',
+        ],
+        ['class' => 'btn btn-secondary']
+    ) ?>
+    <?= $this->Html->link(
+        'API Documentation',
+        [
+            'controller' => 'Pages',
+            'action' => 'apiDocsV1',
+        ],
+        ['class' => 'btn btn-secondary']
+    ) ?>
+</p>
+
 <?php if ($apiKey): ?>
     <div class="card">
         <div class="card-body">
@@ -26,7 +51,7 @@ use Cake\Routing\Router;
                         'prefix' => 'v1',
                         'controller' => 'Events',
                         'action' => 'future',
-                        '?' => ['apikey' => $apiKey]
+                        '?' => ['apikey' => $apiKey],
                     ], true) ?>
                 </code>
             </p>

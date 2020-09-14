@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Routing\Router;
 
 /**
  * Category Entity
@@ -37,4 +38,20 @@ class Category extends Entity
         'events' => true,
         'mailing_list' => true,
     ];
+
+    /**
+     * Returns the URL for the page that lists this category's upcoming events
+     *
+     * @return string
+     */
+    protected function _getUrl()
+    {
+        return Router::url([
+            'plugin' => false,
+            'prefix' => false,
+            'controller' => 'Events',
+            'action' => 'category',
+            $this->slug,
+        ]);
+    }
 }

@@ -1,15 +1,18 @@
 <?php
 /**
  * @var AppView $this
+ * @var string $pageTitle
  * @var User $user
  */
 
 use App\Model\Entity\User;
-use App\View\AppView; ?>
-<p>
-    Here, you can log in using the same information that you use to log in to the main website at
-    <a href="https://muncieevents.com">MuncieEvents.com</a>.
-</p>
+use App\View\AppView;
+
+?>
+
+<h1 class="page_title">
+    <?= $pageTitle ?>
+</h1>
 
 <?php
     echo $this->Form->create($user);
@@ -19,7 +22,7 @@ use App\View\AppView; ?>
         'auto_login',
         [
             'label' => 'Keep me logged in on this computer',
-            'type' => 'checkbox'
+            'type' => 'checkbox',
         ]
     );
     echo $this->Form->button(
@@ -27,13 +30,19 @@ use App\View\AppView; ?>
         ['class' => 'btn btn-primary']
     );
     echo $this->Form->end();
-?>
+    ?>
 
 <p>
     <?= $this->Html->link('Register an account', [
         'controller' => 'Users',
-        'action' => 'register'
-    ]); ?>
+        'action' => 'register',
+    ]) ?>
     <br />
-    <?= $this->Html->link('Forgot password', 'https://muncieevents.com/users/forgot_password'); ?>
+    <?= $this->Html->link(
+        'Forgot password?',
+        [
+            'controller' => 'Users',
+            'action' => 'forgotPassword',
+        ]
+    ) ?>
 </p>

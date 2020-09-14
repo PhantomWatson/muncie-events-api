@@ -1,64 +1,15 @@
 <?php
 // The contents of this page are returned by the API endpoint /pages/about
+use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
+
 $eventsTable = TableRegistry::getTableLocator()->get('Events');
 $eventCount = $eventsTable->find()->count();
-$yearsCount = date('Y') - 2009;
+$timezone = Configure::read('localTimezone');
+$yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
 ?>
-<style>
-    #credits {
-        margin: 0;
-        padding: 0;
-    }
-    .row {
-        border-bottom: 1px dashed #555;
-        list-style-type: none;
-        margin-left: 0;
-        margin-right: 0;
-        display: block;
-    }
-    .name {
-        background-color: #FFF;
-        float: left;
-        font-weight: bold;
-        margin-bottom: -3px;
-        padding-right: 5px;
-        position: relative;
-        top: 4px;
-    }
-    .position {
-        background-color: #FFF;
-        color: #555;
-        float: right;
-        padding-left: 5px;
-        position: relative;
-        right: -2px;
-        text-align: right;
-        top: 4px;
-    }
-    .category {
-        border-bottom: 1px solid #555;
-        color: #555;
-        font-size: 110%;
-        letter-spacing: 7px;
-        list-style-type: none;
-    }
-    @media (max-width: 900px) {
-        .row {
-            border-bottom: none;
-        }
-        .name {
-            float: none;
-        }
-    }
-    @media (max-width:576px) {
-        .position {
-            float: none;
-            padding-left: 0;
-            text-align: left;
-        }
-    }
-</style>
 
 <h1 class="page_title">
     About Muncie Events
@@ -72,7 +23,10 @@ $yearsCount = date('Y') - 2009;
     websites and mobile apps to be part of the same event promotion network. Event information collected by Muncie
     Events gets distributed to every website displaying
     <a href="https://muncieevents.com/widgets">a Muncie Events calendar</a>, to apps using
-    <a href="https://api.muncieevents.com">the Muncie Events API</a>, and to
+    <a href="<?= Router::url([
+        'controller' => 'Pages',
+        'action' => 'api',
+    ], true) ?>">the Muncie Events API</a>, and to
     <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>.
 </p>
 
@@ -100,26 +54,25 @@ $yearsCount = date('Y') - 2009;
         ],
         'Organizations' => [
             '<a href="https://munciearts.org">Muncie Arts and Culture Council</a>' => '',
-            '<a href="http://bsu.edu/cber">Center for Business and Economic Research</a>' => ''
+            '<a href="http://bsu.edu/cber">Center for Business and Economic Research</a>' => '',
         ],
         'Software' => [
             '<a href="http://cakephp.org">CakePHP</a>' => 'Back-end framework',
             '<a href="http://jquery.com/">jQuery</a> &amp; <a href="http://jqueryui.com/">jQuery UI</a>' => 'Front-end framework',
             '<a href="https://facebook.github.io/react-native/">React Native</a>' => 'Mobile app framework',
             '<a href="http://dimsemenov.com/plugins/magnific-popup/">Magnific Popup</a>' => 'Elegant media popups',
-            '<a href="http://www.digitalmagicpro.com/jPicker/">jPicker</a>' => 'Color picker',
             '<a href="http://recaptcha.net/">reCAPTCHA</a>' => 'Spam defense',
-        ]
+        ],
     ];
-?>
+    ?>
 
 <ul id="credits">
-    <?php foreach ($credits as $category => $members): ?>
+    <?php foreach ($credits as $category => $members) : ?>
         <li class="category">
             <?= $category ?>
             <br class="break" />
         </li>
-        <?php foreach ($members as $name => $position): ?>
+        <?php foreach ($members as $name => $position) : ?>
             <li class="row">
                 <div class="name"><?= $name ?></div>
                 <div class="position"><?= $position ?></div>

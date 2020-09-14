@@ -3,6 +3,7 @@ namespace App\Controller\V1;
 
 use App\Controller\ApiController;
 use App\Model\Table\CategoriesTable;
+use Exception;
 
 /**
  * Class CategoriesController
@@ -11,6 +12,18 @@ use App\Model\Table\CategoriesTable;
  */
 class CategoriesController extends ApiController
 {
+    /**
+     * Initialization hook method
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Auth->allow(['index']);
+    }
+
     /**
      * /categories endpoint
      *

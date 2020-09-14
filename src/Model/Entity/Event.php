@@ -10,6 +10,7 @@ use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use DateTime;
 use Exception;
 
@@ -21,6 +22,7 @@ use Exception;
  * @property string $description
  * @property string $location
  * @property string $location_details
+ * @property string $location_slug
  * @property string $address
  * @property int $user_id
  * @property int $category_id
@@ -35,6 +37,8 @@ use Exception;
  * @property int $approved_by
  * @property FrozenTime $created
  * @property FrozenTime $modified
+ * @property string $location_medium 'physical' or 'virtual'
+ * @property string $description_plaintext
  *
  * @property User $user
  * @property Category $category
@@ -45,6 +49,8 @@ use Exception;
 class Event extends Entity
 {
     const TIMEZONE = 'America/Indiana/Indianapolis';
+    const VIRTUAL_LOCATION = 'Virtual Event';
+    const VIRTUAL_LOCATION_SLUG = 'virtual-event';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -102,7 +108,7 @@ class Event extends Entity
     /**
      * Takes an array of image data and sets proper join data for the next save operation
      *
-     * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] arrays
+     * @param array $imagesData Array of ['id' => $imageId, 'caption' => ...] or [$imageId => $caption] arrays
      * @return void
      * @throws \Cake\Http\Exception\BadRequestException
      */
@@ -110,27 +116,28 @@ class Event extends Entity
     {
         $this->images = [];
         $imagesTable = TableRegistry::getTableLocator()->get('Images');
-        foreach ($imagesData as $i => $imageData) {
-            if (!is_array($imageData)) {
-                throw new BadRequestException(sprintf(
-                    'Invalid image data provided: %s provided instead of array',
-                    gettype($imageData)
-                ));
+        $weight = 1;
+        foreach ($imagesData as $key => $value) {
+            if (is_array($value)) {
+                $imageId = $value['id'];
+                $caption = $value['caption'] ?? '';
+            } else {
+                $imageId = $key;
+                $caption = $value;
             }
-            if (!isset($imageData['id'])) {
-                throw new BadRequestException('Image ID not provided');
-            }
+
             try {
-                $image = $imagesTable->get($imageData['id']);
+                $image = $imagesTable->get($imageId);
             } catch (RecordNotFoundException $e) {
-                throw new BadRequestException('Invalid image ID selected (#' . $imageData['id'] . ')');
+                throw new BadRequestException("Invalid image ID selected (#$imageId)");
             }
 
             $image->_joinData = new Entity([
-                'weight' => $i + 1,
-                'caption' => $imageData['caption'],
+                'weight' => $weight,
+                'caption' => $caption,
             ]);
             $this->images[] = $image;
+            $weight++;
         }
     }
 
@@ -199,7 +206,7 @@ class Event extends Entity
     }
 
     /**
-     * Sets the event to approved and published if $user (the user submitting the form) is an administrator
+     * Sets the event to published if the user submitting the form qualifies
      *
      * @param array|User|null $user The user submitting the form (not necessarily the original event author)
      * @return void
@@ -207,9 +214,7 @@ class Event extends Entity
      */
     public function autoPublish($user)
     {
-        if ($this->userIsAutoPublishable($user)) {
-            $this->published = true;
-        }
+        $this->published = $this->userIsAutoPublishable($user);
     }
 
     /**
@@ -232,7 +237,7 @@ class Event extends Entity
         }
 
         if (isset($user['role']) && $user['role'] == 'admin') {
-            true;
+            return true;
         }
 
         // Users who have submitted events that were published by admins have all subsequent events auto-published
@@ -314,5 +319,58 @@ class Event extends Entity
             }
             $this->tags[] = $newTag;
         }
+
+        // Remove duplicates
+        $tagIds = [];
+        foreach ($this->tags as $k => $tag) {
+            if (in_array($tag->id, $tagIds)) {
+                unset($this->tags[$k]);
+                continue;
+            }
+
+            $tagIds[] = $tag->id;
+        }
+    }
+
+    /**
+     * Sets the location_slug property according to the value of the location property
+     *
+     * @return void
+     */
+    public function setLocationSlug()
+    {
+        $slug = str_replace('\'', '', $this->location);
+        $slug = mb_strtolower($slug);
+        $slug = Text::slug($slug);
+        $this->location_slug = $slug;
+    }
+
+    /**
+     * A virtual field that returns 'virtual' or 'physical' depending on whether the location name is 'Virtual Event'
+     *
+     * @return string
+     */
+    protected function _getLocationMedium()
+    {
+        if ($this->location == self::VIRTUAL_LOCATION) {
+            return 'virtual';
+        }
+
+        return 'physical';
+    }
+
+    /**
+     * A virtual field that returns this event's description in plain text, with HTML removed
+     *
+     * @return string
+     */
+    protected function _getDescriptionPlaintext()
+    {
+        $plaintext = $this->description;
+        $plaintext = str_replace(['<br>', '<br />'], '\n', $plaintext);
+        $plaintext = str_replace('</p>', '\n\n', $plaintext);
+        $plaintext = strip_tags($plaintext);
+
+        return trim($plaintext);
     }
 }

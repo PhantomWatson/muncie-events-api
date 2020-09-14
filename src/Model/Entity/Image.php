@@ -11,13 +11,14 @@ use Cake\ORM\TableRegistry;
 /**
  * Image Entity
  *
- * @property int $id
- * @property string $filename
  * @property bool $is_flyer
- * @property int $user_id
+ * @property EventsImage $_joinData
  * @property FrozenTime $created
  * @property FrozenTime $modified
- * @property EventsImage $_joinData
+ * @property int $id
+ * @property int $user_id
+ * @property string $caption
+ * @property string $filename
  *
  * @property User $user
  * @property Event[] $events
@@ -544,5 +545,15 @@ class Image extends Entity
         }
 
         return move_uploaded_file($sourceFile, $targetFile);
+    }
+
+    /**
+     * A virtual field that returns this image's caption from its join data
+     *
+     * @return string
+     */
+    protected function _getCaption()
+    {
+        return $this->_joinData['caption'] ?? '';
     }
 }

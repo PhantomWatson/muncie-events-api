@@ -5,6 +5,7 @@ use App\Event\ApiCallsListener;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
@@ -27,17 +28,24 @@ class ApiController extends Controller
      * Initialization hook method
      *
      * @return void
+     * @throws BadRequestException
      * @throws Exception
      */
     public function initialize()
     {
         parent::initialize();
 
+        Configure::write('App.fullBaseUrl', 'https://api.muncieevents.com/');
+
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
         if (!$this->request->is('ssl')) {
             throw new BadRequestException('API calls must be made with HTTPS protocol');
+        }
+
+        if (!$this->isApiSubdomain() && !defined('PHPUNIT_RUNNING')) {
+            throw new BadRequestException('API calls must be made on the api subdomain');
         }
 
         $this->loadComponent(
@@ -71,6 +79,18 @@ class ApiController extends Controller
         if ($this->request->getQuery('userToken')) {
             $this->tokenUser = $this->getTokenUser();
         }
+    }
+
+    /**
+     * Returns TRUE if the current request is made on a valid API subdomain
+     *
+     * @return bool
+     */
+    private function isApiSubdomain()
+    {
+        $host = $this->request->host();
+
+        return stripos($host, 'api.') === 0;
     }
 
     /**

@@ -8,12 +8,12 @@
 
 use Cake\TestSuite\TestEmailTransport;
 
+define('PHPUNIT_RUNNING', true);
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 $_SERVER['PHP_SELF'] = '/';
-
-define('PHPUNIT_RUNNING', true);
 
 TestEmailTransport::replaceAllTransports();

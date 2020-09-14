@@ -1,120 +1,84 @@
 <?php
-use App\View\AppView;
 /**
- * @var AppView $this
- * @var array $authUser
+ * @var \App\View\AppView $this
  */
 ?>
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml">
+<head prefix="og: http://ogp.me/ns# muncieevents: http://ogp.me/ns/apps/muncieevents#">
+    <link rel="dns-prefetch" href="https://ajax.googleapis.com" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= isset($pageTitle) ? 'Muncie Events API: ' . $pageTitle : 'Muncie Events API' ?>
+        Muncie Events
+        <?= isset($pageTitle) ? "- $pageTitle" : '' ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-    <?= $this->Html->css('style.css') ?>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?= $this->element('og_meta_tags') ?>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    <?php
+    echo $this->Html->meta('icon');
+    echo $this->fetch('meta');
+    echo $this->Html->css('/magnific-popup/magnific-popup.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.structure.css');
+    echo $this->Html->css('/jquery-ui-1.12.1.custom/jquery-ui.theme.css');
+    echo $this->Html->css('/autoComplete.js/css/autoComplete.css');
+    echo $this->Html->css('style');
+    echo $this->fetch('css');
+    ?>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">
-            Muncie Events API
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<body class="layout_<?= $this->getLayout() ?>">
+<script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+</script>
+<script>window.jQuery || document.write('<script src="/js/jquery-3.4.1.min.js">\x3C/script>')</script>
+<script src="/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.1.0.min.js"></script>
+<script src="/autoComplete.js/js/autoComplete.min.js"></script>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">
-                        Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <?= $this->Html->link(
-                        'Docs',
-                        [
-                            'controller' => 'Pages',
-                            'action' => 'docsV1'
-                        ],
-                        ['class' => 'nav-link']
-                    ) ?>
-                </li>
-                <?php if ($authUser): ?>
-                    <li class="nav-item">
-                        <?= $this->Html->link(
-                            'API Key',
-                            [
-                                'controller' => 'Users',
-                                'action' => 'apiKey'
-                            ],
-                            ['class' => 'nav-link']
-                        ) ?>
-                    </li>
-                    <li class="nav-item">
-                        <?= $this->Html->link(
-                            'Log out',
-                            [
-                                'controller' => 'Users',
-                                'action' => 'logout'
-                            ],
-                            ['class' => 'nav-link']
-                        ) ?>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <?= $this->Html->link(
-                            'Register Account',
-                            [
-                                'controller' => 'Users',
-                                'action' => 'register'
-                            ],
-                            ['class' => 'nav-link']
-                        ) ?>
-                    </li>
-                    <li class="nav-item">
-                        <?= $this->Html->link(
-                            'Log in',
-                            [
-                                'controller' => 'Users',
-                                'action' => 'login'
-                            ],
-                            ['class' => 'nav-link']
-                        ) ?>
-                    </li>
-                <?php endif; ?>
-            </ul>
+<?= $this->element('Header/header') ?>
+
+<div id="divider"></div>
+
+<div class="container">
+    <div class="row">
+        <noscript id="noscript" class="alert alert-warning">
+            <div>
+                JavaScript is currently disabled in your browser.
+                For full functionality of this website, JavaScript must be enabled.
+                If you need assistance, <a href="http://www.enable-javascript.com/" target="_blank">Enable-JavaScript.com</a>
+                provides instructions.
+            </div>
+        </noscript>
+
+        <div id="content_wrapper" class="<?= ($hideSidebar ?? false ? 'col-12' : 'col-lg-9 col-md-8') ?>">
+            <div id="content" class="clearfix">
+                <div id="flash-messages">
+                    <?= $this->Flash->render('flash') ?>
+                </div>
+                <?= $this->fetch('content') ?>
+            </div>
         </div>
-    </nav>
 
-    <?= $this->Flash->render() ?>
-
-    <div class="container clearfix">
-        <?php if (isset($pageTitle)): ?>
-            <h1 id="page-title">
-                <?= $pageTitle ?>
-            </h1>
+        <?php if (!($hideSidebar ?? false)): ?>
+            <?= $this->element('sidebar') ?>
         <?php endif; ?>
-        <?= $this->fetch('content') ?>
     </div>
-    <script>
-        $(document).ready(function () {
-            <?= $this->fetch('buffered') ?>
-        });
-    </script>
+</div>
+<div id="footer">
+    <?= $this->element('footer') ?>
+</div>
+
+<?= $this->element('bootstrap_css_local_fallback') ?>
+<?= $this->element('bootstrap_js') ?>
+<?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
+<?= $this->Html->script('script') ?>
+<?= $this->Html->script('image_popups') ?>
+<?php $this->Html->scriptBlock('muncieEventsImagePopups.prepare();', ['block' => true]); ?>
+<?= $this->fetch('script') ?>
+<?= $this->element('analytics') ?>
 </body>
 </html>

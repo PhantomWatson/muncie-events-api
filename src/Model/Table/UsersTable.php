@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Image;
 use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -272,5 +273,19 @@ class UsersTable extends Table
             ->count();
 
         return $count > 1;
+    }
+
+    /**
+     * Returns a list of images associated with the specified user
+     *
+     * @param int $userId User ID
+     * @return \Cake\Datasource\ResultSetInterface|Image[]
+     */
+    public function getImagesList($userId)
+    {
+        return $this->Images->find()
+            ->where(['user_id' => $userId])
+            ->orderDesc('created')
+            ->all();
     }
 }

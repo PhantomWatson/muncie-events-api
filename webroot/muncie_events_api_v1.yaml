@@ -4,13 +4,12 @@ servers:
     url: https://api.muncieevents.com/v1
 info:
   description: |
-    The API for
-    [MuncieEvents.com](https://muncieevents.com).
+    The API for interfacing with the [MuncieEvents.com](https://muncieevents.com) event database
   version: '1.0.0'
   title: Muncie Events API
   termsOfService: ''
   contact:
-    email: gtwatson@bsu.edu
+    email: admin@muncieevents.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -212,8 +211,8 @@ paths:
             example: URL of Facebook event
         - in: header
           name: images
-          description: "Array of image objects, each containing `id` and `caption` properties, in the order the images
-            should be displayed"
+          description: "Array of image objects, each containing `id` and optional `caption` properties, in the order the
+            images should be displayed"
           schema:
             type: array
             items:
@@ -415,8 +414,8 @@ paths:
             example: URL of Facebook event
         - in: header
           name: images
-          description: "Array of image objects, each containing `id` and `caption` properties, in the order the images
-                should be displayed"
+          description: "Array of image objects, each containing `id` and optional `caption` properties, in the order the
+            images should be displayed"
           schema:
             type: array
             items:

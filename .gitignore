@@ -14,7 +14,6 @@
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
 ehthumbs.db
 Thumbs.db
 
@@ -39,5 +38,10 @@ node_modules/*
 # Migration lock file
 config/Migrations/schema-dump-default.lock
 
+# Front-end
+/webroot/magnific-popup/*
+/webroot/uploadifive/*
+
 # Other
+/webroot/img/events/*
 notes.txt

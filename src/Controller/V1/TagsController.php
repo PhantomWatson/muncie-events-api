@@ -83,7 +83,7 @@ class TagsController extends ApiController
 
         /** @var EventsTable $eventsTable */
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
-        $tags = $eventsTable->getUpcomingEventTags();
+        $tags = $eventsTable->getEventTags();
 
         $this->set([
             '_entities' => ['Tag'],

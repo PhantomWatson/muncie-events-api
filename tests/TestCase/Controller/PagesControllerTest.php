@@ -1,16 +1,35 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
+use App\Test\TestCase\ApplicationTest;
+use Cake\Core\Configure;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 use PHPUnit\Exception;
 
 /**
  * PagesControllerTest class
  */
-class PagesControllerTest extends TestCase
+class PagesControllerTest extends ApplicationTest
 {
+    use EmailTrait;
     use IntegrationTestTrait;
+
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.Events',
+        'app.Users',
+        'app.Categories',
+        'app.EventSeries',
+        'app.Images',
+        'app.Tags',
+        'app.EventsImages',
+        'app.EventsTags',
+    ];
 
     /**
      * Sets up this set of tests
@@ -40,6 +59,49 @@ class PagesControllerTest extends TestCase
     }
 
     /**
+     * Test that the contact page loads
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testContactPageGetSuccess()
+    {
+        $this->get([
+            'controller' => 'Pages',
+            'action' => 'contact',
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseContains('site administrator');
+        $this->assertResponseContains('</html>');
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * Test that the contact page sends emails
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testContactPagePostSuccess()
+    {
+        $data = [
+            'category' => 'General',
+            'name' => 'Sender name',
+            'email' => 'sender@example.com',
+            'body' => 'Message body',
+        ];
+        $this->post([
+            'controller' => 'Pages',
+            'action' => 'contact',
+        ], $data);
+        $this->assertResponseContains('Thank you for contacting us.');
+        $this->assertResponseOk();
+        $this->assertMailSentFrom($data['email']);
+        $this->assertMailSentTo(Configure::read('adminEmail'));
+        $this->assertMailContains($data['body']);
+    }
+
+    /**
      * Tests HTTP requests being redirected to HTTPS
      *
      * @return void
@@ -58,16 +120,16 @@ class PagesControllerTest extends TestCase
     }
 
     /**
-     * Tests /docs/v1
+     * Tests that /api returns a successful response
      *
      * @return void
      * @throws Exception
      */
-    public function testDocsV1()
+    public function testApi()
     {
         $this->get([
             'controller' => 'Pages',
-            'action' => 'docsV1',
+            'action' => 'api',
         ]);
         $this->assertResponseOk();
     }

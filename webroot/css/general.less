@@ -1,0 +1,254 @@
+@import "variables";
+@import "mixins";
+
+th {
+    text-align: left;
+}
+.clearfix {
+    *zoom: 1;
+
+    &:after {
+        clear: both;
+    }
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+}
+a {
+    color: @LinkColor;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+    &:active,
+    &:hover {
+        color: @LinkColorHover;
+    }
+    &.with_icon {
+        text-decoration: none;
+
+        &:hover {
+            span {
+                text-decoration: underline;
+            }
+        }
+    }
+    [class^="icon-"]:before,
+    [class*=" icon-"]:before {
+        cursor: pointer !important;
+    }
+}
+#content_wrapper {
+    p {
+        > a {
+            font-weight: bold;
+
+            &.btn {
+                font-weight: normal;
+            }
+        }
+    }
+}
+.light_text {
+    color: #666;
+}
+.ui-tooltip {
+    font-size: 80%;
+    padding: 5px;
+}
+.ui-effects-transfer {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px dotted #555;
+}
+.ui-autocomplete {
+    font-size: 80%;
+}
+.no-padding {
+    padding: 0;
+}
+h1 {
+    font-family: Harabara, Verdana, sans-serif;
+    letter-spacing: 2px;
+    margin-top: 0;
+    text-shadow: @HeaderTextShadow;
+}
+.sr-only {
+    background-color: #FFF;
+    color: #000;
+}
+form {
+    > div {
+        margin-bottom: 1em;
+        padding: .5em;
+        vertical-align: text-top;
+    }
+    label {
+        font-weight: bold;
+    }
+    .required {
+        label:after {
+            color: #e32;
+            content: '*';
+            display: inline;
+        }
+    }
+    div.submit {
+        border: 0;
+        margin-top: 10px;
+    }
+    .error {
+        background: #FFDACC;
+        border-radius: 4px;
+        font-weight: normal;
+    }
+    .error-message {
+        background: none;
+        border-radius: 0;
+        border: none;
+        margin: 0;
+        padding-left: 4px;
+        padding-right: 0;
+    }
+    .text-muted {
+        margin: 0;
+        padding: 0;
+    }
+}
+fieldset {
+    border: 1px solid #888;
+    margin-bottom: 1em;
+    padding: 16px 10px;
+
+    legend {
+        font-size: 130%;
+        font-weight: bold;
+        width: auto;
+    }
+    fieldset {
+        margin-top: 0;
+        padding: 10px 0 0;
+
+        legend {
+            font-size: 120%;
+            font-weight: normal;
+        }
+        div {
+            clear: left;
+        }
+    }
+}
+label {
+    display: inline-block;
+    margin-bottom: 3px;
+}
+select {
+    vertical-align: text-bottom;
+
+    &[multiple=multiple] {
+        width: 100%;
+    }
+}
+option {
+    padding: 0 3px;
+}
+input {
+    &[type=checkbox],
+    &[type=radio] {
+        display: inline-block;
+        line-height: 26px;
+        margin: 5px;
+        padding: 0;
+        width: auto;
+    }
+}
+div.checkbox label {
+    display: inline;
+}
+.footnote {
+    visibility: hidden;
+
+    @media @x-large {
+        visibility: visible;
+    }
+}
+
+#flash-messages {
+    > div {
+        margin-bottom: 15px;
+    }
+}
+.alert {
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.alert-info {
+    a {
+        text-decoration: underline;
+    }
+}
+
+.success {
+    background-color: #dff0d8;
+    border-color: #d0e9c6;
+    color: #3c763d;
+}
+.page-link {
+    color: #7f7f7f;
+
+    &:hover {
+        color: #bfbfbf;
+    }
+}
+.paginator {
+    text-align: center;
+    p {
+        text-align: center;
+    }
+}
+.pagination {
+    margin: 0 auto;
+    width: 45%;
+
+    @media @x-small {
+        font-size: .78em;
+        width: 100%;
+    }
+    @media @small {
+        width: 71%;
+    }
+    li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-left-radius: .25rem;
+        border-top-left-radius: .25rem;
+        color: #0275d8;
+        display: block;
+        line-height: 1.25;
+        margin-left: 0;
+        padding: .5rem .75rem;
+        position: relative;
+    }
+    .disabled {
+        > a {
+            color: @DefaultTextColor;
+
+            &:hover {
+                color: @DefaultTextColor;
+                text-decoration: none;
+            }
+        }
+    }
+}
+#sql_dump {
+    .ContentArea;
+    padding: 10px;
+}
+.sql_dump {
+    margin: 20px auto auto;
+    width: 1000px;
+}
