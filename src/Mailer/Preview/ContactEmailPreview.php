@@ -2,7 +2,6 @@
 namespace App\Mailer\Preview;
 
 use App\Mailer\ContactMailer;
-use Cake\Mailer\Email;
 use DebugKit\Mailer\MailPreview;
 
 class ContactEmailPreview extends MailPreview
@@ -10,7 +9,7 @@ class ContactEmailPreview extends MailPreview
     /**
      * Preview method for UserMailer::newAccount()
      *
-     * @return Email
+     * @return \Cake\Mailer\Mailer
      */
     public function contact()
     {
