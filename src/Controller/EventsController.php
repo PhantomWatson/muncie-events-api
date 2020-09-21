@@ -519,7 +519,8 @@ class EventsController extends AppController
         $user = $this->Auth->user();
         $event->autoApprove($user);
         $event->autoPublish($user);
-        $event->processTags($data['tags']['_ids'], $data['customTags']);
+        $tagIds = $data['tags']['_ids'] ?? [];
+        $event->processTags($tagIds, $data['customTags']);
         $event->setImageJoinData($data['images']);
         $event->setLocationSlug();
         $saved = $this->Events->save($event, ['associated' => ['Images', 'Tags', 'EventSeries']]);
