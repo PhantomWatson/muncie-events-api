@@ -217,7 +217,7 @@ var ImageManager = {
             if (listedImage.length !== 0) {
                 listedImage.hide();
             }
-            li.find('a.remove').click(function (event) {
+            li.find('button.remove').click(function (event) {
                 event.preventDefault();
                 var container = $(this).parent('li');
                 ImageManager.unselectImage(container);
