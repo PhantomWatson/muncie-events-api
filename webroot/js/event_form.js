@@ -13,23 +13,6 @@ function setupEventForm() {
         event.preventDefault();
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
-
-        // Pre-select an end time one hour from the start time
-        const timeStartHour = document.querySelector('select[name="time_start[hour]"]');
-        const timeEndHour = document.querySelector('select[name="time_end[hour]"]');
-        const timeStartMinute = document.querySelector('select[name="time_start[minute]"]');
-        const timeEndMinute = document.querySelector('select[name="time_end[minute]"]');
-        const timeStartMeridian = document.querySelector('select[name="time_start[meridian]"]');
-        const timeEndMeridian = document.querySelector('select[name="time_end[meridian]"]');
-        timeEndHour.selectedIndex = (timeStartHour.selectedIndex === timeStartHour.childElementCount - 1)
-            ? 0
-            : timeStartHour.selectedIndex + 1;
-        timeEndMinute.selectedIndex = timeStartMinute.selectedIndex;
-        timeEndMeridian.selectedIndex = (timeEndHour.selectedIndex === timeEndHour.childElementCount - 1)
-            ? (timeStartMeridian.selectedIndex === 0 ? 1 : 0)
-            : timeStartMeridian.selectedIndex;
-
-        timeEndHour.focus();
     });
     const timeEndField = document.getElementById('flatpickr-time-end');
     $('#remove_end_time').click(function (event) {
