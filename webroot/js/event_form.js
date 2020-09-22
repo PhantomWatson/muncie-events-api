@@ -124,8 +124,9 @@ function setupEventForm() {
 }
 
 function setupDescriptionField() {
+    let descriptionEditor;
     ClassicEditor
-        .create( document.querySelector( '#EventDescription' ), {
+        .create(document.querySelector('#EventDescription'), {
             removePlugins: [
                 'CKFinder',
                 'CKFinderUploadAdapter',
@@ -151,10 +152,23 @@ function setupDescriptionField() {
                 'undo',
                 'redo',
             ],
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
+        })
+        .then(function (ckEditor) {
+            descriptionEditor = ckEditor;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    const form = document.getElementById('EventForm');
+    form.addEventListener('submit', function (event) {
+        console.log('submitted');
+        const description = descriptionEditor.getData();
+        console.log(description);
+        if (description === '' || description === null) {
+            alert('Please enter a description of this event.');
+            event.preventDefault();
+        }
+    });
 }
 
 function setupLocationAutocomplete() {
@@ -324,18 +338,6 @@ class EventForm {
                 const eventTitle = document.getElementById('EventTitle');
                 seriesTitle.value = eventTitle.value;
             }
-        });
-
-        const form = document.getElementById('EventForm');
-        form.addEventListener('submit', function () {
-            const description = CKEDITOR.instances.EventDescription.getData();
-            if (description === '' || description === null) {
-                alert('Please enter a description of this event.');
-
-                return false;
-            }
-
-            return true;
         });
     }
 }
