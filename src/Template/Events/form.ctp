@@ -331,8 +331,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </label>
         <div class="col-md-9">
             <?= $this->Form->control('description', [
-                'label' => false,
                 'id' => 'EventDescription',
+                'label' => false,
+                'required' => false,
             ]) ?>
         </div>
     </div>
