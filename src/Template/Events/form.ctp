@@ -514,7 +514,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                 'id' => 'EventAgeRestriction',
                 'label' => false,
                 'maxLength' => 30,
-                'placeholder' => '21+',
+                'placeholder' => 'e.g. 18+, 21+, etc.',
             ]) ?>
             <div class="text-muted">
                 Leave this blank if this event has no age restrictions.
@@ -531,7 +531,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                 'class' => 'form-control',
                 'id' => 'EventSource',
                 'label' => false,
-                'placeholder' => 'https://www.facebook.com/events/1234567890',
+                'placeholder' => 'e.g. https://www.facebook.com/events/1234567890',
             ]) ?>
             <div class="text-muted">
                 Did you get this information from a website, newspaper, flyer, etc?
