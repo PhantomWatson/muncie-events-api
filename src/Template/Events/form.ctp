@@ -185,9 +185,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     </div>
 
     <div class="row form-group">
-        <span class="col-md-3 pseudo-label">
+        <label for="flatpickr-date" class="col-md-3">
             <?= $action == 'add' ? 'Date(s)' : 'Date' ?>
-        </span>
+        </label>
         <div class="col-md-9">
             <div id="datepicker" class="<?= $multipleDatesAllowed ? 'multi' : 'single' ?>"></div>
             <?= $this->Form->control(
@@ -215,6 +215,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </span>
         <div class="col-md-9">
             <div id="eventform_timestart_div" class="form-group form-inline">
+                <label for="flatpickr-time-start" class="sr-only">
+                    Start time
+                </label>
                 <?= $this->Form->control(
                     'time_start',
                     [
@@ -237,6 +240,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                                            endif; ?>>
                 to
                 <div class="form-group form-inline">
+                    <label for="flatpickr-time-end" class="sr-only">
+                        End time
+                    </label>
                     <?= $this->Form->control(
                         'time_end',
                         [
