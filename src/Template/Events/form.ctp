@@ -45,6 +45,10 @@ $this->Html->script('/flatpickr/flatpickr.min.js', ['block' => true]);
 $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 ?>
 
+<?php $this->append('header_scripts'); ?>
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+<?php $this->end(); ?>
+
 <?php $this->Html->scriptStart(['block' => true]); ?>
     // Disable page for Internet Explorer, which doesn't support the tag autocomplete's async function
     let userAgent = window.navigator.userAgent;

@@ -120,6 +120,41 @@ function setupEventForm() {
         options[x].addEventListener('click', handleChangeEventType)
     }
     handleChangeEventType();
+    setupDescriptionField();
+}
+
+function setupDescriptionField() {
+    ClassicEditor
+        .create( document.querySelector( '#EventDescription' ), {
+            removePlugins: [
+                'CKFinder',
+                'CKFinderUploadAdapter',
+                'EasyImage',
+                'Heading',
+                'Image',
+                'ImageCaption',
+                'ImageStyle',
+                'ImageToolbar',
+                'ImageUpload',
+                'MediaEmbed',
+                'Table',
+                'TableToolbar',
+            ],
+            toolbar: [
+                'bold',
+                'italic',
+                'link',
+                'numberedlist',
+                'bulletedlist',
+                'blockquote',
+                '|',
+                'undo',
+                'redo',
+            ],
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
 }
 
 function setupLocationAutocomplete() {
