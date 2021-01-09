@@ -902,4 +902,20 @@ class EventsTable extends Table
 
         return $query;
     }
+
+    /**
+     * Limits the query to events on the specified date
+     *
+     * @param Query $query Query
+     * @param array $options Array of options, with 'date' expected
+     * @return $this|Query
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function findOn(Query $query, array $options)
+    {
+        return $query
+            ->find('startingOn', ['date' => $options['date']])
+            ->find('endingOn', ['date' => $options['date']]);
+    }
 }
