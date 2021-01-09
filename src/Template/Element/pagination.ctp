@@ -36,21 +36,23 @@ $next = $hasNext ? $nextButton : null;
     <ul class="pagination">
         <?= $prev ?>
         <?php if ($hasPrev || $hasNext) : ?>
-            <label class="sr-only" for="paginator-page-select">
-                Go to page
-            </label>
-            <select class="custom-select" id="paginator-page-select">
-                <?php for ($p = 1; $p <= $totalPages; $p++) : ?>
-                    <option
-                        <?php if ($p == $currentPage) :
-                            ?>selected="selected"<?php
-                        endif; ?>
-                        data-url="<?= $this->Paginator->generateUrl($url + ['page' => $p]) ?>"
-                    >
-                        <?= $p ?>
-                    </option>
-                <?php endfor; ?>
-            </select>
+            <li>
+                <label class="sr-only" for="paginator-page-select">
+                    Go to page
+                </label>
+                <select class="custom-select" id="paginator-page-select">
+                    <?php for ($p = 1; $p <= $totalPages; $p++) : ?>
+                        <option
+                            <?php if ($p == $currentPage) :
+                                ?>selected="selected"<?php
+                            endif; ?>
+                            data-url="<?= $this->Paginator->generateUrl($url + ['page' => $p]) ?>"
+                        >
+                            <?= $p ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
+            </li>
         <?php endif; ?>
         <?= $next ?>
     </ul>
