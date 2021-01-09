@@ -9,6 +9,7 @@ use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use App\Slack\Slack;
 use Cake\Core\Configure;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
@@ -74,21 +75,39 @@ class EventsController extends AppController
      */
     public function index($startDate = null)
     {
-        $pageSize = '1 month';
+        $minEventCount = 30;
         $timezone = Configure::read('localTimezone');
         $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
         $startDate = $startDate ?? $defaultStartDate;
-        $endDate = date('Y-m-d', strtotime($startDate . ' + ' . $pageSize));
+
+        // Get minimum number of events
         $events = $this->Events
             ->find('ordered')
             ->find('published')
             ->find('startingOn', ['date' => $startDate])
-            ->find('endingOn', ['date' => $endDate])
             ->find('withAllAssociated')
+            ->limit($minEventCount)
             ->all();
-        $this->set([
-            'events' => $events,
-        ]);
+
+        // Get the rest of the events in the last date of this group
+        if (!$events->isEmpty()) {
+            /** @var Event $event */
+            $lastEvent = $events->last();
+            $lastDate = $lastEvent->date;
+            $eventIds = Hash::extract($events->toArray(), '{n}.id');
+            $moreEvents = $this->Events
+                ->find('ordered')
+                ->find('published')
+                ->find('on', ['date' => $lastDate->format('Y-m-d')])
+                ->find('withAllAssociated')
+                ->where(function (QueryExpression $exp) use ($eventIds) {
+                    return $exp->notIn('Events.id', $eventIds);
+                })
+                ->all();
+            $events = $events->append($moreEvents);
+        }
+
+        $this->set(['events' => $events]);
 
         if ($this->request->getQuery('page')) {
             $this->render('/Events/page');
@@ -436,7 +455,7 @@ class EventsController extends AppController
                 'value' => $location['address'],
             ];
         }
-        //$autocompleteLocations = array_values($autocompleteLocations);
+        $autocompleteLocations = array_values($autocompleteLocations);
         $uploadMax = ini_get('upload_max_filesize');
         $postMax = ini_get('post_max_size');
         $serverFilesizeLimit = min($uploadMax, $postMax);

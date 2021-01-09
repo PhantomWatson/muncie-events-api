@@ -45,6 +45,10 @@ $this->Html->script('/flatpickr/flatpickr.min.js', ['block' => true]);
 $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 ?>
 
+<?php $this->append('header_scripts'); ?>
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+<?php $this->end(); ?>
+
 <?php $this->Html->scriptStart(['block' => true]); ?>
     // Disable page for Internet Explorer, which doesn't support the tag autocomplete's async function
     let userAgent = window.navigator.userAgent;
@@ -181,9 +185,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     </div>
 
     <div class="row form-group">
-        <span class="col-md-3 pseudo-label">
+        <label for="flatpickr-date" class="col-md-3">
             <?= $action == 'add' ? 'Date(s)' : 'Date' ?>
-        </span>
+        </label>
         <div class="col-md-9">
             <div id="datepicker" class="<?= $multipleDatesAllowed ? 'multi' : 'single' ?>"></div>
             <?= $this->Form->control(
@@ -211,6 +215,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </span>
         <div class="col-md-9">
             <div id="eventform_timestart_div" class="form-group form-inline">
+                <label for="flatpickr-time-start" class="sr-only">
+                    Start time
+                </label>
                 <?= $this->Form->control(
                     'time_start',
                     [
@@ -233,6 +240,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                                            endif; ?>>
                 to
                 <div class="form-group form-inline">
+                    <label for="flatpickr-time-end" class="sr-only">
+                        End time
+                    </label>
                     <?= $this->Form->control(
                         'time_end',
                         [
@@ -327,8 +337,9 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
         </label>
         <div class="col-md-9">
             <?= $this->Form->control('description', [
-                'label' => false,
                 'id' => 'EventDescription',
+                'label' => false,
+                'required' => false,
             ]) ?>
         </div>
     </div>
@@ -503,7 +514,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                 'id' => 'EventAgeRestriction',
                 'label' => false,
                 'maxLength' => 30,
-                'placeholder' => '21+',
+                'placeholder' => 'e.g. 18+, 21+, etc.',
             ]) ?>
             <div class="text-muted">
                 Leave this blank if this event has no age restrictions.
@@ -520,7 +531,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
                 'class' => 'form-control',
                 'id' => 'EventSource',
                 'label' => false,
-                'placeholder' => 'https://www.facebook.com/events/1234567890',
+                'placeholder' => 'e.g. https://www.facebook.com/events/1234567890',
             ]) ?>
             <div class="text-muted">
                 Did you get this information from a website, newspaper, flyer, etc?

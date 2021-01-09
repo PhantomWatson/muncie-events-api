@@ -13,23 +13,6 @@ function setupEventForm() {
         event.preventDefault();
         $('#eventform_hasendtime').show();
         $('#eventform_noendtime').hide();
-
-        // Pre-select an end time one hour from the start time
-        const timeStartHour = document.querySelector('select[name="time_start[hour]"]');
-        const timeEndHour = document.querySelector('select[name="time_end[hour]"]');
-        const timeStartMinute = document.querySelector('select[name="time_start[minute]"]');
-        const timeEndMinute = document.querySelector('select[name="time_end[minute]"]');
-        const timeStartMeridian = document.querySelector('select[name="time_start[meridian]"]');
-        const timeEndMeridian = document.querySelector('select[name="time_end[meridian]"]');
-        timeEndHour.selectedIndex = (timeStartHour.selectedIndex === timeStartHour.childElementCount - 1)
-            ? 0
-            : timeStartHour.selectedIndex + 1;
-        timeEndMinute.selectedIndex = timeStartMinute.selectedIndex;
-        timeEndMeridian.selectedIndex = (timeEndHour.selectedIndex === timeEndHour.childElementCount - 1)
-            ? (timeStartMeridian.selectedIndex === 0 ? 1 : 0)
-            : timeStartMeridian.selectedIndex;
-
-        timeEndHour.focus();
     });
     const timeEndField = document.getElementById('flatpickr-time-end');
     $('#remove_end_time').click(function (event) {
@@ -120,6 +103,55 @@ function setupEventForm() {
         options[x].addEventListener('click', handleChangeEventType)
     }
     handleChangeEventType();
+    setupDescriptionField();
+}
+
+function setupDescriptionField() {
+    let descriptionEditor;
+    ClassicEditor
+        .create(document.querySelector('#EventDescription'), {
+            removePlugins: [
+                'CKFinder',
+                'CKFinderUploadAdapter',
+                'EasyImage',
+                'Heading',
+                'Image',
+                'ImageCaption',
+                'ImageStyle',
+                'ImageToolbar',
+                'ImageUpload',
+                'MediaEmbed',
+                'Table',
+                'TableToolbar',
+            ],
+            toolbar: [
+                'bold',
+                'italic',
+                'link',
+                'numberedlist',
+                'bulletedlist',
+                'blockquote',
+                '|',
+                'undo',
+                'redo',
+            ],
+        })
+        .then(function (ckEditor) {
+            descriptionEditor = ckEditor;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+    const form = document.getElementById('EventForm');
+    form.addEventListener('submit', function (event) {
+        console.log('submitted');
+        const description = descriptionEditor.getData();
+        console.log(description);
+        if (description === '' || description === null) {
+            alert('Please enter a description of this event.');
+            event.preventDefault();
+        }
+    });
 }
 
 function setupLocationAutocomplete() {
@@ -289,18 +321,6 @@ class EventForm {
                 const eventTitle = document.getElementById('EventTitle');
                 seriesTitle.value = eventTitle.value;
             }
-        });
-
-        const form = document.getElementById('EventForm');
-        form.addEventListener('submit', function () {
-            const description = CKEDITOR.instances.EventDescription.getData();
-            if (description === '' || description === null) {
-                alert('Please enter a description of this event.');
-
-                return false;
-            }
-
-            return true;
         });
     }
 }

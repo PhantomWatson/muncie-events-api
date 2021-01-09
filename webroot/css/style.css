@@ -5760,6 +5760,7 @@ ul.event_accordion .details th {
   font-weight: bold;
   padding-right: 5px;
   vertical-align: top;
+  white-space: nowrap;
 }
 ul.event_accordion .images {
   float: right;

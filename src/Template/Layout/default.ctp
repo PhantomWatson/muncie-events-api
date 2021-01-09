@@ -26,6 +26,7 @@
     echo $this->Html->css('/autoComplete.js/css/autoComplete.css');
     echo $this->Html->css('style');
     echo $this->fetch('css');
+    echo $this->fetch('header_scripts');
     ?>
 </head>
 <body class="layout_<?= $this->getLayout() ?>">
