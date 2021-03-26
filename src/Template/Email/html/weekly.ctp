@@ -24,7 +24,7 @@ $eventsByDate = CalendarHelper::arrangeByDate($events);
     <?= $this->element('MailingList/welcome') ?>
 <?php endif; ?>
 
-<div>
+<div class="wrapper">
     <?php foreach ($eventsByDate as $date => $daysEvents) : ?>
         <?php
             if (empty($daysEvents)) {

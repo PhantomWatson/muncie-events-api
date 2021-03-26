@@ -26,7 +26,7 @@ $now = new FrozenTime('now', $timezone);
     <?= $this->element('MailingList/welcome') ?>
 <?php endif; ?>
 
-<div>
+<div class="wrapper">
     <h3 class="day">
         <?= sprintf(
             '%s <span class="date">%s<sup>%s</sup></span>',

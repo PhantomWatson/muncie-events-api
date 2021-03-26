@@ -32,7 +32,7 @@ img.category {
   margin-top: 5px;
   width: 32px;
 }
-> div {
+.wrapper {
   margin: 30px 0;
 }
 .footnote {
@@ -50,3 +50,4 @@ sup {
   text-transform: lowercase;
   vertical-align: super;
 }
+/*# sourceMappingURL=email.css.map */
