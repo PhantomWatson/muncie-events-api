@@ -5765,6 +5765,7 @@ ul.event_accordion .details th {
 ul.event_accordion .images {
   float: right;
   margin-bottom: 15px;
+  max-width: 300px;
   text-align: center;
 }
 @media (max-width: 576px) {
