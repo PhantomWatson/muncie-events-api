@@ -97,7 +97,7 @@ class MailingListMailer extends Mailer
         $dayCount = count($selectedDays);
         if ($dayCount == 7) {
             $frequency = 'Daily';
-            if ($recipient['MailingList']['weekly']) {
+            if ($recipient->weekly) {
                 $frequency .= ' and weekly';
             }
         } elseif ($dayCount > 0) {
