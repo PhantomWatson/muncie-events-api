@@ -17,8 +17,10 @@ env:
 matrix:
   fast_finish: true
 
+before_install:
+  - echo "extension = gd2.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 before_script:
-  - pecl install gd
   - if [[ $PHPCS = 1 ]]; then composer require cakephp/cakephp-codesniffer:^3.3.0; fi
   - if [[ $PHPUNIT = 1 ]]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
   - if [[ $PHPUNIT = 1 ]]; then chmod +x ./cc-test-reporter; fi
