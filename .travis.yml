@@ -1,6 +1,6 @@
 language: php
 
-dist: trusty
+dist: bionic
 
 sudo: false
 
@@ -16,6 +16,9 @@ env:
 
 matrix:
   fast_finish: true
+
+services:
+  - mysql
 
 before_install:
   - echo "extension = gd2.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
