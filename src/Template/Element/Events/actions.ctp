@@ -9,10 +9,10 @@ use App\Model\Entity\Event;
 use App\View\AppView;
 use App\View\Helper\CalendarHelper;
 
-$isAdmin = $authUser['role'] == 'admin';
-$isAuthor = $authUser['id'] == $event->user_id;
+$isAdmin = isset($authUser['role']) && $authUser['role'] == 'admin';
+$isAuthor = isset($authUser['id']) && $authUser['id'] == $event->user_id;
 $isApproved = (bool)$event->approved_by;
-$canEdit = $authUser['id'] && ($isAdmin || $isAuthor);
+$canEdit = isset($authUser['id']) && $authUser['id'] && ($isAdmin || $isAuthor);
 $widget = $widget ?? false;
 $dropdownMenuClasses = 'dropdown-menu';
 if ($widget) {
