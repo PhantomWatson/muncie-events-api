@@ -43,10 +43,6 @@ class PagesController extends AppController
 
         $this->Auth->allow();
 
-        if ($this->request->getParam('action') === 'contact') {
-            $this->loadRecaptcha();
-        }
-
         return null;
     }
 
@@ -73,53 +69,11 @@ class PagesController extends AppController
     /**
      * Contact page
      *
-     * @return null
+     * @return void
      */
     public function contact()
     {
         $this->set('pageTitle', 'Contact Us');
-        if (!$this->request->is('post')) {
-            return null;
-        }
-
-        $validator = new ContactValidator();
-        $data = $this->request->getData();
-        $errors = $validator->errors($data);
-        $phpUnitRunning = defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING;
-        $authorized = $phpUnitRunning || $this->Recaptcha->verify();
-        if (!empty($errors) || !$authorized) {
-            $this->Flash->error('Message could not be sent. Please check for error messages and try again');
-
-            return null;
-        }
-
-        $email = new Email('contact_form');
-        $adminEmail = Configure::read('adminEmail');
-        $email
-            ->setFrom($data['email'], $data['name'])
-            ->setTo($adminEmail)
-            ->setSubject('Muncie Events contact form: ' . $data['category']);
-        $isSent = $email->send($data['body']);
-        if ($isSent) {
-            $this->Flash->success('Thank you for contacting us. We will respond to your message as soon as we can.');
-
-            // Clear form
-            foreach (['body', 'email', 'name'] as $field) {
-                $this->request = $this->request->withData($field, '');
-            }
-
-            return null;
-        }
-
-        $msg = sprintf(
-            'There was a problem sending your message. Please contact an administrator at ' .
-            '<a href="mailto:%s">%s</a> for assistance.',
-            $adminEmail,
-            $adminEmail
-        );
-        $this->Flash->error($msg);
-
-        return null;
     }
 
     /**
