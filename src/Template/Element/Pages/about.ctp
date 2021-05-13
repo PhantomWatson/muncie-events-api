@@ -17,8 +17,8 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
 
 <p>
     Muncie Events is a free, comprehensive event promotion service provided to the city of
-    Muncie, Indiana with the support of Ball State University's <a href="https://bsu.edu/cber">Center for Business and
-    Economic Research</a> and the <a href="https://munciearts.org">Muncie Arts and Culture Council</a>. It strives to
+    Muncie, Indiana with the support of the <a href="https://munciearts.org">Muncie Arts and Culture Council</a>.
+    It strives to
     make learning about and promoting events easier for everyone by providing the underlying service to empower local
     websites and mobile apps to be part of the same event promotion network. Event information collected by Muncie
     Events gets distributed to every website displaying
@@ -54,7 +54,6 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
         ],
         'Organizations' => [
             '<a href="https://munciearts.org">Muncie Arts and Culture Council</a>' => '',
-            '<a href="http://bsu.edu/cber">Center for Business and Economic Research</a>' => '',
         ],
         'Software' => [
             '<a href="http://cakephp.org">CakePHP</a>' => 'Back-end framework',
