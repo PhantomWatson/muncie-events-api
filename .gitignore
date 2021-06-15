@@ -45,3 +45,6 @@ config/Migrations/schema-dump-default.lock
 # Other
 /webroot/img/events/*
 notes.txt
+
+# Docker
+/docker/.env
