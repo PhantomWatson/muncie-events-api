@@ -104,7 +104,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['pass' => ['location', 'direction']]
     );
     $routes->connect(
-        '/location/:location/:direction',
+        '/location/:location/:direction/*',
         ['controller' => 'Events', 'action' => 'location'],
         ['pass' => ['location', 'direction']]
     );
