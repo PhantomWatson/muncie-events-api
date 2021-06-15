@@ -53,7 +53,7 @@ $tomorrow = (new FrozenTime('tomorrow', $timezone))->format('Y-m-d');
                     <?php endif; ?>
                     <?php $url = Router::url(['controller' => 'Events', 'action' => 'view', 'id' => $event->id]) ?>
                     <a href="<?= $url ?>" title="Click for more info" class="event_link" id="event_link_<?= $event->id ?>">
-                        <?= $this->Icon->category($event['Category']['name']) ?>
+                        <?= $this->Icon->category($event->category->name) ?>
                         <div class="title">
                             <?= $event->title ?>
                         </div>
