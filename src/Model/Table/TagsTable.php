@@ -128,11 +128,12 @@ class TagsTable extends Table
      */
     public function getFromIdSlug(?string $idAndSlug)
     {
-        if (strpos($idAndSlug, '-') === false) {
+        if (strpos($idAndSlug, '-') === false && strpos($idAndSlug, '_') === false) {
             return false;
         }
 
         $tagId = (explode('-', $idAndSlug))[0];
+        $tagId = (explode('_', $tagId))[0];
 
         /** @var Tag $tag */
         $tag = $this->find()
