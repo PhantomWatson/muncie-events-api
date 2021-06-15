@@ -73,7 +73,7 @@ $displayedEventFields = [
 
                     if ($isSeries && $count > 1) {
                         $editConfirm = sprintf(
-                            'You will only be editing this event, and not the %n other %s in this series.',
+                            'You will only be editing this event, and not the %s other %s in this series.',
                             ($count - 1),
                             __n('event', 'events', ($count - 1))
                         );
