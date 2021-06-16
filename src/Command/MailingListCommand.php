@@ -32,6 +32,13 @@ class MailingListCommand extends Command
     const DEFAULT_RECIPIENT_EMAIL = 'graham@phantomwatson.com';
 
     /**
+     * The limit of how many recipients will be emailed during this iteration
+     *
+     * Implemented due to InMotion's 250 messages per hour limit
+     */
+    const RECIPIENT_LIMIT = 10;
+
+    /**
      * Command initialize method
      *
      * @return void
@@ -120,7 +127,7 @@ class MailingListCommand extends Command
     private function processDaily()
     {
         // Make sure there are recipients
-        $recipients = $this->MailingList->getDailyRecipients($this->recipientEmail);
+        $recipients = $this->MailingList->getDailyRecipients($this->recipientEmail, self::RECIPIENT_LIMIT);
         if (!$recipients->count()) {
             $this->io->out('No recipients found for today');
             if ($this->recipientEmail) {
@@ -244,7 +251,7 @@ class MailingListCommand extends Command
         }
 
         // Make sure there are recipients
-        $recipients = $this->MailingList->getWeeklyRecipients($this->recipientEmail);
+        $recipients = $this->MailingList->getWeeklyRecipients($this->recipientEmail, self::RECIPIENT_LIMIT);
         if (!$recipients->count()) {
             $this->io->out('No recipients found for this week');
             if ($this->recipientEmail) {

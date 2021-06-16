@@ -192,9 +192,10 @@ class MailingListTable extends Table
      * Returns a resultset of today's daily mailing list message recipients
      *
      * @param string|null $email Optional specific email address
+     * @param int $limit Limit of how many recipients to return, zero for no limit
      * @return \Cake\Datasource\ResultSetInterface|MailingList[]
      */
-    public function getDailyRecipients($email = null)
+    public function getDailyRecipients($email = null, $limit = 0)
     {
         $timezone = Configure::read('localTimezone');
         $now = new FrozenTime('now', $timezone);
@@ -218,6 +219,9 @@ class MailingListTable extends Table
             ]);
         if ($email) {
             $query->where(['email' => $email]);
+        }
+        if ($limit) {
+            $query->limit($limit);
         }
 
         return $query->all();
@@ -260,9 +264,10 @@ class MailingListTable extends Table
      * Returns a set of weekly mailing list subscribers
      *
      * @param string|null $email Optional specific email address
+     * @param int $limit Limit of how many recipients to return, zero for no limit
      * @return \Cake\Datasource\ResultSetInterface|MailingList[]
      */
-    public function getWeeklyRecipients($email = null)
+    public function getWeeklyRecipients($email = null, $limit = 0)
     {
         $timezone = Configure::read('localTimezone');
         $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
@@ -284,6 +289,9 @@ class MailingListTable extends Table
             ]);
         if ($email) {
             $query->where(['email' => $email]);
+        }
+        if ($limit) {
+            $query->limit($limit);
         }
 
         return $query->all();
