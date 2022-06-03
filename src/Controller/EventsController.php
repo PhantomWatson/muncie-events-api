@@ -792,4 +792,52 @@ class EventsController extends AppController
             'pageTitle' => 'My Events',
         ]);
     }
+
+    /**
+     * Renders an iCal feed for all upcoming events (in the next year), optionally filtered by category
+     *
+     * /events/feed.ics, equivalent to /events/feed/all.ics
+     * /events/feed/category-slug.ics (e.g. theater.ics)
+     *
+     * @param string $categorySlug
+     * @return void
+     * @throws \Cake\Http\Exception\BadRequestException
+     */
+    public function feed($categorySlug = 'all')
+    {
+        if (!$this->request->getParam('_ext') == 'ics') {
+            throw new BadRequestException('.ics extension required');
+        }
+
+        // Get all published events for the next year
+        $query = $this
+            ->Events
+            ->find('future')
+            ->find('published')
+            ->find('withAllAssociated')
+            ->where([
+                function (QueryExpression $exp) {
+                    return $exp->lte('date', (new FrozenTime('now + 1 year'))->format('Y-m-d'));
+                },
+            ]);
+
+        // Limit events to a category
+        if ($categorySlug != 'all') {
+            $category = $this
+                ->Events
+                ->Categories
+                ->find()
+                ->where(['slug' => $categorySlug])
+                ->first();
+            if (!$category) {
+                throw new BadRequestException('Invalid category: ' . $categorySlug);
+            }
+            $query->find('inCategory', ['categoryId' => $category->id]);
+        }
+
+        $events = $query->all();
+        $filename = "$categorySlug.ics";
+        $this->response = $this->response->withDownload($filename);
+        $this->set(compact('events'));
+    }
 }
