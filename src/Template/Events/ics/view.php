@@ -4,10 +4,11 @@
  * @var \App\Model\Entity\Event $event
  */
 
+use App\Event\VEvent;
 use Sabre\VObject\Component\VCalendar;
 
 $vcalendar = new VCalendar([
-    'VEVENT' => $this->element('Events/vevent'),
+    'VEVENT' => VEvent::getVevent($event),
 ]);
 
 echo $vcalendar->serialize();
