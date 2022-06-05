@@ -88,14 +88,15 @@ class EventsController extends AppController
             ->find('startingOn', ['date' => $startDate])
             ->find('withAllAssociated')
             ->limit($minEventCount)
-            ->all();
+            ->all()
+            ->toArray();
 
         // Get the rest of the events in the last date of this group
-        if (!$events->isEmpty()) {
+        if ($events) {
             /** @var Event $event */
-            $lastEvent = $events->last();
+            $lastEvent = $events[count($events) - 1];
             $lastDate = $lastEvent->date;
-            $eventIds = Hash::extract($events->toArray(), '{n}.id');
+            $eventIds = Hash::extract($events, '{n}.id');
             $moreEvents = $this->Events
                 ->find('ordered')
                 ->find('published')
@@ -104,8 +105,9 @@ class EventsController extends AppController
                 ->where(function (QueryExpression $exp) use ($eventIds) {
                     return $exp->notIn('Events.id', $eventIds);
                 })
-                ->all();
-            $events = $events->append($moreEvents);
+                ->all()
+                ->toArray();
+            $events = array_merge($events, $moreEvents);
         }
 
         $this->set(['events' => $events]);

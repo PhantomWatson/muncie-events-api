@@ -5,20 +5,18 @@
  * or one day ($events[$k] = $event)
  *
  * @var AppView $this
- * @var Event[]|ResultSet $events
+ * @var \App\Model\Entity\Event[] $events
  * @var bool $hideDateHeaders
  */
 
-use App\Model\Entity\Event;
 use App\View\AppView;
 use App\View\Helper\CalendarHelper;
-use Cake\ORM\ResultSet;
 
-$nextStartDate = CalendarHelper::getNextStartDate($events->toArray());
-$eventsByDate = CalendarHelper::arrangeByDate($events->toArray());
+$nextStartDate = CalendarHelper::getNextStartDate($events);
+$eventsByDate = CalendarHelper::arrangeByDate($events);
 ?>
 
-<?php if ($events->count()): ?>
+<?php if ($events): ?>
     <?php foreach ($eventsByDate as $date => $eventsOnDate): ?>
         <section>
             <?php if (!($hideDateHeaders ?? false)): ?>
