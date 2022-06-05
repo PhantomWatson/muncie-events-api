@@ -214,7 +214,7 @@ class Event extends Entity
             return null;
         }
 
-        $retval = $correctedTime->toIso8601String();
+        $retval = $correctedTime->format('Ymd\THis');
 
         // Remove offset info ("-04:00") because it will be specified in a TZID property
         $split = explode('-', $retval);
