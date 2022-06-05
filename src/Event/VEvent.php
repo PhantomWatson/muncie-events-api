@@ -12,7 +12,7 @@ class VEvent
      * @throws \Exception
      */
     public static function getVevent($event) {
-        $tz = 'America/Indiana/Indianapolis';
+        $tz = Event::TIMEZONE;
         $retval = [
             'CATEGORIES' => $event->category->name,
             'COMMENT' => $event->source ? "Info source: $event->source" : null,

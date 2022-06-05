@@ -13,6 +13,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use DateTime;
 use Exception;
+use Sabre\VObject;
 
 /**
  * Event Entity
@@ -412,5 +413,94 @@ class Event extends Entity
         $plaintext = strip_tags($plaintext);
 
         return trim($plaintext);
+    }
+
+    /**
+     * Returns a VTIMEZONE component for a Olson timezone identifier
+     * with daylight transitions covering the given date range.
+     *
+     * Source: https://gist.github.com/thomascube/47ff7d530244c669825736b10877a200
+     *
+     * @param string Timezone ID as used in PHP's Date functions
+     * @param integer Unix timestamp with first date/time in this timezone
+     * @param integer Unix timestap with last date/time in this timezone
+     * @return \Sabre\VObject\Component|false A Sabre\VObject\Component object representing a VTIMEZONE definition
+     *               or false if no timezone information is available
+     * @throws \Exception
+     */
+    public static function generate_vtimezone($tzid, $from = 0, $to = 0)
+    {
+        if (!$from) $from = time();
+        if (!$to)   $to = $from;
+
+        try {
+            $tz = new \DateTimeZone($tzid);
+        }
+        catch (\Exception $e) {
+            return false;
+        }
+
+        // get all transitions for one year back/ahead
+        $year = 86400 * 360;
+        $transitions = $tz->getTransitions($from - $year, $to + $year);
+
+        $vcalendar = new VObject\Component\VCalendar();
+        $vt = $vcalendar->createComponent('VTIMEZONE');
+        $vt->TZID = $tz->getName();
+
+        $std = null; $dst = null;
+        foreach ($transitions as $i => $trans) {
+            $cmp = null;
+
+            // skip the first entry...
+            if ($i == 0) {
+                // ... but remember the offset for the next TZOFFSETFROM value
+                $tzfrom = $trans['offset'] / 3600;
+                continue;
+            }
+
+            // daylight saving time definition
+            if ($trans['isdst']) {
+                $t_dst = $trans['ts'];
+                $dst = $vcalendar->createComponent('DAYLIGHT');
+                $cmp = $dst;
+            }
+            // standard time definition
+            else {
+                $t_std = $trans['ts'];
+                $std = $vcalendar->createComponent('STANDARD');
+                $cmp = $std;
+            }
+
+            if ($cmp) {
+                $dt = new DateTime($trans['time']);
+                $offset = $trans['offset'] / 3600;
+
+                $cmp->DTSTART = $dt->format('Ymd\THis');
+                $cmp->TZOFFSETFROM = sprintf('%s%02d%02d', $tzfrom >= 0 ? '+' : '-', abs(floor($tzfrom)), ($tzfrom - floor($tzfrom)) * 60);
+                $cmp->TZOFFSETTO   = sprintf('%s%02d%02d', $offset >= 0 ? '+' : '-', abs(floor($offset)), ($offset - floor($offset)) * 60);
+
+                // add abbreviated timezone name if available
+                if (!empty($trans['abbr'])) {
+                    $cmp->TZNAME = $trans['abbr'];
+                }
+
+                $tzfrom = $offset;
+                $vt->add($cmp);
+            }
+
+            // we covered the entire date range
+            if ($std && $dst && min($t_std, $t_dst) < $from && max($t_std, $t_dst) > $to) {
+                break;
+            }
+        }
+
+        // add X-MICROSOFT-CDO-TZID if available
+        $microsoftExchangeMap = array_flip(VObject\TimeZoneUtil::$microsoftExchangeMap);
+        if (array_key_exists($tz->getName(), $microsoftExchangeMap)) {
+            $vt->add('X-MICROSOFT-CDO-TZID', $microsoftExchangeMap[$tz->getName()]);
+        }
+
+        return $vt;
     }
 }
