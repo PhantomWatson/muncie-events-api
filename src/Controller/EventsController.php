@@ -788,11 +788,9 @@ class EventsController extends AppController
     {
         $query = $this->Events
             ->find('ordered', ['direction' => 'DESC'])
-            ->where(['user_id' => $this->Auth->user('id')])
-            ->all()
-            ->toArray();
+            ->where(['user_id' => $this->Auth->user('id')]);
 
-        $events = $this->paginate($query);
+        $events = $this->paginate($query)->toArray();
 
         $this->set([
             'events' => $events,
