@@ -40,6 +40,8 @@ class CalendarHelper extends Helper
             $retval[$date][] = $event;
         }
 
+        ksort($retval);
+
         return $retval;
     }
 
