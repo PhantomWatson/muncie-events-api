@@ -839,5 +839,6 @@ class EventsController extends AppController
         $filename = "$categorySlug.ics";
         $this->response = $this->response->withDownload($filename);
         $this->set(compact('events'));
+        $this->response = $this->response->withType('text/calendar');
     }
 }
