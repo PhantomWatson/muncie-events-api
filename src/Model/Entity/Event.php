@@ -475,7 +475,7 @@ class Event extends Entity
                 $dt = new DateTime($trans['time']);
                 $offset = $trans['offset'] / 3600;
 
-                $cmp->DTSTART = $dt->format('Ymd\THis');
+                $cmp->DTSTART = $dt->format('Ymd\THis') . 'Z';
                 $cmp->TZOFFSETFROM = sprintf('%s%02d%02d', $tzfrom >= 0 ? '+' : '-', abs(floor($tzfrom)), ($tzfrom - floor($tzfrom)) * 60);
                 $cmp->TZOFFSETTO   = sprintf('%s%02d%02d', $offset >= 0 ? '+' : '-', abs(floor($offset)), ($offset - floor($offset)) * 60);
 
