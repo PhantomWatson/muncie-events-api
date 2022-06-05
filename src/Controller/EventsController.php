@@ -815,6 +815,7 @@ class EventsController extends AppController
             ->find('future')
             ->find('published')
             ->find('withAllAssociated')
+            ->find('ordered')
             ->where([
                 function (QueryExpression $exp) {
                     return $exp->lte('date', (new FrozenTime('now + 1 year'))->format('Y-m-d'));
@@ -835,7 +836,7 @@ class EventsController extends AppController
             $query->find('inCategory', ['categoryId' => $category->id]);
         }
 
-        $events = $query->all();
+        $events = $query->limit(1000)->all();
         $filename = "$categorySlug.ics";
         $this->response = $this->response->withDownload($filename);
         $this->set(compact('events'));
