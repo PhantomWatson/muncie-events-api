@@ -142,11 +142,9 @@ class Event extends Entity
     }
 
     /**
-     * Returns a full datetime with correct UTC offset representing the provided time
+     * Returns a full RFC 3339 string with the correct timezone offset, year, month, and day
      *
-     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
-     * be assumed incorrectly to be UTC. This method returns a full RFC 3339 string with the correct timezone offset,
-     * year, month, and day, e.g. "2019-12-06T10:00:00+05:00".
+     * e.g. "2019-12-06T10:00:00+05:00".
      *
      * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Time object
@@ -154,6 +152,24 @@ class Event extends Entity
      * @throws Exception
      */
     public static function getDatetime($date, $localTime)
+    {
+        $correctedTime = self::getCorrectedTime($date, $localTime);
+
+        return $correctedTime ? $correctedTime->toRfc3339String() : null;
+    }
+
+    /**
+     * Returns a Time object with correct UTC offset representing the provided time
+     *
+     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
+     * be assumed incorrectly to be UTC. This method
+     *
+     * @param FrozenDate $date Date object
+     * @param FrozenTime|null $localTime Time object
+     * @return Time|null
+     * @throws Exception
+     */
+    private static function getCorrectedTime($date, $localTime)
     {
         if (!$localTime) {
             return null;
@@ -173,14 +189,29 @@ class Event extends Entity
         $offset = timezone_offset_get(timezone_open(self::TIMEZONE), new DateTime($localTime));
         $isNegOffset = stripos($offset, '-') === 0;
         $modification = str_replace(
-            $isNegOffset ? '-' : '+',
-            $isNegOffset ? '+' : '-',
-            $offset
-        ) . ' seconds';
+                $isNegOffset ? '-' : '+',
+                $isNegOffset ? '+' : '-',
+                $offset
+            ) . ' seconds';
         $correctedTime->modify($modification);
 
-        return $correctedTime->toRfc3339String();
+        return $correctedTime;
     }
+
+    /**
+     * Returns a full ISO 8601 string with the correct timezone offset, year, month, and day
+     *
+     * @param $date
+     * @param $localTime
+     * @return string|null
+     * @throws \Exception
+     */
+    public static function getDatetimeIso8601($date, $localTime) {
+        $correctedTime = self::getCorrectedTime($date, $localTime);
+
+        return $correctedTime ? $correctedTime->toIso8601String() : null;
+    }
+
 
     /**
      * Sets the event to approved if $user (the user submitting the form) is an administrator
