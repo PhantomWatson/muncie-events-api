@@ -49,6 +49,7 @@ class EventsController extends AppController
             'add',
             'category',
             'day',
+            'feed',
             'index',
             'location',
             'locationsPast',
