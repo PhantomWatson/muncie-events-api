@@ -425,8 +425,7 @@ class Event extends Entity
      * @param string $tzid Timezone ID as used in PHP's Date functions
      * @param integer $from Unix timestamp with first date/time in this timezone
      * @param integer $to Unix timestap with last date/time in this timezone
-     * @return \Sabre\VObject\Component|false A Sabre\VObject\Component object representing a VTIMEZONE definition
-     *               or false if no timezone information is available
+     * @return \Sabre\VObject\Component\VCalendar|false VCalendar or false if no timezone information is available
      * @throws \Exception
      */
     public static function add_vtimezone($vcalendar, $tzid, $from = 0, $to = 0)
@@ -501,6 +500,8 @@ class Event extends Entity
             $vt->add('X-MICROSOFT-CDO-TZID', $microsoftExchangeMap[$tz->getName()]);
         }
 
-        return $vt;
+        $vcalendar->add('VTIMEZONE', $vt);
+
+        return $vcalendar;
     }
 }
