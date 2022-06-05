@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Cake\ORM\ResultSet $events
+ * @var \App\Model\Entity\Event[] $events
  * @var int $count
  * @var int $countOtherDirection
  * @var string $direction

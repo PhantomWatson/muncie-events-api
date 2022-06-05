@@ -140,7 +140,8 @@ class EventsController extends AppController
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
-            ->find('inCategory', ['categoryId' => $category->id]);
+            ->find('inCategory', ['categoryId' => $category->id])
+            ->toArray();
 
         $this->set([
             'category' => $category,
@@ -194,7 +195,7 @@ class EventsController extends AppController
 
         $this->set([
             'pageTitle' => 'Tag: ' . ucwords($tag->name),
-            'events' => $this->paginate($mainQuery),
+            'events' => $this->paginate($mainQuery)->toArray(),
             'count' => $mainQuery->count(),
             'direction' => $direction,
             'countOppositeDirection' => $oppositeDirectionQuery->count(),
@@ -267,7 +268,8 @@ class EventsController extends AppController
             ->find('ordered')
             ->find('published')
             ->find('withAllAssociated')
-            ->all();
+            ->all()
+            ->toArray();
 
         $this->set(compact(
             'date',
@@ -679,7 +681,7 @@ class EventsController extends AppController
             ->find('atLocation', ['location_slug' => $locationSlug])
             ->find($direction);
         $count = $primaryQuery->count();
-        $events = $this->paginate($primaryQuery);
+        $events = $this->paginate($primaryQuery)->toArray();
 
         // For finding the count of results in the other (past/future) direction
         $secondaryQuery = $this->Events
@@ -753,7 +755,7 @@ class EventsController extends AppController
         $counts[$direction] = $query->count();
         $order = $direction == 'past' ? 'DESC' : 'ASC';
         $query->epilog("ORDER BY Events__date $order, Events__time_start ASC");
-        $events = $query->all();
+        $events = $query->all()->toArray();
 
         if ($direction == 'all') {
             $timezone = Configure::read('localTimezone');
@@ -786,7 +788,9 @@ class EventsController extends AppController
     {
         $query = $this->Events
             ->find('ordered', ['direction' => 'DESC'])
-            ->where(['user_id' => $this->Auth->user('id')]);
+            ->where(['user_id' => $this->Auth->user('id')])
+            ->all()
+            ->toArray();
 
         $events = $this->paginate($query);
 
@@ -839,7 +843,7 @@ class EventsController extends AppController
             $query->find('inCategory', ['categoryId' => $category->id]);
         }
 
-        $events = $query->limit(1000)->all();
+        $events = $query->limit(1000)->all()->toArray();
         $filename = "$categorySlug.ics";
         $this->response = $this->response->withDownload($filename);
         $this->set(compact('events'));

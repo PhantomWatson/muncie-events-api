@@ -2,6 +2,7 @@
 /**
  * @var AppView $this
  * @var Category $category
+ * @var \App\Model\Entity\Event[] $events
  */
 
 use App\Model\Entity\Category;

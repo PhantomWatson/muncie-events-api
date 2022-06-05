@@ -5,6 +5,7 @@
  * @var string $directionAdjective
  * @var string $searchTerm
  * @var string $direction
+ * @var \App\Model\Entity\Event[] $events
  */
 
 use Cake\View\Helper\HtmlHelper;
