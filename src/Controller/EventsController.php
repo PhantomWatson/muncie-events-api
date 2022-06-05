@@ -50,6 +50,7 @@ class EventsController extends AppController
             'category',
             'day',
             'feed',
+            'feeds',
             'index',
             'location',
             'locationsPast',
@@ -846,5 +847,25 @@ class EventsController extends AppController
         $this->response = $this->response->withDownload($filename);
         $this->set(compact('events'));
         $this->response = $this->response->withType('text/calendar');
+    }
+
+    /**
+     * A page that lists the available feeds that can be imported into Google Calendar
+     *
+     * @return void
+     */
+    public function feeds()
+    {
+        $categories = $this
+            ->Events
+            ->Categories
+            ->find()
+            ->orderAsc('weight')
+            ->all();
+
+        $this->set([
+            'pageTitle' => 'Feeds',
+            'categories' => $categories,
+        ]);
     }
 }
