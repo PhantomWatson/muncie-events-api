@@ -500,7 +500,7 @@ class Event extends Entity
             $vt->add('X-MICROSOFT-CDO-TZID', $microsoftExchangeMap[$tz->getName()]);
         }
 
-        $vcalendar->add('VTIMEZONE', $vt);
+        $vcalendar->add($vt);
 
         return $vcalendar;
     }
