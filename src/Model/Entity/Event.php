@@ -416,19 +416,20 @@ class Event extends Entity
     }
 
     /**
-     * Returns a VTIMEZONE component for a Olson timezone identifier
-     * with daylight transitions covering the given date range.
+     * Adds to $vcalendar a VTIMEZONE component for a Olson timezone identifier with daylight transitions covering the
+     * given date range.
      *
-     * Source: https://gist.github.com/thomascube/47ff7d530244c669825736b10877a200
+     * Adapted from https://gist.github.com/thomascube/47ff7d530244c669825736b10877a200
      *
-     * @param string Timezone ID as used in PHP's Date functions
-     * @param integer Unix timestamp with first date/time in this timezone
-     * @param integer Unix timestap with last date/time in this timezone
+     * @param \Sabre\VObject\Component\VCalendar $vcalendar
+     * @param string $tzid Timezone ID as used in PHP's Date functions
+     * @param integer $from Unix timestamp with first date/time in this timezone
+     * @param integer $to Unix timestap with last date/time in this timezone
      * @return \Sabre\VObject\Component|false A Sabre\VObject\Component object representing a VTIMEZONE definition
      *               or false if no timezone information is available
      * @throws \Exception
      */
-    public static function generate_vtimezone($tzid, $from = 0, $to = 0)
+    public static function add_vtimezone($vcalendar, $tzid, $from = 0, $to = 0)
     {
         if (!$from) $from = time();
         if (!$to)   $to = $from;
@@ -444,7 +445,6 @@ class Event extends Entity
         $year = 86400 * 360;
         $transitions = $tz->getTransitions($from - $year, $to + $year);
 
-        $vcalendar = new VObject\Component\VCalendar();
         $vt = $vcalendar->createComponent('VTIMEZONE');
         $vt->TZID = $tz->getName();
 
