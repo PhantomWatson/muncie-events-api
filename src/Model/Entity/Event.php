@@ -440,7 +440,10 @@ class Event extends Entity
         $transitions = $tz->getTransitions($from - $year, $to + $year);
 
         $vt = $vcalendar->createComponent('VTIMEZONE');
-        $vt->TZID = $tz->getName();
+
+        /* The timezone name must be in all caps because $vcalendar->add('VEVENT', $vEvent) appears to strtoupper all
+         * keys in the $vEvent array, which includes the TZID value */
+        $vt->TZID = strtoupper($tz->getName());
 
         $std = null; $dst = null;
         foreach ($transitions as $i => $trans) {
