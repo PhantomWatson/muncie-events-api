@@ -12,12 +12,11 @@ class VEvent
      * @throws \Exception
      */
     public static function getVevent($event) {
-        return [
+        $retval = [
             'CATEGORIES' => $event->category->name,
             'COMMENT' => $event->source ? "Info source: $event->source" : null,
             'CONTACT' => $event->user->email,
             'DTSTART' => Event::getDatetime($event->date, $event->time_start),
-            'DTEND' => Event::getDatetime($event->date, $event->time_end),
             'DESCRIPTION' => $event->description_plaintext,
             'LOCATION' => sprintf(
                 '%s%s%s',
@@ -34,5 +33,11 @@ class VEvent
                 'id' => $event->id,
             ], true),
         ];
+
+        if ($event->time_end) {
+            $retval['DTEND'] = Event::getDatetime($event->date, $event->time_end);
+        }
+
+        return $retval;
     }
 }
