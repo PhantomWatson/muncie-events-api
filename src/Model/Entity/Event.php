@@ -162,7 +162,7 @@ class Event extends Entity
      * Returns a Time object with correct UTC offset representing the provided time
      *
      * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
-     * be assumed incorrectly to be UTC. This method
+     * be assumed incorrectly to be UTC. This method returns an object with the correct timezone offset, time, and date
      *
      * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Time object
@@ -175,11 +175,12 @@ class Event extends Entity
             return null;
         }
 
+        // Create a time object with the correct timezone set
         $timeString = $localTime->toDateTimeString();
         $correctedTime = new Time($timeString);
         $correctedTime->timezone(self::TIMEZONE);
 
-        // Fix missing date info
+        // Add correct date
         $correctedTime
             ->day($date->day)
             ->month($date->month)
@@ -199,17 +200,25 @@ class Event extends Entity
     }
 
     /**
-     * Returns a full ISO 8601 string with the correct timezone offset, year, month, and day
+     * Returns a full local-time ISO 8601 string without offset info (because that's specified in a TZID property)
      *
      * @param $date
      * @param $localTime
      * @return string|null
      * @throws \Exception
      */
-    public static function getDatetimeIso8601($date, $localTime) {
+    public static function getDatetimeForIcal($date, $localTime) {
         $correctedTime = self::getCorrectedTime($date, $localTime);
+        if (!$correctedTime) {
+            return null;
+        }
 
-        return $correctedTime ? $correctedTime->toIso8601String() : null;
+        $retval = $correctedTime->toIso8601String();
+
+        // Remove offset info ("-04:00") because it will be specified in a TZID property
+        $split = explode('-', $retval);
+        array_pop($split);
+        return implode('-', $split);
     }
 
 
