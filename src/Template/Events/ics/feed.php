@@ -9,7 +9,7 @@ use App\Model\Entity\Event;
 use Sabre\VObject\Component\VCalendar;
 
 $vcalendar = new VCalendar();
-$vcalendar = Event::add_vtimezone($vcalendar, Event::TIMEZONE);
+$vcalendar = Event::addVtimezone($vcalendar, Event::TIMEZONE);
 
 foreach ($events as $event) {
     $vcalendar->add('VEVENT', VEvent::getVevent($event));

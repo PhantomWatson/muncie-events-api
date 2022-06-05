@@ -428,7 +428,7 @@ class Event extends Entity
      * @return \Sabre\VObject\Component\VCalendar|false VCalendar or false if no timezone information is available
      * @throws \Exception
      */
-    public static function add_vtimezone($vcalendar, $tzid, $from = 0, $to = 0)
+    public static function addVtimezone($vcalendar, $tzid, $from = 0, $to = 0)
     {
         if (!$from) $from = time();
         if (!$to)   $to = $from;
