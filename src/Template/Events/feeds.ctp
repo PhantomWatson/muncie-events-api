@@ -5,6 +5,10 @@
 
 use Cake\Routing\Router;
 
+$feeds = ['All events' => 'all'];
+foreach ($categories as $category) {
+    $feeds[$category->name] = $category->slug;
+}
 ?>
 
 <p class="alert alert-info">
@@ -17,44 +21,26 @@ use Cake\Routing\Router;
         <tr>
             <th>Category</th>
             <td>URL</td>
-            <td>Copy</td>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <?php $url = Router::url([
-                'controller' => 'Events',
-                'action' => 'feed',
-                'all',
-                '_ext' => 'ics',
-            ]); ?>
-            <td>
-                All events
-            </td>
-            <td>
-                <?= $url ?>
-            </td>
-            <td>
-                <i class="fa-solid fa-copy copy-feed-url" data-url="<?= $url ?>"></i>
-            </td>
-        </tr>
-        <?php foreach ($categories as $category): ?>
+        <?php foreach ($categories as $name => $slug): ?>
             <tr>
                 <?php $url = Router::url([
                     'controller' => 'Events',
                     'action' => 'feed',
                     $category->slug,
                     '_ext' => 'ics',
-                ]); ?>
+                ], true); ?>
                 <td>
                     <?= $this->Icon->category($category->name) ?>
                     <?= $category->name ?>
                 </td>
                 <td>
-                    <?= $url ?>
-                </td>
-                <td>
-                    <i class="fa-solid fa-copy copy-feed-url" data-url="<?= $url ?>"></i>
+                    <input type="text" value="<?= $url ?>" />
+                    <button class="copy-feed-url" data-url="<?= $url ?>">
+                        <i class="fas fa-copy" title="Copy URL to clipboard"></i>
+                    </button>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -69,7 +55,7 @@ use Cake\Routing\Router;
     }
     document.querySelectorAll('.copy-feed-url').forEach((icon) => {
         icon.addEventListener('click', (event) => {
-            cont url = event.target.dataset.url;
+            const url = event.target.dataset.url;
             copyToClipboard(url);
         });
     });
