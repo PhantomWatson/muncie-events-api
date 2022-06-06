@@ -11,16 +11,32 @@ foreach ($categories as $category) {
 }
 ?>
 
-<p class="alert alert-info">
-    Want to view Muncie Events in Google Calendar or other calendar applications? Just import any of these feeds into
-    your calendar of choice:
-</p>
+<div class="alert alert-info">
+    <p>
+        Want to view Muncie Events in Google Calendar or other calendar applications? Just import any of these feeds into
+        your calendar of choice.
+    </p>
+    <p>
+        Google Calendar instructions:
+    </p>
+    <ol>
+        <li>
+            Click the + button next to "Other calendars" in the sidebar
+        </li>
+        <li>
+            Copy a feed URL and paste it into the "URL of calendar" field
+        </li>
+        <li>
+            Click "Add calendar"
+        </li>
+    </ol>
+</div>
 
 <table class="table">
     <thead>
         <tr>
             <th>Category</th>
-            <td>URL</td>
+            <th>URL</th>
         </tr>
     </thead>
     <tbody>
@@ -29,16 +45,16 @@ foreach ($categories as $category) {
                 <?php $url = Router::url([
                     'controller' => 'Events',
                     'action' => 'feed',
-                    $category->slug,
+                    $slug,
                     '_ext' => 'ics',
                 ], true); ?>
                 <td>
-                    <?= $this->Icon->category($category->name) ?>
-                    <?= $category->name ?>
+                    <?= $this->Icon->category($slug == 'all' ? 'General Events' : $name) ?>
+                    <?= $name ?>
                 </td>
                 <td>
-                    <input type="text" value="<?= $url ?>" />
-                    <button class="copy-feed-url" data-url="<?= $url ?>">
+                    <?= $url ?>
+                    <button class="btn btn-secondary copy-feed-url" data-url="<?= $url ?>">
                         <i class="fas fa-copy" title="Copy URL to clipboard"></i>
                     </button>
                 </td>
