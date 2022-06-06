@@ -21,10 +21,13 @@ foreach ($categories as $category) {
     </p>
     <ol>
         <li>
+            Copy a feed URL
+        </li>
+        <li>
             Click the + button next to "Other calendars" in the sidebar
         </li>
         <li>
-            Copy a feed URL and paste it into the "URL of calendar" field
+            Paste a feed URL into the "URL of calendar" field
         </li>
         <li>
             Click "Add calendar"
