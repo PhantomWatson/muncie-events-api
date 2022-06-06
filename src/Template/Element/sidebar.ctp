@@ -127,6 +127,27 @@ $categories = $this->Nav->getCategories();
         </div>
     <?php endif; ?>
 
+    <div id="sidebar_widget">
+        <h2>
+            Google Calendar Feeds
+        </h2>
+        <p>
+            Use our
+            <strong>
+                <?= $this->Html->link(
+                    'event feeds',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'feeds',
+                    ]
+                ) ?>
+            </strong>
+            to subscribe to local events in any of your favorite calendar applications.
+        </p>
+    </div>
+
     <div id="sidebar_mailinglist">
         <h2>
             Mailing List
