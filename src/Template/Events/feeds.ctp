@@ -40,7 +40,7 @@ foreach ($categories as $category) {
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($categories as $name => $slug): ?>
+        <?php foreach ($feeds as $name => $slug): ?>
             <tr>
                 <?php $url = Router::url([
                     'controller' => 'Events',
@@ -69,10 +69,23 @@ undefined
             console.log('copied');
         });
     }
-    document.querySelectorAll('.copy-feed-url').forEach((icon) => {
+    const allButtons = document.querySelectorAll('.copy-feed-url');
+    allButtons.forEach((icon) => {
         icon.addEventListener('click', () => {
             const url = this.dataset.url;
             copyToClipboard(url);
+
+            // Reset all other button styles
+            allButtons.forEach((button) => {
+                button.classList.remove('btn-success');
+                if (!button.classList.hasClass('btn-secondary')) {
+                    button.classList.add('btn-secondary');
+                }
+            });
+
+            // Set this button's style to 'success'
+            this.classList.remove('btn-secondary');
+            this.classList.add('btn-success');
         });
     });
 </script>
