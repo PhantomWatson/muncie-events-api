@@ -32,37 +32,27 @@ foreach ($categories as $category) {
     </ol>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>URL</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($feeds as $name => $slug): ?>
-            <tr>
-                <?php $url = Router::url([
-                    'controller' => 'Events',
-                    'action' => 'feed',
-                    $slug,
-                    '_ext' => 'ics',
-                ], true); ?>
-                <td>
-                    <?= $this->Icon->category($slug == 'all' ? 'General Events' : $name) ?>
-                    <?= $name ?>
-                </td>
-                <td>
-                    <?= $url ?>
-                    <button class="btn btn-secondary copy-feed-url" data-url="<?= $url ?>">
-                        <i class="fas fa-copy" title="Copy URL to clipboard"></i>
-                    </button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-undefined
+<?php foreach ($feeds as $name => $slug): ?>
+    <section>
+        <?php $url = Router::url([
+            'controller' => 'Events',
+            'action' => 'feed',
+            $slug,
+            '_ext' => 'ics',
+        ], true); ?>
+        <h2>
+            <?= $this->Icon->category($slug == 'all' ? 'General Events' : $name) ?>
+            <?= $name ?>
+        </h2>
+        <p>
+            <button class="btn btn-secondary copy-feed-url" data-url="<?= $url ?>">
+                <i class="fas fa-copy" title="Copy URL to clipboard"></i>
+            </button>
+            <?= $url ?>
+        </p>
+    </section>
+<?php endforeach; ?>
+
 <script>
     function copyToClipboard(url) {
         navigator.clipboard.writeText(url).then(() => {
@@ -70,8 +60,8 @@ undefined
         });
     }
     const allButtons = document.querySelectorAll('.copy-feed-url');
-    allButtons.forEach((icon) => {
-        icon.addEventListener('click', () => {
+    allButtons.forEach((button) => {
+        button.addEventListener('click', () => {
             const url = this.dataset.url;
             copyToClipboard(url);
 
