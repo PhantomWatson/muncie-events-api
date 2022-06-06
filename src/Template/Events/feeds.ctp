@@ -46,7 +46,7 @@ foreach ($categories as $category) {
         <?php endforeach; ?>
     </tbody>
 </table>
-
+undefined
 <script>
     function copyToClipboard(url) {
         navigator.clipboard.writeText(url).then(() => {
@@ -54,8 +54,8 @@ foreach ($categories as $category) {
         });
     }
     document.querySelectorAll('.copy-feed-url').forEach((icon) => {
-        icon.addEventListener('click', (event) => {
-            const url = event.target.dataset.url;
+        icon.addEventListener('click', () => {
+            const url = this.dataset.url;
             copyToClipboard(url);
         });
     });
