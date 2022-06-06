@@ -33,6 +33,10 @@ foreach ($categories as $category) {
             Click "Add calendar"
         </li>
     </ol>
+    <p>
+        If you'd like, you can then rename this calendar to "Muncie Events" by clicking "Settings" in the dropdown menu
+        for this new calendar.
+    </p>
 </div>
 
 <table class="table feeds">
