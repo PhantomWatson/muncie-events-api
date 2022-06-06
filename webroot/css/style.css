@@ -6596,6 +6596,16 @@ body.api > div.container {
 .copy-feed-url {
   padding: 2px 6px;
 }
+table.feeds {
+  width: auto;
+}
+table.feeds tbody td:first-child {
+  font-size: 1.5em;
+}
+table.feeds tbody td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
 #sidebar {
   float: right;
   padding-right: 10px;

@@ -32,50 +32,61 @@ foreach ($categories as $category) {
     </ol>
 </div>
 
-<?php foreach ($feeds as $name => $slug): ?>
-    <section>
-        <?php $url = Router::url([
-            'controller' => 'Events',
-            'action' => 'feed',
-            $slug,
-            '_ext' => 'ics',
-        ], true); ?>
-        <h2>
-            <?= $this->Icon->category($slug == 'all' ? 'General Events' : $name) ?>
-            <?= $name ?>
-        </h2>
-        <p>
-            <button class="btn btn-secondary copy-feed-url" data-url="<?= $url ?>">
-                <i class="fas fa-copy" title="Copy URL to clipboard"></i>
-            </button>
-            <?= $url ?>
-        </p>
-    </section>
-<?php endforeach; ?>
+<table class="table feeds">
+    <thead>
+    <tr>
+        <th>
+            Category
+        </th>
+        <th>
+            Copy URL
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($feeds as $name => $slug): ?>
+        <tr>
+            <?php $url = Router::url([
+                'controller' => 'Events',
+                'action' => 'feed',
+                $slug,
+                '_ext' => 'ics',
+            ], true); ?>
+            <td>
+                <?= $this->Icon->category($slug == 'all' ? 'General Events' : $name) ?>
+                <?= $name ?>
+            </td>
+            <td>
+                <button class="btn btn-secondary copy-feed-url" data-url="<?= $url ?>">
+                    <i class="fas fa-copy" title="Copy URL to clipboard"></i>
+                </button>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
 
 <script>
     function copyToClipboard(url) {
-        navigator.clipboard.writeText(url).then(() => {
-            console.log('copied');
-        });
+        navigator.clipboard.writeText(url);
     }
     const allButtons = document.querySelectorAll('.copy-feed-url');
     allButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const url = this.dataset.url;
+        button.addEventListener('click', (event) => {
+            const url = event.currentTarget.dataset.url;
             copyToClipboard(url);
 
             // Reset all other button styles
             allButtons.forEach((button) => {
                 button.classList.remove('btn-success');
-                if (!button.classList.hasClass('btn-secondary')) {
+                if (!button.classList.contains('btn-secondary')) {
                     button.classList.add('btn-secondary');
                 }
             });
 
             // Set this button's style to 'success'
-            this.classList.remove('btn-secondary');
-            this.classList.add('btn-success');
+            event.currentTarget.classList.remove('btn-secondary');
+            event.currentTarget.classList.add('btn-success');
         });
     });
 </script>
