@@ -4,6 +4,7 @@ namespace App\Mailer;
 use App\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Mailer\Mailer;
+use Cake\Routing\Router;
 
 class UsersMailer extends Mailer
 {
@@ -17,15 +18,21 @@ class UsersMailer extends Mailer
     {
         $this->viewBuilder()->setTemplate('forgot_password');
 
-        $resetUrl = 'https://muncieevents.com/reset_password/' . $user->id . '/' . $user->getResetPasswordHash();
-
         return $this
             ->setTo($user->email, $user->name)
             ->setFrom(Configure::read('automailer_address'), 'Muncie Events')
             ->setSubject('Muncie Events: Reset Password')
             ->setViewVars([
                 'email' => $user->email,
-                'resetUrl' => $resetUrl,
+                'resetUrl' => Router::url(
+                    [
+                        'controller' => 'Users',
+                        'action' => 'resetPassword',
+                        $user->id,
+                        $user->getResetPasswordHash()
+                    ],
+                    true
+                ),
             ])
             ->setDomain('muncieevents.com')
             ->setEmailFormat('both');

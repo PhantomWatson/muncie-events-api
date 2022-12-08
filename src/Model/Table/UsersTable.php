@@ -4,6 +4,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Image;
 use App\Model\Entity\User;
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
@@ -287,5 +288,20 @@ class UsersTable extends Table
             ->where(['user_id' => $userId])
             ->orderDesc('created')
             ->all();
+    }
+
+    /**
+     * get the security hash for the password reset
+     *
+     * @param int $userId User ID
+     * @param string $email Recipient email
+     * @return string
+     */
+    public function getResetPasswordHash($userId, $email)
+    {
+        $salt = Configure::read('password_reset_salt');
+        $month = date('my');
+
+        return md5($userId . $email . $salt . $month);
     }
 }

@@ -37,6 +37,7 @@ class UsersController extends AppController
             'login',
             'logout',
             'register',
+            'resetPassword',
             'view',
         ]);
 
@@ -282,6 +283,54 @@ class UsersController extends AppController
             'totalCount' => $totalCount,
             'user' => $user,
         ]);
+
+        return null;
+    }
+
+    /**
+     * Resets the user's password
+     *
+     * @param int $userId User ID
+     * @param string $resetPasswordHash A string to ensure that this URL can't be randomly guessed
+     * @return null
+     */
+    public function resetPassword($userId, $resetPasswordHash)
+    {
+        $user = $this->Users->get($userId);
+        $email = $user['email'];
+
+        $this->set([
+            'pageTitle' => 'Reset Password',
+            'userId' => $userId,
+            'email' => $email,
+            'resetPasswordHash' => $resetPasswordHash
+        ]);
+
+        $expectedHash = $this->Users->getResetPasswordHash($userId, $email);
+
+        if ($resetPasswordHash != $expectedHash) {
+            $this->Flash->error('Invalid password-resetting code. Make sure that you entered the correct address and that the link emailed to you hasn\'t expired.');
+            $this->redirect('/');
+        }
+
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, [
+                'password' => $this->request->getData('new_password'),
+                'confirm_password' => $this->request->getData('new_confirm_password')
+            ]);
+            $user->password = $this->request->getData('new_password');
+
+            if ($this->Users->save($user)) {
+                $data = $user->toArray();
+                $this->Auth->setUser($data);
+                $this->Flash->success('Password changed. You are now logged in.');
+
+                return null;
+            }
+            $this->Flash->error('There was an error changing your password. Please check to make sure they\'ve been entered correctly.');
+
+            return $this->redirect('/');
+        }
 
         return null;
     }

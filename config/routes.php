@@ -184,6 +184,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/user/:id', ['controller' => 'Users', 'action' => 'view'])
         ->setPass(['id'])
         ->setPatterns(['id' => '[0-9]+']);
+    $routes->connect('/reset-password/*', ['controller' => 'Users', 'action' => 'resetPassword']);
 
     /**
      * Connect catchall routes for all controllers.
