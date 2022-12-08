@@ -18,21 +18,26 @@ class UsersMailer extends Mailer
     {
         $this->viewBuilder()->setTemplate('forgot_password');
 
+        /* We build a relative URL and then add the prefix so that the api.muncieevents.com subdomain isn't used,
+         * despite an API endpoint being the thing that sends these emails */
+        $resetUrl = Router::url(
+            [
+                'controller' => 'Users',
+                'action' => 'resetPassword',
+                $user->id,
+                $user->getResetPasswordHash(),
+                'prefix' => false,
+            ]
+        );
+        $resetUrl = Configure::read('mainSiteBaseUrl') . $resetUrl;
+
         return $this
             ->setTo($user->email, $user->name)
             ->setFrom(Configure::read('automailer_address'), 'Muncie Events')
             ->setSubject('Muncie Events: Reset Password')
             ->setViewVars([
                 'email' => $user->email,
-                'resetUrl' => Router::url(
-                    [
-                        'controller' => 'Users',
-                        'action' => 'resetPassword',
-                        $user->id,
-                        $user->getResetPasswordHash()
-                    ],
-                    true
-                ),
+                'resetUrl' => $resetUrl,
             ])
             ->setDomain('muncieevents.com')
             ->setEmailFormat('both');
