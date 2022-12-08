@@ -33,6 +33,6 @@
         'type' => 'password',
         'autocomplete' => 'off'
     ]) ?>
-    <?= $this->Form->submit(__('Reset Password'), ['class' => 'btn']) ?>
+    <?= $this->Form->submit(__('Reset Password'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>
