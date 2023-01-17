@@ -200,6 +200,12 @@ class MailingListCommand extends Command
             ];
         }
 
+        $verify = $this->verifyEmail($recipient->email);
+        if (is_string($verify)) {
+            return [false, $verify];
+        }
+        return [false, 'Verified'];
+
         try {
             $this->getMailer('MailingList')->send('daily', [$recipient, $events]);
             $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
@@ -320,6 +326,12 @@ class MailingListCommand extends Command
             ];
         }
 
+        $verify = $this->verifyEmail($recipient->email);
+        if (is_string($verify)) {
+            return [false, $verify];
+        }
+        return [false, 'Verified'];
+
         try {
             $this->getMailer('MailingList')->send('weekly', [$recipient, $events]);
             $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
@@ -330,5 +342,22 @@ class MailingListCommand extends Command
 
             return [false, "Error sending email to $recipient->email: " . $e->getMessage()];
         }
+    }
+
+    /**
+     * Returns TRUE if the email address is verified, or an error message string
+     *
+     * @param string $email Email address to check
+     * @return string|true
+     */
+    private function verifyEmail($email)
+    {
+        $from = Configure::read('automailer_address');
+        $verification = new \hbattat\VerifyEmail($email, $from);
+        if ($verification->verify()) {
+            return true;
+        }
+        $errors = $verification->get_errors();
+        return "Error verifying $email: " . implode(PHP_EOL . ' - ', $errors);
     }
 }
