@@ -200,12 +200,6 @@ class MailingListCommand extends Command
             ];
         }
 
-        $verify = $this->verifyEmail($recipient->email);
-        if (is_string($verify)) {
-            return [false, $verify];
-        }
-        return [false, 'Verified'];
-
         try {
             $this->getMailer('MailingList')->send('daily', [$recipient, $events]);
             $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
@@ -326,12 +320,6 @@ class MailingListCommand extends Command
             ];
         }
 
-        $verify = $this->verifyEmail($recipient->email);
-        if (is_string($verify)) {
-            return [false, $verify];
-        }
-        return [false, 'Verified'];
-
         try {
             $this->getMailer('MailingList')->send('weekly', [$recipient, $events]);
             $this->MailingList->markWeeklyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
@@ -358,6 +346,7 @@ class MailingListCommand extends Command
             return true;
         }
         $errors = $verification->get_errors();
+        var_dump($verification->get_debug());
         return "Error verifying $email: " . implode(PHP_EOL . ' - ', $errors);
     }
 }
