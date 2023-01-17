@@ -25,6 +25,7 @@ use Cake\Utility\Security;
  * @property FrozenTime|null $processed_daily
  * @property FrozenTime|null $processed_weekly
  * @property string $hash
+ * @property bool $enabled
  *
  * @property User[] $users
  * @property Category[] $categories
