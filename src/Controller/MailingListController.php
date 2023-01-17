@@ -77,6 +77,10 @@ class MailingListController extends AppController
             }
 
             $isNew = $subscription->isNew();
+
+            // Automatically re-enable any disabled subscriptions upon a user-initiated update
+            $subscription->enabled = true;
+
             if ($this->MailingList->save($subscription)) {
                 if ($isNew) {
                     /** @var \App\Model\Entity\User $user */

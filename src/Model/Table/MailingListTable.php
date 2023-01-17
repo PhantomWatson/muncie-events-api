@@ -119,6 +119,9 @@ class MailingListTable extends Table
             ->dateTime('processed_weekly')
             ->allowEmptyDateTime('processed_weekly');
 
+        $validator
+            ->boolean('enabled');
+
         return $validator;
     }
 
@@ -204,6 +207,7 @@ class MailingListTable extends Table
         $query = $this
             ->find()
             ->where([
+                'MailingList.enabled' => true,
                 'daily_' . strtolower($dayAbbrev) => 1,
                 'OR' => [
                     function (QueryExpression $exp) {
@@ -274,6 +278,7 @@ class MailingListTable extends Table
         $query = $this
             ->find()
             ->where([
+                'MailingList.enabled' => true,
                 'MailingList.weekly' => 1,
                 'OR' => [
                     function (QueryExpression $exp) {

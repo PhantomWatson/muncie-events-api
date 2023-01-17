@@ -213,6 +213,7 @@ class MailingListController extends ApiController
 
         // Save
         $entityData = $this->getSubscriptionDataFromRequest();
+        $entityData['enabled'] = true;
         $this->MailingList->patchEntity($subscription, $entityData);
         if (!$this->MailingList->save($subscription)) {
             throw new BadRequestException(
