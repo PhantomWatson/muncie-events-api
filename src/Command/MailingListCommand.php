@@ -191,7 +191,7 @@ class MailingListCommand extends Command
         if (empty($events)) {
             $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::NO_APPLICABLE_EVENTS);
 
-            $selected = 'Selected: ' . Hash::extract($recipient->categories, '{n}.id');
+            $selected = 'Selected: ' . implode(', ', Hash::extract($recipient->categories, '{n}.id'));
             $available = 'Available: ' . implode(', ', $categoryIds);
 
             return [
