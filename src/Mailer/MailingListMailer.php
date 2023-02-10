@@ -128,6 +128,6 @@ class MailingListMailer extends Mailer
 
         $separator = (count($list) > 2) ? $separator : ' ';
 
-        return implode($separator, array_slice($list, null, -1)) . $and . array_pop($list);
+        return implode($separator, array_slice($list, 0, -1)) . $and . array_pop($list);
     }
 }
