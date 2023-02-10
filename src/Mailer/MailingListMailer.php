@@ -70,10 +70,10 @@ class MailingListMailer extends Mailer
         if ($recipient->all_categories) {
             $eventTypes = 'All events';
         } else {
-            $selectedCategories = $recipient['Category'];
+            $selectedCategories = $recipient->categories;
             $categoryNames = [];
             foreach ($selectedCategories as $selectedCategory) {
-                $categoryNames[] = $selectedCategory['name'];
+                $categoryNames[] = $selectedCategory->name;
             }
             $eventTypes = 'Only ' . $this->toList($categoryNames);
         }
