@@ -5,15 +5,15 @@
  * or one day ($events[$k] = $event)
  *
  * @var AppView $this
- * @var \App\Model\Entity\Event[] $events
+ * @var \Cake\ORM\ResultSet $events
  * @var bool $hideDateHeaders
  */
 
 use App\View\AppView;
 use App\View\Helper\CalendarHelper;
 
-$nextStartDate = CalendarHelper::getNextStartDate($events);
-$eventsByDate = CalendarHelper::arrangeByDate($events);
+$nextStartDate = CalendarHelper::getNextStartDate($events->toArray());
+$eventsByDate = CalendarHelper::arrangeByDate($events->toArray());
 ?>
 
 <?php if ($events): ?>
