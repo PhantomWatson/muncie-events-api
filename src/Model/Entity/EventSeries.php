@@ -46,7 +46,7 @@ class EventSeries extends Entity
      *
      * @return void
      */
-    public function splitEventsPastFuture()
+    public function splitEventsPastUpcoming()
     {
         $this->upcomingEvents = [];
         $this->pastEvents = [];

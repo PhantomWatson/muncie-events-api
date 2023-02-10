@@ -11,23 +11,23 @@
 use Cake\View\Helper\HtmlHelper;
 
 $count = $counts[$direction];
-$oppositeDirection = $direction == 'future' ? 'past' : 'future';
+$oppositeDirection = \App\Application::oppositeDirection($direction);
 function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
 {
     if ($count == 0) {
-        return sprintf('No %s events', $dir == 'future' ? 'upcoming' : 'past');
+        return sprintf('No %s events', $dir);
     }
 
     return $htmlHelper->link(
         sprintf(
             '%s %s %s',
             $count,
-            $dir == 'future' ? 'upcoming' : 'past',
+            $dir,
             __n('event', 'events', $count)
         ),
         [
             'q' => $searchTerm,
-            'direction' => ($dir == 'future') ? 'future' : 'past',
+            'direction' => $dir,
         ]
     );
 }
@@ -51,7 +51,7 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
 
     <p>
         <?php if ($direction == 'all'): ?>
-            <?php foreach (['future', 'past'] as $dir): ?>
+            <?php foreach (['upcoming', 'past'] as $dir): ?>
                 <?= getSearchLink($searchTerm, $dir, $counts[$dir], $this->Html) ?>
                 <br/>
             <?php endforeach; ?>

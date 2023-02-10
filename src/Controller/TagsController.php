@@ -67,8 +67,7 @@ class TagsController extends AppController
         }
 
         $this->loadModel('Events');
-        $findMethod = $direction == 'upcoming' ? 'future' : 'past';
-        $tags = $this->Events->getEventTags($findMethod, $categoryId);
+        $tags = $this->Events->getEventTags($direction, $categoryId);
 
         // Create separate sub-lists of tags according to what character they start with
         $tagsByFirstLetter = [];

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Application;
 use App\Form\EventForm;
 use App\Model\Entity\Category;
 use App\Model\Entity\Event;
@@ -137,7 +138,7 @@ class EventsController extends AppController
         }
 
         $events = $this->Events
-            ->find('future')
+            ->find('upcoming')
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
@@ -191,8 +192,9 @@ class EventsController extends AppController
             ->find('ordered', ['direction' => $direction == 'past' ? 'DESC' : 'ASC'])
             ->find('withAllAssociated')
             ->find('tagged', ['tags' => [$tag->name]]);
-        $mainQuery = (clone $baseQuery)->find($direction == 'past' ? 'past' : 'future');
-        $oppositeDirectionQuery = (clone $baseQuery)->find($direction == 'past' ? 'future' : 'past');
+        $mainQuery = (clone $baseQuery)->find($direction);
+        $oppositeDirection = Application::oppositeDirection($direction);
+        $oppositeDirectionQuery = (clone $baseQuery)->find($oppositeDirection);
 
         $this->set([
             'pageTitle' => 'Tag: ' . ucwords($tag->name),
@@ -200,7 +202,7 @@ class EventsController extends AppController
             'count' => $mainQuery->count(),
             'direction' => $direction,
             'countOppositeDirection' => $oppositeDirectionQuery->count(),
-            'oppositeDirection' => $direction == 'past' ? 'upcoming' : 'past',
+            'oppositeDirection' => $oppositeDirection,
             'tag' => $tag,
         ]);
 
@@ -657,19 +659,19 @@ class EventsController extends AppController
      * Page for viewing events taking place at a given location
      *
      * @param null $locationSlug The slug of the location name
-     * @param string $direction Either 'future' or 'past' (leave blank for 'future')
+     * @param string $direction Either 'upcoming' or 'past' (leave blank for 'upcoming')
      * @return void
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function location($locationSlug = null, $direction = 'future')
+    public function location($locationSlug = null, $direction = 'upcoming')
     {
         if (!$locationSlug) {
             throw new BadRequestException('Error: No location name given.');
         }
 
-        if (!in_array($direction, ['future', 'past'])) {
+        if (!in_array($direction, ['upcoming', 'past'])) {
             throw new BadRequestException(
-                'Direction not recognized. Either "future" or "past" expected. ' .
+                'Direction not recognized. Either "upcoming" or "past" expected. ' .
                 'Your weird Time Lord stuff won\'t work on us.'
             );
         }
@@ -684,11 +686,11 @@ class EventsController extends AppController
         $count = $primaryQuery->count();
         $events = $this->paginate($primaryQuery)->toArray();
 
-        // For finding the count of results in the other (past/future) direction
+        // For finding the count of results in the other (past/upcoming) direction
         $secondaryQuery = $this->Events
             ->find('published')
             ->find('atLocation', ['location_slug' => $locationSlug])
-            ->find($direction == 'future' ? 'past' : 'future');
+            ->find(Application::oppositeDirection($direction));
         $countOtherDirection = $secondaryQuery->count();
 
         $locationName = $this->Events->getFullLocationName($locationSlug);
@@ -748,8 +750,8 @@ class EventsController extends AppController
             throw new BadRequestException('Please provide a search term');
         }
 
-        $direction = $this->request->getQuery('direction') ?? 'future';
-        $counts = ['future' => 0, 'past' => 0, 'all' => 0];
+        $direction = $this->request->getQuery('direction') ?? 'upcoming';
+        $counts = ['upcoming' => 0, 'past' => 0, 'all' => 0];
 
         // Get search results
         $query = $this->Events->getSearchResultsQuery($searchTerm, $direction);
@@ -762,19 +764,19 @@ class EventsController extends AppController
             $timezone = Configure::read('localTimezone');
             $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
             foreach ($events as $event) {
-                $key = $event->date->format('Y-m-d') >= $currentDate ? 'future' : 'past';
+                $key = $event->date->format('Y-m-d') >= $currentDate ? 'upcoming' : 'past';
                 $counts[$key]++;
             }
         } else {
             // Determine if there are events in the opposite direction
-            $otherDirection = ($direction == 'future') ? 'past' : 'future';
+            $otherDirection = Application::oppositeDirection($direction);
             $otherDirectionQuery = $this->Events->getSearchResultsQuery($searchTerm, $otherDirection);
             $counts[$otherDirection] = $otherDirectionQuery->count();
         }
         $this->set([
             'counts' => $counts,
             'direction' => $direction,
-            'directionAdjective' => ($direction == 'future') ? 'upcoming' : $direction,
+            'directionAdjective' => $direction,
             'events' => $events,
             'searchTerm' => $searchTerm,
         ]);
@@ -818,7 +820,7 @@ class EventsController extends AppController
         // Get all published events for the next year
         $query = $this
             ->Events
-            ->find('future')
+            ->find('upcoming')
             ->find('published')
             ->find('withAllAssociated')
             ->find('ordered')

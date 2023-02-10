@@ -337,7 +337,7 @@ class EventsTable extends Table
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findFuture(Query $query)
+    public function findUpcoming(Query $query)
     {
         return $query
             ->where([
@@ -401,7 +401,7 @@ class EventsTable extends Table
     public function getCategoryUpcomingEventCount($categoryId)
     {
         return $this
-            ->find('future')
+            ->find('upcoming')
             ->find('inCategory', ['categoryId' => $categoryId])
             ->count();
     }
@@ -410,14 +410,14 @@ class EventsTable extends Table
      * Returns an alphabetized array of tags associated with upcoming published events,
      * plus the count of how many events each is associated with
      *
-     * @param string $direction Direction to search, either 'future' or 'past'
+     * @param string $direction Direction to search, either 'upcoming' or 'past'
      * @param int $categoryId ID of a category record
      * @return Tag[]
      * @throws InternalErrorException
      */
-    public function getEventTags($direction = 'future', $categoryId = null)
+    public function getEventTags($direction = 'upcoming', $categoryId = null)
     {
-        if (!in_array($direction, ['future', 'past'])) {
+        if (!in_array($direction, ['upcoming', 'past'])) {
             throw new InternalErrorException('Invalid direction: ' . $direction);
         }
 
@@ -689,7 +689,7 @@ class EventsTable extends Table
      * cannot be nested.
      *
      * @param string $searchTerm An arbitrary string to search for
-     * @param string $direction Either 'future', 'past', or 'all' (ignored) expected
+     * @param string $direction Either 'upcoming', 'past', or 'all' (ignored) expected
      * @return Query
      */
     public function getSearchResultsQuery($searchTerm, $direction)
@@ -697,7 +697,7 @@ class EventsTable extends Table
         $baseQuery = $this
             ->find('published')
             ->find('withAllAssociated');
-        if (in_array($direction, ['future', 'past'])) {
+        if (in_array($direction, ['upcoming', 'past'])) {
             $baseQuery->find($direction);
         }
         $fieldsQuery = (clone $baseQuery)->find('search', ['search' => ['q' => $searchTerm]]);

@@ -34,12 +34,12 @@ $this->Html->scriptBlock('setupSearch();', ['block' => true]);
                         'label' => false,
                         'legend' => false,
                         'options' => [
-                            'future' => 'Upcoming',
-                            'past' => 'Past Events',
+                            'upcoming' => 'Upcoming',
+                            'past' => 'Past',
                             'all' => 'All Events',
                         ],
                         'type' => 'radio',
-                        'value' => 'future',
+                        'value' => 'upcoming',
                     ]) ?>
                 </div>
             </div>
