@@ -862,6 +862,9 @@ class EventsTable extends Table
             }
         }
 
+        $year = $options['year'];
+        $month = $options['month'];
+
         $query
             ->find('inMonth', compact('year', 'month'))
             ->find('published')
