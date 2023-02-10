@@ -710,13 +710,13 @@ paths:
                             detail:
                               type: string
                               example: 'Category with ID {categoryId} not found'
-  /events/future:
+  /events/upcoming:
     get:
       tags:
         - events
       summary: Get events on or after the current date/time
       description: 'A convenience endpoint equivalent to using /events?start={today}'
-      operationId: getEventsFuture
+      operationId: getEventsUpcoming
       parameters:
         - name: withTags[]
           in: query
@@ -744,20 +744,20 @@ paths:
                       first:
                         type: string
                         description: Path to the first page in this result set
-                        example: 'https://api.muncieevents.com/v1/events/future?page=1'
+                        example: 'https://api.muncieevents.com/v1/events/upcoming?page=1'
                       last:
                         type: string
                         description: Path to the last page in this result set
-                        example: 'https://api.muncieevents.com/v1/events/future?page=4'
+                        example: 'https://api.muncieevents.com/v1/events/upcoming?page=4'
                       prev:
                         type: string
                         description: Path to the previous page in this result set, or null if not applicable
-                        example: 'https://api.muncieevents.com/v1/events/future?page=1'
+                        example: 'https://api.muncieevents.com/v1/events/upcoming?page=1'
                         nullable: true
                       next:
                         type: string
                         description: Path to the next page in this result set, or null if not applicable
-                        example: 'https://api.muncieevents.com/v1/events/future?page=3'
+                        example: 'https://api.muncieevents.com/v1/events/upcoming?page=3'
                         nullable: true
         '400':
           description: Bad request
@@ -1855,12 +1855,12 @@ paths:
                         detail:
                           type: string
                           example: "Search term missing / Invalid limit"
-  /tags/future:
+  /tags/upcoming:
     get:
       tags:
         - tags
       summary: Returns a list of tags associated with upcoming events and the counts of upcoming events for each
-      operationId: getTagsFuture
+      operationId: getTagsUpcoming
       responses:
         '200':
           description: Successful operation
