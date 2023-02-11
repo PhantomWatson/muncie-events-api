@@ -37,7 +37,7 @@ use Cake\Utility\Text;
     [
         'controller' => 'Events',
         'action' => 'tag',
-        'slug' => $tag->id . '-' . Text::slug($tag->name),
+        'slug' => $tag->slug,
         'direction' => $oppositeDirection,
     ]
 ); ?>
