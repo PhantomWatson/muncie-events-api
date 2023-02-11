@@ -17,6 +17,7 @@ use Cake\Utility\Text;
  * @property bool $selectable
  * @property int $user_id
  * @property FrozenTime $created
+ * @property string $slug
  *
  * @property Tag $parent_tag
  * @property User $user
