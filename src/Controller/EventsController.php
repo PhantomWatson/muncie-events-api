@@ -181,10 +181,7 @@ class EventsController extends AppController
 
         $direction = $direction ?? 'upcoming';
         if (!in_array($direction, ['upcoming', 'past'])) {
-            throw new BadRequestException(
-                'Sorry, but due to our current one-dimensional understanding of time, you can\'t view events ' .
-                'in any direction other than \'upcoming\' or \'past\'.'
-            );
+            $direction = 'upcoming';
         }
 
         $baseQuery = $this->Events
@@ -670,10 +667,7 @@ class EventsController extends AppController
         }
 
         if (!in_array($direction, ['upcoming', 'past'])) {
-            throw new BadRequestException(
-                'Direction not recognized. Either "upcoming" or "past" expected. ' .
-                'Your weird Time Lord stuff won\'t work on us.'
-            );
+            $direction = 'upcoming';
         }
 
         // For this page's results

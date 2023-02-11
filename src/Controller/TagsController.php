@@ -53,10 +53,7 @@ class TagsController extends AppController
     {
         // Filters
         if (!in_array($direction, ['upcoming', 'past'])) {
-            throw new BadRequestException(
-                'Sorry, but due to our current one-dimensional understanding of time, you can\'t view events ' .
-                'in any direction other than \'upcoming\' or \'past\'.'
-            );
+            $direciton = 'upcoming';
         }
 
         if ($categoryId == 'all') {
