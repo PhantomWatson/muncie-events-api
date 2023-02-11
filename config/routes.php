@@ -128,6 +128,11 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['controller' => 'EventSeries', 'action' => 'view'],
         ['id' => '[0-9]+', 'pass' => ['id']]
     );
+    $routes->redirect(
+        '/event_series/:id',
+        ['controller' => 'EventSeries', 'action' => 'view'],
+        ['persist' => 'id']
+    );
     Router::connect(
         '/event-series/edit/:id',
         ['controller' => 'EventSeries', 'action' => 'edit'],
