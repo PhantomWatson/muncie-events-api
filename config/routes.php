@@ -187,6 +187,13 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/reset-password/:id/:hash', ['controller' => 'Users', 'action' => 'resetPassword'])
         ->setPass(['id', 'hash']);
 
+    // Attack vectors
+    $routes->connect(
+        '/:backupSearch',
+        ['controller' => 'Pages', 'action' => 'blackhole'],
+        ['backupSearch' => 'muncieevents_[0-9]+\.zip']
+    );
+
     /**
      * Connect catchall routes for all controllers.
      *

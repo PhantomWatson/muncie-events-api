@@ -99,4 +99,14 @@ class PagesController extends AppController
             'pageTitle' => 'Web Site Terms and Conditions of Use',
         ]);
     }
+
+    /**
+     * Used for automated attack vectors
+     *
+     * @return void
+     */
+    public function blackhole()
+    {
+        exit;
+    }
 }
