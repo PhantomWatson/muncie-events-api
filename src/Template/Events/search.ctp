@@ -8,10 +8,11 @@
  * @var \App\Model\Entity\Event[] $events
  */
 
+use Cake\Http\Exception\InternalErrorException;
 use Cake\View\Helper\HtmlHelper;
 
 $count = $counts[$direction];
-$oppositeDirection = \App\Application::oppositeDirection($direction);
+
 function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
 {
     if ($count == 0) {
@@ -56,7 +57,12 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
                 <br/>
             <?php endforeach; ?>
         <?php else: ?>
-            <?= getSearchLink($searchTerm, $oppositeDirection, $counts[$oppositeDirection], $this->Html) ?>
+            <?php
+                try {
+                    $oppositeDirection = \App\Application::oppositeDirection($direction);
+                    echo getSearchLink($searchTerm, $oppositeDirection, $counts[$oppositeDirection], $this->Html);
+                } catch (InternalErrorException $e) {}
+            ?>
         <?php endif; ?>
     </p>
 
