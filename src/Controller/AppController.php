@@ -23,7 +23,7 @@ class AppController extends Controller
      * @return Response|null
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -84,7 +84,7 @@ class AppController extends Controller
      * @param Event $event CakePHP event object
      * @return void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $user = $this->Auth->identify();
@@ -107,7 +107,7 @@ class AppController extends Controller
      * @param Event $event The beforeRender event.
      * @return Response|null|void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(\Cake\Event\EventInterface $event)
     {
         $this->loadModel('Events');
         $this->set([

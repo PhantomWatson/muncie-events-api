@@ -22,7 +22,7 @@ class UsersController extends AppController
      * @return Response|null
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

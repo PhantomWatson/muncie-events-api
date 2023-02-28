@@ -48,7 +48,7 @@ class EventsTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -99,7 +99,7 @@ class EventsTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->integer('id');
@@ -171,7 +171,7 @@ class EventsTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['approved_by'], 'Users'));

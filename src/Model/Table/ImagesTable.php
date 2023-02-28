@@ -40,7 +40,7 @@ class ImagesTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -67,7 +67,7 @@ class ImagesTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->integer('id');
@@ -86,7 +86,7 @@ class ImagesTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
@@ -142,7 +142,7 @@ class ImagesTable extends Table
      * @param ArrayObject $options Options array
      * @return void
      */
-    public function afterDelete(Event $event, Image $image, ArrayObject $options)
+    public function afterDelete(\Cake\Event\EventInterface $event, Image $image, ArrayObject $options)
     {
         if (!$image->filename) {
             return;

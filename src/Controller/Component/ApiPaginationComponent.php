@@ -20,13 +20,13 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Event $event The Controller.beforeRender event.
      * @return void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(\Cake\Event\EventInterface $event)
     {
         /** @var Controller $subject */
         $subject = $event->getSubject();
         $config = $this->getConfig();
         $modelName = $config['model'] ?? $subject->getName();
-        $this->pagingInfo = $subject->request->getParam('paging')[$modelName];
+        $this->pagingInfo = $subject->request->getAttribute('paging')[$modelName];
 
         if (!empty($config['aliases'])) {
             $this->setAliases();

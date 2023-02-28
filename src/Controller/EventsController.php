@@ -42,7 +42,7 @@ class EventsController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 

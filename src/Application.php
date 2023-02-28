@@ -37,7 +37,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
@@ -73,7 +73,7 @@ class Application extends BaseApplication
      * @param MiddlewareQueue $middlewareQueue The middleware queue to setup.
      * @return MiddlewareQueue The updated middleware queue.
      */
-    public function middleware($middlewareQueue)
+    public function middleware($middlewareQueue): \Cake\Http\MiddlewareQueue
     {
         $middlewareQueue
             // Catch any exceptions in the lower layers,
