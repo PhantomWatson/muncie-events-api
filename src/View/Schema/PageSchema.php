@@ -7,6 +7,11 @@ use JsonApi\View\Schema\EntitySchema;
 
 class PageSchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'pages';
+    }
+
     /**
      * Returns the title of the page, which is effectively an ID
      *

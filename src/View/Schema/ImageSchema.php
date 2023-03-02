@@ -8,6 +8,11 @@ use JsonApi\View\Schema\EntitySchema;
 
 class ImageSchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'images';
+    }
+
     /**
      * Returns the image's ID
      *

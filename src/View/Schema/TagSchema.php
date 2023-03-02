@@ -7,6 +7,11 @@ use JsonApi\View\Schema\EntitySchema;
 
 class TagSchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'tags';
+    }
+
     /**
      * Returns the tag's ID
      *

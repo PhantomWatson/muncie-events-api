@@ -12,6 +12,11 @@ class EventSchema extends EntitySchema
 {
     protected $selfSubUrl = '/event';
 
+    public function getType(): string
+    {
+        return 'events';
+    }
+
     /**
      * Returns the event's ID
      *

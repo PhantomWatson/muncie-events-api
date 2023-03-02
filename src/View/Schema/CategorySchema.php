@@ -10,6 +10,11 @@ use JsonApi\View\Schema\EntitySchema;
 
 class CategorySchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'categories';
+    }
+
     /**
      * Returns the category's ID
      *

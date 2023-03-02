@@ -9,6 +9,11 @@ class MailingListSchema extends EntitySchema
 {
     protected $resourceType = 'subscriptions';
 
+    public function getType(): string
+    {
+        return 'subscriptions';
+    }
+
     /**
      * Returns the subscription's ID
      *

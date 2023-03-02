@@ -7,6 +7,11 @@ use JsonApi\View\Schema\EntitySchema;
 
 class EventSeriesSchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'event-series';
+    }
+
     /**
      * Returns the event series's ID
      *
