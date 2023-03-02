@@ -50,7 +50,7 @@ class EventSeriesController extends AppController
         // Grant access to edit and delete functions only if the current user is this series's author
         $seriesId = $this->request->getParam('id');
         $userId = php_sapi_name() == 'cli'
-            ? $this->request->getSession()->read(['Auth.User.id'])
+            ? $this->request->getSession()->read('Auth.User.id')
             : $user['id'];
 
         return $this->EventSeries->exists([
