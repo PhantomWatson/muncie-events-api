@@ -14,7 +14,6 @@
  */
 namespace App\Controller;
 
-use Cake\Http\Response;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
 

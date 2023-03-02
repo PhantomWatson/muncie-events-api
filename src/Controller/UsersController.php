@@ -26,10 +26,6 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        if (!$this->request->is('ssl')) {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
-        }
-
         $this->loadRecaptcha();
 
         $this->Auth->allow([
@@ -40,8 +36,6 @@ class UsersController extends AppController
             'resetPassword',
             'view',
         ]);
-
-        return null;
     }
 
     /**
