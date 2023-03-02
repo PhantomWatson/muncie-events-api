@@ -53,7 +53,7 @@ class TagsController extends AppController
     {
         // Filters
         if (!in_array($direction, ['upcoming', 'past'])) {
-            $direciton = 'upcoming';
+            $direction = 'upcoming';
         }
 
         if ($categoryId == 'all') {
