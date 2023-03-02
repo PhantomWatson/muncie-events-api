@@ -5,7 +5,6 @@ use App\Model\Entity\Image;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\Filesystem\File;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Association\BelongsTo;
@@ -158,9 +157,7 @@ class ImagesTable extends Table
                 continue;
             }
 
-            $file = new File($filePath);
-            $file->delete();
-            $file->close();
+            unlink($filePath);
         }
     }
 }

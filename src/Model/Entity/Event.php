@@ -7,7 +7,6 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
-use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
@@ -178,8 +177,8 @@ class Event extends Entity
 
         // Create a time object with the correct timezone set
         $timeString = $localTime->toDateTimeString();
-        $correctedTime = new Time($timeString);
-        $correctedTime->timezone(self::TIMEZONE);
+        $correctedTime = (new FrozenTime($timeString))
+            ->setTimezone(self::TIMEZONE);
 
         // Add correct date
         $correctedTime

@@ -29,9 +29,10 @@ class ImagesController extends AppController
     public function userImages($userId)
     {
         $this->viewbuilder()->setLayout('ajax');
-        $this->loadModel('Users');
+        /** @var UsersTable $usersTable */
+        $usersTable = $this->fetchTable('Users');
         $this->set([
-            'images' => $this->Users->getImagesList($userId),
+            'images' => $usersTable->getImagesList($userId),
         ]);
     }
 

@@ -6,7 +6,6 @@ use Cake\Chronos\Date;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
-use Cake\I18n\Time;
 use Cake\ORM\ResultSet;
 use Cake\Routing\Router;
 use Cake\Utility\Text;
@@ -257,7 +256,7 @@ class CalendarHelper extends Helper
      */
     public static function getDatetimeForGoogleCal($date, $time)
     {
-        $newTime = (new Time($time))
+        $newTime = (new FrozenTime($time))
             ->setDate($date->year, $date->month, $date->day)
             ->setTimezone(Event::TIMEZONE);
 

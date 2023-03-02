@@ -63,7 +63,6 @@ class TagsController extends AppController
             $categoryId = (int)$categoryId;
         }
 
-        $this->loadModel('Events');
         $tags = $this->Events->getEventTags($direction, $categoryId);
 
         // Create separate sub-lists of tags according to what character they start with
@@ -75,8 +74,9 @@ class TagsController extends AppController
 
         // Generate the page title, specifying direction and (if applicable) category
         $pageTitle = sprintf('Tags (%s Events)', ucfirst($direction));
-        $this->loadModel('Categories');
-        $categoryName = $categoryId ? $this->Categories->get($categoryId)->name : null;
+        /** @var CategoriesTable $categoriesTable */
+        $categoriesTable = $this->fetchTable('Categories');
+        $categoryName = $categoryId ? $categoriesTable->get($categoryId)->name : null;
         if ($categoryName) {
             $categoryName = str_replace(' Events', '', ucwords($categoryName));
             $pageTitle = str_replace(' Events', " $categoryName Events", $pageTitle);
@@ -104,7 +104,7 @@ class TagsController extends AppController
             'pageTitle'
         ));
         $this->set([
-            'categories' => $this->Categories->find('list')->all(),
+            'categories' => $categoriesTable->find('list')->all(),
             'letters' => array_merge(range('a', 'z'), ['nonalpha']),
         ]);
     }

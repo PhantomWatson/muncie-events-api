@@ -37,7 +37,6 @@ class WidgetsController extends AppController
             'index',
             'month',
         ]);
-        $this->loadModel('Events');
         $this->Widget = new Widget();
     }
 

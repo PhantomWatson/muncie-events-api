@@ -16,6 +16,7 @@ use Exception;
  */
 class AppController extends Controller
 {
+    protected EventsTable $Events;
 
     /**
      * Initialization hook method
@@ -109,7 +110,7 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
-        $this->loadModel('Events');
+        $this->Events = $this->fetchTable('Events');
         $this->set([
             'authUser' => $this->Auth->user(),
             'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,

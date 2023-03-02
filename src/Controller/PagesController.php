@@ -14,10 +14,7 @@
  */
 namespace App\Controller;
 
-use App\Validator\ContactValidator;
-use Cake\Core\Configure;
 use Cake\Http\Response;
-use Cake\Mailer\Email;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
 

@@ -27,8 +27,8 @@ class MailingListController extends AppController
     {
         parent::initialize();
 
-        $this->loadModel('Categories');
-        $this->loadModel('Users');
+        $this->Categories = $this->fetchTable('Categories');
+        $this->Users = $this->fetchTable('Users');
 
         $this->Auth->allow([
             'index',

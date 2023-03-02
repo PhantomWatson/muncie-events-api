@@ -173,8 +173,9 @@ class EventsController extends AppController
             ]);
         }
 
-        $this->loadModel('Tags');
-        $tag = $this->Tags->getFromIdSlug($idAndSlug);
+        /** @var TagsTable $tagsTable */
+        $tagsTable = $this->fetchTable('Tags');
+        $tag = $tagsTable->getFromIdSlug($idAndSlug);
         if (!$tag) {
             throw new NotFoundException('Sorry, we couldn\'t find that tag');
         }

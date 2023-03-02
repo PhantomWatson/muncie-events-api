@@ -108,11 +108,12 @@ class EventsController extends AppController
         }
 
         if ($seriesToApprove) {
-            $this->loadModel('EventSeries');
+            /** @var  $eventSeriesTable */
+            $eventSeriesTable = $this->fetchTable('EventSeries');
             foreach ($seriesToApprove as $seriesId => $flag) {
-                $series = $this->EventSeries->get($seriesId);
+                $series = $eventSeriesTable->get($seriesId);
                 $series->published = true;
-                if ($this->EventSeries->save($series)) {
+                if ($eventSeriesTable->save($series)) {
                     $this->Flash->success("Event series #$seriesId approved.");
                 }
             }
