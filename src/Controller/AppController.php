@@ -5,6 +5,7 @@ use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Exception;
 
@@ -90,7 +91,7 @@ class AppController extends Controller
             if ($user) {
                 $this->Auth->setUser($user);
             } else {
-                $this->response = $this->response->withExpiredCookie('CookieAuth');
+                $this->response = $this->response->withExpiredCookie(new Cookie('CookieAuth'));
             }
         }
 
@@ -110,7 +111,9 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
-        $this->Events = $this->fetchTable('Events');
+        /** @var EventsTable $eventsTable */
+        $eventsTable = $this->fetchTable('Events');
+        $this->Events = $eventsTable;
         $this->set([
             'authUser' => $this->Auth->user(),
             'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
