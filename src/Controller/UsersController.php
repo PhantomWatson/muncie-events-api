@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Table\UsersTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -116,15 +117,15 @@ class UsersController extends AppController
 
         // Remember login information
         if ($this->request->getData('auto_login')) {
-            $this->response = $this->response->withCookie('CookieAuth', [
-                'value' => [
+            $cookie = (new Cookie('CookieAuth'))
+                ->withValue([
                     'email' => $this->request->getData('email'),
                     'password' => $this->request->getData('password'),
-                ],
-                'secure' => true,
-                'expire' => strtotime('+1 year'),
-                'httpOnly' => true,
-            ]);
+                ])
+                ->withSecure(true)
+                ->withExpiry(new \DateTime('+1 year'))
+                ->withHttpOnly(true);
+            $this->response = $this->response->withCookie($cookie);
         }
 
         return $this->redirect($this->Auth->redirectUrl());
