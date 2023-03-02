@@ -77,7 +77,7 @@ class CookieAuthenticate extends BaseAuthenticate
      *
      * @return array List of events this class listens to. Defaults to `[]`.
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'Auth.logout' => 'logout',

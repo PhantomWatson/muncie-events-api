@@ -25,7 +25,7 @@ class PopulateLocationSlugsCommand extends Command
      * @param ConsoleOptionParser $parser The parser to be defined
      * @return ConsoleOptionParser The built parser.
      */
-    public function buildOptionParser(ConsoleOptionParser $parser)
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 

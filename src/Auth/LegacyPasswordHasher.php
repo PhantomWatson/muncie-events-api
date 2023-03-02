@@ -27,7 +27,7 @@ class LegacyPasswordHasher extends AbstractPasswordHasher
      * @param string $hashedPassword The hashed version of the same password
      * @return bool
      */
-    public function check($password, $hashedPassword)
+    public function check($password, $hashedPassword): bool
     {
         return $this->hash($password) == $hashedPassword;
     }
