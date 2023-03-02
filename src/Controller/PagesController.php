@@ -31,7 +31,7 @@ class PagesController extends AppController
     /**
      * Initialize method
      *
-     * @return Response|null
+     * @return void
      * @throws Exception
      */
     public function initialize(): void
@@ -39,8 +39,6 @@ class PagesController extends AppController
         parent::initialize();
 
         $this->Auth->allow();
-
-        return null;
     }
 
     /**
