@@ -47,7 +47,7 @@ class MailingListLogTable extends Table
      */
     public function addLogEntry($recipientId, $result, $flavor, $testing = false)
     {
-        $log = $this->newEntity();
+        $log = $this->newEntity([]);
         $log->recipient_id = $recipientId;
         $log->flavor = $flavor;
         $log->result = $result;
