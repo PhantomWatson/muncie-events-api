@@ -71,22 +71,20 @@ class AppController extends Controller
             ]
         );
         $this->Auth->deny();
-
-        if (!$this->request->is('ssl')) {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
-        }
-
-        return null;
     }
 
     /**
      * beforeFilter method
      *
      * @param Event $event CakePHP event object
-     * @return void
+     * @return Response|null
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
+        if (!$this->request->is('ssl')) {
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
+        }
+
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -100,6 +98,8 @@ class AppController extends Controller
         if (!$this->Auth->user()) {
             $this->Auth->setConfig('authError', 'You\'ll need to log in before accessing that page');
         }
+
+        return null;
     }
 
     /**
