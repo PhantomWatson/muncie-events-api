@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use Exception;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Factories\Factory;
 
 class EventSchema extends EntitySchema
@@ -89,12 +90,11 @@ class EventSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Event $entity Entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param Entity $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [
             'category' => [

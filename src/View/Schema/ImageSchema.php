@@ -5,6 +5,7 @@ use App\Model\Entity\Image;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class ImageSchema extends EntitySchema
 {
@@ -45,12 +46,11 @@ class ImageSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $entity Entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param Entity $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [];
     }

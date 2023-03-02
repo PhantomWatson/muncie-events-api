@@ -4,6 +4,7 @@ namespace App\View\Schema;
 use App\Model\Entity\Tag;
 use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class TagSchema extends EntitySchema
 {
@@ -47,12 +48,11 @@ class TagSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Tag $tag Tag entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param Entity $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($tag, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         if (isset($tag->children)) {
             return ['children' => [self::DATA => $tag->children]];
