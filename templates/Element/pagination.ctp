@@ -4,8 +4,8 @@
  * @var bool $passQueryParams TRUE to add all current query parameters to pagination URLs
  */
 
-$totalPages = $this->Paginator->counter(['format' => '{{pages}}']);
-$currentPage = $this->Paginator->counter(['format' => '{{page}}']);
+$totalPages = $this->Paginator->counter('{{pages}}');
+$currentPage = $this->Paginator->counter('{{page}}');
 
 $passQueryParams = $passQueryParams ?? false;
 $url = ['?' => $passQueryParams ? $this->request->getQueryParams() : []];
