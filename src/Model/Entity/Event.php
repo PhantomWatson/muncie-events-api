@@ -166,7 +166,7 @@ class Event extends Entity
      *
      * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Time object
-     * @return Time|null
+     * @return FrozenTime|null
      * @throws Exception
      */
     private static function getCorrectedTime($date, $localTime)
@@ -178,10 +178,7 @@ class Event extends Entity
         // Create a time object with the correct timezone set
         $timeString = $localTime->toDateTimeString();
         $correctedTime = (new FrozenTime($timeString))
-            ->setTimezone(self::TIMEZONE);
-
-        // Add correct date
-        $correctedTime
+            ->setTimezone(self::TIMEZONE)
             ->day($date->day)
             ->month($date->month)
             ->year($date->year);
