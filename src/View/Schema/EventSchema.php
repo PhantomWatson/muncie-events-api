@@ -98,16 +98,16 @@ class EventSchema extends EntitySchema
     {
         return [
             'category' => [
-                self::DATA => $entity->category,
+                'data' => $resource->category,
             ],
             'series' => [
-                self::DATA => $entity->event_series,
+                'data' => $resource->event_series,
             ],
             'tags' => [
-                self::DATA => $entity->tags,
+                'data' => $resource->tags,
             ],
             'user' => [
-                self::DATA => $entity->user,
+                'data' => $resource->user,
             ],
         ];
     }
