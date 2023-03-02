@@ -20,7 +20,8 @@
         "mobiledetect/mobiledetectlib": "2.*",
         "php": "8.1.*",
         "sabre/vobject": "^4.0",
-        "xety/cake3-cookieauth": "^1.1"
+        "xety/cake3-cookieauth": "^1.1",
+        "phantomwatson/cakephp-json-api": "^1.0"
     },
     "require-dev": {
         "cakephp/bake": "^2.8",
