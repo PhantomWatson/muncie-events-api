@@ -34,6 +34,15 @@ class EventSeriesSchema extends EntitySchema
      */
     public function getAttributes($series, array $fieldKeysFilter = null): array
     {
+        return self::_getAttributes($series);
+    }
+
+    /**
+     * @param EventSeries $series
+     * @return array
+     */
+    public static function _getAttributes(EventSeries $series): array
+    {
         $baseUrl = Configure::read('mainSiteBaseUrl');
 
         return [

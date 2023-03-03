@@ -7,7 +7,6 @@ use Cake\ORM\Entity;
 use Exception;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
-use Neomerx\JsonApi\Factories\Factory;
 
 class EventSchema extends EntitySchema
 {
@@ -41,8 +40,6 @@ class EventSchema extends EntitySchema
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $entity->category->noEventCount = true;
-        $categorySchema = new CategorySchema(new Factory(), $this->_view, 'Category');
-        $seriesSchema = new EventSeriesSchema(new Factory(), $this->_view, 'EventSeries');
 
         $attributes = [
             'title' => $entity->title,
@@ -55,8 +52,8 @@ class EventSchema extends EntitySchema
                     'name' => $entity->user->name,
                     'email' => $entity->user->email,
                 ] : null,
-            'category' => $categorySchema->getAttributes($entity->category),
-            'series' => $entity->event_series ? $seriesSchema->getAttributes($entity->event_series) : null,
+            'category' => CategorySchema::_getAttributes($entity->category),
+            'series' => $entity->event_series ? EventSeriesSchema::_getAttributes($entity->event_series) : null,
             'date' => $entity->date->format('Y-m-d'),
             'time_start' => Event::getDatetime($entity->date, $entity->time_start),
             'time_end' => Event::getDatetime($entity->date, $entity->time_end),

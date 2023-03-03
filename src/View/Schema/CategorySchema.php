@@ -36,6 +36,15 @@ class CategorySchema extends EntitySchema
      */
     public function getAttributes($category, array $fieldKeysFilter = null): array
     {
+        return self::_getAttributes($category);
+    }
+
+    /**
+     * @param Category $category
+     * @return array
+     */
+    public static function _getAttributes(Category $category): array
+    {
         $siteBaseUrl = Configure::read('mainSiteBaseUrl');
         $iconBaseUrl = Configure::read('categoryIconBaseUrl');
         $iconFilename = mb_strtolower(str_replace(' ', '_', $category->name)) . '.svg';
