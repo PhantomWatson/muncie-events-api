@@ -55,20 +55,20 @@ class MailingListSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $resource Entity
+     * @param MailingList $resource Entity
      * @param ContextInterface $context
      * @return array
      */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
         // If "all_categories" is true, display associations with every category
-        if ($subscription->all_categories) {
+        if ($resource->all_categories) {
             $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
             $categories = $categoriesTable->find()->all();
         } else {
-            $categories = $subscription->categories;
+            $categories = $resource->categories;
         }
 
-        return ['categories' => [self::DATA => $categories]];
+        return ['categories' => ['data' => $categories]];
     }
 }

@@ -90,7 +90,7 @@ class EventSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $resource Entity
+     * @param Event $resource Entity
      * @param ContextInterface $context
      * @return array
      */

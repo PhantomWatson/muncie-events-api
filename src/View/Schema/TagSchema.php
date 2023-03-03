@@ -48,18 +48,18 @@ class TagSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $resource Entity
+     * @param Tag $resource Entity
      * @param ContextInterface $context
      * @return array
      */
     public function getRelationships($resource, ContextInterface $context): iterable
     {
-        if (isset($tag->children)) {
-            return ['children' => [self::DATA => $tag->children]];
+        if (isset($resource->children)) {
+            return ['children' => ['data' => $resource->children]];
         }
 
-        if (isset($tag->events)) {
-            return ['events' => [self::DATA => $tag->events]];
+        if (isset($resource->events)) {
+            return ['events' => ['data' => $resource->events]];
         }
 
         return [];

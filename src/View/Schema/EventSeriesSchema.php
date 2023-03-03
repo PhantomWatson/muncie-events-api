@@ -45,7 +45,7 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $resource Entity
+     * @param EventSeries $resource Entity
      * @param ContextInterface $context
      * @return array
      */
@@ -53,10 +53,10 @@ class EventSeriesSchema extends EntitySchema
     {
         return [
             'events' => [
-                self::DATA => $series->events,
+                'data' => $resource->events,
             ],
             'user' => [
-                self::DATA => $series->user,
+                'data' => $resource->user,
             ],
         ];
     }
