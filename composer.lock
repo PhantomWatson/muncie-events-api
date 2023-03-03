@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "301e52264e8d7c537bf18094648cff95",
+    "content-hash": "276dd2f5f56c0397f126efd4c11bdfea",
     "packages": [
         {
             "name": "alek13/slack",
@@ -479,6 +479,67 @@
                 }
             ],
             "time": "2023-01-11T08:27:00+00:00"
+        },
+        {
+            "name": "crabstudio/recaptcha",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ctlabvn/Recaptcha.git",
+                "reference": "60811d7c6a47a2b7f72a884b24023e4ec1d42e46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ctlabvn/Recaptcha/zipball/60811d7c6a47a2b7f72a884b24023e4ec1d42e46",
+                "reference": "60811d7c6a47a2b7f72a884b24023e4ec1d42e46",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^4.1",
+                "phpunit/phpunit": "~8.5.0 || ^9.3"
+            },
+            "suggest": {
+                "crabstudio/authenticate": "Prevent Brute Force Attack",
+                "crabstudio/email-queue": "Allows you to simple send bulk email"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Recaptcha\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "anhtuank7c",
+                    "email": "anhtuank7c@hotmail.com"
+                }
+            ],
+            "description": "Easily use Google Recaptcha in CakePHP projects",
+            "homepage": "https://github.com/ctlabvn/recaptcha",
+            "keywords": [
+                "anhtuank7c",
+                "bootstrap",
+                "cakephp",
+                "captcha",
+                "crabstudio",
+                "ctlabvn",
+                "google",
+                "recaptcha"
+            ],
+            "support": {
+                "issues": "https://github.com/ctlabvn/recaptcha/issues",
+                "source": "https://github.com/ctlabvn/recaptcha",
+                "wiki": "https://github.com/google/recaptcha"
+            },
+            "time": "2022-07-07T13:20:29+00:00"
         },
         {
             "name": "dereuromark/cakephp-calendar",
