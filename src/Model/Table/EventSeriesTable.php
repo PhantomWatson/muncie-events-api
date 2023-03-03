@@ -93,7 +93,7 @@ class EventSeriesTable extends Table
      * Returns an event series and all of its associated events for the /event-series/edit page
      *
      * @param Query $query Query object
-     * @return array|EntityInterface|null
+     * @return Query
      */
     public function findForEdit(Query $query)
     {
@@ -109,7 +109,7 @@ class EventSeriesTable extends Table
      * Alters a query to include ordered, published events with associated data
      *
      * @param Query $query Query object
-     * @return array|Query
+     * @return Query
      */
     public function findForView(Query $query)
     {
