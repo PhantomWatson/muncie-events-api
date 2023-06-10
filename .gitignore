@@ -3,6 +3,7 @@
 /config/.env
 /config/.env.production
 /config/.env.dev
+/config/app_local.php
 /tmp/*
 /logs/*
 /vendor/*
@@ -48,3 +49,4 @@ notes.txt
 
 # Docker
 /docker/.env
+/database/*
