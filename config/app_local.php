@@ -102,7 +102,6 @@ $config = [
     'eventImageBaseUrl' => env('EVENT_IMG_BASE_URL'),
     'eventImagePath' => env('EVENT_IMG_PATH'),
     'slackWebhook' => env('SLACK_WEBHOOK'),
-    'googleAnalyticsId' => 'G-209CHJ9H6E',
     'localTimezone' => 'America/Indiana/Indianapolis',
 ];
 

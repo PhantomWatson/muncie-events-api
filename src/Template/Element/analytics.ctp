@@ -1,28 +1,11 @@
-<?php
-/**
- * @var AppView $this
- */
-
-use App\View\AppView;
-use Cake\Core\Configure;
-$googleAnalyticsId = Configure::read('googleAnalyticsId');
-$debug = Configure::read('debug');
-$gaConfig = [
-    'page_location' => $this->request->getUri()->__toString(),
-    'page_path' => $this->request->getUri()->getPath(),
-];
-if (isset($titleForLayout) && $titleForLayout) {
-    $gaConfig['page_title'] = $titleForLayout;
-}
-?>
-<?php if ($googleAnalyticsId && !$debug): ?>
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= $googleAnalyticsId ?>"></script>
+<?php if (!Configure::read('debug')): ?>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FG3HBVHVV"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '<?= $googleAnalyticsId ?>', <?= json_encode($gaConfig) ?>);
-        gtag('event', 'page_view');
+
+        gtag('config', 'G-3FG3HBVHVV');
     </script>
 <?php endif; ?>
