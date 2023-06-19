@@ -4,7 +4,7 @@ namespace App\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Routing\Router;
-use Neomerx\JsonApi\Document\Link;
+use Neomerx\JsonApi\Schema\Link;
 
 /**
  * This is a simple component that injects pagination info into responses when
@@ -57,7 +57,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * Returns the full URL of the first page of this result set
      *
      * @param Controller $controller Controller
-     * @return string
+     * @return \Neomerx\JsonApi\Schema\Link
      */
     public function getFirstPage(Controller $controller)
     {
@@ -68,7 +68,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * Returns the full URL of the last page of this result set
      *
      * @param Controller $controller Controller
-     * @return string
+     * @return \Neomerx\JsonApi\Schema\Link
      */
     public function getLastPage(Controller $controller)
     {
@@ -81,7 +81,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * Returns the full URL of the previous page of this result set
      *
      * @param Controller $controller Controller
-     * @return string
+     * @return \Neomerx\JsonApi\Schema\Link|null
      */
     public function getPrevPage(Controller $controller)
     {
@@ -98,7 +98,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * Returns the full URL of the next page of this result set
      *
      * @param Controller $controller Controller
-     * @return string
+     * @return \Neomerx\JsonApi\Schema\Link|null
      */
     public function getNextPage(Controller $controller)
     {
@@ -133,7 +133,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
     }
 
     /**
-     * Returns a Neomerx\JsonApi\Document\Link object
+     * Returns a \Neomerx\JsonApi\Schema\Link object
      *
      * @param string $url Full URL
      * @return Link
