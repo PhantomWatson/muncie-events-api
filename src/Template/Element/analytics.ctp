@@ -1,4 +1,4 @@
-<?php if (!Configure::read('debug')): ?>
+<?php if (!\Cake\Core\Configure::read('debug')): ?>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FG3HBVHVV"></script>
     <script>
