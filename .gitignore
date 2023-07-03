@@ -48,3 +48,4 @@ notes.txt
 
 # Docker
 /docker/.env
+/database/*
