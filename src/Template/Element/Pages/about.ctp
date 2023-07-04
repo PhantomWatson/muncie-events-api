@@ -16,19 +16,43 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
 </h1>
 
 <p>
-    Muncie Events is a free, comprehensive event promotion service provided to the city of
-    Muncie, Indiana with the support of the <a href="https://munciearts.org">Muncie Arts and Culture Council</a>.
+    Muncie Events is a free, comprehensive event promotion service provided to the city of Muncie, Indiana.
     It strives to
     make learning about and promoting events easier for everyone by providing the underlying service to empower local
     websites and mobile apps to be part of the same event promotion network. Event information collected by Muncie
-    Events gets distributed to every website displaying
-    <a href="https://muncieevents.com/widgets">a Muncie Events calendar</a>, to apps using
-    <a href="<?= Router::url([
-        'controller' => 'Pages',
-        'action' => 'api',
-    ], true) ?>">the Muncie Events API</a>, and to
-    <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>.
+    Events gets distributed
 </p>
+<ul>
+    <li>
+        to every website displaying
+        <a href="https://muncieevents.com/widgets">a Muncie Events calendar</a>
+    </li>
+    <li>
+        to apps using
+        <a href="<?= Router::url([
+            'controller' => 'Pages',
+            'action' => 'api',
+        ], true) ?>">the Muncie Events API</a>
+    </li>
+    <li>
+        to <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>
+    </li>
+    <li>
+        to an
+        <a href="https://play.google.com/store/apps/details?id=com.muncieevents.MuncieEvents&hl=en_US">Android App</a>
+    </li>
+    <li>
+        and to <?= $this->Html->link(
+            'customizable Google Calendar feeds',
+            [
+                'plugin' => false,
+                'prefix' => false,
+                'controller' => 'Events',
+                'action' => 'feeds',
+            ]
+        ) ?>
+    </li>
+</ul>
 
 <p>
     Muncie Events began in 2003 as a component of the community website TheMuncieScene.com. Its event database currently
@@ -52,9 +76,6 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
             'Benjamin Easley' => 'Graphic Designer',
             'Nicholas Boyum' => 'Artist (map of Muncie background image)',
         ],
-        'Organizations' => [
-            '<a href="https://munciearts.org">Muncie Arts and Culture Council</a>' => '',
-        ],
         'Software' => [
             '<a href="http://cakephp.org">CakePHP</a>' => 'Back-end framework',
             '<a href="http://jquery.com/">jQuery</a> &amp; <a href="http://jqueryui.com/">jQuery UI</a>' => 'Front-end framework',
@@ -63,7 +84,7 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
             '<a href="http://recaptcha.net/">reCAPTCHA</a>' => 'Spam defense',
         ],
     ];
-    ?>
+?>
 
 <ul id="credits">
     <?php foreach ($credits as $category => $members) : ?>
