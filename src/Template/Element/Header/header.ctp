@@ -45,21 +45,6 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="<?=
-                $this->Nav->getActiveLink('Events', 'location', Event::VIRTUAL_LOCATION_SLUG)
-            ?> nav-item">
-                <?= $this->Html->link(
-                    'Virtual Events',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'Events',
-                        'action' => 'location',
-                        'location' => Event::VIRTUAL_LOCATION_SLUG,
-                    ],
-                    ['class' => 'nav-link']
-                ) ?>
-            </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
                 <?= $this->Html->link(
                     'Contact',
