@@ -38,8 +38,7 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
         to <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>
     </li>
     <li>
-        to an
-        <a href="https://play.google.com/store/apps/details?id=com.muncieevents.MuncieEvents&hl=en_US">Android App</a>
+        to an Android App (temporarily unavailable to download)
     </li>
     <li>
         and to <?= $this->Html->link(

@@ -72,13 +72,6 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="nav-item">
-                <?= $this->Html->link(
-                    'Android App',
-                    'https://play.google.com/store/apps/details?id=com.muncieevents.MuncieEvents&hl=en_US',
-                    ['class' => 'nav-link']
-                ) ?>
-            </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'api') ?> nav-item">
                 <?= $this->Html->link(
                     'API',
