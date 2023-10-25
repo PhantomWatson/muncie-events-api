@@ -82,10 +82,18 @@ class AppController extends Controller
      * beforeFilter method
      *
      * @param Event $event CakePHP event object
-     * @return void
+     * @return Response|null
      */
     public function beforeFilter(Event $event)
     {
+        /* Fix weird 404 error caused by cPanel's redirection of https://themunciescene.com/?fbclid=...
+         * MuncieEvents.com resulting in the ? being encoded */
+        $target = $this->getRequest()->getRequestTarget();
+        $pattern = '/^%3Ffbclid|^\?fbclid|^fbclid/';
+        if (preg_match($pattern, $target)) {
+            return $this->redirect('/');
+        }
+
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -99,6 +107,8 @@ class AppController extends Controller
         if (!$this->Auth->user()) {
             $this->Auth->setConfig('authError', 'You\'ll need to log in before accessing that page');
         }
+
+        return null;
     }
 
     /**
