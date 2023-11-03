@@ -78,11 +78,22 @@ try {
 }
 
 /*
- * Load an environment local configuration file.
- * You can use a file like app_local.php to provide local overrides to your
- * shared configuration.
+ * Load an environment local configuration file to provide overrides to your configuration.
+ * Notice: For security reasons app_local.php **should not** be included in your git repo.
  */
-Configure::load('app_local', 'default');
+if (file_exists(CONFIG . 'app_local.php')) {
+    Configure::load('app_local', 'default');
+}
+
+// Load environment-specific configuration file
+if (file_exists(CONFIG . 'environment.php')) {
+    include(CONFIG . 'environment.php');
+    $environment = getEnvironment();
+
+    if (file_exists(CONFIG . 'app_local_' . $environment . '.php')) {
+        Configure::load('app_local_' . $environment);
+    }
+}
 
 /*
  * When debug = true the metadata cache should only last

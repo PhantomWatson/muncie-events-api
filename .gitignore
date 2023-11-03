@@ -3,6 +3,8 @@
 /config/.env
 /config/.env.production
 /config/.env.dev
+/config/app_local.*
+/config/app_local_*
 /tmp/*
 /logs/*
 /vendor/*
@@ -45,6 +47,7 @@ config/Migrations/schema-dump-default.lock
 # Other
 /webroot/img/events/*
 notes.txt
+/config/environment.php
 
 # Docker
 /docker/.env
