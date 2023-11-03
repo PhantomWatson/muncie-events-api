@@ -196,7 +196,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect(
         '/:backupSearch',
         ['controller' => 'Pages', 'action' => 'blackhole'],
-        ['backupSearch' => 'muncieevents_[0-9]+\.zip']
+        ['backupSearch' => 'muncieevents_[0-9]+\.(zip|tar)']
     );
 
     // Bot-catcher
@@ -336,7 +336,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         'list.php',
         'maintlogin.jsp',
         'master/login.aspx',
-        'muncieevents*',
         'mysql.sql',
         'plugin.php',
         'site.sql',
