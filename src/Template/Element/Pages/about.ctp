@@ -35,7 +35,14 @@ $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
         ], true) ?>">the Muncie Events API</a>
     </li>
     <li>
-        to <a href="https://muncieevents.com/mailing_list/join">a customizable mailing list</a>
+        to
+        <?= $this->Html->link(
+            'a customizable mailing list',
+            [
+                'controller' => 'MailingList',
+                'action' => 'index',
+            ]
+        ) ?>
     </li>
     <li>
         to an Android App (temporarily unavailable to download)
