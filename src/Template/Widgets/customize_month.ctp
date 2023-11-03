@@ -107,7 +107,7 @@
                 </button>
             </h3>
             <div class="backgrounds">
-                <?= $this->element('widgets/customize/backgrounds'); ?>
+                <?= $this->element('Widgets/customize/backgrounds'); ?>
             </div>
 
             <h3>
@@ -117,7 +117,7 @@
                 </button>
             </h3>
             <div>
-                <?= $this->element('widgets/customize/size'); ?>
+                <?= $this->element('Widgets/customize/size'); ?>
             </div>
 
             <br />
