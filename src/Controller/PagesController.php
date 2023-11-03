@@ -109,4 +109,15 @@ class PagesController extends AppController
     {
         exit;
     }
+
+    /**
+     * A simple 404 page to render for bot requests
+     *
+     * @return void
+     */
+    public function botCatcher()
+    {
+        $this->viewBuilder()->setLayout('ajax');
+        $this->response = $this->response->withStatus(404);
+    }
 }
