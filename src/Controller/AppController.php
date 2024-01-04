@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Exception;
@@ -84,6 +85,20 @@ class AppController extends Controller
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
+        // Maintenance mode - regular pages
+        if ($this->shouldRedirectRequestToMaintenanceMode()) {
+            $this->setResponse($this->getResponse()->withStatus(503));
+            return $this->redirect([
+                'controller' => 'Pages',
+                'action' => 'maintenanceMode',
+            ]);
+        }
+
+        // Maintenance mode - API endpoints that only need an empty 503 response
+        if ($this->shouldReturnMaintenanceModeStatus()) {
+            return $this->getResponse()->withStatus(503);
+        }
+
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $user = $this->Auth->identify();
             if ($user) {
@@ -147,5 +162,47 @@ class AppController extends Controller
             'lang' => 'en',
             'size' => 'normal',
         ]);
+    }
+
+    /**
+     * Returns TRUE if the site is in maintenance mode and the requested page should be redirected
+     *
+     * @return bool
+     */
+    private function shouldRedirectRequestToMaintenanceMode(): bool
+    {
+        if (!Configure::read('maintenanceMode')) {
+            return false;
+        }
+        $controller = $this->getRequest()->getParam('controller');
+        $action = $this->getRequest()->getParam('action');
+        switch ("$controller.$action") {
+            case 'Events.add':
+            case 'Events.edit':
+            case 'Events.delete':
+            case 'MailingList.index':
+            case 'MailingList.unsubscribe':
+            case 'Users.changePass':
+            case 'Users.register':
+            case 'Users.resetPassword':
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private function shouldReturnMaintenanceModeStatus()
+    {
+        if (!Configure::read('maintenanceMode')) {
+            return false;
+        }
+        $controller = $this->getRequest()->getParam('controller');
+        $action = $this->getRequest()->getParam('action');
+        switch ("$controller.$action") {
+            case 'Images.upload':
+                return true;
+            default:
+                return false;
+        }
     }
 }

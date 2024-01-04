@@ -156,6 +156,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->redirect('/docs', '/docs/v1');
     $routes->connect('/docs/v1', ['controller' => 'Pages', 'action' => 'docsV1']);
     $routes->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
+    $routes->connect('/maintenance', ['controller' => 'Pages', 'action' => 'maintenanceMode']);
 
     // Tags
     Router::connect(

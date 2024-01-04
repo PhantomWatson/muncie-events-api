@@ -76,6 +76,11 @@ class ApiController extends Controller
     {
         parent::beforeFilter($event);
 
+        // Maintenance mode - API endpoints that only need an empty 503 response
+        if ($this->shouldReturnMaintenanceModeStatus()) {
+            return $this->getResponse()->withStatus(503);
+        }
+
         if ($this->request->getQuery('userToken')) {
             $this->tokenUser = $this->getTokenUser();
         }
@@ -165,5 +170,27 @@ class ApiController extends Controller
          * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
         $this->viewBuilder()->setClassName('Json');
         $this->set('_serialize', true);
+    }
+
+    /**
+     * Returns TRUE if the site is in maintenance mode and the current request would update the database
+     *
+     * @return bool
+     */
+    private function shouldReturnMaintenanceModeStatus(): bool
+    {
+        if (!Configure::read('maintenanceMode')) {
+            return false;
+        }
+        $method = strtolower($this->getRequest()->getMethod());
+        switch ($method) {
+            case 'post':
+            case 'put':
+            case 'patch':
+            case 'delete':
+                return true;
+            default:
+                return false;
+        }
     }
 }

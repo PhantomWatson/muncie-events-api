@@ -99,4 +99,11 @@ class PagesController extends AppController
             'pageTitle' => 'Web Site Terms and Conditions of Use',
         ]);
     }
+
+    public function maintenanceMode(): void
+    {
+        $this->set([
+            'pageTitle' => 'Hang tight! We\'re undergoing maintenance.',
+        ]);
+    }
 }
