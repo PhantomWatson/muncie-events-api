@@ -107,6 +107,13 @@ class AppController extends Controller
             return $this->getResponse()->withStatus(503);
         }
 
+        // Maintenance mode - Flash message for non-redirected pages
+        if (Configure::read('maintenanceMode')) {
+            $this->Flash->set(
+                'Muncie Events is currently undergoing maintenance, and some functions will be temporarily unavailable'
+            );
+        }
+
         if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
             $user = $this->Auth->identify();
             if ($user) {
