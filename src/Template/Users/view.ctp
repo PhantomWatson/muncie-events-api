@@ -2,7 +2,7 @@
     /**
      * @var int $totalCount
      * @var \App\Model\Entity\User $user
-     * @var \App\Model\Entity\Event[] $events
+     * @var \Cake\ORM\ResultSet $events
      * @var \App\View\AppView $this
      * @var bool $loggedIn
      */

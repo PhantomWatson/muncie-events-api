@@ -103,7 +103,7 @@ class EventsControllerTest extends ApplicationTest
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Events',
-            'action' => 'future',
+            'action' => 'upcoming',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $event = (new EventsFixture())->records[0];
@@ -144,7 +144,7 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/events/future returns only future events
+     * Tests that /v1/events/upcoming returns only future events
      *
      * @return void
      * @throws Exception
@@ -159,7 +159,7 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /v1/events/future fails for non-GET requests
+     * Tests that /v1/events/upcoming fails for non-GET requests
      *
      * @return void
      * @throws Exception
@@ -253,15 +253,15 @@ class EventsControllerTest extends ApplicationTest
     }
 
     /**
-     * Asserts that a search term in a given past/future direction only returns the specified result
+     * Asserts that a search term in a given past/upcoming direction only returns the specified result
      *
      * @param string $searchTerm String to use in the request's 'q' parameter
-     * @param string $direction 'past' or 'future'
+     * @param string $direction 'past' or 'upcoming'
      * @param int[] $expectedEventIds IDs of the events expected to be in search results
      * @param int|null $categoryId Optional category ID
      * @throws Exception
      */
-    private function assertSearchResults($searchTerm, $expectedEventIds, $direction = 'future', $categoryId = null)
+    private function assertSearchResults($searchTerm, $expectedEventIds, $direction = 'upcoming', $categoryId = null)
     {
         $url = $direction == 'past' ? $this->searchPastUrl : $this->searchUrl;
         $url['?']['q'] = $searchTerm;
@@ -409,7 +409,7 @@ class EventsControllerTest extends ApplicationTest
         $this->assertSearchResults(
             EventsFixture::SEARCHABLE_TITLE,
             [EventsFixture::EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY],
-            'future',
+            'upcoming',
             CategoriesFixture::ALT_CATEGORY_ID
         );
     }

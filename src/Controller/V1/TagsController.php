@@ -73,11 +73,11 @@ class TagsController extends ApiController
     }
 
     /**
-     * /tags/future endpoint
+     * /tags/upcoming endpoint
      *
      * @return void
      */
-    public function future()
+    public function upcoming()
     {
         $this->request->allowMethod('get');
 
@@ -113,7 +113,7 @@ class TagsController extends ApiController
                 'Events' => function (Query $q) {
                     return $q
                         ->find('forApi')
-                        ->find('future');
+                        ->find('upcoming');
                 },
             ])
             ->first();

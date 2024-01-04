@@ -396,6 +396,17 @@ class Event extends Entity
     }
 
     /**
+     * Trims the location name
+     *
+     * @param string $location
+     * @return string
+     */
+    protected function _getLocation($location)
+    {
+        return trim($location);
+    }
+
+    /**
      * A virtual field that returns this event's description in plain text, with HTML removed
      *
      * @return string

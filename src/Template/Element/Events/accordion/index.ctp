@@ -5,7 +5,7 @@
  * or one day ($events[$k] = $event)
  *
  * @var AppView $this
- * @var \App\Model\Entity\Event[] $events
+ * @var \Cake\ORM\ResultSet|\App\Model\Entity\Event[] $events
  * @var bool $hideDateHeaders
  */
 

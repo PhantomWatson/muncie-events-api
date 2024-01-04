@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
+use Cake\ORM\ResultSet;
 use Cake\Routing\Router;
 use Cake\Utility\Text;
 use Cake\View\Helper;
@@ -28,11 +29,14 @@ class CalendarHelper extends Helper
      *      'YYYY-MM-DD' => [$event1, $event2, ...]
      * ]
      *
-     * @param Event[] $events Array of Event objects
+     * @param ResultSet|Event[] $events Array of Event objects
      * @return array
      */
-    public static function arrangeByDate(array $events)
+    public static function arrangeByDate($events)
     {
+        if (!is_array($events)) {
+            $events = $events->toArray();
+        }
         $retval = [];
 
         foreach ($events as $event) {
@@ -48,13 +52,16 @@ class CalendarHelper extends Helper
     /**
      * Returns the date that follows the last date in this set of events in the format YYYY-MM-DD
      *
-     * @param Event[] $events Array of events
+     * @param ResultSet|Event[] $events Array of events
      * @return string|null
      */
-    public static function getNextStartDate(array $events)
+    public static function getNextStartDate($events)
     {
         if (!$events) {
             return null;
+        }
+        if (!is_array($events)) {
+            $events = $events->toArray();
         }
 
         // If $events is arranged by date

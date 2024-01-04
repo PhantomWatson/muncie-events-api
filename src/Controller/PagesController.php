@@ -100,6 +100,27 @@ class PagesController extends AppController
         ]);
     }
 
+    /**
+     * Used for automated attack vectors
+     *
+     * @return void
+     */
+    public function blackhole()
+    {
+        exit;
+    }
+
+    /**
+     * A simple 404 page to render for bot requests
+     *
+     * @return void
+     */
+    public function botCatcher()
+    {
+        $this->viewBuilder()->setLayout('ajax');
+        $this->response = $this->response->withStatus(404);
+    }
+
     public function maintenanceMode(): void
     {
         $this->set([

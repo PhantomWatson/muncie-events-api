@@ -53,7 +53,7 @@ class TagsControllerTest extends ApplicationTest
         $this->futureUrl = [
             'prefix' => 'v1',
             'controller' => 'Tags',
-            'action' => 'future',
+            'action' => 'upcoming',
         ];
         $this->viewUrl = [
             'prefix' => 'v1',
@@ -131,7 +131,7 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /tags/future returns the correct results
+     * Tests that /tags/upcoming returns the correct results
      *
      * @return void
      * @throws Exception
@@ -150,7 +150,7 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /tags/future fails for non-GET requests
+     * Tests that /tags/upcoming fails for non-GET requests
      *
      * @return void
      * @throws Exception
@@ -161,7 +161,7 @@ class TagsControllerTest extends ApplicationTest
     }
 
     /**
-     * Tests that /tags/future returns the correct results
+     * Tests that /tags/upcoming returns the correct results
      *
      * @return void
      * @throws Exception

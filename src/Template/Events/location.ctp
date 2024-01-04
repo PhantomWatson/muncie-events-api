@@ -9,6 +9,7 @@
  * @var string $locationSlug
  */
 
+use App\Application;
 use App\Model\Entity\Event;
 
 $isVirtual = ($locationName == Event::VIRTUAL_LOCATION);
@@ -16,7 +17,7 @@ $eventNoun = __n('Event', 'Events', $count);
 $headerText = sprintf(
     '%s %s %s',
     $count,
-    ($direction == 'future') ? 'Upcoming' : 'Past',
+    ucfirst($direction),
     $isVirtual ? "Virtual $eventNoun" : "$eventNoun at $locationName"
 );
 
@@ -24,7 +25,7 @@ $eventNoun = __n(' event', ' events', $countOtherDirection);
 $linkText = sprintf(
     '%s %s %s',
     $countOtherDirection,
-    ($direction == 'future') ? 'past' : 'upcoming',
+    Application::oppositeDirection($direction),
     $isVirtual ? "virtual $eventNoun" : "$eventNoun at $locationName"
 );
 ?>
@@ -40,11 +41,11 @@ $linkText = sprintf(
         'controller' => 'Events',
         'action' => 'location',
         'location' => $locationSlug,
-        'direction' => ($direction == 'future') ? 'past' : 'future',
+        'direction' => Application::oppositeDirection($direction),
     ]) ?>
 <?php else : ?>
     <p class="light_text">
-        There are no <?= (($direction == 'future') ? 'past' : 'upcoming') ?>
+        There are no <?= Application::oppositeDirection($direction) ?>
         <?= $isVirtual ? 'virtual events' : "events at $locationName" ?>
     </p>
 <?php endif; ?>

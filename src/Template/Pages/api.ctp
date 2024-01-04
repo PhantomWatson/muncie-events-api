@@ -103,7 +103,7 @@ $adminEmail = Configure::read('adminEmail');
         <p>
             If you have any questions or find any errors, contact us at
             <a href="mailto:admin@muncieevents.com">admin@muncieevents.com</a> or
-            <a href="https://github.com/BallStateCBER/muncie-events-api/issues">open a new issue on GitHub</a>.
+            <a href="https://github.com/PhantomWatson/muncie-events-api/issues">open a new issue on GitHub</a>.
         </p>
     </section>
 </div>

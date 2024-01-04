@@ -18,6 +18,8 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -95,5 +97,19 @@ class Application extends BaseApplication
             ));
 
         return $middlewareQueue;
+    }
+
+    /**
+     * @param string $direction
+     * @return string
+     */
+    public static function oppositeDirection(string $direction) {
+        if (!in_array($direction, ['upcoming', 'past'])) {
+            throw new InternalErrorException(
+                "'$direction' direction not recognized. Either 'upcoming' or 'past' expected."
+            );
+        }
+
+        return $direction == 'upcoming' ? 'past' : 'upcoming';
     }
 }

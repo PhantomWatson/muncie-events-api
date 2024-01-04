@@ -37,7 +37,7 @@ class EventsController extends ApiController
         parent::initialize();
         $this->Auth->allow([
             'category',
-            'future',
+            'upcoming',
             'index',
             'search',
             'view',
@@ -84,12 +84,12 @@ class EventsController extends ApiController
     }
 
     /**
-     * /events/future endpoint
+     * /events/upcoming endpoint
      *
      * @return void
      * @throws Exception
      */
-    public function future()
+    public function upcoming()
     {
         $this->request->allowMethod('get');
 
@@ -97,7 +97,7 @@ class EventsController extends ApiController
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find('future')
+            ->find('upcoming')
             ->find('tagged', ['tags' => $tags]);
 
         $this->set([
@@ -151,7 +151,7 @@ class EventsController extends ApiController
 
         $baseQuery = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find($direction ?? 'future');
+            ->find($direction ?? 'upcoming');
         if ($categoryId) {
             $baseQuery->where(['category_id' => $categoryId]);
         }
@@ -202,7 +202,7 @@ class EventsController extends ApiController
         $tags = $this->request->getQuery('withTags');
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find('future')
+            ->find('upcoming')
             ->find('inCategory', ['categoryId' => $categoryId])
             ->find('tagged', ['tags' => $tags]);
 

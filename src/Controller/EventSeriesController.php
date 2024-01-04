@@ -158,7 +158,7 @@ class EventSeriesController extends AppController
             return $this->redirect(['controller' => 'events', 'action' => 'index']);
         }
 
-        $eventSeries->splitEventsPastFuture();
+        $eventSeries->splitEventsPastUpcoming();
         $dividedEvents = [];
         if ($eventSeries->pastEvents) {
             $dividedEvents['past'] = $eventSeries->pastEvents;

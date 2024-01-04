@@ -53,10 +53,7 @@ class TagsController extends AppController
     {
         // Filters
         if (!in_array($direction, ['upcoming', 'past'])) {
-            throw new BadRequestException(
-                'Sorry, but due to our current one-dimensional understanding of time, you can\'t view events ' .
-                'in any direction other than \'upcoming\' or \'past\'.'
-            );
+            $direciton = 'upcoming';
         }
 
         if ($categoryId == 'all') {
@@ -67,8 +64,7 @@ class TagsController extends AppController
         }
 
         $this->loadModel('Events');
-        $findMethod = $direction == 'upcoming' ? 'future' : 'past';
-        $tags = $this->Events->getEventTags($findMethod, $categoryId);
+        $tags = $this->Events->getEventTags($direction, $categoryId);
 
         // Create separate sub-lists of tags according to what character they start with
         $tagsByFirstLetter = [];

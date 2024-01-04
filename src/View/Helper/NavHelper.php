@@ -141,7 +141,7 @@ class NavHelper extends Helper
 
         return $eventsTable
             ->find('published')
-            ->find('future')
+            ->find('upcoming')
             ->select(['location', 'location_slug'])
             ->distinct(['location', 'location_slug'])
             ->orderAsc('location')

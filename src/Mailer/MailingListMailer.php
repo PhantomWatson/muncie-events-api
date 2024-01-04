@@ -70,10 +70,10 @@ class MailingListMailer extends Mailer
         if ($recipient->all_categories) {
             $eventTypes = 'All events';
         } else {
-            $selectedCategories = $recipient['Category'];
+            $selectedCategories = $recipient->categories;
             $categoryNames = [];
             foreach ($selectedCategories as $selectedCategory) {
-                $categoryNames[] = $selectedCategory['name'];
+                $categoryNames[] = $selectedCategory->name;
             }
             $eventTypes = 'Only ' . $this->toList($categoryNames);
         }
@@ -128,6 +128,6 @@ class MailingListMailer extends Mailer
 
         $separator = (count($list) > 2) ? $separator : ' ';
 
-        return implode($separator, array_slice($list, null, -1)) . $and . array_pop($list);
+        return implode($separator, array_slice($list, 0, -1)) . $and . array_pop($list);
     }
 }
