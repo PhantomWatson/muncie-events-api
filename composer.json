@@ -22,7 +22,7 @@
         "alek13/slack": "^1.10",
         "dereuromark/cakephp-calendar": "0.*",
         "sabre/vobject": "^4.0",
-        "ozee31/cakephp-cors": "1",
+        "ozee31/cakephp-cors": "^1.1.7",
         "hbattat/verifyemail": "^1.0"
     },
     "require-dev": {

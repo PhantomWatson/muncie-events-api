@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc370a60766b136d0d1e8f66db0dd23e",
+    "content-hash": "6bb0b0eee29697460ea34cf1d62952e0",
     "packages": [
         {
             "name": "alek13/slack",
@@ -1384,24 +1384,24 @@
         },
         {
             "name": "ozee31/cakephp-cors",
-            "version": "v1.0.0",
+            "version": "v1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ozee31/cakephp-cors.git",
-                "reference": "100627363eb34f843b2e6ce59b01ccb4796c0d75"
+                "reference": "da42a1aaf3a9093eda82cc40f11b84c90af79b79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ozee31/cakephp-cors/zipball/100627363eb34f843b2e6ce59b01ccb4796c0d75",
-                "reference": "100627363eb34f843b2e6ce59b01ccb4796c0d75",
+                "url": "https://api.github.com/repos/ozee31/cakephp-cors/zipball/da42a1aaf3a9093eda82cc40f11b84c90af79b79",
+                "reference": "da42a1aaf3a9093eda82cc40f11b84c90af79b79",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": ">=3.3.2 <4.0.0",
-                "php": ">=5.5.9"
+                "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "5.*"
             },
             "type": "cakephp-plugin",
             "autoload": {
@@ -1413,10 +1413,10 @@
             "description": "A CakePHP (3.3.x) plugin for activate cors domain in your application",
             "support": {
                 "issues": "https://github.com/ozee31/cakephp-cors/issues",
-                "source": "https://github.com/ozee31/cakephp-cors/tree/v1.0.0"
+                "source": "https://github.com/ozee31/cakephp-cors/tree/master"
             },
             "abandoned": true,
-            "time": "2016-11-09T10:18:09+00:00"
+            "time": "2019-01-25T16:39:57+00:00"
         },
         {
             "name": "paragonie/random_compat",
