@@ -31,7 +31,7 @@ class ApiController extends Controller
      * @throws BadRequestException
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
