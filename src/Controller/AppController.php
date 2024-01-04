@@ -24,7 +24,7 @@ class AppController extends Controller
      * @return void
      * @throws Exception
      */
-    public function initialize(): void
+    public function initialize()
     {
         parent::initialize();
 

@@ -31,7 +31,7 @@ class ErrorController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize(): void
+    public function initialize()
     {
         parent::initialize();
         $this->loadComponent('RequestHandler', [
