@@ -74,6 +74,8 @@ class MailingListController extends AppController
             if ($subscription->all_categories) {
                 $stashedCategorySelections = $subscription->categories;
                 $subscription->categories = [];
+            } else {
+                $stashedCategorySelections = [];
             }
 
             $isNew = $subscription->isNew();
