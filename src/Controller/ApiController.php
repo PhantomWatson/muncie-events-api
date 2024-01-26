@@ -70,7 +70,7 @@ class ApiController extends Controller
      * beforeFilter method
      *
      * @param Event $event CakePHP event object
-     * @return void
+     * @return Response
      */
     public function beforeFilter(Event $event)
     {
@@ -84,6 +84,8 @@ class ApiController extends Controller
         if ($this->request->getQuery('userToken')) {
             $this->tokenUser = $this->getTokenUser();
         }
+
+        return $this->getResponse()->withHeader('Access-Control-Allow-Origin', '*');
     }
 
     /**
