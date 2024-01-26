@@ -24,7 +24,6 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use DebugKit\Plugin;
 
 /**
  * Application setup class.
@@ -62,8 +61,10 @@ class Application extends BaseApplication
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
-        if (Configure::read('debug')) {
-            $this->addPlugin(Plugin::class);
+        include_once CONFIG . 'environment.php';
+        $environment = function_exists('getEnvironment') ? getEnvironment() : null;
+        if (Configure::read('debug') && $environment !== 'production') {
+            $this->addPlugin(\DebugKit\Plugin::class);
         }
     }
 
