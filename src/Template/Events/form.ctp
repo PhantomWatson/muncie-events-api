@@ -52,19 +52,12 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 <?php $this->Html->scriptStart(['block' => true]); ?>
     // Disable page for Internet Explorer, which doesn't support the tag autocomplete's async function
     let userAgent = window.navigator.userAgent;
-    if (userAgent.indexOf('MSIE') !== -1 || userAgent.indexOf('Trident') !== -1) {
-        window.onload = function () {
-            document.getElementById('EventForm').innerHTML = '<p>Sorry, Internet Explorer is not supported ' +
-                'on this page. Please upgrade to a modern browser to continue.</p>';
-        };
-    } else {
-        eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
-        setupEventForm();
-        TagManager.setupAutosuggest('custom-tag-input');
-        new EventForm({
-            mode: <?= json_encode($action) ?>,
-        });
-    }
+    eventForm.previousLocations = <?= json_encode($autocompleteLocations) ?>;
+    setupEventForm();
+    TagManager.setupAutosuggest('custom-tag-input');
+    new EventForm({
+        mode: <?= json_encode($action) ?>,
+    });
 <?php $this->Html->scriptEnd(); ?>
 
 
