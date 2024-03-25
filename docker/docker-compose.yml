@@ -1,0 +1,137 @@
+version: "3.1"
+
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_mailhog
+    ports:
+      - 127.0.0.1:${MAILHOG_PORT}:8025
+    restart: ${RESTART}
+
+  mysql:
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
+        - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
+    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    volumes:
+      - ../logs/mysql:${MYSQL_LOG_DIR}
+      - ../database:${MYSQL_DATA_DIR}
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      public_net:
+        ipv4_address: ${MYSQL_IP}
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
+      - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TCP_PORT=3306
+    restart: ${RESTART}
+
+  apache:
+    build:
+      context: ./apache
+      args:
+        - WEB_USER=${WEB_USER}
+        - WEB_GROUP=${WEB_GROUP}
+        - APACHE_ROOT_DIR=${APACHE_ROOT_DIR}
+        - APACHE_EXPOSED_PORT=${APACHE_EXPOSED_PORT}
+    container_name: ${COMPOSE_PROJECT_NAME}_apache
+    extra_hosts:
+      - "${HOST}:127.0.0.1"
+    hostname: ${HOST}
+    ports:
+      - ${APACHE_EXPOSED_PORT}:80
+    networks:
+      public_net:
+        ipv4_address: ${APACHE_IP}
+    environment:
+      - APACHE_EXPOSED_PORT=${APACHE_EXPOSED_PORT}
+      - APACHE_LOG_DIR=${APACHE_LOG_DIR}
+      - APACHE_ROOT_DIR=${APACHE_ROOT_DIR}
+      - HOST=${HOST}
+      - PHP_APP_DIR=${PHP_APP_DIR}
+      - PHP_IP=${PHP_IP}
+      - PHP_LISTENING_PORT=${PHP_LISTENING_PORT}
+      - WEB_GROUP=${WEB_GROUP}
+      - WEB_USER=${WEB_USER}
+    volumes:
+      - ../:/var/www/html
+      - ../logs/docker/apache:${APACHE_LOG_DIR}
+      #- ./apache/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+      - ./apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    working_dir: /var/www/html
+    restart: ${RESTART}
+
+  php:
+    build:
+      context: ./php-fpm
+      args:
+        - PHP_ROOT_DIR=${PHP_ROOT_DIR}
+        - WEB_GROUP=${WEB_GROUP}
+        - WEB_USER=${WEB_USER}
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    expose:
+      - ${PHP_LISTENING_PORT}
+      - 9003 # XDebug
+    working_dir: ${PHP_APP_DIR}
+    volumes:
+      - ..:${PHP_APP_DIR}
+      - ../logs/docker/php:${PHP_ROOT_DIR}/logs
+      #- ../logs/docker/xdebug.log:/usr/local/etc/logs/xdebug.log
+      - ./php-fpm/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
+      - ./php-fpm/90-xdebug.ini:/usr/local/etc/php/conf.d/90-xdebug.ini
+    depends_on:
+      - apache
+      - mysql
+    networks:
+      public_net:
+        ipv4_address: ${PHP_IP}
+    environment:
+      - APACHE_EXPOSED_PORT=${APACHE_EXPOSED_PORT}
+      - APACHE_IP=${APACHE_IP}
+      - MYSQL_IP=${MYSQL_IP}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
+      - PHP_LISTENING_PORT=${PHP_LISTENING_PORT}
+      - PHP_ROOT_DIR=${PHP_ROOT_DIR}
+      - WEB_GROUP=${WEB_GROUP}
+      - WEB_USER=${WEB_USER}
+    restart: ${RESTART}
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: ${RESTART}
+    ports:
+      - 127.0.0.1:${PHPMYADMIN_PORT}:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_USER=${MYSQL_ROOT_USER}
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_HOST=${COMPOSE_PROJECT_NAME}_mysql
+      - PMA_PORT=3306
+      - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
+      - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      public_net:
+        ipv4_address: ${PHPMYADMIN_IP}
+
+networks:
+  public_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${NETWORK_SUBNET}
