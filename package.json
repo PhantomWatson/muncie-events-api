@@ -20,7 +20,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "lodash": "^4.17.15",
     "lodash.template": "^4.5.0",
-    "semver": "^6.3.0",
+    "semver": "^6.3.1",
     "through2": "^3.0.1",
     "uglify-js": "^3.6.0"
   },
