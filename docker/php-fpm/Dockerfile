@@ -41,9 +41,7 @@ RUN install-php-extensions @composer
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
-RUN apt-get install nodejs
-
-RUN npm install -g grunt
+RUN apt-get install nodejs -y
 
 WORKDIR "/var/www/html/webroot"
 
