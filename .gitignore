@@ -4,8 +4,8 @@
 /config/.env.production
 /config/.env.dev
 /config/app_local.php
-/tmp/*
 /logs/*
+/tmp/*
 /vendor/*
 
 # OS generated files #
@@ -15,26 +15,46 @@
 ._*
 .Spotlight-V100
 .Trashes
+# Icon must end with two \r
+Icon
 ehthumbs.db
 Thumbs.db
+.directory
 
 # Tool specific files #
 #######################
-*~ # vim
-*.swp # vim
-*.swo # vim
-*.sublime-* # sublime text
-*.tmlanguage.cache # sublime text & textmate
-*.tmPreferences.cache # sublime text & textmate
-*.stTheme.cache # cache files for sublime text
-.settings/* # Eclipse
+# PHPUnit
+.phpunit.result.cache
+tests.sqlite
+# vim
+*~
+*.swp
+*.swo
+# sublime text & textmate
+*.sublime-*
+*.stTheme.cache
+*.tmlanguage.cache
+*.tmPreferences.cache
+# Eclipse
+.settings/*
+# JetBrains, aka PHPStorm, IntelliJ IDEA
 .idea/*
-nbproject/* # NetBeans
-.vscode # Visual Studio Code
-.sass-cache/ # Sass preprocessor
+# NetBeans
+nbproject/*
+# Visual Studio Code
+.vscode
+# nova
+.nova
+# Sass preprocessor
+.sass-cache/
+# node
+/node_modules/*
+# yarn
+yarn-debug.log
+yarn-error.log
 
-# Node
-node_modules/*
+# Other #
+#########
 
 # Migration lock file
 config/Migrations/schema-dump-default.lock
@@ -45,7 +65,6 @@ config/Migrations/schema-dump-default.lock
 
 # Other
 /webroot/img/events/*
-notes.txt
 
 # Docker
 /docker/.env

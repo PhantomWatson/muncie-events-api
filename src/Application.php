@@ -15,12 +15,16 @@
 namespace App;
 
 use Cake\Core\Configure;
+use Cake\Core\ContainerInterface;
 use Cake\Core\Exception\MissingPluginException;
+use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
+use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use DebugKit\Plugin;
@@ -48,6 +52,8 @@ class Application extends BaseApplication
         $this->addPlugin('Cors', ['bootstrap' => true]);
 
         if (PHP_SAPI === 'cli') {
+            $this->bootstrapCli();
+
             try {
                 $this->addPlugin('Bake');
             } catch (MissingPluginException $e) {
@@ -55,6 +61,11 @@ class Application extends BaseApplication
             }
 
             $this->addPlugin('Migrations');
+        } else {
+            FactoryLocator::add(
+                'Table',
+                (new TableLocator())->allowFallbackClass(false)
+            );
         }
 
         /*
@@ -62,7 +73,7 @@ class Application extends BaseApplication
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin(Plugin::class);
+            $this->addPlugin('DebugKit');
         }
     }
 
@@ -77,7 +88,7 @@ class Application extends BaseApplication
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
-            ->add(new ErrorHandlerMiddleware(null, Configure::read('Error')))
+            ->add(new ErrorHandlerMiddleware(Configure::read('Error'), $this))
 
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(new AssetMiddleware([
@@ -85,10 +96,15 @@ class Application extends BaseApplication
             ]))
 
             // Add routing middleware.
-            // Routes collection cache enabled by default, to disable route caching
-            // pass null as cacheConfig, example: `new RoutingMiddleware($this)`
-            // you might want to disable this cache in case your routing is extremely simple
-            ->add(new RoutingMiddleware($this, null))
+            // If you have a large number of routes connected, turning on routes
+            // caching in production could improve performance.
+            // See https://github.com/CakeDC/cakephp-cached-routing
+            ->add(new RoutingMiddleware($this))
+
+            // Parse various types of encoded request bodies so that they are
+            // available as array through $request->getData()
+            // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
+            ->add(new BodyParserMiddleware())
 
             ->add(new EncryptedCookieMiddleware(
                 ['CookieAuth'],
@@ -110,5 +126,32 @@ class Application extends BaseApplication
         }
 
         return $direction == 'upcoming' ? 'past' : 'upcoming';
+    }
+
+    /**
+     * Register application container services.
+     *
+     * @param \Cake\Core\ContainerInterface $container The Container to update.
+     * @return void
+     * @link https://book.cakephp.org/4/en/development/dependency-injection.html#dependency-injection
+     */
+    public function services(ContainerInterface $container): void
+    {
+    }
+
+    /**
+     * Bootstrapping for CLI application.
+     *
+     * That is when running commands.
+     *
+     * @return void
+     */
+    protected function bootstrapCli(): void
+    {
+        $this->addOptionalPlugin('Bake');
+
+        $this->addPlugin('Migrations');
+
+        // Load more plugins here
     }
 }
