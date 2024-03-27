@@ -16,7 +16,7 @@
         "bcrowe/cakephp-api-pagination": "^1.1",
         "ext-json": "*",
         "friendsofcake/search": "^5.0",
-        "phantomwatson/cakephp-json-api": "dev-master",
+        "phantomwatson/cakephp-json-api": "^0.2.0",
         "ext-gd": "*",
         "ext-curl": "*",
         "alek13/slack": "^1.10",
