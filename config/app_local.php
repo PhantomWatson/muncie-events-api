@@ -104,6 +104,7 @@ $config = [
     'slackWebhook' => env('SLACK_WEBHOOK'),
     'googleAnalyticsId' => 'G-209CHJ9H6E',
     'localTimezone' => 'America/Indiana/Indianapolis',
+    'redirectToHttps' => true,
 ];
 
 if ($config['debug']) {

@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
@@ -82,7 +83,7 @@ class AppController extends Controller
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
-        if (!$this->request->is('ssl')) {
+        if (!$this->request->is('ssl') && Configure::read('redirectToHttps')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
