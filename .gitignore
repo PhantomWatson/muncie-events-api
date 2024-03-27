@@ -3,7 +3,8 @@
 /config/.env
 /config/.env.production
 /config/.env.dev
-/config/app_local.php
+/config/app_local*
+/config/environment.php
 /logs/*
 /tmp/*
 /vendor/*
