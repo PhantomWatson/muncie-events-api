@@ -23,7 +23,7 @@ services:
       public_net:
         ipv4_address: ${MYSQL_IP}
     ports:
-      - "9907:3306"
+      - "${MYSQL_PORT}:3306"
     environment:
       - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
       - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
