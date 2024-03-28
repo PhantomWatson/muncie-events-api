@@ -59,12 +59,12 @@ use App\View\AppView;
             </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'api') ?> nav-item">
                 <?= $this->Html->link(
-                    'API',
+                    'Developers',
                     [
                         'plugin' => false,
                         'prefix' => false,
-                        'controller' => 'Pages',
-                        'action' => 'api',
+                        'controller' => 'Widgets',
+                        'action' => 'index',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
