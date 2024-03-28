@@ -19,5 +19,5 @@ fi
 
 docker-compose up -d --build
 
-docker exec muncieevents4_apache chown -R root:www-data /usr/local/apache2/logs
-docker exec muncieevents4_php chown -R root:www-data /usr/local/etc/logs
+docker exec muncieevents3_apache chown -R root:www-data /usr/local/apache2/logs
+docker exec muncieevents3_php chown -R root:www-data /usr/local/etc/logs
