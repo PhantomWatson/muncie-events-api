@@ -100,7 +100,7 @@ const muncieEventsFeedWidget = {
 		$.ajax({
 			url: '/widgets/feed/' + muncieEventsFeedWidget.next_start_date + '?' + queryString,
 			beforeSend: function () {
-				wrapper.addClass('loading');
+				$('#loading').show();
 			},
 			success: function (data) {
 			    const eventList = $('#event_list');
@@ -115,7 +115,7 @@ const muncieEventsFeedWidget = {
 				alert('There was an error loading more events. Please try again.');
 			},
 			complete: function () {
-				wrapper.removeClass('loading');
+                $('#loading').hide();
 			}
 		});
 	},
