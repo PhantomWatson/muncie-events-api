@@ -87,7 +87,7 @@ class WidgetsController extends AppController
     /**
      * Sends data to the view for the demonstration widget
      *
-     * @param string $widgetType Either 'feed' or 'month
+     * @param string $widgetType Either 'feed' or 'month'
      * @return void
      */
     private function setDemoData($widgetType)
