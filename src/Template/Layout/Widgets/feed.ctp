@@ -30,6 +30,13 @@
     <div id="event_list">
         <?= $this->fetch('content') ?>
     </div>
+    <div id="load_more_events_wrapper">
+        <button id="load_more_events" class="btn btn-primary">
+            <i class="fas fa-arrow-down"></i>
+            More events
+            <i class="fas fa-arrow-down"></i>
+        </button>
+    </div>
     <div id="loading" style="display: none;">
         <div></div>
         <div></div>
