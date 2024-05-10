@@ -4,7 +4,6 @@
  * @var null|array $authUser
  */
 
-use App\Model\Entity\Event;
 use App\View\AppView;
 ?>
 
@@ -45,21 +44,6 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="<?=
-                $this->Nav->getActiveLink('Events', 'location', Event::VIRTUAL_LOCATION_SLUG)
-            ?> nav-item">
-                <?= $this->Html->link(
-                    'Virtual Events',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'Events',
-                        'action' => 'location',
-                        'location' => Event::VIRTUAL_LOCATION_SLUG,
-                    ],
-                    ['class' => 'nav-link']
-                ) ?>
-            </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'contact') ?> nav-item">
                 <?= $this->Html->link(
                     'Contact',
@@ -72,21 +56,14 @@ use App\View\AppView;
                     ['class' => 'nav-link']
                 ) ?>
             </li>
-            <li class="nav-item">
-                <?= $this->Html->link(
-                    'Android App',
-                    'https://play.google.com/store/apps/details?id=com.muncieevents.MuncieEvents&hl=en_US',
-                    ['class' => 'nav-link']
-                ) ?>
-            </li>
             <li class="<?= $this->Nav->getActiveLink('Pages', 'api') ?> nav-item">
                 <?= $this->Html->link(
-                    'API',
+                    'Developers',
                     [
                         'plugin' => false,
                         'prefix' => false,
-                        'controller' => 'Pages',
-                        'action' => 'api',
+                        'controller' => 'Widgets',
+                        'action' => 'index',
                     ],
                     ['class' => 'nav-link']
                 ) ?>
