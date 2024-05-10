@@ -91,14 +91,6 @@ $tomorrow = (new FrozenTime('tomorrow', $timezone))->format('Y-m-d');
         );
     ?>
 
-    <div id="load_more_events_wrapper">
-        <button id="load_more_events" class="btn btn-primary">
-            <i class="fas fa-arrow-down"></i>
-            More events
-            <i class="fas fa-arrow-down"></i>
-        </button>
-    </div>
-
 <?php else: ?>
 
     <p class="no_events">
