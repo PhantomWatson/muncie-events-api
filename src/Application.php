@@ -14,6 +14,7 @@
  */
 namespace App;
 
+use App\Middleware\CorsMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Core\Exception\MissingPluginException;
@@ -49,7 +50,6 @@ class Application extends BaseApplication
         $this->addPlugin('Recaptcha');
         $this->addPlugin('Search');
         $this->addPlugin('Calendar');
-        $this->addPlugin('Cors', ['bootstrap' => true]);
 
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
@@ -100,6 +100,8 @@ class Application extends BaseApplication
             // caching in production could improve performance.
             // See https://github.com/CakeDC/cakephp-cached-routing
             ->add(new RoutingMiddleware($this))
+
+            ->add(new CorsMiddleware())
 
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
