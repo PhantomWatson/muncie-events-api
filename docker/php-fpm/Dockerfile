@@ -8,11 +8,9 @@ COPY www.conf ${PHP_ROOT_DIR}/php-fpm.d/www.conf
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-EXPOSE ${PHP_LISTENING_PORT}
+EXPOSE ${APACHE_EXPOSED_PORT}
 
-#RUN apt-get update \
-#    && apt-get -y --no-install-recommends install  php7.4-mysql php7.4-intl php7.4-mbstring php7.4-sqlite3\
-#    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apt-get update
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -21,6 +19,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     bcmath \
     bz2 \
     curl \
+    dom \
     fileinfo \
     gd \
     intl \
@@ -35,9 +34,7 @@ RUN docker-php-ext-install mysqli
 
 RUN install-php-extensions @composer
 
-# Temporarily disabled because some error was preventing this from working
-# (or at least working at the same time another site's containers were running)
-#RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN pecl install xdebug
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 

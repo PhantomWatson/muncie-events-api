@@ -31,7 +31,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_TCP_PORT=3306
+      - MYSQL_TCP_PORT=${MYSQL_PORT}
     restart: ${RESTART}
 
   apache:
@@ -58,13 +58,12 @@ services:
       - HOST=${HOST}
       - PHP_APP_DIR=${PHP_APP_DIR}
       - PHP_IP=${PHP_IP}
-      - PHP_LISTENING_PORT=${PHP_LISTENING_PORT}
+      - APACHE_EXPOSED_PORT=${APACHE_EXPOSED_PORT}
       - WEB_GROUP=${WEB_GROUP}
       - WEB_USER=${WEB_USER}
     volumes:
       - ../:/var/www/html
       - ../logs/docker/apache:${APACHE_LOG_DIR}
-      #- ./apache/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
       - ./apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
       - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
     working_dir: /var/www/html
@@ -79,13 +78,12 @@ services:
         - WEB_USER=${WEB_USER}
     container_name: ${COMPOSE_PROJECT_NAME}_php
     expose:
-      - ${PHP_LISTENING_PORT}
-      - 9003 # XDebug
+      - ${APACHE_EXPOSED_PORT}
+      - ${XDEBUG_PORT}
     working_dir: ${PHP_APP_DIR}
     volumes:
       - ..:${PHP_APP_DIR}
       - ../logs/docker/php:${PHP_ROOT_DIR}/logs
-      #- ../logs/docker/xdebug.log:/usr/local/etc/logs/xdebug.log
       - ./php-fpm/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
       - ./php-fpm/90-xdebug.ini:/usr/local/etc/php/conf.d/90-xdebug.ini
     depends_on:
@@ -100,7 +98,7 @@ services:
       - MYSQL_IP=${MYSQL_IP}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
-      - PHP_LISTENING_PORT=${PHP_LISTENING_PORT}
+      - APACHE_EXPOSED_PORT=${APACHE_EXPOSED_PORT}
       - PHP_ROOT_DIR=${PHP_ROOT_DIR}
       - WEB_GROUP=${WEB_GROUP}
       - WEB_USER=${WEB_USER}
