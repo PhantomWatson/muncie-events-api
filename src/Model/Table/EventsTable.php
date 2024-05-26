@@ -67,7 +67,7 @@ class EventsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'field' => ['title', 'description', 'location'],
+                'fields' => ['title', 'description', 'location'],
             ]);
 
         $this->belongsTo('Users', [
