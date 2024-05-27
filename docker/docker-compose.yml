@@ -58,7 +58,6 @@ services:
       - HOST=${HOST}
       - PHP_APP_DIR=${PHP_APP_DIR}
       - PHP_IP=${PHP_IP}
-      - PHP_PORT=${PHP_PORT}
       - WEB_GROUP=${WEB_GROUP}
       - WEB_USER=${WEB_USER}
     volumes:
