@@ -11,6 +11,7 @@ RUN chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/httpd.conf \
  && chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
 
 RUN mkdir -p /etc/apache2/ssl
+RUN mkdir -p /var/log/apache2
 COPY ./ssl/cert.pem /etc/apache2/ssl/cert.pem
 COPY ./ssl/cert-key.pem /etc/apache2/ssl/cert-key.pem
 
