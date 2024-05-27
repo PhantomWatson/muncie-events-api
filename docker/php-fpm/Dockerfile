@@ -8,8 +8,6 @@ COPY www.conf ${PHP_ROOT_DIR}/php-fpm.d/www.conf
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-EXPOSE ${APACHE_EXPOSED_PORT}
-
 RUN apt-get update
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
