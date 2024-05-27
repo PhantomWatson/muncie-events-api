@@ -181,7 +181,7 @@ class MailingListTable extends Table
      */
     public function newEntityWithDefaults()
     {
-        $subscription = $this->newEntity();
+        $subscription = $this->newEmptyEntity();
         $subscription->weekly = true;
         $subscription->all_categories = true;
         $subscription->categories = $this->Categories

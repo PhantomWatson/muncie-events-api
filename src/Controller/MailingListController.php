@@ -66,7 +66,7 @@ class MailingListController extends AppController
         // Update with post data
         if ($this->request->is(['post', 'put'])) {
             if (!$subscription) {
-                $subscription = $this->MailingList->newEntity();
+                $subscription = $this->MailingList->newEmptyEntity();
             }
             $subscription = $this->updateSubscriptionFromRequest($subscription);
 

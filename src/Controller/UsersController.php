@@ -46,7 +46,7 @@ class UsersController extends AppController
      */
     public function register()
     {
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
 
         $this->set([
             'pageTitle' => 'Register an Account',
@@ -97,7 +97,7 @@ class UsersController extends AppController
         $this->set('pageTitle', 'Log in');
 
         if (!$this->request->is('post')) {
-            $user = $this->Users->newEntity();
+            $user = $this->Users->newEmptyEntity();
             $user->auto_login = true;
             $this->set('user', $user);
 
