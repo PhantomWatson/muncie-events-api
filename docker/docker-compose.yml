@@ -59,11 +59,11 @@ services:
       - WEB_GROUP=${WEB_GROUP}
       - WEB_USER=${WEB_USER}
     volumes:
-      - ../:/var/www/html
+      - ../:${PHP_APP_DIR}
       - ../logs/docker/apache:/var/log/apache2
       - ./apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
       - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    working_dir: /var/www/html
+    working_dir: ${PHP_APP_DIR}
     restart: ${RESTART}
 
   php:
