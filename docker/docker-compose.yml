@@ -31,7 +31,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_TCP_PORT=${MYSQL_PORT}
+      - MYSQL_TCP_PORT=3306
     restart: ${RESTART}
 
   apache:
