@@ -45,7 +45,6 @@ class EventsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
         $this->Auth->allow([
             'add',
             'category',
@@ -68,6 +67,8 @@ class EventsController extends AppController
         }
         $this->loadComponent('Calendar.Calendar');
         $this->RequestHandler->setConfig('viewClassMap', ['ics' => 'Calendar.Ical']);
+
+        $this->Events = self::fetchTable('Events');
     }
 
     /**

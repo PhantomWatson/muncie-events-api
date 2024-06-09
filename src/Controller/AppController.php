@@ -18,8 +18,6 @@ use Exception;
  */
 class AppController extends Controller
 {
-    protected EventsTable $Events;
-
     /**
      * Initialization hook method
      *
@@ -114,10 +112,9 @@ class AppController extends Controller
     {
         /** @var EventsTable $eventsTable */
         $eventsTable = $this->fetchTable('Events');
-        $this->Events = $eventsTable;
         $this->set([
             'authUser' => $this->Auth->user(),
-            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
+            'unapprovedCount' => $this->Auth->user() ? $eventsTable->getUnapprovedCount() : 0,
         ]);
     }
 
