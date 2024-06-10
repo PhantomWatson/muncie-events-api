@@ -509,4 +509,26 @@ class Event extends Entity
 
         return $vcalendar;
     }
+
+    /**
+     * Returns $this->time_start as a FrozenTime
+     *
+     * @param string $timeStart
+     * @return FrozenTime
+     */
+    protected function _getTimeStart($timeStart): FrozenTime
+    {
+        return new FrozenTime($timeStart);
+    }
+
+    /**
+     * Returns $this->time_end as a FrozenTime (or null)
+     *
+     * @param string $timeEnd
+     * @return FrozenTime|null
+     */
+    protected function _getTimeEnd($timeEnd): ?FrozenTime
+    {
+        return $timeEnd ? new FrozenTime($timeEnd) : null;
+    }
 }
