@@ -40,8 +40,9 @@ if (Configure::read('debug')) :
     $this->end();
 endif;
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
+<h2>
+    Muncie Events is experiencing technical difficulties
+</h2>
 <p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
+    Your patience is appreciated as we work on resolving this. Please check back later.
 </p>
