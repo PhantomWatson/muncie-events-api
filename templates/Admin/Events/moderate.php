@@ -56,7 +56,7 @@ $displayedEventFields = [
                     }
 
                     $approveUrl = [
-                        'prefix' => 'admin',
+                        'prefix' => 'Admin',
                         'controller' => 'Events',
                         'action' => 'approve',
                     ];
@@ -83,7 +83,7 @@ $displayedEventFields = [
                     $editLabel = 'Edit';
 
                     $deleteUrl = [
-                        'prefix' => 'admin',
+                        'prefix' => 'Admin',
                         'controller' => 'Events',
                         'action' => 'delete',
                     ];

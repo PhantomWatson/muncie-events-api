@@ -21,7 +21,7 @@ $categories = $this->Nav->getCategories();
                 <li>
                     <?= $this->Html->link('Approve Events', [
                         'plugin' => false,
-                        'prefix' => 'admin',
+                        'prefix' => 'Admin',
                         'controller' => 'Events',
                         'action' => 'moderate',
                     ]) ?>
@@ -34,7 +34,7 @@ $categories = $this->Nav->getCategories();
                 <li>
                     <?= $this->Html->link('Manage Tags', [
                         'plugin' => false,
-                        'prefix' => 'admin',
+                        'prefix' => 'Admin',
                         'controller' => 'Tags',
                         'action' => 'manage',
                     ]) ?>

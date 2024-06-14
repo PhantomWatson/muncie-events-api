@@ -173,7 +173,7 @@ return function (RouteBuilder $routes): void {
     });
 
     // Admin
-    $routes->prefix('admin', function (RouteBuilder $routes) {
+    $routes->prefix('Admin', function (RouteBuilder $routes) {
         $routes->fallbacks(DashedRoute::class);
 
         // Events
