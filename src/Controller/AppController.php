@@ -146,9 +146,9 @@ class AppController extends Controller
     protected function loadRecaptcha()
     {
         $this->loadComponent('Recaptcha.Recaptcha', [
-            'enable' => (bool)$this->request->getEnv('RECAPTCHA_ENABLED', true),
-            'sitekey' => env('RECAPTCHA_SITE_KEY'),
-            'secret' => env('RECAPTCHA_SECRET'),
+            'enable' => Configure::read('Recaptcha.enabled', true),
+            'sitekey' => Configure::read('Recaptcha.siteKey'),
+            'secret' => Configure::read('Recaptcha.secret'),
             'type' => 'image',
             'theme' => 'light',
             'lang' => 'en',
