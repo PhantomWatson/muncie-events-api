@@ -85,23 +85,25 @@ class CookieAuthenticate extends BaseAuthenticate
     }
 
     /**
-     * Delete cookies when a user logs out.
+     * Delete cookies when a user logs out
      *
      * @return void
      */
-    public function logout()
+    public function logout(): void
     {
         $controller = $this->_registry->getController();
-        $cookieCollection = $controller->request->getCookieCollection();
-        $cookie = $cookieCollection->get($this->_config['cookie']['name']);
+        $request = $controller->getRequest();
+        $cookieCollection = $request->getCookieCollection();
+        $cookieName = $this->_config['cookie']['name'];
+        $cookie = $cookieCollection->has($cookieName) ? $cookieCollection->get($cookieName) : null;
 
         if (!$cookie) {
             return;
         }
 
         $modifiedResponse = $controller
-            ->response
+            ->getResponse()
             ->withExpiredCookie($cookie);
-        $this->_registry->getController()->response = $modifiedResponse;
+        $this->_registry->getController()->setResponse($modifiedResponse);
     }
 }
