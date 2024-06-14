@@ -83,14 +83,17 @@ class MailingListController extends AppController
 
             if ($this->MailingList->save($subscription)) {
                 if ($isNew) {
-                    /** @var \App\Model\Entity\User $user */
-                    $user = $this->Users
-                        ->find()
-                        ->where(['id' => $this->Auth->user('id')])
-                        ->first();
-                    if ($user) {
-                        $user->mailing_list_id = $subscription->id;
-                        $this->Users->save($user);
+                    $userId = $this->Auth->user('id');
+                    if ($userId) {
+                        /** @var \App\Model\Entity\User $user */
+                        $user = $this->Users
+                            ->find()
+                            ->where(['id' => $userId])
+                            ->first();
+                        if ($user) {
+                            $user->mailing_list_id = $subscription->id;
+                            $this->Users->save($user);
+                        }
                     }
                     $this->Flash->success('Thanks for joining the Muncie Events mailing list!');
 
@@ -197,11 +200,16 @@ class MailingListController extends AppController
      */
     private function getCurrentUserSubscription()
     {
+        $userId = $this->Auth->user('id');
+        if (!$userId) {
+            return null;
+        }
+
         // Fetch mailing_list_id from the database because it wouldn't be in the session if the user just subscribed
         /** @var \App\Model\Entity\User $user */
         $user = $this->Users->find()
             ->select(['mailing_list_id'])
-            ->where(['id' => $this->Auth->user('id')])
+            ->where(['id' => $userId])
             ->first();
         $subscriberId = $user ? $user->mailing_list_id : null;
 

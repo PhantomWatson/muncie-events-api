@@ -785,11 +785,16 @@ class EventsController extends AppController
      */
     public function mine()
     {
-        $query = $this->Events
-            ->find('ordered', ['direction' => 'DESC'])
-            ->where(['user_id' => $this->Auth->user('id')]);
+        $userId = $this->Auth->user('id');
+        if ($userId) {
+            $query = $this->Events
+                ->find('ordered', ['direction' => 'DESC'])
+                ->where(['user_id' => $this->Auth->user('id')]);
 
-        $events = $this->paginate($query)->toArray();
+            $events = $this->paginate($query)->toArray();
+        } else {
+            $events = [];
+        }
 
         $this->set([
             'events' => $events,
