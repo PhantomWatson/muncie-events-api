@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
+use Cake\ORM\Table;
 use Exception;
 
 /**
@@ -18,6 +19,8 @@ use Exception;
  */
 class AppController extends Controller
 {
+    protected EventsTable|Table $Events;
+
     /**
      * Initialization hook method
      *
@@ -27,6 +30,9 @@ class AppController extends Controller
     public function initialize(): void
     {
         parent::initialize();
+
+        // Make $this->Events available for all controllers
+        $this->Events = $this->fetchTable('Events');
 
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
@@ -110,11 +116,9 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
-        /** @var EventsTable $eventsTable */
-        $eventsTable = $this->fetchTable('Events');
         $this->set([
             'authUser' => $this->Auth->user(),
-            'unapprovedCount' => $this->Auth->user() ? $eventsTable->getUnapprovedCount() : 0,
+            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
         ]);
     }
 
