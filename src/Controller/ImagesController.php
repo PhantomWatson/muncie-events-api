@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Model\Entity\Image;
 use App\Model\Table\ImagesTable;
 use App\Model\Table\UsersTable;
+use App\Upload\ImageUploader;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Exception;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * Images Controller
@@ -57,6 +59,7 @@ class ImagesController extends AppController
     {
         $this->request->allowMethod('post');
 
+        /** @var UploadedFile|null $file */
         $file = $this->request->getData('Filedata');
 
         if (!$file) {
@@ -64,7 +67,8 @@ class ImagesController extends AppController
         }
 
         try {
-            $image = $this->Images->processUpload($this->Auth->user('id'), $file);
+            $image = (new ImageUploader())->processUpload($this->Auth->user('id'), $file);
+
             $retval = $image->id;
         } catch (BadRequestException $e) {
             $retval = $e->getMessage();

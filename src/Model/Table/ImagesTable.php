@@ -13,6 +13,7 @@ use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * Images Model
@@ -58,6 +59,12 @@ class ImagesTable extends Table
             'targetForeignKey' => 'event_id',
             'joinTable' => 'events_images',
         ]);
+
+        $this->addBehavior('Josegonzalez/Upload.Upload', [
+            'filename' => [
+                'path'
+            ],
+        ]);
     }
 
     /**
@@ -90,47 +97,6 @@ class ImagesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
-    }
-
-    /**
-     * Adds an image to the database and saves full and thumbnail versions under /webroot/img
-     *
-     * @param int $userId User ID
-     * @param array $fileInfo Array of image file info (name, type, tmp_name, error, size)
-     * @return Image
-     * @throws BadRequestException
-     * @throws InternalErrorException
-     */
-    public function processUpload(int $userId, $fileInfo)
-    {
-        // Create record in database
-        $image = $this->newEntity(['user_id' => $userId]);
-        if (!$this->save($image)) {
-            throw new InternalErrorException('Error saving image to database');
-        }
-
-        // Set and save filename, which must happen after the initial save in order to use the image's ID
-        $image->setExtension($fileInfo['name']);
-        $image->setNewFilename();
-        if (!$this->save($image)) {
-            throw new InternalErrorException('Error updating image in database');
-        }
-
-        // Create the three resized versions of the uploaded image
-        try {
-            $image->setSourceFile($fileInfo['tmp_name']);
-            $image->createFull();
-            $image->createSmall();
-            $image->createTiny();
-        } catch (InternalErrorException $e) {
-            $this->delete($image);
-            throw new InternalErrorException($e->getMessage());
-        } catch (BadRequestException $e) {
-            $this->delete($image);
-            throw new BadRequestException($e->getMessage());
-        }
-
-        return $image;
     }
 
     /**
