@@ -1,6 +1,7 @@
 <?php
 /**
  * @var string $pageTitle
+ * @var \App\Model\Entity\Tag $newTag
  */
 ?>
 
@@ -45,7 +46,7 @@
     </div>
 
     <div id="tab-add">
-        <?= $this->Form->create('Tag', ['url' => ['controller' => 'Tags', 'action' => 'add']]) ?>
+        <?= $this->Form->create($newTag, ['url' => ['controller' => 'Tags', 'action' => 'add']]) ?>
         <strong>Tag</strong>(s)<br />
         Multiple tags go on separate lines. Child-tags can be indented under parent-tags with one hyphen or tab per level. Example:
     <pre style="background-color: #eee; font-size: 80%; margin-left: 20px; width: 200px;">Fruits

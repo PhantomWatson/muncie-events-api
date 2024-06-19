@@ -47,9 +47,13 @@ class TagsController extends AppController
      *
      * @return void
      */
-    public function manage()
+    public function manage(): void
     {
-        $this->set('pageTitle', 'Manage Tags');
+        $newTag = $this->Tags->newEmptyEntity();
+        $this->set([
+            'pageTitle' => 'Manage Tags',
+            'newTag' => $newTag,
+        ]);
     }
 
     /**
