@@ -53,7 +53,7 @@ class MigrateImageFilesCommand extends Command
         }
 
         $cake4ImgDir = ROOT . DS . 'webroot' . DS . 'img' . DS . 'events';
-        if (!is_dir($cake4ImgDir) && !mkdir($cake4ImgDir. 0755)) {
+        if (!is_dir($cake4ImgDir) && !mkdir($cake4ImgDir, 0755)) {
             $io->error('cake4ImgDir not found and couldn\'t be created: ' . $cake4ImgDir);
             return;
         }
