@@ -4,6 +4,7 @@
  * @var int $userId
  * @var string $pageTitle
  * @var string $resetPasswordHash
+ * @var \App\Model\Entity\User $user
  */
 ?>
 <h1 class="page_title">
@@ -11,7 +12,7 @@
 </h1>
 
 <div class="content_box col-lg-6">
-    <?= $this->Form->create('User', [
+    <?= $this->Form->create($user, [
         'url' => [
             'controller' => 'Users',
             'action' => 'resetPassword',

@@ -39,7 +39,7 @@ $timezone = Configure::read('localTimezone');
     ) ?>, you'll have to go to each event's individual edit page.
 </p>
 
-<?= $this->Form->create('eventSeries') ?>
+<?= $this->Form->create($eventSeries) ?>
 <table class="event_form event_series_form">
     <tbody>
     <tr>

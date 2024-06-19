@@ -298,7 +298,8 @@ class UsersController extends AppController
             'pageTitle' => 'Reset Password',
             'userId' => $userId,
             'email' => $email,
-            'resetPasswordHash' => $resetPasswordHash
+            'resetPasswordHash' => $resetPasswordHash,
+            'user' => $user,
         ]);
 
         $expectedHash = $this->Users->getResetPasswordHash($userId, $email);
