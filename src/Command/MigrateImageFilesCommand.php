@@ -82,13 +82,17 @@ class MigrateImageFilesCommand extends Command
                 if ($file === '.' || $file === '..') {
                     continue;
                 }
-                if (!file_exists($sourceSubdir. DS . $file)) {
+
+                $sourceFile = $sourceSubdir. DS . $file;
+                if (!file_exists($sourceFile)) {
                     $io->out();
-                    $io->error('Source file ' . $sourceSubdir. DS . $file . ' not found');
+                    $io->error('Source file ' . $sourceFile . ' not found');
                     return;
                 }
-                if (!file_exists($destinationSubdir . DS . $file)) {
-                    copy($sourceSubdir. DS . $file, $destinationSubdir . DS . $file);
+
+                $destinationFile = $destinationSubdir . DS . $file;
+                if (!file_exists($destinationFile)) {
+                    copy($sourceFile, $destinationFile);
                 }
                 $progress->increment(1);
                 $progress->draw();
