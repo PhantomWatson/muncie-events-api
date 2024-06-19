@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  */
+
+use Cake\Core\Configure;
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml">
@@ -45,6 +48,14 @@
 <div id="divider"></div>
 
 <div class="container">
+    <?php if (Configure::read('showMaintenanceWarning')): ?>
+        <div class="row">
+            <p class="alert alert-info" style="margin: 0 auto 0.5em auto; width: 100%;">
+                The Muncie Events website is undergoing maintenance at the moment. If you notice any bugs, please report
+                them to <a href="mailto:admin@muncieevents.com">admin@muncieevents.com</a>.
+            </p>
+        </div>
+    <?php endif; ?>
     <div class="row">
         <noscript id="noscript" class="alert alert-warning">
             <div>
