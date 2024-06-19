@@ -42,19 +42,19 @@ class MigrateImageFilesCommand extends Command
     {
         $cake3DirName = Configure::read('migrateFilesFromDir');
         if (!$cake3DirName) {
-            $io->out('migrateFilesFromDir not configured');
+            $io->error('migrateFilesFromDir not configured');
             return;
         }
 
         $cake3ImgDir = dirname(ROOT) . DS . $cake3DirName . DS . 'webroot' . DS . 'img' . DS . 'events';
         if (!is_dir($cake3ImgDir)) {
-            $io->out('cake3ImgDir not found: ' . $cake3ImgDir);
+            $io->error('cake3ImgDir not found: ' . $cake3ImgDir);
             return;
         }
 
         $cake4ImgDir = ROOT . DS . 'webroot' . DS . 'img' . DS . 'events';
         if (!is_dir($cake4ImgDir) && !mkdir($cake4ImgDir. 0755)) {
-            $io->out('cake4ImgDir not found and couldn\'t be created: ' . $cake4ImgDir);
+            $io->error('cake4ImgDir not found and couldn\'t be created: ' . $cake4ImgDir);
             return;
         }
 
@@ -81,6 +81,11 @@ class MigrateImageFilesCommand extends Command
             foreach ($files as $file) {
                 if ($file === '.' || $file === '..') {
                     continue;
+                }
+                if (!file_exists($sourceSubdir. DS . $file)) {
+                    $io->out();
+                    $io->error('Source file ' . $sourceSubdir. DS . $file . ' not found');
+                    return;
                 }
                 if (!file_exists($destinationSubdir . DS . $file)) {
                     copy($sourceSubdir. DS . $file, $destinationSubdir . DS . $file);
