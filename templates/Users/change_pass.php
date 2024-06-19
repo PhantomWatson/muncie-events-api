@@ -21,13 +21,15 @@
 echo $this->Form->create($user);
 echo $this->Form->control('password', [
     'label' => 'New Password',
-    'autocomplete' => 'off'
+    'autocomplete' => 'off',
+    'value' => '',
 ]);
 echo $this->Form->control('confirm_password', [
     'label' => 'Confirm Password',
     'type' => 'password',
     'autocomplete' => 'off',
-    'between' => '<br />'
+    'between' => '<br />',
+    'value' => '',
 ]);
 echo $this->Form->submit('Change password', ['class' => 'btn btn-primary']);
 echo $this->Form->end();
