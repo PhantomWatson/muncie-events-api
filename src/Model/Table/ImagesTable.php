@@ -59,12 +59,6 @@ class ImagesTable extends Table
             'targetForeignKey' => 'event_id',
             'joinTable' => 'events_images',
         ]);
-
-        $this->addBehavior('Josegonzalez/Upload.Upload', [
-            'filename' => [
-                'path'
-            ],
-        ]);
     }
 
     /**
