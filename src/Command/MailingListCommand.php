@@ -75,7 +75,7 @@ class MailingListCommand extends Command
 
         $parser->addOption('override-weekly', [
             'help' => 'Overrides the restriction on which day weekly emails can be sent out',
-            'boolean' => 'true',
+            'boolean' => true,
         ]);
 
         return $parser;
