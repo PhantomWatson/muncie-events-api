@@ -94,26 +94,26 @@ class UsersController extends AppController
      */
     public function login()
     {
-        $this->set('pageTitle', 'Log in');
+        $userEntity = $this->Users->newEmptyEntity();
+        $userEntity->auto_login = true;
+        $this->set([
+            'pageTitle' => 'Log in',
+            'user' => $userEntity,
+        ]);
 
         if (!$this->request->is('post')) {
-            $user = $this->Users->newEmptyEntity();
-            $user->auto_login = true;
-            $this->set('user', $user);
-
             return null;
         }
 
-        $user = $this->Auth->identify();
-        if (!$user) {
+        $userData = $this->Auth->identify();
+        if (!$userData) {
             $this->Flash->error('Email or password is incorrect');
             $this->request = $this->request->withData('password', '');
-            $this->set('user', $user);
 
             return null;
         }
 
-        $this->Auth->setUser($user);
+        $this->Auth->setUser($userData);
 
         // Remember login information
         if ($this->request->getData('auto_login')) {
