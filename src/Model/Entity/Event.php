@@ -399,7 +399,7 @@ class Event extends Entity
      */
     protected function _getLocation($location)
     {
-        return trim($location);
+        return $location ? trim($location) : $location;
     }
 
     /**
