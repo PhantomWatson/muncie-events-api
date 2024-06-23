@@ -86,10 +86,10 @@ class MailingListCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return void
+     * @return int
      * @throws \Exception
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         $action = $args->getArgument('action');
         $this->io = $io;
@@ -107,24 +107,21 @@ class MailingListCommand extends Command
 
         switch ($action) {
             case 'send_daily':
-                $this->processDaily();
-
-                return;
+                return $this->processDaily();
             case 'send_weekly':
-                $this->processWeekly();
-
-                return;
+                return $this->processWeekly();
         }
 
-        throw new Exception("Invalid action: $action");
+        $io->error("Invalid action: $action");
+        return static::CODE_ERROR;
     }
 
     /**
      * Collects events and recipients for daily emails and sends emails if appropriate
      *
-     * @return void
+     * @return int
      */
-    private function processDaily()
+    private function processDaily(): int
     {
         // Make sure there are recipients
         $recipients = $this->MailingList->getDailyRecipients($this->recipientEmail, self::RECIPIENT_LIMIT);
@@ -137,7 +134,7 @@ class MailingListCommand extends Command
                 );
             }
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Make sure there are events to report
@@ -160,7 +157,7 @@ class MailingListCommand extends Command
             $this->MailingList->markDailyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about today');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Send emails
@@ -169,6 +166,8 @@ class MailingListCommand extends Command
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\n Done");
+
+        return static::CODE_SUCCESS;
     }
 
     /**
@@ -239,15 +238,15 @@ class MailingListCommand extends Command
     /**
      * Collects events and recipients for weekly emails and sends emails if appropriate
      *
-     * @return void
+     * @return int
      */
-    private function processWeekly()
+    private function processWeekly(): int
     {
         // Make sure that today is the correct day
         if (!$this->overrideWeekly && !$this->isWeeklyDeliveryDay()) {
             $this->io->out('Today is not the day of the week designated for delivering weekly emails.');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Make sure there are recipients
@@ -270,7 +269,7 @@ class MailingListCommand extends Command
             $this->MailingList->markWeeklyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about this week');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Send emails
@@ -279,6 +278,7 @@ class MailingListCommand extends Command
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\nDone");
+        return static::CODE_SUCCESS;
     }
 
     /**
