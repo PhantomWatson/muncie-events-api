@@ -1,7 +1,11 @@
 <?php
 namespace App\Command;
 
+use App\Model\Entity\Event;
+use App\Model\Entity\MailingList;
+use App\Model\Table\EventsTable;
 use App\Model\Table\MailingListLogTable;
+use App\Model\Table\MailingListTable;
 use BadMethodCallException;
 use Cake\Console\Arguments;
 use Cake\Console\Command;
@@ -14,13 +18,14 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Exception;
+use hbattat\VerifyEmail;
 
 /**
  * SendMailingListMessages command.
  *
- * @property \App\Model\Table\EventsTable $Events
- * @property \App\Model\Table\MailingListTable $MailingList
- * @property \Cake\Console\ConsoleIo $io
+ * @property EventsTable $Events
+ * @property MailingListTable $MailingList
+ * @property ConsoleIo $io
  * @property boolean $overrideWeekly
  * @property string $recipientEmail
  */
@@ -56,8 +61,8 @@ class MailingListCommand extends Command
      *
      * @see https://book.cakephp.org/3.0/en/console-and-shells/commands.html#defining-arguments-and-options
      *
-     * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
-     * @return \Cake\Console\ConsoleOptionParser The built parser.
+     * @param ConsoleOptionParser $parser The parser to be defined
+     * @return ConsoleOptionParser The built parser.
      */
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
@@ -84,10 +89,10 @@ class MailingListCommand extends Command
     /**
      * Implement this method with your command's logic.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
+     * @param Arguments $args The command arguments.
+     * @param ConsoleIo $io The console io
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
@@ -173,11 +178,11 @@ class MailingListCommand extends Command
     /**
      * Sends the daily version of the event email
      *
-     * @param \App\Model\Entity\MailingList $recipient Mailing list subscriber
-     * @param \App\Model\Entity\Event[] $events Array of events
+     * @param MailingList $recipient Mailing list subscriber
+     * @param Event[] $events Array of events
      * @return array
      */
-    public function sendDaily($recipient, $events)
+    public function sendDaily(MailingList $recipient, array $events): array
     {
         $categoryIds = Hash::extract($events, '{n}.category.id');
 
@@ -214,11 +219,11 @@ class MailingListCommand extends Command
     /**
      * Returns an array of events filtered according to the recipient's mailing list settings
      *
-     * @param \App\Model\Entity\MailingList $recipient Subscribers
-     * @param \App\Model\Entity\Event[] $events Array of events
-     * @return \App\Model\Entity\Event[]
+     * @param MailingList $recipient Subscribers
+     * @param Event[] $events Array of events
+     * @return Event[]
      */
-    private function filterEvents($recipient, $events)
+    private function filterEvents(MailingList $recipient, array $events): array
     {
         if ($recipient->all_categories) {
             return $events;
@@ -286,7 +291,7 @@ class MailingListCommand extends Command
      *
      * @return bool
      */
-    private function isWeeklyDeliveryDay()
+    private function isWeeklyDeliveryDay(): bool
     {
         $timezone = Configure::read('localTimezone');
 
@@ -296,11 +301,11 @@ class MailingListCommand extends Command
     /**
      * Sends the weekly version of the event mailing list email
      *
-     * @param \App\Model\Entity\MailingList $recipient Subscriber entity
-     * @param \App\Model\Entity\Event[] $events Array of events
+     * @param MailingList $recipient Subscriber entity
+     * @param Event[] $events Array of events
      * @return array:boolean string
      */
-    private function sendWeekly($recipient, $events)
+    private function sendWeekly(MailingList $recipient, array $events): array
     {
         $categoryIds = Hash::extract($events, '{n}.category.id');
 
@@ -338,10 +343,10 @@ class MailingListCommand extends Command
      * @param string $email Email address to check
      * @return string|true
      */
-    private function verifyEmail($email)
+    private function verifyEmail(string $email): bool|string
     {
         $from = Configure::read('automailer_address');
-        $verification = new \hbattat\VerifyEmail($email, $from);
+        $verification = new VerifyEmail($email, $from);
         if ($verification->verify()) {
             return true;
         }
