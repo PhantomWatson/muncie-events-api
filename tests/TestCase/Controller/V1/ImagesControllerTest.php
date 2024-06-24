@@ -40,7 +40,7 @@ class ImagesControllerTest extends ApplicationTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -65,7 +65,7 @@ class ImagesControllerTest extends ApplicationTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

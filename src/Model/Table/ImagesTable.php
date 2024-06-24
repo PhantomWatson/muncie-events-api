@@ -5,7 +5,6 @@ use App\Model\Entity\Image;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\Filesystem\File;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Association\BelongsTo;
@@ -14,6 +13,7 @@ use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * Images Model
@@ -40,7 +40,7 @@ class ImagesTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -67,7 +67,7 @@ class ImagesTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->integer('id');
@@ -86,52 +86,11 @@ class ImagesTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
-    }
-
-    /**
-     * Adds an image to the database and saves full and thumbnail versions under /webroot/img
-     *
-     * @param int $userId User ID
-     * @param array $fileInfo Array of image file info (name, type, tmp_name, error, size)
-     * @return Image
-     * @throws BadRequestException
-     * @throws InternalErrorException
-     */
-    public function processUpload(int $userId, $fileInfo)
-    {
-        // Create record in database
-        $image = $this->newEntity(['user_id' => $userId]);
-        if (!$this->save($image)) {
-            throw new InternalErrorException('Error saving image to database');
-        }
-
-        // Set and save filename, which must happen after the initial save in order to use the image's ID
-        $image->setExtension($fileInfo['name']);
-        $image->setNewFilename();
-        if (!$this->save($image)) {
-            throw new InternalErrorException('Error updating image in database');
-        }
-
-        // Create the three resized versions of the uploaded image
-        try {
-            $image->setSourceFile($fileInfo['tmp_name']);
-            $image->createFull();
-            $image->createSmall();
-            $image->createTiny();
-        } catch (InternalErrorException $e) {
-            $this->delete($image);
-            throw new InternalErrorException($e->getMessage());
-        } catch (BadRequestException $e) {
-            $this->delete($image);
-            throw new BadRequestException($e->getMessage());
-        }
-
-        return $image;
     }
 
     /**
@@ -142,7 +101,7 @@ class ImagesTable extends Table
      * @param ArrayObject $options Options array
      * @return void
      */
-    public function afterDelete(Event $event, Image $image, ArrayObject $options)
+    public function afterDelete(\Cake\Event\EventInterface $event, Image $image, ArrayObject $options)
     {
         if (!$image->filename) {
             return;
@@ -158,9 +117,7 @@ class ImagesTable extends Table
                 continue;
             }
 
-            $file = new File($filePath);
-            $file->delete();
-            $file->close();
+            unlink($filePath);
         }
     }
 }

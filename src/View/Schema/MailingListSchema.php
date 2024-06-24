@@ -2,12 +2,19 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\MailingList;
+use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class MailingListSchema extends EntitySchema
 {
     protected $resourceType = 'subscriptions';
+
+    public function getType(): string
+    {
+        return 'subscriptions';
+    }
 
     /**
      * Returns the subscription's ID
@@ -48,21 +55,20 @@ class MailingListSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param MailingList $subscription Mailing list subscription entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param MailingList $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($subscription, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         // If "all_categories" is true, display associations with every category
-        if ($subscription->all_categories) {
+        if ($resource->all_categories) {
             $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
             $categories = $categoriesTable->find()->all();
         } else {
-            $categories = $subscription->categories;
+            $categories = $resource->categories;
         }
 
-        return ['categories' => [self::DATA => $categories]];
+        return ['categories' => ['data' => $categories]];
     }
 }

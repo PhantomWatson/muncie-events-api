@@ -8,7 +8,7 @@ use App\Model\Table\EventsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Exception;
 
 /**
@@ -27,7 +27,7 @@ class EventSeriesController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->Auth->allow(['view']);
@@ -50,7 +50,7 @@ class EventSeriesController extends AppController
         // Grant access to edit and delete functions only if the current user is this series's author
         $seriesId = $this->request->getParam('id');
         $userId = php_sapi_name() == 'cli'
-            ? $this->request->getSession()->read(['Auth.User.id'])
+            ? $this->request->getSession()->read('Auth.User.id')
             : $user['id'];
 
         return $this->EventSeries->exists([
@@ -82,7 +82,6 @@ class EventSeriesController extends AppController
 
         if ($this->request->is(['post'])) {
             $x = 0;
-            $this->loadModel('Events');
             foreach ($this->request->getData('events') as $event) {
                 // Skip
                 if ($event['edited'] != 1) {
@@ -105,7 +104,7 @@ class EventSeriesController extends AppController
                     $event['time_start']['minute'],
                     $event['time_start']['meridian']
                 );
-                $eventSeries->events[$x]->time_start = new Time(
+                $eventSeries->events[$x]->time_start = new FrozenTime(
                     date('H:i', strtotime($timeString))
                 );
                 $eventSeries->events[$x]->title = $event['title'] ?: $eventSeries->events[$x]->title;

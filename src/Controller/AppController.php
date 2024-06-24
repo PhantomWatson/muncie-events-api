@@ -6,7 +6,9 @@ use App\Model\Table\EventsTable;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
+use Cake\ORM\Table;
 use Exception;
 
 /**
@@ -17,16 +19,20 @@ use Exception;
  */
 class AppController extends Controller
 {
+    protected EventsTable|Table $Events;
 
     /**
      * Initialization hook method
      *
-     * @return void
+     * @return Response|null
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
+
+        // Make $this->Events available for all controllers
+        $this->Events = $this->fetchTable('Events');
 
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
@@ -71,6 +77,12 @@ class AppController extends Controller
             ]
         );
         $this->Auth->deny();
+
+        if (!$this->request->is('ssl')) {
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
+        }
+
+        return null;
     }
 
     /**
@@ -79,7 +91,7 @@ class AppController extends Controller
      * @param Event $event CakePHP event object
      * @return Response|null
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         /* Fix weird 404 error caused by cPanel's redirection of https://themunciescene.com/?fbclid=...
          * MuncieEvents.com resulting in the ? being encoded */
@@ -89,7 +101,7 @@ class AppController extends Controller
             return $this->redirect('/');
         }
 
-        if (!$this->request->is('ssl')) {
+        if (!$this->request->is('ssl') && Configure::read('redirectToHttps')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
@@ -119,7 +131,7 @@ class AppController extends Controller
             if ($user) {
                 $this->Auth->setUser($user);
             } else {
-                $this->response = $this->response->withExpiredCookie('CookieAuth');
+                $this->response = $this->response->withExpiredCookie(new Cookie('CookieAuth'));
             }
         }
 
@@ -137,9 +149,8 @@ class AppController extends Controller
      * @param Event $event The beforeRender event.
      * @return Response|null|void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(\Cake\Event\EventInterface $event)
     {
-        $this->loadModel('Events');
         $this->set([
             'authUser' => $this->Auth->user(),
             'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
@@ -170,9 +181,9 @@ class AppController extends Controller
     protected function loadRecaptcha()
     {
         $this->loadComponent('Recaptcha.Recaptcha', [
-            'enable' => (bool)$this->request->getEnv('RECAPTCHA_ENABLED', true),
-            'sitekey' => env('RECAPTCHA_SITE_KEY'),
-            'secret' => env('RECAPTCHA_SECRET'),
+            'enable' => Configure::read('Recaptcha.enabled', true),
+            'sitekey' => Configure::read('Recaptcha.siteKey'),
+            'secret' => Configure::read('Recaptcha.secret'),
             'type' => 'image',
             'theme' => 'light',
             'lang' => 'en',

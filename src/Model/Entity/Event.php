@@ -7,7 +7,6 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
-use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
@@ -167,7 +166,7 @@ class Event extends Entity
      *
      * @param FrozenDate $date Date object
      * @param FrozenTime|null $localTime Time object
-     * @return Time|null
+     * @return FrozenTime|null
      * @throws Exception
      */
     private static function getCorrectedTime($date, $localTime)
@@ -178,11 +177,8 @@ class Event extends Entity
 
         // Create a time object with the correct timezone set
         $timeString = $localTime->toDateTimeString();
-        $correctedTime = new Time($timeString);
-        $correctedTime->timezone(self::TIMEZONE);
-
-        // Add correct date
-        $correctedTime
+        $correctedTime = (new FrozenTime($timeString))
+            ->setTimezone(self::TIMEZONE)
             ->day($date->day)
             ->month($date->month)
             ->year($date->year);
@@ -403,7 +399,7 @@ class Event extends Entity
      */
     protected function _getLocation($location)
     {
-        return trim($location);
+        return $location ? trim($location) : $location;
     }
 
     /**
@@ -512,5 +508,27 @@ class Event extends Entity
         $vcalendar->add($vt);
 
         return $vcalendar;
+    }
+
+    /**
+     * Returns $this->time_start as a FrozenTime
+     *
+     * @param string $timeStart
+     * @return FrozenTime
+     */
+    protected function _getTimeStart($timeStart): FrozenTime
+    {
+        return new FrozenTime($timeStart);
+    }
+
+    /**
+     * Returns $this->time_end as a FrozenTime (or null)
+     *
+     * @param string $timeEnd
+     * @return FrozenTime|null
+     */
+    protected function _getTimeEnd($timeEnd): ?FrozenTime
+    {
+        return $timeEnd ? new FrozenTime($timeEnd) : null;
     }
 }

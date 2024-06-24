@@ -6,11 +6,16 @@ use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use Exception;
 use JsonApi\View\Schema\EntitySchema;
-use Neomerx\JsonApi\Factories\Factory;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class EventSchema extends EntitySchema
 {
     protected $selfSubUrl = '/event';
+
+    public function getType(): string
+    {
+        return 'events';
+    }
 
     /**
      * Returns the event's ID
@@ -35,8 +40,6 @@ class EventSchema extends EntitySchema
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $entity->category->noEventCount = true;
-        $categorySchema = new CategorySchema(new Factory(), $this->_view, 'Category');
-        $seriesSchema = new EventSeriesSchema(new Factory(), $this->_view, 'EventSeries');
 
         $attributes = [
             'title' => $entity->title,
@@ -49,8 +52,8 @@ class EventSchema extends EntitySchema
                     'name' => $entity->user->name,
                     'email' => $entity->user->email,
                 ] : null,
-            'category' => $categorySchema->getAttributes($entity->category),
-            'series' => $entity->event_series ? $seriesSchema->getAttributes($entity->event_series) : null,
+            'category' => CategorySchema::_getAttributes($entity->category),
+            'series' => $entity->event_series ? EventSeriesSchema::_getAttributes($entity->event_series) : null,
             'date' => $entity->date->format('Y-m-d'),
             'time_start' => Event::getDatetime($entity->date, $entity->time_start),
             'time_end' => Event::getDatetime($entity->date, $entity->time_end),
@@ -84,25 +87,24 @@ class EventSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Event $entity Entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param Event $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($entity, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [
             'category' => [
-                self::DATA => $entity->category,
+                'data' => $resource->category,
             ],
             'series' => [
-                self::DATA => $entity->event_series,
+                'data' => $resource->event_series,
             ],
             'tags' => [
-                self::DATA => $entity->tags,
+                'data' => $resource->tags,
             ],
             'user' => [
-                self::DATA => $entity->user,
+                'data' => $resource->user,
             ],
         ];
     }

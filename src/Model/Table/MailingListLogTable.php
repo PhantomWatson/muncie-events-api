@@ -21,7 +21,7 @@ class MailingListLogTable extends Table
      * @param array $config settings for table
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -47,7 +47,7 @@ class MailingListLogTable extends Table
      */
     public function addLogEntry($recipientId, $result, $flavor, $testing = false)
     {
-        $log = $this->newEntity();
+        $log = $this->newEntity([]);
         $log->recipient_id = $recipientId;
         $log->flavor = $flavor;
         $log->result = $result;

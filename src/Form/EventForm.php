@@ -64,6 +64,7 @@ class EventForm
         // Remove event series data, because it's saved separately
         unset($data['event_series']);
 
+        /** @var Event $event */
         $event = $this->Events->newEntity($data);
         $event->autoApprove($user);
         $event->autoPublish($user);
@@ -83,6 +84,7 @@ class EventForm
             }
         }
 
+        /** @var Event $saved */
         $saved = $this->Events->save($event, [
             'associated' => ['Images', 'Tags'],
         ]);

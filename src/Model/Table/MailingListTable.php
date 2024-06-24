@@ -5,6 +5,7 @@ use App\Model\Entity\MailingList;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Association\BelongsToMany;
@@ -42,7 +43,7 @@ class MailingListTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -68,7 +69,7 @@ class MailingListTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -132,7 +133,7 @@ class MailingListTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add(
             $rules->isUnique(['email']),
@@ -148,7 +149,7 @@ class MailingListTable extends Table
      *
      * @return array
      */
-    public function getDays()
+    public function getDays(): array
     {
         return [
             'sun' => 'Sunday',
@@ -165,23 +166,27 @@ class MailingListTable extends Table
      * Returns a mailing list record matching the provided email address, or null if none is found
      *
      * @param string $email Email address
-     * @return MailingList|null|EntityInterface
+     * @return EntityInterface|null|MailingList
      */
-    public function getFromEmail($email)
+    public function getFromEmail(string $email): MailingList|EntityInterface|null
     {
-        return $this->find()
+        /** @var MailingList $mailingList */
+        $mailingList = $this->find()
             ->where(['email' => $email])
             ->first();
+
+        return $mailingList;
     }
 
     /**
      * Returns a new entity with fields set to default values
      *
-     * @return \App\Model\Entity\MailingList
+     * @return MailingList|EntityInterface
      */
-    public function newEntityWithDefaults()
+    public function newEntityWithDefaults(): MailingList|EntityInterface
     {
-        $subscription = $this->newEntity();
+        /** @var MailingList $subscription */
+        $subscription = $this->newEmptyEntity();
         $subscription->weekly = true;
         $subscription->all_categories = true;
         $subscription->categories = $this->Categories
@@ -192,13 +197,13 @@ class MailingListTable extends Table
     }
 
     /**
-     * Returns a resultset of today's daily mailing list message recipients
+     * Returns a result set of today's daily mailing list message recipients
      *
      * @param string|null $email Optional specific email address
      * @param int $limit Limit of how many recipients to return, zero for no limit
-     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     * @return MailingList[]|ResultSetInterface
      */
-    public function getDailyRecipients($email = null, $limit = 0)
+    public function getDailyRecipients(string $email = null, int $limit = 0): ResultSetInterface|array
     {
         $timezone = Configure::read('localTimezone');
         $now = new FrozenTime('now', $timezone);
@@ -228,7 +233,10 @@ class MailingListTable extends Table
             $query->limit($limit);
         }
 
-        return $query->all();
+        /** @var MailingList[]|ResultSetInterface $subscriptions */
+        $subscriptions = $query->all();
+
+        return $subscriptions;
     }
 
     /**
@@ -237,13 +245,13 @@ class MailingListTable extends Table
      * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
      * @param int $result Code representing result of running this script for this recipient
      * @return void
-     * @throws \Cake\Http\Exception\InternalErrorException
+     * @throws InternalErrorException
      */
-    public function markDailyAsProcessed($subscriber, $result)
+    public function markDailyAsProcessed(?MailingList $subscriber, int $result): void
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $subscriber ? $subscriber->id : null,
+            'recipient_id' => $subscriber?->id,
             'result' => $result,
             'is_daily' => 1,
         ]);
@@ -269,9 +277,9 @@ class MailingListTable extends Table
      *
      * @param string|null $email Optional specific email address
      * @param int $limit Limit of how many recipients to return, zero for no limit
-     * @return \Cake\Datasource\ResultSetInterface|MailingList[]
+     * @return ResultSetInterface|MailingList[]
      */
-    public function getWeeklyRecipients($email = null, $limit = 0)
+    public function getWeeklyRecipients(?string $email = null, int $limit = 0): ResultSetInterface|array
     {
         $timezone = Configure::read('localTimezone');
         $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
@@ -299,7 +307,10 @@ class MailingListTable extends Table
             $query->limit($limit);
         }
 
-        return $query->all();
+        /** @var MailingList[]|ResultSetInterface $subscriptions */
+        $subscriptions = $query->all();
+
+        return $subscriptions;
     }
 
     /**
@@ -308,13 +319,13 @@ class MailingListTable extends Table
      * @param MailingList|null $subscriber Mailing list subscriber, or NULL if this entry applies to all subscribers
      * @param int $result Code representing result of running this script for this recipient
      * @return void
-     * @throws \Cake\Http\Exception\InternalErrorException
+     * @throws InternalErrorException
      */
-    public function markWeeklyAsProcessed($subscriber, $result)
+    public function markWeeklyAsProcessed(?MailingList $subscriber, int $result): void
     {
         $mailingListLogTable = TableRegistry::getTableLocator()->get('MailingListLog');
         $logEntry = $mailingListLogTable->newEntity([
-            'recipient_id' => $subscriber ? $subscriber->id : null,
+            'recipient_id' => $subscriber?->id,
             'result' => $result,
             'is_weekly' => 1,
         ]);

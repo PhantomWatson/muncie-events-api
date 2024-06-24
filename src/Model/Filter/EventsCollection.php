@@ -10,12 +10,12 @@ class EventsCollection extends FilterCollection
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
         $this->add('q', 'Search.Like', [
-            'field' => ['title', 'description', 'location'],
+            'fields' => ['title', 'description', 'location'],
 
             // Automatically add wildcards before and after a search term
             'before' => true,

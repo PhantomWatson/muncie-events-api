@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
+use App\Model\Table\EventsTagsTable;
 use App\Model\Table\TagsTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Http\Exception\BadRequestException;
@@ -23,7 +24,7 @@ class TagsController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -46,9 +47,13 @@ class TagsController extends AppController
      *
      * @return void
      */
-    public function manage()
+    public function manage(): void
     {
-        $this->set('pageTitle', 'Manage Tags');
+        $newTag = $this->Tags->newEmptyEntity();
+        $this->set([
+            'pageTitle' => 'Manage Tags',
+            'newTag' => $newTag,
+        ]);
     }
 
     /**
@@ -95,14 +100,15 @@ class TagsController extends AppController
                 ->toArray();
 
         $rearrangedNodes = ['branches' => [], 'leaves' => []];
-        $this->loadModel('EventsTags');
+        /** @var EventsTagsTable $eventTagsTable */
+        $eventsTagsTable = $this->fetchTable('EventsTags');
         foreach ($nodes as &$node) {
             /** @var \App\Model\Entity\Tag $node */
             $tagId = $node->id;
 
             // Check for events associated with this tag
             if ($node->selectable) {
-                $count = $this->EventsTags
+                $count = $eventsTagsTable
                     ->find()
                     ->where(['tag_id' => $tagId])
                     ->count();
@@ -329,15 +335,16 @@ class TagsController extends AppController
         }
 
         // Switch event associations
-        $this->loadModel('EventsTags');
+        /** @var EventsTagsTable $eventTagsTable */
+        $eventsTagsTable = $this->fetchTable('EventsTags');
         /** @var \App\Model\Entity\EventsTag[] $associations */
-        $associations = $this->EventsTags
+        $associations = $eventsTagsTable
             ->find()
             ->where(['tag_id' => $removedTag->id])
             ->all();
         foreach ($associations as $association) {
-            $this->EventsTags->patchEntity($association, ['tag_id' => $retainedTag->id]);
-            $this->EventsTags->save($association);
+            $eventsTagsTable->patchEntity($association, ['tag_id' => $retainedTag->id]);
+            $eventsTagsTable->save($association);
         }
         if ($associations) {
             $message = sprintf(

@@ -42,10 +42,9 @@ class EventsController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
-
         $this->Auth->allow([
             'add',
             'category',
@@ -68,6 +67,8 @@ class EventsController extends AppController
         }
         $this->loadComponent('Calendar.Calendar');
         $this->RequestHandler->setConfig('viewClassMap', ['ics' => 'Calendar.Ical']);
+
+        $this->Events = self::fetchTable('Events');
     }
 
     /**
@@ -173,8 +174,9 @@ class EventsController extends AppController
             ]);
         }
 
-        $this->loadModel('Tags');
-        $tag = $this->Tags->getFromIdSlug($idAndSlug);
+        /** @var TagsTable $tagsTable */
+        $tagsTable = $this->fetchTable('Tags');
+        $tag = $tagsTable->getFromIdSlug($idAndSlug);
         if (!$tag) {
             throw new NotFoundException('Sorry, we couldn\'t find that tag');
         }
@@ -783,11 +785,16 @@ class EventsController extends AppController
      */
     public function mine()
     {
-        $query = $this->Events
-            ->find('ordered', ['direction' => 'DESC'])
-            ->where(['user_id' => $this->Auth->user('id')]);
+        $userId = $this->Auth->user('id');
+        if ($userId) {
+            $query = $this->Events
+                ->find('ordered', ['direction' => 'DESC'])
+                ->where(['user_id' => $this->Auth->user('id')]);
 
-        $events = $this->paginate($query)->toArray();
+            $events = $this->paginate($query)->toArray();
+        } else {
+            $events = [];
+        }
 
         $this->set([
             'events' => $events,

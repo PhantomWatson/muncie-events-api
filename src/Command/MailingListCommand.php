@@ -1,7 +1,11 @@
 <?php
 namespace App\Command;
 
+use App\Model\Entity\Event;
+use App\Model\Entity\MailingList;
+use App\Model\Table\EventsTable;
 use App\Model\Table\MailingListLogTable;
+use App\Model\Table\MailingListTable;
 use BadMethodCallException;
 use Cake\Console\Arguments;
 use Cake\Console\Command;
@@ -14,13 +18,14 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Exception;
+use hbattat\VerifyEmail;
 
 /**
  * SendMailingListMessages command.
  *
- * @property \App\Model\Table\EventsTable $Events
- * @property \App\Model\Table\MailingListTable $MailingList
- * @property \Cake\Console\ConsoleIo $io
+ * @property EventsTable $Events
+ * @property MailingListTable $MailingList
+ * @property ConsoleIo $io
  * @property boolean $overrideWeekly
  * @property string $recipientEmail
  */
@@ -43,7 +48,7 @@ class MailingListCommand extends Command
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -56,10 +61,10 @@ class MailingListCommand extends Command
      *
      * @see https://book.cakephp.org/3.0/en/console-and-shells/commands.html#defining-arguments-and-options
      *
-     * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
-     * @return \Cake\Console\ConsoleOptionParser The built parser.
+     * @param ConsoleOptionParser $parser The parser to be defined
+     * @return ConsoleOptionParser The built parser.
      */
-    public function buildOptionParser(ConsoleOptionParser $parser)
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -75,7 +80,7 @@ class MailingListCommand extends Command
 
         $parser->addOption('override-weekly', [
             'help' => 'Overrides the restriction on which day weekly emails can be sent out',
-            'boolean' => 'true',
+            'boolean' => true,
         ]);
 
         return $parser;
@@ -84,12 +89,12 @@ class MailingListCommand extends Command
     /**
      * Implement this method with your command's logic.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
-     * @return void
-     * @throws \Exception
+     * @param Arguments $args The command arguments.
+     * @param ConsoleIo $io The console io
+     * @return int
+     * @throws Exception
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): int
     {
         $action = $args->getArgument('action');
         $this->io = $io;
@@ -107,24 +112,21 @@ class MailingListCommand extends Command
 
         switch ($action) {
             case 'send_daily':
-                $this->processDaily();
-
-                return;
+                return $this->processDaily();
             case 'send_weekly':
-                $this->processWeekly();
-
-                return;
+                return $this->processWeekly();
         }
 
-        throw new Exception("Invalid action: $action");
+        $io->error("Invalid action: $action");
+        return static::CODE_ERROR;
     }
 
     /**
      * Collects events and recipients for daily emails and sends emails if appropriate
      *
-     * @return void
+     * @return int
      */
-    private function processDaily()
+    private function processDaily(): int
     {
         // Make sure there are recipients
         $recipients = $this->MailingList->getDailyRecipients($this->recipientEmail, self::RECIPIENT_LIMIT);
@@ -137,7 +139,7 @@ class MailingListCommand extends Command
                 );
             }
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Make sure there are events to report
@@ -160,7 +162,7 @@ class MailingListCommand extends Command
             $this->MailingList->markDailyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about today');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Send emails
@@ -169,16 +171,18 @@ class MailingListCommand extends Command
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\n Done");
+
+        return static::CODE_SUCCESS;
     }
 
     /**
      * Sends the daily version of the event email
      *
-     * @param \App\Model\Entity\MailingList $recipient Mailing list subscriber
-     * @param \App\Model\Entity\Event[] $events Array of events
+     * @param MailingList $recipient Mailing list subscriber
+     * @param Event[] $events Array of events
      * @return array
      */
-    public function sendDaily($recipient, $events)
+    public function sendDaily(MailingList $recipient, array $events): array
     {
         $categoryIds = Hash::extract($events, '{n}.category.id');
 
@@ -215,11 +219,11 @@ class MailingListCommand extends Command
     /**
      * Returns an array of events filtered according to the recipient's mailing list settings
      *
-     * @param \App\Model\Entity\MailingList $recipient Subscribers
-     * @param \App\Model\Entity\Event[] $events Array of events
-     * @return \App\Model\Entity\Event[]
+     * @param MailingList $recipient Subscribers
+     * @param Event[] $events Array of events
+     * @return Event[]
      */
-    private function filterEvents($recipient, $events)
+    private function filterEvents(MailingList $recipient, array $events): array
     {
         if ($recipient->all_categories) {
             return $events;
@@ -239,15 +243,15 @@ class MailingListCommand extends Command
     /**
      * Collects events and recipients for weekly emails and sends emails if appropriate
      *
-     * @return void
+     * @return int
      */
-    private function processWeekly()
+    private function processWeekly(): int
     {
         // Make sure that today is the correct day
         if (!$this->overrideWeekly && !$this->isWeeklyDeliveryDay()) {
             $this->io->out('Today is not the day of the week designated for delivering weekly emails.');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Make sure there are recipients
@@ -270,7 +274,7 @@ class MailingListCommand extends Command
             $this->MailingList->markWeeklyAsProcessed(null, MailingListLogTable::NO_EVENTS);
             $this->io->out('No events to inform anyone about this week');
 
-            return;
+            return static::CODE_SUCCESS;
         }
 
         // Send emails
@@ -279,6 +283,7 @@ class MailingListCommand extends Command
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\nDone");
+        return static::CODE_SUCCESS;
     }
 
     /**
@@ -286,7 +291,7 @@ class MailingListCommand extends Command
      *
      * @return bool
      */
-    private function isWeeklyDeliveryDay()
+    private function isWeeklyDeliveryDay(): bool
     {
         $timezone = Configure::read('localTimezone');
 
@@ -296,11 +301,11 @@ class MailingListCommand extends Command
     /**
      * Sends the weekly version of the event mailing list email
      *
-     * @param \App\Model\Entity\MailingList $recipient Subscriber entity
-     * @param \App\Model\Entity\Event[] $events Array of events
+     * @param MailingList $recipient Subscriber entity
+     * @param Event[] $events Array of events
      * @return array:boolean string
      */
-    private function sendWeekly($recipient, $events)
+    private function sendWeekly(MailingList $recipient, array $events): array
     {
         $categoryIds = Hash::extract($events, '{n}.category.id');
 
@@ -338,10 +343,10 @@ class MailingListCommand extends Command
      * @param string $email Email address to check
      * @return string|true
      */
-    private function verifyEmail($email)
+    private function verifyEmail(string $email): bool|string
     {
         $from = Configure::read('automailer_address');
-        $verification = new \hbattat\VerifyEmail($email, $from);
+        $verification = new VerifyEmail($email, $from);
         if ($verification->verify()) {
             return true;
         }

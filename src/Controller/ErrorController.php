@@ -31,7 +31,7 @@ class ErrorController extends AppController
      * @return void
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadComponent('RequestHandler', [
@@ -45,7 +45,7 @@ class ErrorController extends AppController
      * @param Event $event Event.
      * @return Response|null|void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
     }
@@ -56,7 +56,7 @@ class ErrorController extends AppController
      * @param Event $event Event.
      * @return Response|null|void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(\Cake\Event\EventInterface $event)
     {
         parent::beforeRender($event);
 
@@ -70,7 +70,7 @@ class ErrorController extends AppController
      * @param Event $event Event.
      * @return Response|null|void
      */
-    public function afterFilter(Event $event)
+    public function afterFilter(\Cake\Event\EventInterface $event)
     {
         parent::afterFilter($event);
     }

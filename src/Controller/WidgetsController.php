@@ -22,7 +22,7 @@ class WidgetsController extends AppController
      * @return void
      * @throws \Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -37,7 +37,6 @@ class WidgetsController extends AppController
             'index',
             'month',
         ]);
-        $this->loadModel('Events');
         $this->Widget = new Widget();
     }
 

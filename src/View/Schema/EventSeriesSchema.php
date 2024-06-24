@@ -3,10 +3,17 @@ namespace App\View\Schema;
 
 use App\Model\Entity\EventSeries;
 use Cake\Core\Configure;
+use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
+use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class EventSeriesSchema extends EntitySchema
 {
+    public function getType(): string
+    {
+        return 'event-series';
+    }
+
     /**
      * Returns the event series's ID
      *
@@ -27,6 +34,15 @@ class EventSeriesSchema extends EntitySchema
      */
     public function getAttributes($series, array $fieldKeysFilter = null): array
     {
+        return self::_getAttributes($series);
+    }
+
+    /**
+     * @param EventSeries $series
+     * @return array
+     */
+    public static function _getAttributes(EventSeries $series): array
+    {
         $baseUrl = Configure::read('mainSiteBaseUrl');
 
         return [
@@ -38,19 +54,18 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param EventSeries $series Entity
-     * @param bool $isPrimary Is primary flag
-     * @param array $includeRelationships Names of relationships to include
+     * @param EventSeries $resource Entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getRelationships($series, bool $isPrimary, array $includeRelationships): ?array
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         return [
             'events' => [
-                self::DATA => $series->events,
+                'data' => $resource->events,
             ],
             'user' => [
-                self::DATA => $series->user,
+                'data' => $resource->user,
             ],
         ];
     }

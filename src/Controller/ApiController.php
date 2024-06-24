@@ -72,7 +72,7 @@ class ApiController extends Controller
      * @param Event $event CakePHP event object
      * @return Response|null
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
 
@@ -109,7 +109,7 @@ class ApiController extends Controller
      * @param Event $event The beforeRender event.
      * @return Response|null|void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(\Cake\Event\EventInterface $event)
     {
         parent::beforeRender($event);
     }
@@ -120,7 +120,7 @@ class ApiController extends Controller
      * @param Event $event The afterFilter event
      * @return void
      */
-    public function afterFilter(Event $event)
+    public function afterFilter(\Cake\Event\EventInterface $event)
     {
         parent::afterFilter($event);
 

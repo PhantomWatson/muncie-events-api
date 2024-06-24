@@ -34,7 +34,7 @@ class EventSeriesTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -58,7 +58,7 @@ class EventSeriesTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->integer('id');
@@ -82,7 +82,7 @@ class EventSeriesTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
@@ -93,7 +93,7 @@ class EventSeriesTable extends Table
      * Returns an event series and all of its associated events for the /event-series/edit page
      *
      * @param Query $query Query object
-     * @return array|EntityInterface|null
+     * @return Query
      */
     public function findForEdit(Query $query)
     {
@@ -109,7 +109,7 @@ class EventSeriesTable extends Table
      * Alters a query to include ordered, published events with associated data
      *
      * @param Query $query Query object
-     * @return array|Query
+     * @return Query
      */
     public function findForView(Query $query)
     {

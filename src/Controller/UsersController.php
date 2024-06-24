@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Table\UsersTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -22,13 +23,9 @@ class UsersController extends AppController
      * @return Response|null
      * @throws Exception
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
-
-        if (!$this->request->is('ssl')) {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
-        }
 
         $this->loadRecaptcha();
 
@@ -40,8 +37,6 @@ class UsersController extends AppController
             'resetPassword',
             'view',
         ]);
-
-        return null;
     }
 
     /**
@@ -51,7 +46,7 @@ class UsersController extends AppController
      */
     public function register()
     {
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
 
         $this->set([
             'pageTitle' => 'Register an Account',
@@ -99,38 +94,38 @@ class UsersController extends AppController
      */
     public function login()
     {
-        $this->set('pageTitle', 'Log in');
+        $userEntity = $this->Users->newEmptyEntity();
+        $userEntity->auto_login = true;
+        $this->set([
+            'pageTitle' => 'Log in',
+            'user' => $userEntity,
+        ]);
 
         if (!$this->request->is('post')) {
-            $user = $this->Users->newEntity();
-            $user->auto_login = true;
-            $this->set('user', $user);
-
             return null;
         }
 
-        $user = $this->Auth->identify();
-        if (!$user) {
+        $userData = $this->Auth->identify();
+        if (!$userData) {
             $this->Flash->error('Email or password is incorrect');
             $this->request = $this->request->withData('password', '');
-            $this->set('user', $user);
 
             return null;
         }
 
-        $this->Auth->setUser($user);
+        $this->Auth->setUser($userData);
 
         // Remember login information
         if ($this->request->getData('auto_login')) {
-            $this->response = $this->response->withCookie('CookieAuth', [
-                'value' => [
+            $cookie = (new Cookie('CookieAuth'))
+                ->withValue([
                     'email' => $this->request->getData('email'),
                     'password' => $this->request->getData('password'),
-                ],
-                'secure' => true,
-                'expire' => strtotime('+1 year'),
-                'httpOnly' => true,
-            ]);
+                ])
+                ->withSecure(true)
+                ->withExpiry(new \DateTime('+1 year'))
+                ->withHttpOnly(true);
+            $this->response = $this->response->withCookie($cookie);
         }
 
         return $this->redirect($this->Auth->redirectUrl());
@@ -303,7 +298,8 @@ class UsersController extends AppController
             'pageTitle' => 'Reset Password',
             'userId' => $userId,
             'email' => $email,
-            'resetPasswordHash' => $resetPasswordHash
+            'resetPasswordHash' => $resetPasswordHash,
+            'user' => $user,
         ]);
 
         $expectedHash = $this->Users->getResetPasswordHash($userId, $email);

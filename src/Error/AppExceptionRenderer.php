@@ -1,55 +1,53 @@
 <?php
 namespace App\Error;
 
-use Cake\Error\ExceptionRenderer;
+use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Response;
 
-class AppExceptionRenderer extends ExceptionRenderer
+class AppExceptionRenderer extends WebExceptionRenderer
 {
     /**
-     * Renders the response for the exception.
+     * Renders a JSON API error response if this is an API request
      *
      * @return Response The response to be sent.
      */
-    public function render()
+    public function render(): \Psr\Http\Message\ResponseInterface
     {
         if (!$this->isApiRequest()) {
             return parent::render();
         }
 
-        $exception = $this->error;
-        $code = $this->_code($exception);
-        $message = $this->_message($exception, $code);
-
-        $this->controller->response = $this->controller->response->withStatus($code);
-
-        $viewVars = [
-            '_serialize' => ['errors'],
-            'errors' => [
+        $code = $this->error->getCode();
+        $this->_getController()
+            ->setResponse($this->_getController()->getResponse()->withStatus($code))
+            ->set([
                 'errors' => [
-                    [
-                        'status' => $code,
-                        'detail' => $message,
+                    'errors' => [
+                        [
+                            'status' => $code,
+                            'detail' => $this->_message($this->error, $code),
+                        ],
                     ],
                 ],
-            ],
-        ];
-        $this->controller->set($viewVars);
+            ]);
 
-        $this->controller->render('json_api_error', 'api_error');
+        $this->controller->viewBuilder()
+            ->setTemplate('json_api_error')
+            ->setLayout('api_error')
+            ->setOption('serialize', ['errors']);
 
         return $this->_shutdown();
     }
 
     /**
-     * Determines whether or not this request is to an API endpoint
+     * Determines whether this request is to an API endpoint
      *
      * @return bool
      */
-    public function isApiRequest()
+    public function isApiRequest(): bool
     {
         $apiPrefixes = ['v1'];
-        $prefix = $this->_getController()->request->getParam('prefix');
+        $prefix = $this->_getController()->getRequest()->getParam('prefix');
 
         return in_array($prefix, $apiPrefixes);
     }
