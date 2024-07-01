@@ -1488,16 +1488,16 @@
         },
         {
             "name": "phantomwatson/cakephp-json-api",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhantomWatson/cakephp-json-api.git",
-                "reference": "9953a720869b43992b874119c0b2b62cf69ae370"
+                "reference": "3d3064144ac53133068f1ae20f288d7b54a6a316"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/9953a720869b43992b874119c0b2b62cf69ae370",
-                "reference": "9953a720869b43992b874119c0b2b62cf69ae370",
+                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/3d3064144ac53133068f1ae20f288d7b54a6a316",
+                "reference": "3d3064144ac53133068f1ae20f288d7b54a6a316",
                 "shasum": ""
             },
             "require": {
@@ -1540,7 +1540,7 @@
                 "issues": "https://github.com/josbeir/cakephp-json-api/issues",
                 "source": "https://github.com/josbeir/cakephp-json-api"
             },
-            "time": "2023-03-02T08:11:58+00:00"
+            "time": "2024-07-01T05:59:27+00:00"
         },
         {
             "name": "psr/container",
