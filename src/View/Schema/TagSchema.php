@@ -27,19 +27,19 @@ class TagSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Tag $tag Tag entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Tag $resource Tag entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getAttributes($tag, array $fieldKeysFilter = null): array
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
-        $retval = ['name' => $tag->name];
-        if (isset($tag->selectable)) {
-            $retval['selectable'] = $tag->selectable;
+        $retval = ['name' => $resource->name];
+        if (isset($resource->selectable)) {
+            $retval['selectable'] = $resource->selectable;
         }
 
-        if (isset($tag->count)) {
-            $retval['upcomingEventCount'] = $tag->count;
+        if (isset($resource->count)) {
+            $retval['upcomingEventCount'] = $resource->count;
         }
 
         return $retval;
