@@ -35,7 +35,7 @@ RUN install-php-extensions @composer
 RUN pecl install xdebug
 # && docker-php-ext-enable xdebug
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
 
 RUN apt-get install nodejs -y
 
