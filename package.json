@@ -1,7 +1,7 @@
 {
-  "name": "muncie-events-api",
+  "name": "muncie-events",
   "version": "1.0.0",
-  "description": "Muncie Events API",
+  "description": "Muncie Events",
   "main": "",
   "dependencies": {
       "commander": "^3.0.2",
