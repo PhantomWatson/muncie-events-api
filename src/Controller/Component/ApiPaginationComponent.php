@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Component;
 
+use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Routing\Router;
@@ -11,8 +12,21 @@ use Neomerx\JsonApi\Schema\Link;
  * using CakePHP's PaginatorComponent alongside of CakePHP's JsonView or XmlView
  * classes.
  */
-class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Component\ApiPaginationComponent
+class ApiPaginationComponent extends Component
 {
+    protected $_defaultConfig = [
+        'key' => 'pagination',
+        'aliases' => [],
+        'visible' => [],
+    ];
+
+    /**
+     * Holds the paging information array from the request.
+     *
+     * @var array
+     */
+    protected array $pagingInfo = [];
+
     /**
      * Injects the pagination info into the response if the current request is a
      * JSON or XML request with pagination.
@@ -20,7 +34,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Event $event The Controller.beforeRender event.
      * @return void
      */
-    public function beforeRender(\Cake\Event\EventInterface $event)
+    public function beforeRender(\Cake\Event\EventInterface $event): void
     {
         /** @var Controller $subject */
         $subject = $event->getSubject();
@@ -59,7 +73,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Controller $controller Controller
      * @return \Neomerx\JsonApi\Schema\Link
      */
-    public function getFirstPage(Controller $controller)
+    public function getFirstPage(Controller $controller): Link
     {
         return $this->getLink($this->getPageUrl($controller, 1));
     }
@@ -70,7 +84,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Controller $controller Controller
      * @return \Neomerx\JsonApi\Schema\Link
      */
-    public function getLastPage(Controller $controller)
+    public function getLastPage(Controller $controller): Link
     {
         $lastPage = $this->pagingInfo['pageCount'];
 
@@ -83,7 +97,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Controller $controller Controller
      * @return \Neomerx\JsonApi\Schema\Link|null
      */
-    public function getPrevPage(Controller $controller)
+    public function getPrevPage(Controller $controller): ?Link
     {
         if ($this->pagingInfo['page'] > 1) {
             $prevPage = $this->pagingInfo['page'] - 1;
@@ -100,7 +114,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Controller $controller Controller
      * @return \Neomerx\JsonApi\Schema\Link|null
      */
-    public function getNextPage(Controller $controller)
+    public function getNextPage(Controller $controller): ?Link
     {
         if ($this->pagingInfo['page'] < $this->pagingInfo['pageCount']) {
             $nextPage = $this->pagingInfo['page'] + 1;
@@ -118,7 +132,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param string $pageNum Page number
      * @return string
      */
-    public function getPageUrl(Controller $controller, $pageNum)
+    public function getPageUrl(Controller $controller, $pageNum): string
     {
         $url = [];
         foreach (['plugin', 'prefix', 'controller', 'action', '?'] as $param) {
@@ -138,8 +152,45 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param string $url Full URL
      * @return Link
      */
-    public function getLink($url)
+    public function getLink($url): Link
     {
         return new Link($url, null, true);
+    }
+
+    protected function setAliases(): void
+    {
+        foreach ($this->getConfig('aliases') as $key => $value) {
+            $this->pagingInfo[$value] = $this->pagingInfo[$key];
+            unset($this->pagingInfo[$key]);
+        }
+    }
+
+    /**
+     * Removes any pagination keys that haven't been defined as visible in the
+     * config.
+     *
+     * @return void
+     */
+    protected function setVisibility(): void
+    {
+        $visible = $this->getConfig('visible');
+        foreach ($this->pagingInfo as $key => $value) {
+            if (!in_array($key, $visible)) {
+                unset($this->pagingInfo[$key]);
+            }
+        }
+    }
+
+    /**
+     * Checks whether the current request is a JSON or XML request with
+     * pagination.
+     *
+     * @return bool True if JSON or XML with paging, otherwise false.
+     */
+    protected function isPaginatedApiRequest(): bool
+    {
+        return
+            $this->getController()->getRequest()->getAttribute('paging')
+            && $this->getController()->getRequest()->is(['json', 'xml']);
     }
 }
