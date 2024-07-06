@@ -30,13 +30,13 @@ class CategorySchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Category $category Category entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Category $resource Category entity
+     * @param array|ContextInterface|null $context Field keys filter
      * @return array
      */
-    public function getAttributes($category, array $fieldKeysFilter = null): array
+    public function getAttributes($resource, array|ContextInterface $context = null): array
     {
-        return self::_getAttributes($category);
+        return self::_getAttributes($resource);
     }
 
     /**

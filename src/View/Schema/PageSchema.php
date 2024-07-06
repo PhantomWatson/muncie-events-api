@@ -27,15 +27,15 @@ class PageSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Page $entity Page entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Page $resource Page entity
+     * @param array|ContextInterface|null $context Field keys filter
      * @return array
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($resource, array|ContextInterface $context = null): array
     {
         return [
-            'title' => $entity->title,
-            'body' => $entity->body,
+            'title' => $resource->title,
+            'body' => $resource->body,
         ];
     }
 

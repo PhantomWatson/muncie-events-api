@@ -31,48 +31,48 @@ class EventSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output, setting any falsy values to NULL
      *
-     * @param Event $entity Entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Event $resource Entity
+     * @param array|ContextInterface|null $context Field keys filter
      * @return array
      * @throws Exception
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($resource, array|ContextInterface $context = null): array
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
-        $entity->category->noEventCount = true;
+        $resource->category->noEventCount = true;
 
         $attributes = [
-            'title' => $entity->title,
-            'description' => $entity->description,
-            'location' => $entity->location,
-            'location_details' => $entity->location_details ? $entity->location_details : null,
-            'address' => $entity->address ? $entity->address : null,
-            'user' => $entity->user ?
+            'title' => $resource->title,
+            'description' => $resource->description,
+            'location' => $resource->location,
+            'location_details' => $resource->location_details ? $resource->location_details : null,
+            'address' => $resource->address ? $resource->address : null,
+            'user' => $resource->user ?
                 [
-                    'name' => $entity->user->name,
-                    'email' => $entity->user->email,
+                    'name' => $resource->user->name,
+                    'email' => $resource->user->email,
                 ] : null,
-            'category' => CategorySchema::_getAttributes($entity->category),
-            'series' => $entity->event_series ? EventSeriesSchema::_getAttributes($entity->event_series) : null,
-            'date' => $entity->date->format('Y-m-d'),
-            'time_start' => Event::getDatetime($entity->date, $entity->time_start),
-            'time_end' => Event::getDatetime($entity->date, $entity->time_end),
-            'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
-            'cost' => $entity->cost ? $entity->cost : null,
-            'source' => $entity->source ? $entity->source : null,
+            'category' => CategorySchema::_getAttributes($resource->category),
+            'series' => $resource->event_series ? EventSeriesSchema::_getAttributes($resource->event_series) : null,
+            'date' => $resource->date->format('Y-m-d'),
+            'time_start' => Event::getDatetime($resource->date, $resource->time_start),
+            'time_end' => Event::getDatetime($resource->date, $resource->time_end),
+            'age_restriction' => $resource->age_restriction ? $resource->age_restriction : null,
+            'cost' => $resource->cost ? $resource->cost : null,
+            'source' => $resource->source ? $resource->source : null,
             'tags' => [],
             'images' => [],
-            'url' => $baseUrl . '/event/' . $entity->id,
-            'published' => $entity->published,
+            'url' => $baseUrl . '/event/' . $resource->id,
+            'published' => $resource->published,
         ];
 
-        foreach ($entity->tags as $tag) {
+        foreach ($resource->tags as $tag) {
             $attributes['tags'][] = [
                 'name' => $tag->name,
             ];
         }
 
-        foreach ($entity->images as $image) {
+        foreach ($resource->images as $image) {
             $attributes['images'][] = [
                 'tiny_url' => $baseUrl . '/img/events/tiny/' . $image->filename,
                 'small_url' => $baseUrl . '/img/events/small/' . $image->filename,

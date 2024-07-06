@@ -14,7 +14,7 @@ use Neomerx\JsonApi\Schema\Link;
  */
 class ApiPaginationComponent extends Component
 {
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'key' => 'pagination',
         'aliases' => [],
         'visible' => [],

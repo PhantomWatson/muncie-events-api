@@ -30,23 +30,23 @@ class MailingListSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param MailingList $subscription Mailing list subscription entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param MailingList $resource Mailing list subscription entity
+     * @param array|ContextInterface|null $context Field keys filter
      * @return array
      */
-    public function getAttributes($subscription, array $fieldKeysFilter = null): array
+    public function getAttributes($resource, array|ContextInterface $context = null): array
     {
         $retval = [
-            'email' => $subscription->email,
-            'all_categories' => $subscription->all_categories,
-            'weekly' => $subscription->weekly,
-            'daily_sun' => $subscription->daily_sun,
-            'daily_mon' => $subscription->daily_mon,
-            'daily_tue' => $subscription->daily_tue,
-            'daily_wed' => $subscription->daily_wed,
-            'daily_thu' => $subscription->daily_thu,
-            'daily_fri' => $subscription->daily_fri,
-            'daily_sat' => $subscription->daily_sat,
+            'email' => $resource->email,
+            'all_categories' => $resource->all_categories,
+            'weekly' => $resource->weekly,
+            'daily_sun' => $resource->daily_sun,
+            'daily_mon' => $resource->daily_mon,
+            'daily_tue' => $resource->daily_tue,
+            'daily_wed' => $resource->daily_wed,
+            'daily_thu' => $resource->daily_thu,
+            'daily_fri' => $resource->daily_fri,
+            'daily_sat' => $resource->daily_sat,
         ];
 
         return $retval;
