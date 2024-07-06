@@ -17,12 +17,12 @@ class ImageSchema extends EntitySchema
     /**
      * Returns the image's ID
      *
-     * @param Entity $entity Tag entity
+     * @param Entity $resource Tag entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($resource): string
     {
-        return (string)$entity->get('id');
+        return (string)$resource->get('id');
     }
 
     /**

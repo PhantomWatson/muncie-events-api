@@ -16,12 +16,12 @@ class PageSchema extends EntitySchema
     /**
      * Returns the title of the page, which is effectively an ID
      *
-     * @param Page $entity Page entity
+     * @param Page $resource Page entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($resource): string
     {
-        return (string)$entity->id;
+        return (string)$resource->id;
     }
 
     /**

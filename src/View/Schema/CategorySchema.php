@@ -19,12 +19,12 @@ class CategorySchema extends EntitySchema
     /**
      * Returns the category's ID
      *
-     * @param Entity $category Category entity
+     * @param Entity $resource Category entity
      * @return string
      */
-    public function getId($category): string
+    public function getId($resource): string
     {
-        return (string)$category->get('id');
+        return (string)$resource->get('id');
     }
 
     /**

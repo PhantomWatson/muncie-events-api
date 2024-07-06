@@ -17,12 +17,12 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the event series's ID
      *
-     * @param EventSeries $series EventSeries entity
+     * @param EventSeries $resource EventSeries entity
      * @return string
      */
-    public function getId($series): string
+    public function getId($resource): string
     {
-        return (string)$series->get('id');
+        return (string)$resource->get('id');
     }
 
     /**

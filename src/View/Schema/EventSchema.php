@@ -20,12 +20,12 @@ class EventSchema extends EntitySchema
     /**
      * Returns the event's ID
      *
-     * @param Entity $entity Event entity
+     * @param Entity $resource Event entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($res♠ource): string
     {
-        return (string)$entity->get('id');
+        return (string)$resource->get('id');
     }
 
     /**

@@ -9,7 +9,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class MailingListSchema extends EntitySchema
 {
-    protected $resourceType = 'subscriptions';
+    public $resourceType = 'subscriptions';
 
     public function getType(): string
     {
@@ -19,12 +19,12 @@ class MailingListSchema extends EntitySchema
     /**
      * Returns the subscription's ID
      *
-     * @param MailingList $subscription Mailing list subscription entity
+     * @param MailingList $resource Mailing list subscription entity
      * @return string
      */
-    public function getId($subscription): string
+    public function getId($resource): string
     {
-        return (string)$subscription->get('id');
+        return (string)$resource->get('id');
     }
 
     /**
