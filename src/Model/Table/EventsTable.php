@@ -344,7 +344,7 @@ class EventsTable extends Table
                 function (QueryExpression $exp) {
                     $timezone = Configure::read('localTimezone');
 
-                    return $exp->gte('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
+                    return $exp->gte('date', (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -364,7 +364,7 @@ class EventsTable extends Table
                 function (QueryExpression $exp) {
                     $timezone = Configure::read('localTimezone');
 
-                    return $exp->lt('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
+                    return $exp->lt('date', (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -386,7 +386,7 @@ class EventsTable extends Table
             throw new InternalErrorException('Unrecognized ordering direction: ' . $direction);
         }
 
-        return $query->order([
+        return $query->orderBy([
             'date' => $direction,
             'time_start' => 'ASC',
         ]);
@@ -402,7 +402,7 @@ class EventsTable extends Table
     {
         return $this
             ->find('upcoming')
-            ->find('inCategory', ['categoryId' => $categoryId])
+            ->find('inCategory', categoryId: $categoryId)
             ->count();
     }
 
@@ -520,7 +520,7 @@ class EventsTable extends Table
                         ]);
                 },
             ])
-            ->orderAsc('Events.created')
+            ->orderByAsc('Events.created')
             ->where([
                 'OR' => [
                     function (QueryExpression $exp) {
@@ -563,7 +563,7 @@ class EventsTable extends Table
                         return $exp->isNotNull('date');
                     },
                 ])
-                ->orderAsc('date')
+                ->orderByAsc('date')
                 ->enableHydration(false);
 
             // Apply optional month/year limits
@@ -573,7 +573,7 @@ class EventsTable extends Table
 
             $dates = [];
             foreach ($query->all() as $result) {
-                /** @var FrozenDate $date */
+                /** @var \Cake\I18n\Date $date */
                 $date = $result['date'];
                 $dates[] = $date->format('Y-m-d');
             }
@@ -700,8 +700,8 @@ class EventsTable extends Table
         if (in_array($direction, ['upcoming', 'past'])) {
             $baseQuery->find($direction);
         }
-        $fieldsQuery = (clone $baseQuery)->find('search', ['search' => ['q' => $searchTerm]]);
-        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', ['tags' => [mb_strtolower($searchTerm)]]);
+        $fieldsQuery = (clone $baseQuery)->find('search', search: ['q' => $searchTerm]);
+        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', tags: [mb_strtolower($searchTerm)]);
 
         return $fieldsQuery->union($tagsQuery);
     }
@@ -721,7 +721,7 @@ class EventsTable extends Table
         }
 
         $timezone = Configure::read('localTimezone');
-        $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $defaultStartDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
         $startDate = $options['startDate'] ?? $defaultStartDate;
         $filters = $options['filters'];
         $datesPerPage = 7;
@@ -735,7 +735,7 @@ class EventsTable extends Table
         $query
             ->find('published')
             ->find('ordered')
-            ->find('filteredForWidget', ['filters' => $filters])
+            ->find('filteredForWidget', filters: $filters)
             ->select([
                 'id',
                 'title',
@@ -768,7 +768,7 @@ class EventsTable extends Table
     {
         $results = $this
             ->find('published')
-            ->find('filteredForWidget', ['filters' => $filters])
+            ->find('filteredForWidget', filters: $filters)
             ->select(['date'])
             ->distinct('date')
             ->where([
@@ -777,7 +777,7 @@ class EventsTable extends Table
                 },
             ])
             ->limit($limit)
-            ->orderAsc('date')
+            ->orderByAsc('date')
             ->toArray();
 
         return Hash::extract($results, '{n}.date');
@@ -869,7 +869,7 @@ class EventsTable extends Table
             ->find('inMonth', compact('year', 'month'))
             ->find('published')
             ->find('ordered')
-            ->find('filteredForWidget', ['filters' => $options['filters']])
+            ->find('filteredForWidget', filters: $options['filters'])
             ->select([
                 'id',
                 'title',
@@ -896,12 +896,12 @@ class EventsTable extends Table
     public function findUpcomingWeek(Query $query)
     {
         $timezone = Configure::read('localTimezone');
-        $startingDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
-        $endingDate = (new FrozenTime('now + 6 days', $timezone))->format('Y-m-d');
+        $startingDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
+        $endingDate = (new \Cake\I18n\DateTime('now + 6 days', $timezone))->format('Y-m-d');
 
         $query
-            ->find('startingOn', ['date' => $startingDate])
-            ->find('endingOn', ['date' => $endingDate]);
+            ->find('startingOn', date: $startingDate)
+            ->find('endingOn', date: $endingDate);
 
         return $query;
     }
@@ -918,7 +918,7 @@ class EventsTable extends Table
     public function findOn(Query $query, array $options)
     {
         return $query
-            ->find('startingOn', ['date' => $options['date']])
-            ->find('endingOn', ['date' => $options['date']]);
+            ->find('startingOn', date: $options['date'])
+            ->find('endingOn', date: $options['date']);
     }
 }

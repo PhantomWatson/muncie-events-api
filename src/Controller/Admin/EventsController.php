@@ -91,9 +91,7 @@ class EventsController extends AppController
                 $this->Flash->error("Cannot approve. Event with ID# $id not found.");
                 continue;
             }
-            $event = $this->Events->get($id, [
-                'contain' => 'EventSeries',
-            ]);
+            $event = $this->Events->get($id, contain: 'EventSeries');
             if ($event->series_id) {
                 $seriesToApprove[$event->series_id] = true;
             }

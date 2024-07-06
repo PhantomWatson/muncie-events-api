@@ -206,7 +206,7 @@ class MailingListTable extends Table
     public function getDailyRecipients(string $email = null, int $limit = 0): ResultSetInterface|array
     {
         $timezone = Configure::read('localTimezone');
-        $now = new FrozenTime('now', $timezone);
+        $now = new \Cake\I18n\DateTime('now', $timezone);
         $currentDate = $now->format('Y-m-d');
         $dayAbbrev = $now->format('D');
         $query = $this
@@ -282,7 +282,7 @@ class MailingListTable extends Table
     public function getWeeklyRecipients(?string $email = null, int $limit = 0): ResultSetInterface|array
     {
         $timezone = Configure::read('localTimezone');
-        $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $currentDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
         $query = $this
             ->find()
             ->where([

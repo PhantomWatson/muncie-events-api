@@ -18,7 +18,7 @@ use Cake\View\Helper;
  */
 class CalendarHelper extends Helper
 {
-    public $helpers = ['Html'];
+    public array $helpers = ['Html'];
 
     /**
      * Returns an array events, grouped by their date
@@ -66,7 +66,7 @@ class CalendarHelper extends Helper
         // If $events is arranged by date
         if (is_string(array_keys($events)[0])) {
             $dates = array_keys($events);
-            $lastDate = new Date(end($dates));
+            $lastDate = new \Cake\Chronos\ChronosDate(end($dates));
 
         // If $events is a flat array
         } else {
@@ -86,19 +86,19 @@ class CalendarHelper extends Helper
     public static function getDateHeader(string $date)
     {
         $timezone = Configure::read('localTimezone');
-        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
-        $tomorrow = (new FrozenTime('now + 1 day', $timezone))->format('Y-m-d');
+        $today = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
+        $tomorrow = (new \Cake\I18n\DateTime('now + 1 day', $timezone))->format('Y-m-d');
         $namedDates = [
             $today => 'Today',
             $tomorrow => 'Tomorrow',
         ];
-        $endOfWeek = (new FrozenTime('now + 6 days', $timezone))->format('Y-m-d');
+        $endOfWeek = (new \Cake\I18n\DateTime('now + 6 days', $timezone))->format('Y-m-d');
         $thisWeek = ($date >= $today && $date < $endOfWeek);
 
         if (isset($namedDates[$date])) {
             $day = $namedDates[$date];
         } else {
-            $day = ($thisWeek ? 'This ' : '') . (new FrozenTime($date, $timezone))->format('l');
+            $day = ($thisWeek ? 'This ' : '') . (new \Cake\I18n\DateTime($date, $timezone))->format('l');
         }
 
         $headerShortDate = sprintf(
@@ -250,13 +250,13 @@ class CalendarHelper extends Helper
      *
      * Reference: https://github.com/InteractionDesignFoundation/add-event-to-calendar-docs/blob/master/services/google.md
      *
-     * @param FrozenDate $date Event date
-     * @param FrozenTime $time Event start or end time
+     * @param \Cake\I18n\Date $date Event date
+     * @param \Cake\I18n\DateTime $time Event start or end time
      * @return string
      */
     public static function getDatetimeForGoogleCal($date, $time)
     {
-        $newTime = (new FrozenTime($time))
+        $newTime = (new \Cake\I18n\DateTime($time))
             ->setDate($date->year, $date->month, $date->day)
             ->setTimezone(Event::TIMEZONE);
 

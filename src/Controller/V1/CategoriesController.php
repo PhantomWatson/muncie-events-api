@@ -35,7 +35,7 @@ class CategoriesController extends ApiController
 
         $categories = $this->Categories
             ->find()
-            ->orderAsc('weight')
+            ->orderByAsc('weight')
             ->toArray();
 
         $this->set([

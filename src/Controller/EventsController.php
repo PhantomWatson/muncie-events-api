@@ -81,14 +81,14 @@ class EventsController extends AppController
     {
         $minEventCount = 30;
         $timezone = Configure::read('localTimezone');
-        $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $defaultStartDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
         $startDate = $startDate ?? $defaultStartDate;
 
         // Get minimum number of events
         $events = $this->Events
             ->find('ordered')
             ->find('published')
-            ->find('startingOn', ['date' => $startDate])
+            ->find('startingOn', date: $startDate)
             ->find('withAllAssociated')
             ->limit($minEventCount)
             ->all()
@@ -103,7 +103,7 @@ class EventsController extends AppController
             $moreEvents = $this->Events
                 ->find('ordered')
                 ->find('published')
-                ->find('on', ['date' => $lastDate->format('Y-m-d')])
+                ->find('on', date: $lastDate->format('Y-m-d'))
                 ->find('withAllAssociated')
                 ->where(function (QueryExpression $exp) use ($eventIds) {
                     return $exp->notIn('Events.id', $eventIds);
@@ -143,7 +143,7 @@ class EventsController extends AppController
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
-            ->find('inCategory', ['categoryId' => $category->id])
+            ->find('inCategory', categoryId: $category->id)
             ->toArray();
 
         $this->set([
@@ -188,9 +188,9 @@ class EventsController extends AppController
 
         $baseQuery = $this->Events
             ->find('published')
-            ->find('ordered', ['direction' => $direction == 'past' ? 'DESC' : 'ASC'])
+            ->find('ordered', direction: $direction == 'past' ? 'DESC' : 'ASC')
             ->find('withAllAssociated')
-            ->find('tagged', ['tags' => [$tag->name]]);
+            ->find('tagged', tags: [$tag->name]);
         $mainQuery = (clone $baseQuery)->find($direction);
         $oppositeDirection = Application::oppositeDirection($direction);
         $oppositeDirectionQuery = (clone $baseQuery)->find($oppositeDirection);
@@ -302,12 +302,12 @@ class EventsController extends AppController
              * The selected date(s) will be accessed in the view directly from the request object. */
             $dateDelimiter = '; ';
             $dates = explode($dateDelimiter, $this->request->getData('date'));
-            $data['date'] = new FrozenDate($dates[0]);
+            $data['date'] = new \Cake\I18n\Date($dates[0]);
 
             $timeStart = $this->request->getData('time_start');
             $timeEnd = $this->request->getData('time_end');
-            $data['time_start'] = $timeStart ? new FrozenTime($timeStart) : null;
-            $data['time_end'] = $timeEnd ? new FrozenTime($timeEnd) : null;
+            $data['time_start'] = $timeStart ? new \Cake\I18n\DateTime($timeStart) : null;
+            $data['time_end'] = $timeEnd ? new \Cake\I18n\DateTime($timeEnd) : null;
             $event = $this->Events->patchEntity($event, $data);
         }
 
@@ -441,13 +441,13 @@ class EventsController extends AppController
         $hasAges = (bool)$event->age_restriction;
         $hasSource = (bool)$event->source;
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
-        $categories = $categoriesTable->find('list')->orderAsc('weight');
+        $categories = $categoriesTable->find('list')->orderByAsc('weight');
         $autocompleteLocations = [];
         $locations = $this->Events
             ->find('published')
             ->select(['location', 'address', 'created'])
             ->distinct(['location', 'address', 'created'])
-            ->order([
+            ->orderBy([
                 'location' => 'ASC',
                 'created' => 'DESC',
             ])
@@ -514,9 +514,7 @@ class EventsController extends AppController
             throw new BadRequestException("Event with ID $eventId not found");
         }
 
-        $event = $this->Events->get($eventId, [
-            'contain' => ['Images', 'Tags', 'EventSeries'],
-        ]);
+        $event = $this->Events->get($eventId, contain: ['Images', 'Tags', 'EventSeries']);
 
         // Check user permission
         if (!$this->userCanEdit($event)) {
@@ -677,7 +675,7 @@ class EventsController extends AppController
             ->find('published')
             ->find('withAllAssociated')
             ->find('ordered')
-            ->find('atLocation', ['location_slug' => $locationSlug])
+            ->find('atLocation', location_slug: $locationSlug)
             ->find($direction);
         $count = $primaryQuery->count();
         $events = $this->paginate($primaryQuery)->toArray();
@@ -685,7 +683,7 @@ class EventsController extends AppController
         // For finding the count of results in the other (past/upcoming) direction
         $secondaryQuery = $this->Events
             ->find('published')
-            ->find('atLocation', ['location_slug' => $locationSlug])
+            ->find('atLocation', location_slug: $locationSlug)
             ->find(Application::oppositeDirection($direction));
         $countOtherDirection = $secondaryQuery->count();
 
@@ -718,7 +716,7 @@ class EventsController extends AppController
             ->find('past')
             ->select(['location', 'location_slug'])
             ->distinct(['location', 'location_slug'])
-            ->orderAsc('location')
+            ->orderByAsc('location')
             ->enableHydration(false)
             ->toArray();
         $count = count($locations);
@@ -758,7 +756,7 @@ class EventsController extends AppController
 
         if ($direction == 'all') {
             $timezone = Configure::read('localTimezone');
-            $currentDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+            $currentDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
             foreach ($events as $event) {
                 $key = $event->date->format('Y-m-d') >= $currentDate ? 'upcoming' : 'past';
                 $counts[$key]++;
@@ -788,7 +786,7 @@ class EventsController extends AppController
         $userId = $this->Auth->user('id');
         if ($userId) {
             $query = $this->Events
-                ->find('ordered', ['direction' => 'DESC'])
+                ->find('ordered', direction: 'DESC')
                 ->where(['user_id' => $this->Auth->user('id')]);
 
             $events = $this->paginate($query)->toArray();
@@ -827,7 +825,7 @@ class EventsController extends AppController
             ->find('ordered')
             ->where([
                 function (QueryExpression $exp) {
-                    return $exp->lte('date', (new FrozenTime('now + 1 year'))->format('Y-m-d'));
+                    return $exp->lte('date', (new \Cake\I18n\DateTime('now + 1 year'))->format('Y-m-d'));
                 },
             ]);
 
@@ -842,7 +840,7 @@ class EventsController extends AppController
             if (!$category) {
                 throw new BadRequestException('Invalid category: ' . $categorySlug);
             }
-            $query->find('inCategory', ['categoryId' => $category->id]);
+            $query->find('inCategory', categoryId: $category->id);
         }
 
         $events = $query->limit(1000)->all()->toArray();
@@ -863,7 +861,7 @@ class EventsController extends AppController
             ->Events
             ->Categories
             ->find()
-            ->orderAsc('weight')
+            ->orderByAsc('weight')
             ->all();
 
         $this->set([

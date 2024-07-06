@@ -148,7 +148,7 @@ class MailingListCommand extends Command
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
-            ->where(['date' => (new FrozenTime('now', $timezone))->format('Y-m-d')])
+            ->where(['date' => (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d')])
             ->toArray();
 
         $eventCount = count($events);
@@ -295,7 +295,7 @@ class MailingListCommand extends Command
     {
         $timezone = Configure::read('localTimezone');
 
-        return (new FrozenTime('now', $timezone))->format('l') == self::WEEKLY_DELIVERY_DAY;
+        return (new \Cake\I18n\DateTime('now', $timezone))->format('l') == self::WEEKLY_DELIVERY_DAY;
     }
 
     /**

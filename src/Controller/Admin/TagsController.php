@@ -90,7 +90,7 @@ class TagsController extends AppController
         // find all the nodes underneath the parent node defined above
         $nodes = $parentId
             ? $this->Tags
-                ->find('children', ['for' => $parentId, 'direct' => true])
+                ->find('children', for: $parentId, direct: true)
                 ->toArray()
             : $this->Tags
                 ->find()
@@ -202,7 +202,7 @@ class TagsController extends AppController
         if ($position == 0) {
             $this->Tags->moveUp($tag, true);
         } else {
-            $count = $this->Tags->find('children', ['for' => $parentId])->count();
+            $count = $this->Tags->find('children', for: $parentId)->count();
             $delta = $count - $position - 1;
             if ($delta > 0) {
                 $this->Tags->moveUp($tag, $delta);
@@ -466,7 +466,7 @@ class TagsController extends AppController
     public function emptyDeleteGroup()
     {
         $children = $this->Tags
-            ->find('children', ['for' => TagsTable::DELETE_GROUP_ID])
+            ->find('children', for: TagsTable::DELETE_GROUP_ID)
             ->all();
         foreach ($children as $child) {
             $this->Tags->delete($child);

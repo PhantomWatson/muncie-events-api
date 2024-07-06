@@ -77,7 +77,7 @@ class Widget
         if (isset($filters['category'])) {
             sort($filters['category']);
             $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
-            $categories = $categoriesTable->find()->select(['id'])->orderAsc('id')->toArray();
+            $categories = $categoriesTable->find()->select(['id'])->orderByAsc('id')->toArray();
             $allCategoryIds = Hash::extract($categories, '{n}.id');
             $excludedCategories = array_diff($allCategoryIds, $filters['category']);
             if (empty($excludedCategories)) {

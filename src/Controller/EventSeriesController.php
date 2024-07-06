@@ -104,7 +104,7 @@ class EventSeriesController extends AppController
                     $event['time_start']['minute'],
                     $event['time_start']['meridian']
                 );
-                $eventSeries->events[$x]->time_start = new FrozenTime(
+                $eventSeries->events[$x]->time_start = new \Cake\I18n\DateTime(
                     date('H:i', strtotime($timeString))
                 );
                 $eventSeries->events[$x]->title = $event['title'] ?: $eventSeries->events[$x]->title;

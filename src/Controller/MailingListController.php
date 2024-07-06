@@ -55,7 +55,7 @@ class MailingListController extends AppController
 
         // Get subscription entity
         if ($subscriberId) {
-            $subscription = $this->MailingList->get($subscriberId, ['contain' => ['Categories']]);
+            $subscription = $this->MailingList->get($subscriberId, contain: ['Categories']);
         } else {
             $subscription = $this->getCurrentUserSubscription();
         }

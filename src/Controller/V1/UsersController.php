@@ -23,7 +23,7 @@ class UsersController extends ApiController
 {
     use MailerAwareTrait;
 
-    public $paginate = [
+    public array $paginate = [
         'limit' => 50,
         'order' => [
             'Events.date' => 'desc',
@@ -227,7 +227,7 @@ class UsersController extends ApiController
         $images = $imagesTable
             ->find()
             ->where(['user_id' => $this->tokenUser->id])
-            ->orderDesc('created')
+            ->orderByDesc('created')
             ->all();
 
         $this->set([

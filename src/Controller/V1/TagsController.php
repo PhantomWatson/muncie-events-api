@@ -40,7 +40,7 @@ class TagsController extends ApiController
 
         $tags = $this->Tags
             ->find('threaded')
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
         $tags = $this->filterOutHiddenTags($tags);
 
@@ -154,7 +154,7 @@ class TagsController extends ApiController
                 'listed' => true,
                 'selectable' => true,
             ])
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
 
         $this->set([

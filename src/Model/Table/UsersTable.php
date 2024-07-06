@@ -286,7 +286,7 @@ class UsersTable extends Table
     {
         return $this->Images->find()
             ->where(['user_id' => $userId])
-            ->orderDesc('created')
+            ->orderByDesc('created')
             ->all();
     }
 
