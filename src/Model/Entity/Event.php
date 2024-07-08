@@ -17,32 +17,32 @@ use Sabre\VObject;
  *
  * @property int $id
  * @property string $title
- * @property string $description
+ * @property string|null $description
  * @property string $location
  * @property string $location_details
  * @property string $location_slug
  * @property string $address
- * @property int $user_id
+ * @property int|null $user_id
  * @property int $category_id
- * @property int $series_id
- * @property \Cake\I18n\Date $date
- * @property \Cake\I18n\DateTime $time_start
- * @property \Cake\I18n\DateTime|null $time_end
+ * @property int|null $series_id
+ * @property \Cake\I18n\Date|null $date
+ * @property \Cake\I18n\Time $time_start
+ * @property \Cake\I18n\Time|null $time_end
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
  * @property bool $published
- * @property int $approved_by
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property int|null $approved_by
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  * @property string $location_medium 'physical' or 'virtual'
  * @property string $description_plaintext
  *
- * @property User $user
- * @property Category $category
- * @property EventSeries $event_series
- * @property Image[] $images
- * @property Tag[] $tags
+ * @property \App\Model\Entity\User|null $user
+ * @property \App\Model\Entity\Category $category
+ * @property \App\Model\Entity\EventSeries|null $event_series
+ * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\Tag[] $tags
  */
 class Event extends Entity
 {

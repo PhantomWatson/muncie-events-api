@@ -11,21 +11,21 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $role
- * @property string $bio
+ * @property string|null $bio
  * @property string $email
  * @property string $password
- * @property int $mailing_list_id
- * @property int $facebook_id
+ * @property int|null $mailing_list_id
+ * @property int|null $facebook_id
  * @property string|null $api_key
  * @property string|null $token
  * @property string|null $reset_password_hash
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
- * @property EventSeries[] $event_series
- * @property Event[] $events
- * @property Image[] $images
- * @property Tag[] $tags
+ * @property \App\Model\Entity\EventSeries[] $event_series
+ * @property \App\Model\Entity\Event[] $events
+ * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\Tag[] $tags
  */
 class User extends Entity
 {

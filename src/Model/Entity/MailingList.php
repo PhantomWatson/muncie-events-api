@@ -19,15 +19,15 @@ use Cake\Utility\Security;
  * @property bool $daily_fri
  * @property bool $daily_sat
  * @property bool $new_subscriber
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  * @property \Cake\I18n\DateTime|null $processed_daily
  * @property \Cake\I18n\DateTime|null $processed_weekly
  * @property string $hash
  * @property bool $enabled
  *
- * @property User[] $users
- * @property Category[] $categories
+ * @property \App\Model\Entity\User[] $users
+ * @property \App\Model\Entity\Category[] $categories
  */
 class MailingList extends Entity
 {

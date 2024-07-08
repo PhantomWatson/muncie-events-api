@@ -10,15 +10,15 @@ use Cake\ORM\Entity;
  *
  * @property bool $is_flyer
  * @property EventsImage $_joinData
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int $id
  * @property int $user_id
  * @property string $caption
  * @property string $filename
  *
- * @property User $user
- * @property Event[] $events
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Event[] $events
  */
 class Image extends Entity
 {

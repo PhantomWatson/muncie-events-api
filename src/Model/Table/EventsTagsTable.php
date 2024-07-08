@@ -11,16 +11,22 @@ use Cake\Validation\Validator;
 /**
  * EventsTags Model
  *
- * @property EventsTable|BelongsTo $Events
- * @property TagsTable|BelongsTo $Tags
+ * @property \App\Model\Table\EventsTable&\Cake\ORM\Association\BelongsTo $Events
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
  *
- * @method EventsTag get($primaryKey, $options = [])
- * @method EventsTag newEntity($data = null, array $options = [])
- * @method EventsTag[] newEntities(array $data, array $options = [])
- * @method EventsTag|bool save(EntityInterface $entity, $options = [])
- * @method EventsTag patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method EventsTag[] patchEntities($entities, array $data, array $options = [])
- * @method EventsTag findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\EventsTag get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\EventsTag newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\EventsTag[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\EventsTag|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\EventsTag patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\EventsTag[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\EventsTag findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\EventsTag newEmptyEntity()
+ * @method \App\Model\Entity\EventsTag saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\EventsTag[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventsTag[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventsTag[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventsTag[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, array $options = [])
  */
 class EventsTagsTable extends Table
 {

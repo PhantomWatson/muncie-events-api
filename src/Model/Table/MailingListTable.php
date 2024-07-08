@@ -19,19 +19,25 @@ use Cake\Validation\Validator;
 /**
  * MailingList Model
  *
- * @property UsersTable|HasMany $Users
- * @property CategoriesTable|BelongsToMany $Categories
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsToMany $Categories
  *
- * @method MailingList get($primaryKey, $options = [])
- * @method MailingList newEntity($data = null, array $options = [])
- * @method MailingList[] newEntities(array $data, array $options = [])
- * @method MailingList|bool save(EntityInterface $entity, $options = [])
- * @method MailingList|bool saveOrFail(EntityInterface $entity, $options = [])
- * @method MailingList patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method MailingList[] patchEntities($entities, array $data, array $options = [])
- * @method MailingList findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\MailingList get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\MailingList newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\MailingList[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\MailingList|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\MailingList saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\MailingList patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\MailingList[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\MailingList findOrCreate($search, ?callable $callback = null, array $options = [])
  *
  * @mixin TimestampBehavior
+ * @method \App\Model\Entity\MailingList newEmptyEntity()
+ * @method \App\Model\Entity\MailingList[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\MailingList[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\MailingList[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\MailingList[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class MailingListTable extends Table
 {

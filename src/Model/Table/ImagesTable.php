@@ -15,18 +15,25 @@ use Cake\Validation\Validator;
 /**
  * Images Model
  *
- * @property UsersTable|BelongsTo $Users
- * @property EventsTable|BelongsToMany $Events
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\EventsTable&\Cake\ORM\Association\BelongsToMany $Events
  *
- * @method Image get($primaryKey, $options = [])
- * @method Image newEntity($data = null, array $options = [])
- * @method Image[] newEntities(array $data, array $options = [])
- * @method Image|bool save(EntityInterface $entity, $options = [])
- * @method Image patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Image[] patchEntities($entities, array $data, array $options = [])
- * @method Image findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Image get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Image newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Image|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Image patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Image[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Image findOrCreate($search, ?callable $callback = null, array $options = [])
  *
  * @mixin TimestampBehavior
+ * @method \App\Model\Entity\Image newEmptyEntity()
+ * @method \App\Model\Entity\Image saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ImagesTable extends Table
 {
