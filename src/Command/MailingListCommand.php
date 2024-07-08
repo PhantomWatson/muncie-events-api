@@ -12,7 +12,6 @@ use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 use Cake\Mailer\Exception\MissingActionException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;

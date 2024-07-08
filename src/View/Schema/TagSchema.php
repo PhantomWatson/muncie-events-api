@@ -2,7 +2,6 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\Tag;
-use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 

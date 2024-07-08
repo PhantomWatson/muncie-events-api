@@ -4,7 +4,6 @@ namespace App\View\Helper;
 use App\Model\Entity\Tag;
 use App\Model\Table\EventsTable;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\View\Helper;

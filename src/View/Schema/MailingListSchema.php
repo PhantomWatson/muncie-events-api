@@ -2,7 +2,6 @@
 namespace App\View\Schema;
 
 use App\Model\Entity\MailingList;
-use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;

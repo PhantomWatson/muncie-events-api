@@ -3,7 +3,6 @@ namespace App\View\Schema;
 
 use App\Model\Entity\EventSeries;
 use Cake\Core\Configure;
-use Cake\ORM\Entity;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 

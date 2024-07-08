@@ -8,8 +8,6 @@ use App\Model\Table\EventsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Exception;

@@ -3,7 +3,6 @@ namespace App\Model\Entity;
 
 use App\Auth\LegacyPasswordHasher;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**

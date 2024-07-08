@@ -8,7 +8,6 @@ use App\Model\Table\EventsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\I18n\FrozenTime;
 use Exception;
 
 /**

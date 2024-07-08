@@ -5,15 +5,12 @@ use App\Model\Entity\Image;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
-use Cake\Http\Exception\BadRequestException;
-use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Laminas\Diactoros\UploadedFile;
 
 /**
  * Images Model

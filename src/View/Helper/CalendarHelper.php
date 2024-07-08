@@ -4,8 +4,6 @@ namespace App\View\Helper;
 use App\Model\Entity\Event;
 use Cake\Chronos\Date;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\ResultSet;
 use Cake\Routing\Router;
 use Cake\Utility\Text;

@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\View\Helper\CalendarHelper;
 use App\Widget\Widget;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 
