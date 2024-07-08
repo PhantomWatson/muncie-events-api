@@ -26,7 +26,7 @@ use Recaptcha\Controller\Component\RecaptchaComponent;
 /**
  * Events Controller
  *
- * @property EventsTable $Events
+ * @property \App\Model\Table\EventsTable $Events
  * @property TagsTable $Tags
  * @property RecaptchaComponent $Recaptcha
  *

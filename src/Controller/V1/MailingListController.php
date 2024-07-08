@@ -14,7 +14,7 @@ use Exception;
 /**
  * Class MailingListController
  * @package App\Controller\V1
- * @property MailingListTable $MailingList
+ * @property \App\Model\Table\MailingListTable $MailingList
  */
 class MailingListController extends ApiController
 {

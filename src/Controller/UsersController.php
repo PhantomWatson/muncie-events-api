@@ -12,7 +12,7 @@ use Recaptcha\Controller\Component\RecaptchaComponent;
 /**
  * Class UsersController
  * @package App\Controller
- * @property UsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  * @property RecaptchaComponent $Recaptcha
  */
 class UsersController extends AppController

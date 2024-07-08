@@ -13,7 +13,7 @@ use Exception;
 /**
  * Class TagsController
  * @package App\Controller\V1
- * @property TagsTable $Tags
+ * @property \App\Model\Table\TagsTable $Tags
  */
 class TagsController extends ApiController
 {

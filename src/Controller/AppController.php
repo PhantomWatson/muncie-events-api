@@ -15,7 +15,7 @@ use Exception;
  * Class AppController
  *
  * @package App\Controller
- * @property EventsTable $Events
+ * @property \App\Model\Table\EventsTable $Events
  */
 class AppController extends Controller
 {

@@ -14,7 +14,7 @@ use Exception;
  *
  * @property CategoriesTable $Categories
  * @property EventsTable $Events
- * @property TagsTable $Tags
+ * @property \App\Model\Table\TagsTable $Tags
  */
 class TagsController extends AppController
 {

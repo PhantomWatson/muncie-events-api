@@ -17,7 +17,7 @@ use Exception;
 /**
  * Class UsersController
  * @package App\Controller
- * @property UsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  */
 class UsersController extends ApiController
 {

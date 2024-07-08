@@ -9,7 +9,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 /**
  * Class ImagesController
  * @package App\Controller
- * @property ImagesTable $Images
+ * @property \App\Model\Table\ImagesTable $Images
  */
 class ImagesController extends ApiController
 {
