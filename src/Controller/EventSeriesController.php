@@ -29,7 +29,7 @@ class EventSeriesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow(['view']);
+        $this->Authentication->allowUnauthenticated(['view']);
     }
 
     /**
@@ -40,9 +40,7 @@ class EventSeriesController extends AppController
      */
     public function isAuthorized($user = null)
     {
-        // Grant access if this user is an admin
-        $role = $user['role'] ?? null;
-        if ($role == 'admin') {
+        if ($this->isAdmin()) {
             return true;
         }
 
@@ -166,8 +164,8 @@ class EventSeriesController extends AppController
         }
 
         $canEdit = (
-            $this->Auth->user('role') == 'admin'
-            || $this->Auth->user('id') == $eventSeries->user_id
+            $this->isAdmin()
+            || $this->isUser($eventSeries->user_id)
         );
 
         $this->set([

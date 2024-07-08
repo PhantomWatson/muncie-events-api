@@ -26,7 +26,6 @@ class TagsController extends ApiController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow();
     }
 
     /**

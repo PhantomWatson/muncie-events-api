@@ -36,8 +36,6 @@ class PagesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->Auth->allow();
     }
 
     /**

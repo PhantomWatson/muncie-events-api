@@ -25,8 +25,6 @@ class EventsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
-        $this->Auth->deny();
     }
 
     /**
@@ -98,7 +96,7 @@ class EventsController extends AppController
             }
 
             // Approve & publish it
-            $event->approved_by = $this->Auth->user('id');
+            $event->approved_by = $this->getAuthUser()?->id;
             $event->published = true;
 
             if ($this->Events->save($event)) {

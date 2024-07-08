@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Event\ApiCallsListener;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
+use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -14,6 +15,9 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Exception;
 
+/**
+ * @property AuthenticationComponent $Authentication
+ */
 class ApiController extends Controller
 {
     /**
@@ -53,7 +57,6 @@ class ApiController extends Controller
                 'authorize' => 'Controller',
             ]
         );
-        $this->Auth->deny();
 
         $apiCallsListener = new ApiCallsListener();
         EventManager::instance()->on($apiCallsListener);
@@ -123,7 +126,7 @@ class ApiController extends Controller
 
         $event = new Event('apiCall', $this, ['meta' => [
             'url' => $this->request->getRequestTarget(),
-            'userId' => $this->Auth->user('id'),
+            'userId' => $this->getAuthUser()?->id,
         ]]);
         $this->getEventManager()->dispatch($event);
     }
@@ -194,5 +197,13 @@ class ApiController extends Controller
             default:
                 return false;
         }
+    }
+
+    /**
+     * @return array|\ArrayAccess|null|User
+     */
+    protected function getAuthUser()
+    {
+        return $this->Authentication->getIdentity()?->getOriginalData();
     }
 }

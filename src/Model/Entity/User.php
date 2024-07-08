@@ -2,6 +2,7 @@
 namespace App\Model\Entity;
 
 use App\Auth\LegacyPasswordHasher;
+use Authentication\IdentityInterface;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
@@ -27,7 +28,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Tag[] $tags
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface
 {
 
     /**
@@ -123,5 +124,21 @@ class User extends Entity
         $month = (new \Cake\I18n\DateTime('now', $timezone))->format('my');
 
         return md5($this->id . $this->email . $salt . $month);
+    }
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getIdentifier(): int|array|string|null
+    {
+        return $this->id;
+    }
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getOriginalData(): \ArrayAccess|array
+    {
+        return $this;
     }
 }

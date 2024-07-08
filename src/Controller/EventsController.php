@@ -43,7 +43,8 @@ class EventsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow([
+
+        $this->Authentication->allowUnauthenticated([
             'add',
             'category',
             'day',
@@ -340,14 +341,15 @@ class EventsController extends AppController
                 'time_end' => null,
             ];
         try {
+            $user = $this->getAuthUser();
             foreach ($dates as $date) {
-                $addedEvents[] = $eventForm->addSingleEvent($data, $date, $this->Auth->user());
+                $addedEvents[] = $eventForm->addSingleEvent($data, $date, $user);
             }
 
             // Associate events with a series, if applicable
             if (count($dates) > 1) {
                 $seriesTitle = $this->request->getData('event_series.title');
-                $addedEvents = $eventForm->addEventSeries($addedEvents, $seriesTitle, $this->Auth->user());
+                $addedEvents = $eventForm->addEventSeries($addedEvents, $seriesTitle, $this->getAuthUser());
             }
         } catch (BadRequestException $e) {
             $errors = $eventForm->getErrors();
@@ -416,7 +418,7 @@ class EventsController extends AppController
          * @var UsersTable $usersTable
          */
         $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $userId = $this->Auth->user('id');
+        $userId = $this->getAuthUser()?->id;
         $autoPublish = $usersTable->getAutoPublish($userId);
         $action = $this->request->getParam('action');
         $multipleDatesAllowed = in_array($action, ['add', 'editSeries']);
@@ -494,7 +496,7 @@ class EventsController extends AppController
      */
     private function passedBotDetection()
     {
-        return php_sapi_name() == 'cli' || $this->Auth->user() || $this->Recaptcha->verify();
+        return php_sapi_name() == 'cli' || $this->isLoggedIn() || $this->Recaptcha->verify();
     }
 
     /**
@@ -538,7 +540,7 @@ class EventsController extends AppController
         }
 
         $event = $this->Events->patchEntity($event, $data);
-        $user = $this->Auth->user();
+        $user = $this->getAuthUser();
         $event->autoApprove($user);
         $event->autoPublish($user);
         $tagIds = $data['tags']['_ids'] ?? [];
@@ -572,17 +574,17 @@ class EventsController extends AppController
     private function userCanEdit(Event $event)
     {
         // Anonymous users may not edit
-        if (!$this->Auth->user()) {
+        if (!$this->isLoggedIn()) {
             return false;
         }
 
         // An event's author may edit
-        if ($event->user_id == $this->Auth->user('id')) {
+        if ($this->isUser($event->user_id)) {
             return true;
         }
 
         // Any admin may edit
-        return $this->Auth->user('role') == 'admin';
+        return $this->isAdmin();
     }
 
     /**
@@ -781,11 +783,11 @@ class EventsController extends AppController
      */
     public function mine()
     {
-        $userId = $this->Auth->user('id');
+        $userId = $this->getAuthUser()->id;
         if ($userId) {
             $query = $this->Events
                 ->find('ordered', direction: 'DESC')
-                ->where(['user_id' => $this->Auth->user('id')]);
+                ->where(['user_id' => $userId]);
 
             $events = $this->paginate($query)->toArray();
         } else {

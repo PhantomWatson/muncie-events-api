@@ -3,10 +3,10 @@ namespace App\Controller;
 
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
+use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\ORM\Table;
 use Exception;
@@ -16,6 +16,8 @@ use Exception;
  *
  * @package App\Controller
  * @property \App\Model\Table\EventsTable $Events
+ *
+ * @property AuthenticationComponent $Authentication
  */
 class AppController extends Controller
 {
@@ -35,45 +37,6 @@ class AppController extends Controller
         $this->Events = $this->fetchTable('Events');
 
         $this->loadComponent('Flash');
-        $this->loadComponent(
-            'Auth',
-            [
-                'loginAction' => [
-                    'prefix' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                ],
-                'logoutRedirect' => [
-                    'prefix' => false,
-                    'controller' => 'Events',
-                    'action' => 'index',
-                ],
-                'authenticate' => [
-                    'Form' => [
-                        'fields' => [
-                            'username' => 'email',
-                            'password' => 'password',
-                        ],
-                        'passwordHasher' => [
-                            'className' => 'Fallback',
-                            'hashers' => [
-                                'Default',
-                                'Weak' => ['hashType' => 'sha1'],
-                            ],
-                        ],
-                    ],
-                    'Cookie' => [
-                        'fields' => [
-                            'username' => 'email',
-                            'password' => 'password',
-                        ],
-                    ],
-                ],
-                'authError' => 'You are not authorized to view this page',
-                'authorize' => 'Controller',
-            ]
-        );
-        $this->Auth->deny();
     }
 
     /**
@@ -117,20 +80,6 @@ class AppController extends Controller
             );
         }
 
-        if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-            } else {
-                $this->response = $this->response->withExpiredCookie(new Cookie('CookieAuth'));
-            }
-        }
-
-        // Replace "You are not authorized" error message with login prompt message if user is not logged in
-        if (!$this->Auth->user()) {
-            $this->Auth->setConfig('authError', 'You\'ll need to log in before accessing that page');
-        }
-
         return null;
     }
 
@@ -146,9 +95,10 @@ class AppController extends Controller
             $this->viewBuilder()->setClassName('Ajax');
         }
 
+        $user = $this->getAuthUser();
         $this->set([
-            'authUser' => $this->Auth->user(),
-            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
+            'authUser' => $user,
+            'unapprovedCount' => $user ? $this->Events->getUnapprovedCount() : 0,
         ]);
     }
 
@@ -226,5 +176,28 @@ class AppController extends Controller
             default:
                 return false;
         }
+    }
+
+    /**
+     * @return array|\ArrayAccess|null|User
+     */
+    protected function getAuthUser()
+    {
+        return $this->Authentication->getIdentity()?->getOriginalData();
+    }
+
+    protected function isLoggedIn(): bool
+    {
+        return (bool)$this->Authentication->getIdentity();
+    }
+
+    protected function isAdmin(): bool
+    {
+        return $this->getAuthUser()?->role == 'admin';
+    }
+
+    protected function isUser(int $userId): bool
+    {
+        return $this->getAuthUser()?->id == $userId;
     }
 }

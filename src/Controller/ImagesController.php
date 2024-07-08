@@ -67,7 +67,7 @@ class ImagesController extends AppController
         }
 
         try {
-            $image = (new ImageUploader())->processUpload($this->Auth->user('id'), $file);
+            $image = (new ImageUploader())->processUpload($this->getAuthUser()->id, $file);
 
             $retval = $image->id;
         } catch (BadRequestException $e) {

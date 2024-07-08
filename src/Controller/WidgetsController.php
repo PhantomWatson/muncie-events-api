@@ -25,7 +25,7 @@ class WidgetsController extends AppController
     {
         parent::initialize();
 
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'customize',
             'customizeFeed',
             'customizeMonth',
