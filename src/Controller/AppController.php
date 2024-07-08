@@ -34,9 +34,6 @@ class AppController extends Controller
         // Make $this->Events available for all controllers
         $this->Events = $this->fetchTable('Events');
 
-        $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false,
-        ]);
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Auth',
@@ -145,6 +142,10 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->setClassName('Ajax');
+        }
+
         $this->set([
             'authUser' => $this->Auth->user(),
             'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,

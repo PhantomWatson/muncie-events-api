@@ -37,9 +37,6 @@ class ApiController extends Controller
 
         Configure::write('App.fullBaseUrl', 'https://api.muncieevents.com/');
 
-        $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false,
-        ]);
         if (!$this->request->is('ssl')) {
             throw new BadRequestException('API calls must be made with HTTPS protocol');
         }
