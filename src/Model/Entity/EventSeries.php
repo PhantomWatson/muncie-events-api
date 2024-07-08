@@ -9,13 +9,13 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $title
- * @property int $user_id
+ * @property int|null $user_id
  * @property bool $published
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
- * @property User $user
- * @property Event[] $events
+ * @property \App\Model\Entity\User|null $user
+ * @property \App\Model\Entity\Event[] $events
  * @property Event[] $pastEvents
  * @property Event[] $upcomingEvents
  */

@@ -13,17 +13,25 @@ use Cake\Validation\Validator;
 /**
  * EventSeries Model
  *
- * @property UsersTable|BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  *
- * @method EventSeries get($primaryKey, $options = [])
- * @method EventSeries newEntity($data = null, array $options = [])
- * @method EventSeries[] newEntities(array $data, array $options = [])
- * @method EventSeries|bool save(EntityInterface $entity, $options = [])
- * @method EventSeries patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method EventSeries[] patchEntities($entities, array $data, array $options = [])
- * @method EventSeries findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\EventSeries get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\EventSeries newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\EventSeries[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\EventSeries|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\EventSeries patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\EventSeries[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\EventSeries findOrCreate($search, ?callable $callback = null, array $options = [])
  *
  * @mixin TimestampBehavior
+ * @property \App\Model\Table\EventsTable&\Cake\ORM\Association\HasMany $Events
+ * @method \App\Model\Entity\EventSeries newEmptyEntity()
+ * @method \App\Model\Entity\EventSeries saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\EventSeries[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventSeries[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventSeries[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\EventSeries[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class EventSeriesTable extends Table
 {

@@ -12,7 +12,9 @@ use Cake\Routing\Router;
  * @property string $slug
  * @property int $weight
  *
- * @property Event[] $events
+ * @property \App\Model\Entity\Event[] $events
+ * @property string $url
+ * @property \App\Model\Entity\MailingList[] $mailing_list
  */
 class Category extends Entity
 {

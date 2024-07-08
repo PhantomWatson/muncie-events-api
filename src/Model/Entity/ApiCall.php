@@ -9,9 +9,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property string $url
- * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime|null $created
  *
- * @property User $user
+ * @property \App\Model\Entity\User $user
  */
 class ApiCall extends Entity
 {
