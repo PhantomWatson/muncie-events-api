@@ -27,8 +27,10 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
             __n('event', 'events', $count)
         ),
         [
-            'q' => $searchTerm,
-            'direction' => $dir,
+            '?' => [
+                'q' => $searchTerm,
+                'direction' => $dir,
+            ]
         ]
     );
 }
