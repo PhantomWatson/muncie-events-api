@@ -30,7 +30,8 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
             '?' => [
                 'q' => $searchTerm,
                 'direction' => $dir,
-            ]
+            ],
+            'prefix' => false
         ]
     );
 }

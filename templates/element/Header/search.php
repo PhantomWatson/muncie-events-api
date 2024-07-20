@@ -6,7 +6,7 @@ $this->Html->scriptBlock('setupSearch();', ['block' => true]);
 ?>
 <img src="/img/loading_small_dark.gif" id="search_autocomplete_loading" alt="Loading..."/>
 <form class="form-inline my-2 my-lg-0" id="EventSearchForm" method="get"
-      action="<?= Router::url(['controller' => 'Events', 'action' => 'search']) ?>">
+      action="<?= Router::url(['controller' => 'Events', 'action' => 'search', 'prefix' => false]) ?>">
     <div class="input-group">
         <input class="form-control mr-2 my-2 my-sm-0" type="search" placeholder="Search events"
                aria-label="Search events" name="q" id="header-search" required="required"/>
