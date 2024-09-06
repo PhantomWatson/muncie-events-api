@@ -10,9 +10,9 @@ use App\View\AppView;
 use App\View\Helper\CalendarHelper;
 
 $isAdmin = isset($authUser['role']) && $authUser['role'] == 'admin';
-$isAuthor = isset($authUser['id']) && $authUser['id'] == $event->user_id;
+$isAuthor = $event->user_id && ($authUser['id'] ?? null == $event->user_id);
 $isApproved = (bool)$event->approved_by;
-$canEdit = isset($authUser['id']) && $authUser['id'] && ($isAdmin || $isAuthor);
+$canEdit = $isAdmin || $isAuthor;
 $widget = $widget ?? false;
 $dropdownMenuClasses = 'dropdown-menu';
 if ($widget) {
