@@ -9,6 +9,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Exception;
+use GdImage;
 use Laminas\Diactoros\UploadedFile;
 
 class ImageUploader
@@ -338,41 +339,65 @@ class ImageUploader
         }
 
         $imageType = $imageParams[2];
-        return $this->resize($imageType, $outputFile, $newWidth, $newHeight, $quality);
+        return $this->resize($outputFile, $newWidth, $newHeight, $quality);
     }
 
-    private function resize(int $imageType, string $outputFile, int $scaledWidth, int $scaledHeight, int $quality): bool
+    /**
+     * Returns a GdImage object for the current sourceFile
+     *
+     * @return GdImage|false
+     */
+    private function getGdImage(): GdImage|false
     {
-        $config = match ($imageType) {
-            IMAGETYPE_GIF => [
-                'createFn' => function () {
-                    return imagecreatefromgif($this->sourceFile);
-                },
-                'outputFn' => function ($tmpImage, $outputFile) {
-                    return imagegif($tmpImage, $outputFile);
-                }
-            ],
-            IMAGETYPE_PNG => [
-                'createFn' => function () {
-                    return imagecreatefrompng($this->sourceFile);
-                },
-                'outputFn' => function ($tmpImage, $outputFile) use ($quality) {
-                    imagesavealpha($tmpImage, true);
-                    $compression = $this->getPngCompression($quality);
-                    return imagepng($tmpImage, $outputFile, $compression);
-                }
-            ],
-            default => [
-                'createFn' => function () {
-                    return imagecreatefromjpeg($this->sourceFile);
-                },
-                'outputFn' => function ($tmpImage, $outputFile) use ($quality) {
-                    return imagejpeg($tmpImage, $outputFile, $quality);
-                }
-            ],
+        $imageParams = getimagesize($this->sourceFile);
+        if (!$imageParams) {
+            throw new BadRequestException('File is not a valid image: ' . $this->sourceFile);
+        }
+
+        $imageType = $imageParams[2];
+
+        return match ($imageType) {
+            IMAGETYPE_GIF => imagecreatefromgif($this->sourceFile),
+            IMAGETYPE_PNG => imagecreatefrompng($this->sourceFile),
+            default => imagecreatefromjpeg($this->sourceFile),
+        };
+    }
+
+    /**
+     * @param GdImage $tmpImage
+     * @param string $outputFile
+     * @param int $quality
+     * @return bool
+     */
+    private function saveImage(GdImage $tmpImage, string $outputFile, $quality = -1): bool
+    {
+        $imageParams = getimagesize($this->sourceFile);
+        if (!$imageParams) {
+            throw new BadRequestException('File is not a valid image: ' . $this->sourceFile);
+        }
+
+        $imageType = $imageParams[2];
+
+        $saveFunction = match ($imageType) {
+            IMAGETYPE_GIF => function ($tmpImage, $outputFile) {
+                return imagegif($tmpImage, $outputFile);
+            },
+            IMAGETYPE_PNG => function ($tmpImage, $outputFile) use ($quality) {
+                imagesavealpha($tmpImage, true);
+                $compression = $this->getPngCompression($quality);
+                return imagepng($tmpImage, $outputFile, $compression);
+            },
+            default => function ($tmpImage, $outputFile) use ($quality) {
+                return imagejpeg($tmpImage, $outputFile, $quality);
+            },
         };
 
-        $sourceImage = $config['createFn']();
+        return $saveFunction($tmpImage, $outputFile);
+    }
+
+    private function resize(string $outputFile, int $scaledWidth, int $scaledHeight, int $quality): bool
+    {
+        $sourceImage = $this->getGdImage();
         if (!$sourceImage) {
             throw new InternalErrorException('There was an error with your image (createFn failed)');
         }
@@ -399,7 +424,7 @@ class ImageUploader
             throw new InternalErrorException('There was an error with your image (imagecopyresampled() failed)');
         }
 
-        $saveResult = $config['outputFn']($tmpImage, $outputFile);
+        $saveResult = $this->saveImage($tmpImage, $outputFile, $quality);
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (outputFn failed)');
         }
