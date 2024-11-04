@@ -12,6 +12,7 @@
         "cakephp/plugin-installer": "^1.0",
         "dereuromark/cakephp-calendar": "^1.4",
         "ext-curl": "*",
+        "ext-exif": "*",
         "ext-gd": "*",
         "ext-json": "*",
         "friendsofcake/search": "^6.2",

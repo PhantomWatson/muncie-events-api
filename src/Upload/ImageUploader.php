@@ -60,6 +60,7 @@ class ImageUploader
 
         try {
             $this->moveUploadedImage($fileInfo);
+            $this->rotateImage();
             $this->resizeOriginal();
             $this->createSmall();
             $this->createTiny();
@@ -338,7 +339,6 @@ class ImageUploader
             $newHeight = $newHeight ?? floor($newWidth * $originalHeight / $originalWidth);
         }
 
-        $imageType = $imageParams[2];
         return $this->resize($outputFile, $newWidth, $newHeight, $quality);
     }
 
@@ -452,5 +452,22 @@ class ImageUploader
         $result = 10 - floor($quality / 10);
 
         return (int)min(9, $result);
+    }
+
+    /**
+     * Rotates an image based on its Orientation metadata
+     *
+     * @return bool
+     */
+    private function rotateImage(): bool
+    {
+        $exif = exif_read_data($this->sourceFile);
+        $angle = match ($exif['Orientation']) {
+            3 => 180,
+            6 => 90,
+            8 => -90
+        };
+        $rotatedImage = imagerotate($this->getGdImage(), $angle, 0);
+        return $this->saveImage($rotatedImage, $this->sourceFile, self::QUALITY_FULL);
     }
 }
