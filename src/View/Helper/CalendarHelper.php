@@ -18,7 +18,6 @@ use Cake\View\Helper;
  */
 class CalendarHelper extends Helper
 {
-    public $helpers = ['Html'];
 
     /**
      * Returns an array events, grouped by their date

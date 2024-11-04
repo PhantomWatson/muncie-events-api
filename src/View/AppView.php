@@ -49,6 +49,7 @@ class AppView extends View
         $this->loadHelper('Calendar');
         $this->loadHelper('Form', ['templates' => 'bootstrap_form']);
         $this->loadHelper('Nav');
+        $this->loadHelper('Html');
 
         $controller = $this->request->getParam('controller');
         $action = $this->request->getParam('action');

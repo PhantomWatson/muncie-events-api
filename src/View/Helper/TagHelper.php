@@ -13,7 +13,6 @@ use Cake\View\Helper\HtmlHelper;
  */
 class TagHelper extends Helper
 {
-    public $helpers = ['Html'];
 
     /**
      * Buffers JS that pre-selects tags in the event form

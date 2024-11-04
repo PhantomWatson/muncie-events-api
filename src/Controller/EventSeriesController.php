@@ -19,7 +19,6 @@ use Exception;
  */
 class EventSeriesController extends AppController
 {
-    public $helpers = ['Html'];
 
     /**
      * Initialization hook method.
