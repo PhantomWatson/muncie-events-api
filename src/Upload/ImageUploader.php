@@ -6,6 +6,7 @@ use App\Model\Entity\Image;
 use App\Model\Table\ImagesTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Log\Log;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -461,6 +462,11 @@ class ImageUploader
      */
     private function rotateImage(): bool
     {
+        if (!function_exists('exif_read_data')) {
+            Log::error('exif_read_data() not supported');
+            return true;
+        }
+
         $exif = exif_read_data($this->sourceFile);
         $angle = match ($exif['Orientation']) {
             3 => 180,
