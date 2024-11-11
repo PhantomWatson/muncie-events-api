@@ -467,13 +467,17 @@ class ImageUploader
             return true;
         }
 
-        $exif = exif_read_data($this->sourceFile);
-        $angle = match ($exif['Orientation']) {
-            3 => 180,
-            6 => -90,
-            8 => 90
-        };
-        $rotatedImage = imagerotate($this->getGdImage(), $angle, 0);
-        return $this->saveImage($rotatedImage, $this->sourceFile, self::QUALITY_FULL);
+        $exif = @exif_read_data($this->sourceFile);
+        if ($exif && isset($exif['Orientation'])) {
+            $angle = match ($exif['Orientation']) {
+                3 => 180,
+                6 => -90,
+                8 => 90
+            };
+            $rotatedImage = imagerotate($this->getGdImage(), $angle, 0);
+            return $this->saveImage($rotatedImage, $this->sourceFile, self::QUALITY_FULL);
+        }
+
+        return true;
     }
 }
