@@ -18,13 +18,14 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     bz2 \
     curl \
     dom \
+    exif \
     fileinfo \
     gd \
     intl \
     mbstring \
     mysqlnd \
-    pdo_mysql \
     pdo \
+    pdo_mysql \
     simplexml \
     zip
 
