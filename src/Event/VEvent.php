@@ -16,7 +16,7 @@ class VEvent
         $retval = [
             'CATEGORIES' => $event->category->name,
             'COMMENT' => $event->source ? "Info source: $event->source" : null,
-            'CONTACT' => $event->user->email,
+            'CONTACT' => $event->user->email ?? null,
             "DTSTART;TZID=$tz" => Event::getDatetimeForIcal($event->date, $event->time_start),
             'DESCRIPTION' => $event->description_plaintext,
             'LOCATION' => sprintf(
