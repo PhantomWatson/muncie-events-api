@@ -472,8 +472,12 @@ class ImageUploader
             $angle = match ($exif['Orientation']) {
                 3 => 180,
                 6 => -90,
-                8 => 90
+                8 => 90,
+                default => 0,
             };
+            if (!$angle) {
+                return true;
+            }
             $rotatedImage = imagerotate($this->getGdImage(), $angle, 0);
             return $this->saveImage($rotatedImage, $this->sourceFile, self::QUALITY_FULL);
         }
