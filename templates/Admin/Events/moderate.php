@@ -179,6 +179,7 @@ $displayedEventFields = [
                                     <?= $this->Html->link(
                                         $event->user['name'],
                                         [
+                                            'prefix' => false,
                                             'controller' => 'Users',
                                             'action' => 'view',
                                             'id' => $event->user_id,
