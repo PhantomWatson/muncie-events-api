@@ -17,7 +17,7 @@ class VEvent
             'CATEGORIES' => $event->category->name,
             'COMMENT' => $event->source ? "Info source: $event->source" : null,
             'CONTACT' => $event->user->email ?? null,
-            "DTSTART;TZID=$tz" => Event::getDatetimeForIcal($event->date, $event->time_start),
+            "DTSTART;TZID=$tz" => $event->ical_time_start,
             'DESCRIPTION' => $event->description_plaintext,
             'LOCATION' => sprintf(
                 '%s%s%s',
@@ -35,8 +35,8 @@ class VEvent
             ], true),
         ];
 
-        if ($event->time_end) {
-            $retval["DTEND;TZID=$tz"] = Event::getDatetimeForIcal($event->date, $event->time_end);
+        if ($event->ical_time_end) {
+            $retval["DTEND;TZID=$tz"] = $event->ical_time_end;
         }
 
         return $retval;

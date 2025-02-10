@@ -227,14 +227,9 @@ class CalendarHelper extends Helper
             $address
         );
 
-        $startTimeString = self::getDatetimeForGoogleCal($event->date, $event->time_start);
-        $endTimeString = $event->time_end
-            ? self::getDatetimeForGoogleCal($event->date, $event->time_end)
-            : $startTimeString;
-
         return 'https://calendar.google.com/calendar/render?action=TEMPLATE' .
             '&text=' . urlencode($event['title']) .
-            '&dates=' . sprintf('%s/%s', $startTimeString, $endTimeString) .
+            '&dates=' . $event->google_cal_time_start . '/' . $event->google_cal_time_end .
             '&ctz=America/New_York' .
             '&details=' . urlencode($description) .
             '&location=' . urlencode($location) .

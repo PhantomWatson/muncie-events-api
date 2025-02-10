@@ -39,6 +39,10 @@ use Sabre\VObject;
  * @property FrozenTime $modified
  * @property string $location_medium 'physical' or 'virtual'
  * @property string $description_plaintext
+ * @property string $ical_time_start
+ * @property string $ical_time_end
+ * @property string $google_cal_time_start
+ * @property string $google_cal_time_end
  *
  * @property User $user
  * @property Category $category
@@ -142,23 +146,6 @@ class Event extends Entity
     }
 
     /**
-     * Returns a full RFC 3339 string with the correct timezone offset, year, month, and day
-     *
-     * e.g. "2019-12-06T10:00:00+05:00".
-     *
-     * @param FrozenDate $date Date object
-     * @param FrozenTime|null $localTime Time object
-     * @return string|null
-     * @throws Exception
-     */
-    public static function getDatetime($date, $localTime)
-    {
-        $correctedTime = self::getCorrectedTime($date, $localTime);
-
-        return $correctedTime ? $correctedTime->toRfc3339String() : null;
-    }
-
-    /**
      * Returns a Time object with correct UTC offset representing the provided time
      *
      * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
@@ -197,20 +184,27 @@ class Event extends Entity
     }
 
     /**
-     * Returns a full local-time ISO 8601 string without offset info (because that's specified in a TZID property)
+     * Returns start time in format expected by iCal
      *
-     * @param $date
-     * @param $localTime
-     * @return string|null
-     * @throws \Exception
+     * Note that this is expected to be in local time, with timezone info specified separately from this return value
+     *
+     * @return string
      */
-    public static function getDatetimeForIcal($date, $localTime) {
-        $correctedTime = self::getCorrectedTime($date, $localTime);
-        if (!$correctedTime) {
-            return null;
-        }
+    protected function _getIcalTimeStart()
+    {
+        return $this->time_start->format('Ymd\THis');
+    }
 
-        return $correctedTime->format('Ymd\THis');
+    /**
+     * Returns end time in format expected by iCal
+     *
+     * Note that this is expected to be in local time, with timezone info specified separately from this return value
+     *
+     * @return string
+     */
+    protected function _getIcalTimeEnd()
+    {
+        return $this->time_end?->format('Ymd\THis');
     }
 
 
@@ -518,7 +512,13 @@ class Event extends Entity
      */
     protected function _getTimeStart($timeStart): FrozenTime
     {
-        return new FrozenTime($timeStart);
+        $time = explode(':', $timeStart);
+        return (new FrozenTime())
+            ->setTimezone(self::TIMEZONE)
+            ->setTime($time[0], $time[1])
+            ->day($this->date->day)
+            ->month($this->date->month)
+            ->year($this->date->year);
     }
 
     /**
@@ -526,9 +526,47 @@ class Event extends Entity
      *
      * @param string $timeEnd
      * @return FrozenTime|null
+     * @throws \DateMalformedStringException
      */
     protected function _getTimeEnd($timeEnd): ?FrozenTime
     {
-        return $timeEnd ? new FrozenTime($timeEnd) : null;
+        $time = explode(':', $timeEnd);
+        $datetime = $timeEnd
+            ? (new FrozenTime())
+                ->setTimezone(self::TIMEZONE)
+                ->setTime($time[0], $time[1])
+                ->day($this->date->day)
+                ->month($this->date->month)
+                ->year($this->date->year)
+            : null;
+        if ($datetime && $datetime < $this->time_start) {
+            $datetime->modify('+1 day');
+        }
+        return $datetime;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getGoogleCalTimeStart()
+    {
+        return sprintf(
+            '%sT%s',
+            $this->time_start->i18nFormat('yyyyMMdd'),
+            $this->time_start->i18nFormat('HHmmss')
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getGoogleCalTimeEnd()
+    {
+        $time = $this->time_end ?: $this->time_start;
+        return sprintf(
+            '%sT%s',
+            $time->i18nFormat('yyyyMMdd'),
+            $time->i18nFormat('HHmmss')
+        );
     }
 }
