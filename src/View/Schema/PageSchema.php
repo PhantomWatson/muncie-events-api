@@ -31,7 +31,7 @@ class PageSchema extends EntitySchema
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($entity, $fieldKeysFilter = null): array
     {
         return [
             'title' => $entity->title,

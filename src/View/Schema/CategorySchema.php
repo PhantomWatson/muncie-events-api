@@ -34,7 +34,7 @@ class CategorySchema extends EntitySchema
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($category, array $fieldKeysFilter = null): array
+    public function getAttributes($category, $fieldKeysFilter = null): array
     {
         return self::_getAttributes($category);
     }

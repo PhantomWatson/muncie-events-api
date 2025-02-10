@@ -36,7 +36,7 @@ class EventSchema extends EntitySchema
      * @return array
      * @throws Exception
      */
-    public function getAttributes($entity, array $fieldKeysFilter = null): array
+    public function getAttributes($entity, $fieldKeysFilter = null): array
     {
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $entity->category->noEventCount = true;

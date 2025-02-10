@@ -32,7 +32,7 @@ class ImageSchema extends EntitySchema
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($image, array $fieldKeysFilter = null): array
+    public function getAttributes($image, $fieldKeysFilter = null): array
     {
         $baseUrl = Configure::read('eventImageBaseUrl');
 

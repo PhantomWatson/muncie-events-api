@@ -32,7 +32,7 @@ class EventSeriesSchema extends EntitySchema
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($series, array $fieldKeysFilter = null): array
+    public function getAttributes($series, $fieldKeysFilter = null): array
     {
         return self::_getAttributes($series);
     }

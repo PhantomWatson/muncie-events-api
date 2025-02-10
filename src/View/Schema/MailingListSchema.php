@@ -9,7 +9,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class MailingListSchema extends EntitySchema
 {
-    protected $resourceType = 'subscriptions';
+    public $resourceType = 'subscriptions';
 
     public function getType(): string
     {
@@ -34,7 +34,7 @@ class MailingListSchema extends EntitySchema
      * @param array|null $fieldKeysFilter Field keys filter
      * @return array
      */
-    public function getAttributes($subscription, array $fieldKeysFilter = null): array
+    public function getAttributes($subscription, $fieldKeysFilter = null): array
     {
         $retval = [
             'email' => $subscription->email,
