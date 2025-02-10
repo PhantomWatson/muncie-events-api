@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \Cake\ORM\ResultSet|\App\Model\Entity\Category[] $categories
+ * @var string $pageTitle
  */
 
 use Cake\Routing\Router;
@@ -10,6 +11,10 @@ foreach ($categories as $category) {
     $feeds[$category->name] = $category->slug;
 }
 ?>
+
+<h1 class="page_title">
+    <?= $pageTitle ?>
+</h1>
 
 <div class="alert alert-info">
     <p>
