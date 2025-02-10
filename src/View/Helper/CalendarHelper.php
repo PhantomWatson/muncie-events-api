@@ -174,16 +174,14 @@ class CalendarHelper extends Helper
      */
     public static function time($event)
     {
-        $start = $event->time_start;
-        $isOnHour = substr($start->i18nFormat(), -5, 2) == '00';
-        $pattern = $isOnHour ? 'ga' : 'g:ia';
-        $retval = $start->format($pattern);
+        $retval = $event->time_start->format(
+            $event->time_start->minute ? 'g:ia' : 'ga'
+        );
 
-        $end = $event->time_end;
-        if ($end) {
-            $isOnHour = substr($end->i18nFormat(), -5, 2) == '00';
-            $pattern = $isOnHour ? 'ga' : 'g:ia';
-            $retval .= ' to ' . $end->format($pattern);
+        if ($event->time_end) {
+            $retval .= ' to ' . $event->time_end->format(
+                $event->time_end->minute ? 'g:ia' : 'ga'
+            );
         }
 
         return $retval;
