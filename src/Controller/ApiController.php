@@ -40,12 +40,14 @@ class ApiController extends Controller
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
-        if (!$this->request->is('ssl')) {
-            throw new BadRequestException('API calls must be made with HTTPS protocol');
-        }
+        if (getEnvironment() != 'development') {
+            if (!$this->request->is('ssl')) {
+                throw new BadRequestException('API calls must be made with HTTPS protocol');
+            }
 
-        if (!$this->isApiSubdomain() && !defined('PHPUNIT_RUNNING')) {
-            throw new BadRequestException('API calls must be made on the api subdomain');
+            if (!$this->isApiSubdomain() && !defined('PHPUNIT_RUNNING')) {
+                throw new BadRequestException('API calls must be made on the api subdomain');
+            }
         }
 
         $this->loadComponent(
