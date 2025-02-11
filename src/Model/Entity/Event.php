@@ -404,8 +404,8 @@ class Event extends Entity
     protected function _getDescriptionPlaintext()
     {
         $plaintext = $this->description;
-        $plaintext = str_replace(['<br>', '<br />'], '\n', $plaintext);
-        $plaintext = str_replace('</p>', '\n\n', $plaintext);
+        $plaintext = str_replace(['<br>', '<br />'], "\n", $plaintext);
+        $plaintext = str_replace('</p>', "\n\n", $plaintext);
         $plaintext = strip_tags($plaintext);
 
         return trim($plaintext);
