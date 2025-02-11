@@ -513,12 +513,20 @@ class Event extends Entity
     protected function _getTimeStart($timeStart): FrozenTime
     {
         $time = explode(':', $timeStart);
+
+        // Default to noon today
+        $hour = (int) ($time[0] ?? 12);
+        $minute = (int) ($time[1] ?? 0);
+        $day = $this->date ? $this->date->day : date('j');
+        $month = $this->date ? $this->date->month : date('n');
+        $year = $this->date ? $this->date->year : date('Y');
+
         return (new FrozenTime())
             ->setTimezone(self::TIMEZONE)
-            ->setTime((int)$time[0], (int)$time[1])
-            ->day($this->date->day)
-            ->month($this->date->month)
-            ->year($this->date->year);
+            ->setTime($hour, $minute)
+            ->day($day)
+            ->month($month)
+            ->year($year);
     }
 
     /**
@@ -531,13 +539,19 @@ class Event extends Entity
     protected function _getTimeEnd($timeEnd): ?FrozenTime
     {
         $time = explode(':', $timeEnd);
+
+        // Default to today if no date is available
+        $day = $this->date ? $this->date->day : date('j');
+        $month = $this->date ? $this->date->month : date('n');
+        $year = $this->date ? $this->date->year : date('Y');
+
         $datetime = $timeEnd
             ? (new FrozenTime())
                 ->setTimezone(self::TIMEZONE)
                 ->setTime($time[0], $time[1])
-                ->day($this->date->day)
-                ->month($this->date->month)
-                ->year($this->date->year)
+                ->day($day)
+                ->month($month)
+                ->year($year)
             : null;
         if ($datetime && $datetime < $this->time_start) {
             $datetime->modify('+1 day');

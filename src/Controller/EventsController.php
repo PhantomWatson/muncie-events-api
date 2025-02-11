@@ -291,7 +291,7 @@ class EventsController extends AppController
     public function add()
     {
         // Create an entity for passing back to the view
-        $event = new Event();
+        $event = $this->Events->newEmptyEntity();
 
         if ($this->request->is('post')) {
             /* Update the entity that will be shown in the view.
