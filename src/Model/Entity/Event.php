@@ -515,7 +515,7 @@ class Event extends Entity
         $time = explode(':', $timeStart);
         return (new FrozenTime())
             ->setTimezone(self::TIMEZONE)
-            ->setTime($time[0], $time[1])
+            ->setTime((int)$time[0], (int)$time[1])
             ->day($this->date->day)
             ->month($this->date->month)
             ->year($this->date->year);
