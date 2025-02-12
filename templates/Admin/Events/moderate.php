@@ -53,7 +53,7 @@ $displayedEventFields = [
 
                         // If events in a series have been modified, they are separated out
                         $countSeriesParts = count($identicalSeries[$seriesId] ?? []);
-                        $seriesPartEventIds = $identicalSeries[$seriesId][$modifiedDay];
+                        $seriesPartEventIds = $identicalSeries[$seriesId][$modifiedDay] ?? [];
                     }
 
                     $approveUrl = [
