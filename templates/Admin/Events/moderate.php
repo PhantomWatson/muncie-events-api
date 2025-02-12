@@ -40,19 +40,20 @@ $displayedEventFields = [
                 <?php
                     // Prepare variables used in displaying this event
                     $eventId = $event->id;
-                    $created = $event->created;
-                    $modified = date('Y-m-d', strtotime($event->modified));
+                    $created = $event->created_local;
+                    $modified = $event->modified_local;
+                    $modifiedDay = $event->modified_local->format('Y-m-d');
                     $published = $event->published;
                     $isSeries = isset($event->series_id);
                     $seriesPartEventIds = [];
 
                     if ($isSeries) {
                         $seriesId = $event->series_id;
-                        $count = count($identicalSeries[$seriesId][$modified]);
+                        $count = count($identicalSeries[$seriesId][$modifiedDay]);
 
                         // If events in a series have been modified, they are separated out
                         $countSeriesParts = count($identicalSeries[$seriesId]);
-                        $seriesPartEventIds = $identicalSeries[$seriesId][$modified];
+                        $seriesPartEventIds = $identicalSeries[$seriesId][$modifiedDay];
                     }
 
                     $approveUrl = [
@@ -173,7 +174,7 @@ $displayedEventFields = [
                                 Submitted
                             </th>
                             <td>
-                                <?= date('M j, Y g:ia', strtotime($created)) ?>
+                                <?= $created->format('M j, Y g:ia') ?>
                                 <?php if ($event->user_id): ?>
                                     by
                                     <?= $this->Html->link(
@@ -197,7 +198,7 @@ $displayedEventFields = [
                                     Updated
                                 </th>
                                 <td>
-                                    <?= date('M j, Y g:ia', strtotime($modified)) ?>
+                                    <?= $event->modified_local->format('M j, Y g:ia') ?>
                                 </td>
                             </tr>
                         <?php endif; ?>

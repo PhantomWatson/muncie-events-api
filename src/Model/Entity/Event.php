@@ -43,6 +43,8 @@ use Sabre\VObject;
  * @property string $ical_time_end
  * @property string $google_cal_time_start
  * @property string $google_cal_time_end
+ * @property FrozenTime $created_local
+ * @property FrozenTime $modified_local
  *
  * @property User $user
  * @property Category $category
@@ -582,5 +584,25 @@ class Event extends Entity
             $time->i18nFormat('yyyyMMdd'),
             $time->i18nFormat('HHmmss')
         );
+    }
+
+    /**
+     * Returns the created time in the local timezone
+     *
+     * @return FrozenTime
+     */
+    protected function _getCreatedLocal()
+    {
+        return (clone $this->created)->setTimezone(self::TIMEZONE);
+    }
+
+    /**
+     * Returns the modified time in the local timezone
+     *
+     * @return FrozenTime
+     */
+    protected function _getModifiedLocal()
+    {
+        return (clone $this->modified)->setTimezone(self::TIMEZONE);
     }
 }
