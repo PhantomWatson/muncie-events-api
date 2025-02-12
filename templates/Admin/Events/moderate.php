@@ -49,10 +49,10 @@ $displayedEventFields = [
 
                     if ($isSeries) {
                         $seriesId = $event->series_id;
-                        $count = count($identicalSeries[$seriesId][$modifiedDay]);
+                        $count = count($identicalSeries[$seriesId][$modifiedDay] ?? []);
 
                         // If events in a series have been modified, they are separated out
-                        $countSeriesParts = count($identicalSeries[$seriesId]);
+                        $countSeriesParts = count($identicalSeries[$seriesId] ?? []);
                         $seriesPartEventIds = $identicalSeries[$seriesId][$modifiedDay];
                     }
 
