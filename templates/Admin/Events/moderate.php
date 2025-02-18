@@ -26,7 +26,7 @@ $displayedEventFields = [
     'source',
 ];
 
-function getSeriesPartEventIds(Event $event): array
+$getSeriesPartEventIds = function (Event $event) use ($groupedEvents)
 {
     if (!isset($event->series_id)) {
         return [];
@@ -35,14 +35,14 @@ function getSeriesPartEventIds(Event $event): array
     $modifiedDay = $event->modified->format('Y-m-d H:i:s');
     $seriesId = $event->series_id;
     return $groupedEvents[$seriesId][$modifiedDay] ?? [];
-}
+};
 
-function getCountInGroup(Event $event): int
+$getCountInGroup = function (Event $event) use ($groupedEvents)
 {
     $modifiedDay = $event->modified->format('Y-m-d H:i:s');
     $seriesId = $event->series_id;
     return count($groupedEvents[$seriesId][$modifiedDay] ?? []);
-}
+};
 
 /**
  * Returns a count of the number of chunks this series has been broken into
@@ -50,14 +50,14 @@ function getCountInGroup(Event $event): int
  *
  * @return int
  */
-function getCountOfSeriesParts(Event $event): int
+$getCountOfSeriesParts = function (Event $event) use ($groupedEvents)
 {
     $seriesId = $event->series_id;
     return count($groupedEvents[$seriesId] ?? []);
-}
+};
 
 $appView = $this;
-$getApproveLink = function (Event $event): string
+$getApproveLink = function (Event $event) use ($getSeriesPartEventIds)
 {
     $img = $this->Html->image(
         'icons/tick.png',
@@ -71,7 +71,7 @@ $getApproveLink = function (Event $event): string
         'action' => 'approve',
     ];
     if (isset($event->series_id)) {
-        $approveUrl = array_merge($approveUrl, getSeriesPartEventIds($event));
+        $approveUrl = array_merge($approveUrl, $getSeriesPartEventIds($event));
     } else {
         $approveUrl[] = $event->id;
     }
@@ -83,7 +83,7 @@ $getApproveLink = function (Event $event): string
     );
 };
 
-$getDeleteLink = function (Event $event): string
+$getDeleteLink = function (Event $event) use ($getCountInGroup, $getSeriesPartEventIds, $getCountOfSeriesParts)
 {
     $deleteUrl = [
         'prefix' => 'Admin',
@@ -91,11 +91,11 @@ $getDeleteLink = function (Event $event): string
         'action' => 'delete',
     ];
 
-    $count = getCountInGroup($event);
+    $count = $getCountInGroup($event);
     if (isset($event->series_id) && $count > 1) {
-        $seriesPartEventIds = getSeriesPartEventIds($event);
+        $seriesPartEventIds = $getSeriesPartEventIds($event);
         $deleteUrl = array_merge($deleteUrl, $seriesPartEventIds);
-        $deleteConfirm = (getCountOfSeriesParts($event) > 1)
+        $deleteConfirm = ($getCountOfSeriesParts($event) > 1)
             ? "All $count events in this part of the series will be deleted."
             : 'All events in this series will be deleted.';
         $deleteConfirm .= ' Are you sure?';
@@ -115,9 +115,9 @@ $getDeleteLink = function (Event $event): string
     );
 };
 
-$getEditLink = function (Event $event): string
+$getEditLink = function (Event $event) use ($getCountInGroup)
 {
-    $count = getCountInGroup($event);
+    $count = $getCountInGroup($event);
     if (isset($event->series_id) && $count > 1) {
         $editConfirm = sprintf(
             'You will only be editing this event, and not the %s other %s in this series.',
@@ -155,7 +155,7 @@ $getEditLink = function (Event $event): string
     <?php else: ?>
         <ul>
             <?php foreach ($events as $event): ?>
-                <?php $count = getCountInGroup($event); ?>
+                <?php $count = $getCountInGroup($event); ?>
                 <li>
                     <ul class="actions">
                         <li>
@@ -184,7 +184,7 @@ $getEditLink = function (Event $event): string
                                 <td>
                                     <?= $event->event_series['title'] ?>
                                     (<?= $count . __n(' event', ' events', $count) ?>)
-                                    <?php if (getCountOfSeriesParts($event) > 1 && $event->created_local != $event->modified_local): ?>
+                                    <?php if ($getCountOfSeriesParts($event) > 1 && $event->created_local != $event->modified_local): ?>
                                         <br/>
                                         <strong>
                                             <?= __n('This event has', 'These events have', $count) ?>
