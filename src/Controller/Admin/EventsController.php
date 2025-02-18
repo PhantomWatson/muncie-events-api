@@ -57,7 +57,7 @@ class EventsController extends AppController
             }
             $eventId = $event->id;
             $seriesId = $event->series_id;
-            $modified = date('Y-m-d', strtotime($event->modified));
+            $modified = $event->modified->format('Y-m-d H:i:s');
             if (isset($identicalSeries[$seriesId][$modified])) {
                 unset($events[$k]);
             }
