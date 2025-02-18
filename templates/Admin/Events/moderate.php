@@ -99,11 +99,6 @@ $displayedEventFields = [
                         $deleteConfirm = 'Are you sure?';
                     }
                     $deleteLabel = 'Delete';
-
-                    $tagsList = [];
-                    foreach ($event->tags as $tag) {
-                        $tagsList[] = $tag->name;
-                    }
                 ?>
                 <li>
                     <ul class="actions">
@@ -239,7 +234,10 @@ $displayedEventFields = [
                             <tr>
                                 <th>Tags</th>
                                 <td>
-                                    <?= implode(', ', $tagsList) ?>
+                                    <?= implode(
+                                        ', ',
+                                        array_map(function ($tag) {return $tag->name;}, $event->tags)
+                                    ) ?>
                                 </td>
                             </tr>
                         <?php endif; ?>
