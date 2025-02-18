@@ -144,6 +144,12 @@ class EventSeriesController extends AppController
      */
     public function view($seriesId = null)
     {
+        if (!$seriesId) {
+            $this->Flash->error(__('Sorry, we can\'t find that event series.'));
+
+            return $this->redirect(['controller' => 'events', 'action' => 'index']);
+        }
+
         /** @var EventSeries $eventSeries */
         $eventSeries = $this->EventSeries
             ->find('forView')
