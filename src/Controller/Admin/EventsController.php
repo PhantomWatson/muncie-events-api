@@ -50,7 +50,7 @@ class EventsController extends AppController
 
         /* Find sets of identical events (belonging to the same series and with the same modified date)
          * and remove all but the first */
-        $identicalSeries = [];
+        $groupedEvents = [];
         foreach ($events as $k => $event) {
             if (!$event->series_id) {
                 continue;
@@ -58,15 +58,18 @@ class EventsController extends AppController
             $eventId = $event->id;
             $seriesId = $event->series_id;
             $modified = $event->modified->format('Y-m-d H:i:s');
-            if (isset($identicalSeries[$seriesId][$modified])) {
+
+            // Hide subsequent events in an already-represented series
+            if (isset($groupedEvents[$seriesId][$modified])) {
                 unset($events[$k]);
             }
-            $identicalSeries[$seriesId][$modified][] = $eventId;
+
+            $groupedEvents[$seriesId][$modified][] = $eventId;
         }
 
         $this->set([
             'events' => $events,
-            'identicalSeries' => $identicalSeries,
+            'groupedEvents' => $groupedEvents,
             'pageTitle' => 'Review Unapproved Events',
         ]);
     }

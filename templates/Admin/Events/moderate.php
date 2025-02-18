@@ -1,7 +1,7 @@
 <?php
 /**
  * @var AppView $this
- * @var array $identicalSeries
+ * @var array $groupedEvents
  * @var Event $event
  * @var Image $image
  * @var Event[] $events
@@ -25,6 +25,124 @@ $displayedEventFields = [
     'cost',
     'source',
 ];
+
+function getSeriesPartEventIds(Event $event): array
+{
+    if (!isset($event->series_id)) {
+        return [];
+    }
+
+    $modifiedDay = $event->modified->format('Y-m-d H:i:s');
+    $seriesId = $event->series_id;
+    return $groupedEvents[$seriesId][$modifiedDay] ?? [];
+}
+
+function getCountInGroup(Event $event): int
+{
+    $modifiedDay = $event->modified->format('Y-m-d H:i:s');
+    $seriesId = $event->series_id;
+    return count($groupedEvents[$seriesId][$modifiedDay] ?? []);
+}
+
+/**
+ * Returns a count of the number of chunks this series has been broken into
+ * (typically only 1, or 0 if it's not a series)
+ *
+ * @return int
+ */
+function getCountOfSeriesParts(Event $event): int
+{
+    $seriesId = $event->series_id;
+    return count($groupedEvents[$seriesId] ?? []);
+}
+
+$appView = $this;
+$getApproveLink = function (Event $event): string
+{
+    $img = $this->Html->image(
+        'icons/tick.png',
+        ['alt' => 'Approve']
+    );
+    $approveLabel = $img . 'Approve' . ($event->published ? '' : ' and publish');
+
+    $approveUrl = [
+        'prefix' => 'Admin',
+        'controller' => 'Events',
+        'action' => 'approve',
+    ];
+    if (isset($event->series_id)) {
+        $approveUrl = array_merge($approveUrl, getSeriesPartEventIds($event));
+    } else {
+        $approveUrl[] = $event->id;
+    }
+
+    return $this->Html->link(
+        $approveLabel,
+        $approveUrl,
+        ['escape' => false]
+    );
+};
+
+$getDeleteLink = function (Event $event): string
+{
+    $deleteUrl = [
+        'prefix' => 'Admin',
+        'controller' => 'Events',
+        'action' => 'delete',
+    ];
+
+    $count = getCountInGroup($event);
+    if (isset($event->series_id) && $count > 1) {
+        $seriesPartEventIds = getSeriesPartEventIds($event);
+        $deleteUrl = array_merge($deleteUrl, $seriesPartEventIds);
+        $deleteConfirm = (getCountOfSeriesParts($event) > 1)
+            ? "All $count events in this part of the series will be deleted."
+            : 'All events in this series will be deleted.';
+        $deleteConfirm .= ' Are you sure?';
+    } else {
+        $deleteUrl[] = $event->id;
+        $deleteConfirm = 'Are you sure?';
+    }
+
+    return $this->Form->postLink(
+        'Delete',
+        $deleteUrl,
+        [
+            'class' => 'btn btn-sm btn-secondary',
+            'escape' => false,
+            'confirm' => $deleteConfirm,
+        ]
+    );
+};
+
+$getEditLink = function (Event $event): string
+{
+    $count = getCountInGroup($event);
+    if (isset($event->series_id) && $count > 1) {
+        $editConfirm = sprintf(
+            'You will only be editing this event, and not the %s other %s in this series.',
+            ($count - 1),
+            __n('event', 'events', ($count - 1))
+        );
+    } else {
+        $editConfirm = false;
+    }
+
+    return $this->Html->link(
+        'Edit',
+        [
+            'prefix' => false,
+            'controller' => 'Events',
+            'action' => 'edit',
+            'id' => $event->id,
+        ],
+        [
+            'class' => 'btn btn-sm btn-secondary',
+            'escape' => false,
+            'confirm' => $editConfirm,
+        ]
+    );
+};
 ?>
 <h1 class="page_title">
     <?= $pageTitle ?>
@@ -37,115 +155,28 @@ $displayedEventFields = [
     <?php else: ?>
         <ul>
             <?php foreach ($events as $event): ?>
-                <?php
-                    // Prepare variables used in displaying this event
-                    $eventId = $event->id;
-                    $created = $event->created_local;
-                    $modified = $event->modified_local;
-                    $modifiedDay = $event->modified_local->format('Y-m-d');
-                    $published = $event->published;
-                    $isSeries = isset($event->series_id);
-                    $seriesPartEventIds = [];
-
-                    if ($isSeries) {
-                        $seriesId = $event->series_id;
-                        $count = count($identicalSeries[$seriesId][$modifiedDay] ?? []);
-
-                        // If events in a series have been modified, they are separated out
-                        $countSeriesParts = count($identicalSeries[$seriesId] ?? []);
-                        $seriesPartEventIds = $identicalSeries[$seriesId][$modifiedDay] ?? [];
-                    }
-
-                    $approveUrl = [
-                        'prefix' => 'Admin',
-                        'controller' => 'Events',
-                        'action' => 'approve',
-                    ];
-                    if ($isSeries) {
-                        $approveUrl = array_merge($approveUrl, $seriesPartEventIds);
-                    } else {
-                        $approveUrl[] = $eventId;
-                    }
-                    $img = $this->Html->image(
-                        'icons/tick.png',
-                        ['alt' => 'Approve']
-                    );
-                    $approveLabel = $img . 'Approve' . ($published ? '' : ' and publish');
-
-                    if ($isSeries && $count > 1) {
-                        $editConfirm = sprintf(
-                            'You will only be editing this event, and not the %s other %s in this series.',
-                            ($count - 1),
-                            __n('event', 'events', ($count - 1))
-                        );
-                    } else {
-                        $editConfirm = false;
-                    }
-                    $editLabel = 'Edit';
-
-                    $deleteUrl = [
-                        'prefix' => 'Admin',
-                        'controller' => 'Events',
-                        'action' => 'delete',
-                    ];
-                    if ($isSeries && $count > 1) {
-                        $deleteUrl = array_merge($deleteUrl, $seriesPartEventIds);
-                        $deleteConfirm = ($countSeriesParts > 1)
-                            ? "All $count events in this part of the series will be deleted."
-                            : 'All events in this series will be deleted.';
-                        $deleteConfirm .= ' Are you sure?';
-                    } else {
-                        $deleteUrl[] = $eventId;
-                        $deleteConfirm = 'Are you sure?';
-                    }
-                    $deleteLabel = 'Delete';
-                ?>
+                <?php $count = getCountInGroup($event); ?>
                 <li>
                     <ul class="actions">
                         <li>
-                            <?= $this->Html->link(
-                                $approveLabel,
-                                $approveUrl,
-                                ['escape' => false]
-                            ) ?>
+                            <?= $getApproveLink($event) ?>
                         </li>
                         <li>
-                            <?= $this->Html->link(
-                                $editLabel,
-                                [
-                                    'prefix' => false,
-                                    'controller' => 'Events',
-                                    'action' => 'edit',
-                                    'id' => $eventId,
-                                ],
-                                [
-                                    'class' => 'btn btn-sm btn-secondary',
-                                    'escape' => false,
-                                    'confirm' => $editConfirm,
-                                ]
-                            ) ?>
+                            <?= $getEditLink($event) ?>
                         </li>
                         <li>
-                            <?= $this->Form->postLink(
-                                $deleteLabel,
-                                $deleteUrl,
-                                [
-                                    'class' => 'btn btn-sm btn-secondary',
-                                    'escape' => false,
-                                    'confirm' => $deleteConfirm,
-                                ]
-                            ) ?>
+                            <?= $getDeleteLink($event) ?>
                         </li>
                     </ul>
 
-                    <?php if (!$published): ?>
+                    <?php if (!$event->published): ?>
                         <p>
                             <span class="unpublished">Not published</span>
                         </p>
                     <?php endif; ?>
 
                     <table>
-                        <?php if ($isSeries): ?>
+                        <?php if (isset($event->series_id)): ?>
                             <tr>
                                 <th>
                                     Series
@@ -153,7 +184,7 @@ $displayedEventFields = [
                                 <td>
                                     <?= $event->event_series['title'] ?>
                                     (<?= $count . __n(' event', ' events', $count) ?>)
-                                    <?php if ($countSeriesParts > 1 && $created != $modified): ?>
+                                    <?php if (getCountOfSeriesParts($event) > 1 && $event->created_local != $event->modified_local): ?>
                                         <br/>
                                         <strong>
                                             <?= __n('This event has', 'These events have', $count) ?>
@@ -169,7 +200,7 @@ $displayedEventFields = [
                                 Submitted
                             </th>
                             <td>
-                                <?= $created->format('M j, Y g:ia') ?>
+                                <?= $event->created_local->format('M j, Y g:ia') ?>
                                 <?php if ($event->user_id): ?>
                                     by
                                     <?= $this->Html->link(
@@ -187,7 +218,7 @@ $displayedEventFields = [
                             </td>
                         </tr>
 
-                        <?php if ($created != $modified): ?>
+                        <?php if ($event->created_local != $event->modified_local): ?>
                             <tr>
                                 <th>
                                     Updated
