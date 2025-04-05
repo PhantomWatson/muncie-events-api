@@ -320,12 +320,9 @@ class UsersController extends AppController
                 $data = $user->toArray();
                 $this->Auth->setUser($data);
                 $this->Flash->success('Password changed. You are now logged in.');
-
-                return null;
+                return $this->redirect('/');
             }
             $this->Flash->error('There was an error changing your password. Please check to make sure they\'ve been entered correctly.');
-
-            return $this->redirect('/');
         }
 
         return null;
