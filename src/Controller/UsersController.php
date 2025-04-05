@@ -309,7 +309,7 @@ class UsersController extends AppController
             $this->redirect('/');
         }
 
-        if ($this->request->is('post')) {
+        if (!$this->request->is('get')) {
             $user = $this->Users->patchEntity($user, [
                 'password' => $this->request->getData('new_password'),
                 'confirm_password' => $this->request->getData('new_confirm_password')
