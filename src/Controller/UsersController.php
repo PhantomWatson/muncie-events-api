@@ -322,7 +322,7 @@ class UsersController extends AppController
                 $this->Flash->success('Password changed. You are now logged in.');
                 return $this->redirect('/');
             }
-            $this->Flash->error('There was an error changing your password. Please check to make sure they\'ve been entered correctly.');
+            $this->Flash->error('There was an error changing your password. Please check to make sure that you\'ve entered the same password twice.');
         }
 
         return null;
