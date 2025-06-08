@@ -1,6 +1,5 @@
 <?php
 $populatedDates = $this->Nav->getPopulatedDates();
-$dayLinks = $this->Nav->getDayLinks();
 ?>
 
 <?php $this->Html->scriptStart(['block' => true]); ?>
@@ -19,17 +18,6 @@ $dayLinks = $this->Nav->getDayLinks();
         </button>
         <div id="header_nav_datepicker" class="collapse" aria-labelledby="date_picker_toggler">
             <div>
-                <?php if (!empty($dayLinks)): ?>
-                    <ul>
-                        <?php foreach ($dayLinks as $dayLink): ?>
-                            <li>
-                                <a href="<?= $dayLink['url'] ?>">
-                                    <?= $dayLink['label'] ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
                 <div id="header_datepicker"></div>
             </div>
         </div>
