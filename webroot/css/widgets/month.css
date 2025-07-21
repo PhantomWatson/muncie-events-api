@@ -4700,11 +4700,6 @@ table.calendar tbody li {
   padding: 5px 2px;
   white-space: normal;
 }
-@media (max-width: 576px) {
-  table.calendar tbody li {
-    max-height: 10px;
-  }
-}
 table.calendar tbody li:nth-child(even) {
   background-color: #f0f0f0;
 }
@@ -4798,3 +4793,4 @@ table.calendar .icon:before {
 #event_lists .icon:before {
   margin-right: 5px;
 }
+/*# sourceMappingURL=month.css.map */
