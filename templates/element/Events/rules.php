@@ -9,7 +9,9 @@ $adminEmail = Configure::read('adminEmail');
     </li>
     <li>
         <strong>Events Only:</strong> In general, advertisements for services offered by businesses
-        (such as sales) and deadlines are not considered events and may not be posted.
+        (such as sales) and deadlines are not considered events and may not be posted. A display of art per se does
+        not generally count as an event, but the opening day of an art exhibition is very welcome to be posted, as
+        would be any days in which a performance is taking place, such as a presentation by an artist.
     </li>
     <li>
         <strong>Public Events:</strong> Only events open to the general public (not counting age restrictions) and
