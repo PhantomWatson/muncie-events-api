@@ -534,12 +534,16 @@ class Event extends Entity
     /**
      * Returns $this->time_end as a FrozenTime (or null)
      *
-     * @param string $timeEnd
+     * @param ?string $timeEnd
      * @return FrozenTime|null
      * @throws \DateMalformedStringException
      */
     protected function _getTimeEnd($timeEnd): ?FrozenTime
     {
+        if (!$timeEnd) {
+            return null;
+        }
+
         $time = explode(':', $timeEnd);
 
         // Default to today if no date is available
@@ -547,14 +551,12 @@ class Event extends Entity
         $month = $this->date ? $this->date->month : date('n');
         $year = $this->date ? $this->date->year : date('Y');
 
-        $datetime = $timeEnd
-            ? (new FrozenTime())
+        $datetime = (new FrozenTime())
                 ->setTimezone(self::TIMEZONE)
                 ->setTime($time[0], $time[1])
                 ->day($day)
                 ->month($month)
-                ->year($year)
-            : null;
+                ->year($year);
         if ($datetime && $datetime < $this->time_start) {
             $datetime->modify('+1 day');
         }
