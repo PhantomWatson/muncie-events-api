@@ -91,6 +91,21 @@ return function (RouteBuilder $routes): void {
             '/search',
             ['controller' => 'Events', 'action' => 'search']
         );
+        $routes->connect(
+            '/first-thursday',
+            ['controller' => 'Events', 'action' => 'firstThursday']
+        );
+        $aliases = [
+            'first-thursdays',
+            '1st-thursday', '1st-thursdays',
+            '1stthursday', '1stthursdays',
+            'firstthursday', 'firstthursdays',
+        ];
+        foreach ($aliases as $alias) {
+            $routes
+                ->redirect('/{firstThursdayAlias}', '/first-thursday')
+                ->setPatterns(['firstThursdayAlias' => "(?i:$alias)"]); // Case-insensitive
+        }
 
         // EventSeries
         $routes->connect(

@@ -19,6 +19,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
@@ -51,6 +52,7 @@ class EventsController extends AppController
             'day',
             'feed',
             'feeds',
+            'firstThursday',
             'index',
             'location',
             'locationsPast',
@@ -870,5 +872,19 @@ class EventsController extends AppController
             'pageTitle' => 'Feeds',
             'categories' => $categories,
         ]);
+    }
+
+    /**
+     * Shows the next or most recent official First Thursday post
+     *
+     * @return void
+     */
+    public function firstThursday(): void
+    {
+        $event = $this->Events->getNextOrLastFirstThursday();
+        $isPast = $event ? ($event->date->isPast() && !$event->date->isToday()) : false;
+        $pageTitle = 'First Thursday';
+        $contactEmail = Configure::read('firstThursday.contactEmail');
+        $this->set(compact('event', 'isPast', 'pageTitle', 'contactEmail'));
     }
 }

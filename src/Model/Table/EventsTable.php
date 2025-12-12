@@ -15,8 +15,10 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -920,5 +922,41 @@ class EventsTable extends Table
         return $query
             ->find('startingOn', ['date' => $options['date']])
             ->find('endingOn', ['date' => $options['date']]);
+    }
+
+    /**
+     * Returns the next (or most recent) published First Thursday event authored by allowed users
+     *
+     * Assumes that on any given date, there will only be one post by one of these authors with the "first thursday" tag
+     * and assumes that the next event and the event with the latest date are synonymous (i.e. there's no event posted
+     * for more than a month in the future)
+     *
+     * @return Event|null
+     */
+    public function getNextOrLastFirstThursday(): ?Event
+    {
+        // Email addresses are used instead of user IDs so this works in all environments
+        $allowedAuthorEmails = Configure::read('firstThursday.allowedAuthorEmails') ?? [];
+        $allowedAuthors = $this->Users
+            ->find('list')
+            ->where(['email IN' => $allowedAuthorEmails])
+            ->toArray();
+
+        /** @var Event $event */
+        $event = $this
+            ->find('published')
+            ->find('tagged', ['tags' => ['first thursday']])
+            ->find('withAllAssociated')
+            ->where(['Events.user_id IN' => array_keys($allowedAuthors)])
+//            ->contain([
+//                'Categories',
+//                'EventSeries',
+//                'Images',
+//                'Tags',
+//            ])
+            ->orderDesc('date')
+            ->first();
+
+        return $event;
     }
 }
