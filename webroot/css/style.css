@@ -5809,7 +5809,6 @@ ul.event_accordion .actions {
 }
 ul.event_accordion .actions a {
   font-size: 0.8em;
-  margin-left: 15px;
 }
 @media (max-width: 576px) {
   ul.event_accordion .actions a {
