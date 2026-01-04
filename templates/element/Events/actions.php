@@ -26,7 +26,7 @@ if ($widget) {
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     title="Export to another calendar">
                 <i class="fas fa-cloud-download-alt"></i>
-                Export to...
+                Export
             </button>
             <div class="<?= $dropdownMenuClasses ?>" aria-labelledby="dropdownMenuButton">
                 <a href="<?= CalendarHelper::getGoogleCalendarUrl($event) ?>" title="Add to Google Calendar"
