@@ -338,11 +338,11 @@ class EventsController extends AppController
         $dates = explode('; ', $this->request->getData('date'));
         sort($dates);
         $data = $this->request->getData() + [
-                'images' => [],
-                'tag_ids' => [],
-                'tag_names' => [],
-                'time_end' => null,
-            ];
+            'images' => [],
+            'tag_ids' => [],
+            'tag_names' => [],
+            'time_end' => null,
+        ];
         try {
             foreach ($dates as $date) {
                 $addedEvents[] = $eventForm->addSingleEvent($data, $date, $this->Auth->user());
