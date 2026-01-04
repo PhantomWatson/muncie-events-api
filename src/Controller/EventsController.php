@@ -945,7 +945,7 @@ class EventsController extends AppController
         $this->set([
             'datesWithSameEventTitle' => $datesWithSameEventTitle,
             'event' => $event,
-            'pageTitle' => 'Duplicate event',
+            'pageTitle' => 'Duplicate "' . $event->title . '"',
         ]);
     }
 }
