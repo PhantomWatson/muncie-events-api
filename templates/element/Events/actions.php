@@ -94,6 +94,20 @@ if ($widget) {
                         'escape' => false,
                     ]
                 ) ?>
+                <?= $this->Html->link(
+                    'Duplicate',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'duplicate',
+                        'id' => $event->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false,
+                    ]
+                ) ?>
                 <?= $this->Form->postLink(
                     'Delete',
                     [

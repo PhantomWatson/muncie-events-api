@@ -887,4 +887,65 @@ class EventsController extends AppController
         $contactEmail = Configure::read('firstThursday.contactEmail');
         $this->set(compact('event', 'isPast', 'pageTitle', 'contactEmail'));
     }
+
+    public function duplicate($eventId = null)
+    {
+        $eventExists = $this->Events->exists(['id' => $eventId]);
+        if (!$eventExists) {
+            throw new BadRequestException("Event with ID $eventId not found");
+        }
+        $event = $this->Events->get($eventId);
+
+        $datesWithSameEventTitle = $this->Events
+            ->find()
+            ->where(['title' => $event->title])
+            ->all()
+            ->extract('date')
+            ->toArray();
+
+        if (!$this->userCanEdit($event)) {
+            throw new ForbiddenException('You don\'t have permission to duplicate that event');
+        }
+
+        if ($this->request->is(['post', 'put'])) {
+            $user = $this->Auth->user();
+            $copiedData = $event->toArray();
+            unset($copiedData['id']);
+            unset($copiedData['created']);
+            unset($copiedData['modified']);
+
+            $dates = explode('; ', $this->request->getData('date'));
+            if ($dates) {
+                sort($dates);
+                $firstNewEventId = null;
+                foreach ($dates as $date) {
+                    $copiedData['date'] = new FrozenDate($date);
+                    $newEvent = $this->Events->newEntity($copiedData);
+                    $newEvent->autoApprove($user);
+                    $newEvent->autoPublish($user);
+                    if (!$this->Events->save($newEvent)) {
+                        $this->Flash->error('Whuh oh. This event could not be duplicated. Details: ' . json_encode($newEvent->getErrors()));
+                        break;
+                    }
+                    if (!$firstNewEventId) {
+                        $firstNewEventId = $newEvent->id;
+                    }
+                }
+                $this->Flash->success('Event duplicated to ' . count($dates) . ' date' . (count($dates) > 1 ? 's' : ''));
+                return $this->redirect([
+                    'controller' => 'Events',
+                    'action' => 'view',
+                    'id' => $firstNewEventId,
+                ]);
+            } else {
+                $this->Flash->error('Please provide at least one date for the duplicated event.');
+            }
+        }
+
+        $this->set([
+            'datesWithSameEventTitle' => $datesWithSameEventTitle,
+            'event' => $event,
+            'pageTitle' => 'Duplicate event',
+        ]);
+    }
 }

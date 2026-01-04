@@ -317,7 +317,7 @@ class EventForm {
         const submitButton = document.getElementById('event-form-submit');
         submitButton.addEventListener('click', function () {
             const seriesTitle = document.getElementById('EventSeriesTitle');
-            if (seriesTitle.required && seriesTitle.value === '') {
+            if (seriesTitle && seriesTitle.required && seriesTitle.value === '') {
                 const eventTitle = document.getElementById('EventTitle');
                 seriesTitle.value = eventTitle.value;
             }

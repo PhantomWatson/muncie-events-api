@@ -42,16 +42,13 @@ return function (RouteBuilder $routes): void {
             ['controller' => 'Events', 'action' => 'view'],
             ['id' => '[0-9]+', 'pass' => ['id']]
         );
-        $routes->connect(
-            '/event/edit/:id',
-            ['controller' => 'Events', 'action' => 'edit'],
-            ['id' => '[0-9]+', 'pass' => ['id']]
-        );
-        $routes->connect(
-            '/event/delete/:id',
-            ['controller' => 'Events', 'action' => 'delete'],
-            ['id' => '[0-9]+', 'pass' => ['id']]
-        );
+        foreach (['edit', 'delete', 'duplicate'] as $action) {
+            $routes->connect(
+                "/event/$action/:id",
+                ['controller' => 'Events', 'action' => $action],
+                ['id' => '[0-9]+', 'pass' => ['id']]
+            );
+        }
         $routes->connect('/today', ['controller' => 'Events', 'action' => 'today']);
         $routes->connect('/tomorrow', ['controller' => 'Events', 'action' => 'tomorrow']);
         $routes->connect(
