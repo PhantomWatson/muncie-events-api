@@ -34,6 +34,7 @@ $eventsByDate = CalendarHelper::arrangeByDate($events);
         sprintf('setNextStartDate(%s);', json_encode($nextStartDate)),
         ['block' => true]
     ); ?>
+    <?php $this->Html->scriptBlock('setupEventAccordion();', ['block' => true]); ?>
 <?php else: ?>
     <p class="no_events alert alert-info" id="no_events">
         <?php if ($this->request->getQuery('page')): ?>

@@ -6,7 +6,6 @@
 use App\Model\Entity\Event;
 use App\View\AppView;
 
-$this->Html->scriptBlock('setupEventAccordion();', ['block' => true]);
 ?>
 <div id="calendar_list_view_wrapper">
     <div class="event_accordion" id="event_accordion">
