@@ -1,7 +1,6 @@
 var muncieEventsFeed = {
     nextStartDate: null,
     accordions_prepared: [],
-    xfbml_parsed: [],
     no_more_events: false
 };
 var muncieEvents = {
@@ -55,12 +54,6 @@ function setupEventAccordion() {
                     }
                     toggler.find('.address').css('display', 'block');
                     toggler.find('.location_details').css('display', 'block');
-                }
-
-                var more_info_id = 'more_info_'+event_id;
-                if (muncieEventsFeed.xfbml_parsed.indexOf(more_info_id) === -1) {
-                    FB.XFBML.parse(document.getElementById(more_info_id));
-                    muncieEventsFeed.xfbml_parsed.push(more_info_id);
                 }
             });
             muncieEventsFeed.accordions_prepared.push(this.id);
