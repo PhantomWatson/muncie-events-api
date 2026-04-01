@@ -921,6 +921,7 @@ class EventsController extends AppController
                 foreach ($dates as $date) {
                     $copiedData['date'] = new FrozenDate($date);
                     $newEvent = $this->Events->newEntity($copiedData);
+                    $newEvent->setLocationSlug();
                     $newEvent->autoApprove($user);
                     $newEvent->autoPublish($user);
                     if (!$this->Events->save($newEvent)) {
