@@ -48,7 +48,7 @@ use Cake\Routing\Router;
                 <br />
                 <code>
                     <?= Router::url([
-                        'prefix' => 'v1',
+                        'prefix' => 'V1',
                         'controller' => 'Events',
                         'action' => 'upcoming',
                         '?' => ['apikey' => $apiKey],
