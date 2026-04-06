@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.5-fpm
 
 ARG WEB_USER
 ARG WEB_GROUP
