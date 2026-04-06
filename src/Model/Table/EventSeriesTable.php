@@ -92,14 +92,14 @@ class EventSeriesTable extends Table
     /**
      * Returns an event series and all of its associated events for the /event-series/edit page
      *
-     * @param Query $query Query object
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query object
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findForEdit(Query $query)
+    public function findForEdit(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->contain([
-                'Events' => function (Query $q) {
+                'Events' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q->find('ordered');
                 },
             ]);
@@ -108,14 +108,14 @@ class EventSeriesTable extends Table
     /**
      * Alters a query to include ordered, published events with associated data
      *
-     * @param Query $query Query object
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query object
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findForView(Query $query)
+    public function findForView(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->contain([
-                'Events' => function (Query $q) {
+                'Events' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q
                         ->find('ordered')
                         ->find('published')
@@ -129,7 +129,7 @@ class EventSeriesTable extends Table
                             'title',
                         ]);
                 },
-                'Users' => function (Query $q) {
+                'Users' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q->select(['id', 'name']);
                 },
             ]);

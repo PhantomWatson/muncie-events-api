@@ -17,7 +17,7 @@ use Exception;
  */
 class EventSeriesController extends ApiController
 {
-    public $paginate = [
+    public array $paginate = [
         'Events' => [
             'limit' => 50,
             'order' => [

@@ -40,7 +40,7 @@ class TagsController extends ApiController
 
         $tags = $this->Tags
             ->find('threaded')
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
         $tags = $this->filterOutHiddenTags($tags);
 
@@ -110,7 +110,7 @@ class TagsController extends ApiController
         $tag = $this->Tags->find()
             ->where(['id' => $tagId])
             ->contain([
-                'Events' => function (Query $q) {
+                'Events' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q
                         ->find('forApi')
                         ->find('upcoming');
@@ -154,7 +154,7 @@ class TagsController extends ApiController
                 'listed' => true,
                 'selectable' => true,
             ])
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
 
         $this->set([

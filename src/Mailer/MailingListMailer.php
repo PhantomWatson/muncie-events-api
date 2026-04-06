@@ -19,7 +19,7 @@ class MailingListMailer extends Mailer
     public function daily($recipient, $events)
     {
         $this->viewBuilder()->setTemplate('daily');
-        $date = (new FrozenTime('now', Configure::read('localTimezone')))->format('l, M j');
+        $date = (new \Cake\I18n\DateTime('now', Configure::read('localTimezone')))->format('l, M j');
         $this
             ->setTo($recipient->email)
             ->setFrom(Configure::read('automailer_address'), 'Muncie Events')
@@ -44,7 +44,7 @@ class MailingListMailer extends Mailer
     public function weekly($recipient, $events)
     {
         $this->viewBuilder()->setTemplate('weekly');
-        $date = (new FrozenTime('now', Configure::read('localTimezone')))->format('l, M j');
+        $date = (new \Cake\I18n\DateTime('now', Configure::read('localTimezone')))->format('l, M j');
         $this
             ->setTo($recipient->email)
             ->setFrom(Configure::read('automailer_address'), 'Muncie Events')

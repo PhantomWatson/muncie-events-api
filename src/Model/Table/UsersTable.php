@@ -30,7 +30,7 @@ use Cake\Validation\Validator;
  * @method User patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method User[] patchEntities($entities, array $data, array $options = [])
  * @method User findOrCreate($search, callable $callback = null, $options = [])
- * @method Query findByApiKey($apiKey)
+ * @method \Cake\ORM\Query\SelectQuery findByApiKey($apiKey)
  *
  * @mixin TimestampBehavior
  */
@@ -286,7 +286,7 @@ class UsersTable extends Table
     {
         return $this->Images->find()
             ->where(['user_id' => $userId])
-            ->orderDesc('created')
+            ->orderByDesc('created')
             ->all();
     }
 

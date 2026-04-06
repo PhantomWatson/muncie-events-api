@@ -25,7 +25,7 @@ class EventsTag extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'event_id' => true,
         'tag_id' => true,
         'event' => true,

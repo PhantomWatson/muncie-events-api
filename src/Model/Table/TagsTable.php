@@ -31,7 +31,7 @@ use Cake\Validation\Validator;
  * @method Tag patchEntity(EntityInterface $entity, array $data, array $options = [])
  * @method Tag[] patchEntities($entities, array $data, array $options = [])
  * @method Tag findOrCreate($search, callable $callback = null, $options = [])
- * @method Query findByName($name)
+ * @method \Cake\ORM\Query\SelectQuery findByName($name)
  *
  * @mixin TimestampBehavior
  * @mixin TreeBehavior
@@ -198,7 +198,7 @@ class TagsTable extends Table
             })
             ->select(['Tags.id'])
             ->contain([
-                'Events' => function (Query $q) use ($categoryFilter, $locationFilter) {
+                'Events' => function (\Cake\ORM\Query\SelectQuery $q) use ($categoryFilter, $locationFilter) {
                     $q
                         ->find('published')
                         ->select(['Events.id']);

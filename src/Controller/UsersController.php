@@ -264,7 +264,7 @@ class UsersController extends AppController
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
         $query = $eventsTable
             ->find('published')
-            ->find('ordered', ['direction' => 'DESC'])
+            ->find('ordered', direction: 'DESC')
             ->find('withAllAssociated')
             ->where(['Events.user_id' => $userId]);
 

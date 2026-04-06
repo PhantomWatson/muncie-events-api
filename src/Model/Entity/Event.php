@@ -27,24 +27,24 @@ use Sabre\VObject;
  * @property int $user_id
  * @property int $category_id
  * @property int $series_id
- * @property FrozenDate $date
- * @property FrozenTime $time_start
- * @property FrozenTime|null $time_end
+ * @property \Cake\I18n\Date $date
+ * @property \Cake\I18n\DateTime $time_start
+ * @property \Cake\I18n\DateTime|null $time_end
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
  * @property bool $published
  * @property int $approved_by
- * @property FrozenTime $created
- * @property FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  * @property string $location_medium 'physical' or 'virtual'
  * @property string $description_plaintext
  * @property string $ical_time_start
  * @property string $ical_time_end
  * @property string $google_cal_time_start
  * @property string $google_cal_time_end
- * @property FrozenTime $created_local
- * @property FrozenTime $modified_local
+ * @property \Cake\I18n\DateTime $created_local
+ * @property \Cake\I18n\DateTime $modified_local
  *
  * @property User $user
  * @property Category $category
@@ -67,7 +67,7 @@ class Event extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'title' => true,
         'description' => true,
         'location' => true,
@@ -153,9 +153,9 @@ class Event extends Entity
      * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
      * be assumed incorrectly to be UTC. This method returns an object with the correct timezone offset, time, and date
      *
-     * @param FrozenDate $date Date object
-     * @param FrozenTime|null $localTime Time object
-     * @return FrozenTime|null
+     * @param \Cake\I18n\Date $date Date object
+     * @param \Cake\I18n\DateTime|null $localTime Time object
+     * @return \Cake\I18n\DateTime|null
      * @throws Exception
      */
     private static function getCorrectedTime($date, $localTime)
@@ -166,7 +166,7 @@ class Event extends Entity
 
         // Create a time object with the correct timezone set
         $timeString = $localTime->toDateTimeString();
-        $correctedTime = (new FrozenTime($timeString))
+        $correctedTime = (new \Cake\I18n\DateTime($timeString))
             ->setTimezone(self::TIMEZONE)
             ->day($date->day)
             ->month($date->month)
@@ -510,9 +510,9 @@ class Event extends Entity
      * Returns $this->time_start as a FrozenTime
      *
      * @param string $timeStart
-     * @return FrozenTime
+     * @return \Cake\I18n\DateTime
      */
-    protected function _getTimeStart($timeStart): FrozenTime
+    protected function _getTimeStart($timeStart): \Cake\I18n\DateTime
     {
         $time = explode(':', $timeStart);
 
@@ -523,7 +523,7 @@ class Event extends Entity
         $month = $this->date ? $this->date->month : date('n');
         $year = $this->date ? $this->date->year : date('Y');
 
-        return (new FrozenTime())
+        return (new \Cake\I18n\DateTime())
             ->setTimezone(self::TIMEZONE)
             ->setTime($hour, $minute)
             ->day($day)
@@ -535,10 +535,10 @@ class Event extends Entity
      * Returns $this->time_end as a FrozenTime (or null)
      *
      * @param ?string $timeEnd
-     * @return FrozenTime|null
+     * @return \Cake\I18n\DateTime|null
      * @throws \DateMalformedStringException
      */
-    protected function _getTimeEnd($timeEnd): ?FrozenTime
+    protected function _getTimeEnd($timeEnd): ?\Cake\I18n\DateTime
     {
         if (!$timeEnd) {
             return null;
@@ -551,7 +551,7 @@ class Event extends Entity
         $month = $this->date ? $this->date->month : date('n');
         $year = $this->date ? $this->date->year : date('Y');
 
-        $datetime = (new FrozenTime())
+        $datetime = (new \Cake\I18n\DateTime())
                 ->setTimezone(self::TIMEZONE)
                 ->setTime($time[0], $time[1])
                 ->day($day)
@@ -591,7 +591,7 @@ class Event extends Entity
     /**
      * Returns the created time in the local timezone
      *
-     * @return FrozenTime
+     * @return \Cake\I18n\DateTime
      */
     protected function _getCreatedLocal()
     {
@@ -601,7 +601,7 @@ class Event extends Entity
     /**
      * Returns the modified time in the local timezone
      *
-     * @return FrozenTime
+     * @return \Cake\I18n\DateTime
      */
     protected function _getModifiedLocal()
     {

@@ -20,10 +20,10 @@ use Cake\Utility\Security;
  * @property bool $daily_fri
  * @property bool $daily_sat
  * @property bool $new_subscriber
- * @property FrozenTime $created
- * @property FrozenTime $modified
- * @property FrozenTime|null $processed_daily
- * @property FrozenTime|null $processed_weekly
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $processed_daily
+ * @property \Cake\I18n\DateTime|null $processed_weekly
  * @property string $hash
  * @property bool $enabled
  *
@@ -42,7 +42,7 @@ class MailingList extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'email' => true,
         'all_categories' => true,
         'weekly' => true,

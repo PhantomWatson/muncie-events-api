@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property string $url
- * @property FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property User $user
  */
@@ -26,7 +26,7 @@ class ApiCall extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'user_id' => true,
         'url' => true,
         'created' => true,

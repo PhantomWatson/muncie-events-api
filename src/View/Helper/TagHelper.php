@@ -13,7 +13,7 @@ use Cake\View\Helper\HtmlHelper;
  */
 class TagHelper extends Helper
 {
-    public $helpers = ['Html'];
+    public array $helpers = ['Html'];
 
     /**
      * Buffers JS that pre-selects tags in the event form
@@ -71,7 +71,7 @@ class TagHelper extends Helper
         $tagsTable = TableRegistry::getTableLocator()->get('Tags');
         $results = $tagsTable->find('threaded')
             ->where(['listed' => true])
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->all();
         $availableTags = $this->availableTagsToArray($results);
 

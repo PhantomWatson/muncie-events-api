@@ -20,8 +20,8 @@ use Cake\ORM\Entity;
  * @property string|null $api_key
  * @property string|null $token
  * @property string|null $reset_password_hash
- * @property FrozenTime $created
- * @property FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  *
  * @property EventSeries[] $event_series
  * @property Event[] $events
@@ -40,7 +40,7 @@ class User extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         '*' => true,
         'id' => false,
     ];
@@ -50,7 +50,7 @@ class User extends Entity
      *
      * @var array
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
     ];
 
@@ -121,7 +121,7 @@ class User extends Entity
     {
         $salt = Configure::read('password_reset_salt');
         $timezone = Configure::read('localTimezone');
-        $month = (new FrozenTime('now', $timezone))->format('my');
+        $month = (new \Cake\I18n\DateTime('now', $timezone))->format('my');
 
         return md5($this->id . $this->email . $salt . $month);
     }

@@ -18,7 +18,7 @@ use Exception;
  */
 class EventsController extends ApiController
 {
-    public $paginate = [
+    public array $paginate = [
         'limit' => 50,
         'order' => [
             'Events.date' => 'asc',
@@ -65,9 +65,9 @@ class EventsController extends ApiController
 
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
-            ->find('startingOn', ['date' => $start])
-            ->find('endingOn', ['date' => $end])
-            ->find('tagged', ['tags' => $tags]);
+            ->find('startingOn', date: $start)
+            ->find('endingOn', date: $end)
+            ->find('tagged', tags: $tags);
 
         $this->set([
             '_entities' => [
@@ -98,7 +98,7 @@ class EventsController extends ApiController
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
             ->find('upcoming')
-            ->find('tagged', ['tags' => $tags]);
+            ->find('tagged', tags: $tags);
 
         $this->set([
             '_entities' => [
@@ -156,9 +156,9 @@ class EventsController extends ApiController
             $baseQuery->where(['category_id' => $categoryId]);
         }
         $matchesEventDetails = $baseQuery->cleanCopy()
-            ->find('search', ['search' => $this->request->getQueryParams()]);
+            ->find('search', search: $this->request->getQueryParams());
         $matchesTag = $baseQuery->cleanCopy()
-            ->find('tagged', ['tags' => [$search]]);
+            ->find('tagged', tags: [$search]);
         $finalQuery = $matchesEventDetails->union($matchesTag);
 
         $this->set([
@@ -203,8 +203,8 @@ class EventsController extends ApiController
         $query = $this->Events
             ->find('forApi', $this->getFinderOptions())
             ->find('upcoming')
-            ->find('inCategory', ['categoryId' => $categoryId])
-            ->find('tagged', ['tags' => $tags]);
+            ->find('inCategory', categoryId: $categoryId)
+            ->find('tagged', tags: $tags);
 
         $this->set([
             '_entities' => [
@@ -360,9 +360,7 @@ class EventsController extends ApiController
         if (!$eventExists) {
             throw new BadRequestException("Event with ID $eventId not found");
         }
-        $event = $this->Events->get($eventId, [
-            'contain' => ['Categories', 'EventSeries', 'Images', 'Tags', 'Users'],
-        ]);
+        $event = $this->Events->get($eventId, contain: ['Categories', 'EventSeries', 'Images', 'Tags', 'Users']);
 
         // Check user permission
         if (!$this->tokenUser || $event->user_id != $this->tokenUser->id) {

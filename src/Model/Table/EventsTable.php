@@ -186,10 +186,10 @@ class EventsTable extends Table
     /**
      * Applies default parameters to the events query for an API call
      *
-     * @param Query $query Query
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findForApi(Query $query)
+    public function findForApi(\Cake\ORM\Query\SelectQuery $query)
     {
         $query
             ->find('published')
@@ -201,10 +201,10 @@ class EventsTable extends Table
     /**
      * Modifies a query to only return published events
      *
-     * @param Query $query Query
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findPublished(Query $query)
+    public function findPublished(\Cake\ORM\Query\SelectQuery $query)
     {
         $query->where(['Events.published' => true]);
 
@@ -214,13 +214,13 @@ class EventsTable extends Table
     /**
      * Limits the query to events on or after the specified date
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'date' expected
-     * @return $this|Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findStartingOn(Query $query, array $options)
+    public function findStartingOn(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('date', $options)) {
             throw new InternalErrorException("\$options['date'] unspecified");
@@ -243,13 +243,13 @@ class EventsTable extends Table
      *
      * Allows 'date' to be null, which leaves the query unaffected
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'date' expected
-     * @return $this|Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findEndingOn(Query $query, array $options)
+    public function findEndingOn(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('date', $options)) {
             throw new InternalErrorException("\$options['date'] unspecified");
@@ -276,13 +276,13 @@ class EventsTable extends Table
      *
      * Allows 'tags' to be null, which leaves the query unaffected
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'tags' expected
-     * @return $this|Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findTagged(Query $query, array $options)
+    public function findTagged(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('tags', $options)) {
             throw new InternalErrorException("\$options['tags'] unspecified");
@@ -311,13 +311,13 @@ class EventsTable extends Table
     /**
      * Limits the query to events in the specified category
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'categoryId' expected
-     * @return $this|Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findInCategory(Query $query, array $options)
+    public function findInCategory(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('categoryId', $options)) {
             throw new InternalErrorException("\$options['categoryId'] unspecified");
@@ -334,19 +334,19 @@ class EventsTable extends Table
     /**
      * Limits the query to events on or after today's date
      *
-     * @param Query $query Query
-     * @return $this|Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findUpcoming(Query $query)
+    public function findUpcoming(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->where([
                 function (QueryExpression $exp) {
                     $timezone = Configure::read('localTimezone');
 
-                    return $exp->gte('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
+                    return $exp->gte('date', (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -354,19 +354,19 @@ class EventsTable extends Table
     /**
      * Limits the query to events before today's date
      *
-     * @param Query $query Query
-     * @return $this|Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findPast(Query $query)
+    public function findPast(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->where([
                 function (QueryExpression $exp) {
                     $timezone = Configure::read('localTimezone');
 
-                    return $exp->lt('date', (new FrozenTime('now', $timezone))->format('Y-m-d'));
+                    return $exp->lt('date', (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d'));
                 },
             ]);
     }
@@ -377,18 +377,18 @@ class EventsTable extends Table
      * Orders with increasing dates and times by default, but ['direction' => 'DESC'] will sort by decreasing dates and
      * increasing times (such as when viewing past events from the most recent to the most... uh... past. Most past.
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, notably 'direction'
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findOrdered(Query $query, array $options)
+    public function findOrdered(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         $direction = $options['direction'] ?? 'ASC';
         if (!in_array(strtoupper($direction), ['ASC', 'DESC'])) {
             throw new InternalErrorException('Unrecognized ordering direction: ' . $direction);
         }
 
-        return $query->order([
+        return $query->orderBy([
             'date' => $direction,
             'time_start' => 'ASC',
         ]);
@@ -404,7 +404,7 @@ class EventsTable extends Table
     {
         return $this
             ->find('upcoming')
-            ->find('inCategory', ['categoryId' => $categoryId])
+            ->find('inCategory', categoryId: $categoryId)
             ->count();
     }
 
@@ -427,7 +427,7 @@ class EventsTable extends Table
             ->select(['id'])
             ->where(['published' => true])
             ->contain([
-                'Tags' => function (Query $query) {
+                'Tags' => function (\Cake\ORM\Query\SelectQuery $query) {
                     return $query->select(['id', 'name']);
                 },
             ]);
@@ -457,12 +457,12 @@ class EventsTable extends Table
     /**
      * Limits a query to events in a specified month
      *
-     * @param Query $query Query object
+     * @param \Cake\ORM\Query\SelectQuery $query Query object
      * @param array $options Options array
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      */
-    public function findInMonth(Query $query, $options)
+    public function findInMonth(\Cake\ORM\Query\SelectQuery $query, $options)
     {
         if (!isset($options['month'])) {
             throw new InternalErrorException('Month parameter missing');
@@ -486,10 +486,10 @@ class EventsTable extends Table
     /**
      * Returns a query modified to contain() all models that the Event model is associated with
      *
-     * @param Query $query Query object
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query object
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findWithAllAssociated(Query $query)
+    public function findWithAllAssociated(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->contain([
@@ -504,25 +504,25 @@ class EventsTable extends Table
     /**
      * Returns a query to collect the information needed for the event moderation page
      *
-     * @param Query $query Query object
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query object
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findForModeration(Query $query)
+    public function findForModeration(\Cake\ORM\Query\SelectQuery $query)
     {
         return $query
             ->find('withAllAssociated')
             ->contain([
-                'EventSeries' => function (Query $q) {
+                'EventSeries' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q
                         ->select(['id', 'title'])
                         ->contain([
-                            'Events' => function (Query $q) {
+                            'Events' => function (\Cake\ORM\Query\SelectQuery $q) {
                                 return $q->select(['id', 'series_id']);
                             },
                         ]);
                 },
             ])
-            ->orderAsc('Events.created')
+            ->orderByAsc('Events.created')
             ->where([
                 'OR' => [
                     function (QueryExpression $exp) {
@@ -565,7 +565,7 @@ class EventsTable extends Table
                         return $exp->isNotNull('date');
                     },
                 ])
-                ->orderAsc('date')
+                ->orderByAsc('date')
                 ->enableHydration(false);
 
             // Apply optional month/year limits
@@ -575,7 +575,7 @@ class EventsTable extends Table
 
             $dates = [];
             foreach ($query->all() as $result) {
-                /** @var FrozenDate $date */
+                /** @var \Cake\I18n\Date $date */
                 $date = $result['date'];
                 $dates[] = $date->format('Y-m-d');
             }
@@ -607,12 +607,12 @@ class EventsTable extends Table
      * uniqueness. For example, /locations/i-m-foo would look for events at locations called "I'm Foo", "I-M Foo",
      * and "i m foo".
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'location' expected
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findAtLocation(Query $query, array $options)
+    public function findAtLocation(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('location', $options) && !array_key_exists('location_slug', $options)) {
             throw new InternalErrorException('Either \'location\' or \'location_slug\' must be specified');
@@ -655,12 +655,12 @@ class EventsTable extends Table
      * Takes a 'q' search term and modifies the query to return events with searchable fields or associated models
      * containing that term, which could be in a title, description, or tag.
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'q' expected
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findBySearchableFields(Query $query, array $options)
+    public function findBySearchableFields(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         if (!array_key_exists('q', $options)) {
             throw new InternalErrorException('\'q\' search term not provided');
@@ -692,7 +692,7 @@ class EventsTable extends Table
      *
      * @param string $searchTerm An arbitrary string to search for
      * @param string $direction Either 'upcoming', 'past', or 'all' (ignored) expected
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
     public function getSearchResultsQuery($searchTerm, $direction)
     {
@@ -702,8 +702,8 @@ class EventsTable extends Table
         if (in_array($direction, ['upcoming', 'past'])) {
             $baseQuery->find($direction);
         }
-        $fieldsQuery = (clone $baseQuery)->find('search', ['search' => ['q' => $searchTerm]]);
-        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', ['tags' => [mb_strtolower($searchTerm)]]);
+        $fieldsQuery = (clone $baseQuery)->find('search', search: ['q' => $searchTerm]);
+        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', tags: [mb_strtolower($searchTerm)]);
 
         return $fieldsQuery->union($tagsQuery);
     }
@@ -711,19 +711,19 @@ class EventsTable extends Table
     /**
      * forFeedWidget custom finder
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options 'filters' required, 'startDate' optional, in YYYY-MM-DD format
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findForFeedWidget(Query $query, $options)
+    public function findForFeedWidget(\Cake\ORM\Query\SelectQuery $query, $options)
     {
         if (!isset($options['filters'])) {
             throw new InternalErrorException('filters not passed to find(\'forFeedWidget\')');
         }
 
         $timezone = Configure::read('localTimezone');
-        $defaultStartDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
+        $defaultStartDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
         $startDate = $options['startDate'] ?? $defaultStartDate;
         $filters = $options['filters'];
         $datesPerPage = 7;
@@ -737,7 +737,7 @@ class EventsTable extends Table
         $query
             ->find('published')
             ->find('ordered')
-            ->find('filteredForWidget', ['filters' => $filters])
+            ->find('filteredForWidget', filters: $filters)
             ->select([
                 'id',
                 'title',
@@ -749,7 +749,7 @@ class EventsTable extends Table
                 return $exp->in('date', $dates);
             })
             ->contain([
-                'Categories' => function (Query $q) {
+                'Categories' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q->select(['id', 'name', 'slug']);
                 },
                 'Images',
@@ -770,7 +770,7 @@ class EventsTable extends Table
     {
         $results = $this
             ->find('published')
-            ->find('filteredForWidget', ['filters' => $filters])
+            ->find('filteredForWidget', filters: $filters)
             ->select(['date'])
             ->distinct('date')
             ->where([
@@ -779,7 +779,7 @@ class EventsTable extends Table
                 },
             ])
             ->limit($limit)
-            ->orderAsc('date')
+            ->orderByAsc('date')
             ->toArray();
 
         return Hash::extract($results, '{n}.date');
@@ -788,12 +788,12 @@ class EventsTable extends Table
     /**
      * Modifies a query to apply $options['filters'] to it
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options 'filters' required
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findFilteredForWidget(Query $query, $options)
+    public function findFilteredForWidget(\Cake\ORM\Query\SelectQuery $query, $options)
     {
         $filters = $options['filters'];
         $categoryFilter = $filters['category'] ?? null;
@@ -851,12 +851,12 @@ class EventsTable extends Table
     /**
      * forMonthWidget custom finder
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options 'filters', 'year', and 'month required
-     * @return Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \Cake\Http\Exception\InternalErrorException
      */
-    public function findForMonthWidget(Query $query, $options)
+    public function findForMonthWidget(\Cake\ORM\Query\SelectQuery $query, $options)
     {
         foreach (['filters', 'year', 'month'] as $requiredParam) {
             if (!isset($options[$requiredParam])) {
@@ -871,7 +871,7 @@ class EventsTable extends Table
             ->find('inMonth', compact('year', 'month'))
             ->find('published')
             ->find('ordered')
-            ->find('filteredForWidget', ['filters' => $options['filters']])
+            ->find('filteredForWidget', filters: $options['filters'])
             ->select([
                 'id',
                 'title',
@@ -880,7 +880,7 @@ class EventsTable extends Table
                 'time_start',
             ])
             ->contain([
-                'Categories' => function (Query $q) {
+                'Categories' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q->select(['id', 'name', 'slug']);
                 },
                 'Images',
@@ -892,18 +892,18 @@ class EventsTable extends Table
     /**
      * Modifies a query to only return events taking place today and in the six days that follow
      *
-     * @param Query $query Query
-     * @return Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findUpcomingWeek(Query $query)
+    public function findUpcomingWeek(\Cake\ORM\Query\SelectQuery $query)
     {
         $timezone = Configure::read('localTimezone');
-        $startingDate = (new FrozenTime('now', $timezone))->format('Y-m-d');
-        $endingDate = (new FrozenTime('now + 6 days', $timezone))->format('Y-m-d');
+        $startingDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
+        $endingDate = (new \Cake\I18n\DateTime('now + 6 days', $timezone))->format('Y-m-d');
 
         $query
-            ->find('startingOn', ['date' => $startingDate])
-            ->find('endingOn', ['date' => $endingDate]);
+            ->find('startingOn', date: $startingDate)
+            ->find('endingOn', date: $endingDate);
 
         return $query;
     }
@@ -911,17 +911,17 @@ class EventsTable extends Table
     /**
      * Limits the query to events on the specified date
      *
-     * @param Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param array $options Array of options, with 'date' expected
-     * @return $this|Query
+     * @return $this|\Cake\ORM\Query\SelectQuery
      * @throws InternalErrorException
      * @throws BadRequestException
      */
-    public function findOn(Query $query, array $options)
+    public function findOn(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         return $query
-            ->find('startingOn', ['date' => $options['date']])
-            ->find('endingOn', ['date' => $options['date']]);
+            ->find('startingOn', date: $options['date'])
+            ->find('endingOn', date: $options['date']);
     }
 
     /**
@@ -945,7 +945,7 @@ class EventsTable extends Table
         /** @var Event $event */
         $event = $this
             ->find('published')
-            ->find('tagged', ['tags' => ['first thursday']])
+            ->find('tagged', tags: ['first thursday'])
             ->find('withAllAssociated')
             ->where(['Events.user_id IN' => array_keys($allowedAuthors)])
 //            ->contain([
@@ -954,7 +954,7 @@ class EventsTable extends Table
 //                'Images',
 //                'Tags',
 //            ])
-            ->orderDesc('date')
+            ->orderByDesc('date')
             ->first();
 
         return $event;

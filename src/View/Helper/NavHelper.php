@@ -74,8 +74,8 @@ class NavHelper extends Helper
         $populatedDates = $eventsTable->getPopulatedDates();
         $dayLinks = [];
         $timezone = Configure::read('localTimezone');
-        $today = (new FrozenTime('now', $timezone))->format('Y-m-d');
-        $tomorrow = (new FrozenTime('tomorrow', $timezone))->format('Y-m-d');
+        $today = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
+        $tomorrow = (new \Cake\I18n\DateTime('tomorrow', $timezone))->format('Y-m-d');
         $limit = 7;
         foreach ($populatedDates as $date) {
             if ($date < $today) {
@@ -144,7 +144,7 @@ class NavHelper extends Helper
             ->find('upcoming')
             ->select(['location', 'location_slug'])
             ->distinct(['location', 'location_slug'])
-            ->orderAsc('location')
+            ->orderByAsc('location')
             ->enableHydration(false)
             ->toArray();
     }
@@ -172,7 +172,7 @@ class NavHelper extends Helper
         $categoriesTable = TableRegistry::getTableLocator()->get('Categories');
         $categories = $categoriesTable
             ->find()
-            ->orderAsc('weight')
+            ->orderByAsc('weight')
             ->toArray();
 
         /** @var EventsTable $eventsTable */

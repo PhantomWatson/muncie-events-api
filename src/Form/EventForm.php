@@ -138,9 +138,9 @@ class EventForm
     /**
      * Returns a FrozenTime object, throwing a BadRequestException if the provided time string can't be parsed
      *
-     * @param FrozenDate|string $date Date object or string
+     * @param \Cake\I18n\Date|string $date Date object or string
      * @param array|string $time Time string (e.g. 2:30pm, 02:30 PM, 14:30) or hour/minute/meridian array
-     * @return FrozenTime
+     * @return \Cake\I18n\DateTime
      * @throws BadRequestException
      */
     public function parseTime($date, $time)
@@ -161,7 +161,7 @@ class EventForm
                 $time = $time['hour'] . ':' . $time['minute'] . $time['meridian'];
             }
 
-            return new FrozenTime($date . ' ' . $time, Event::TIMEZONE);
+            return new \Cake\I18n\DateTime($date . ' ' . $time, Event::TIMEZONE);
         } catch (Exception $e) {
             throw new BadRequestException(sprintf(
                 'Invalid time: %s. Please provide this value in a format such as 2:30pm, 02:30 PM, 14:30, etc.',
@@ -174,13 +174,13 @@ class EventForm
      * Returns a FrozenDate object, throwing a BadRequestException if the provided date string can't be parsed
      *
      * @param string $date Date string in format YYYY-MM-DD
-     * @return FrozenDate
+     * @return \Cake\I18n\Date
      * @throws BadRequestException
      */
     public function parseDate($date)
     {
         try {
-            return new FrozenDate($date);
+            return new \Cake\I18n\Date($date);
         } catch (Exception $e) {
             throw new BadRequestException(sprintf(
                 'Invalid date: %s. Please provide a date in the format YYYY-MM-DD.',

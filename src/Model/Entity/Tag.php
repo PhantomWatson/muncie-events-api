@@ -16,7 +16,7 @@ use Cake\Utility\Text;
  * @property bool $listed
  * @property bool $selectable
  * @property int $user_id
- * @property FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  * @property string $slug
  *
  * @property Tag $parent_tag
@@ -36,7 +36,7 @@ class Tag extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'parent_id' => true,
         'lft' => true,
         'rght' => true,

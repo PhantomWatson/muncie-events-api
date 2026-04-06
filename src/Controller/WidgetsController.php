@@ -111,7 +111,7 @@ class WidgetsController extends AppController
             ], true),
             'categories' => $this->Events->Categories
                 ->find()
-                ->orderAsc('id')
+                ->orderByAsc('id')
                 ->all(),
         ]);
     }
@@ -205,7 +205,7 @@ class WidgetsController extends AppController
         // Process various date information
         $timezone = Configure::read('localTimezone');
         if (!$yearMonth) {
-            $yearMonth = (new FrozenTime('now', $timezone))->format('Y-m');
+            $yearMonth = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m');
         }
         $split = explode('-', $yearMonth);
         $year = reset($split);
@@ -219,7 +219,7 @@ class WidgetsController extends AppController
         $prevMonth = ($month == 1) ? 12 : $month - 1;
         $nextYear = ($month == 12) ? $year + 1 : $year;
         $nextMonth = ($month == 12) ? 1 : $month + 1;
-        $today = (new FrozenTime('now', $timezone))->format('Ymj');
+        $today = (new \Cake\I18n\DateTime('now', $timezone))->format('Ymj');
 
         $options = $this->request->getQueryParams();
         $filters = $this->Widget->getEventFilters($options);
