@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "alek13/slack": "^1.10",
-        "bcrowe/cakephp-api-pagination": "^2.1",
         "cakephp/cakephp": "^5.3",
         "cakephp/migrations": "^5.0",
         "cakephp/plugin-installer": "^2.0",
@@ -20,7 +19,6 @@
         "hbattat/verifyemail": "^1.0",
         "josegonzalez/dotenv": "^4.0",
         "mobiledetect/mobiledetectlib": "^4.8.03",
-        "phantomwatson/cakephp-json-api": "^1.0.4",
         "php": ">=8.5",
         "sabre/vobject": "^4.0",
         "xety/cake3-cookieauth": "^1.1"
@@ -41,7 +39,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src"
+            "App\\": "src",
+            "BryanCrowe\\ApiPagination\\": "./plugins/cakephp-api-pagination/src"
         }
     },
     "autoload-dev": {
