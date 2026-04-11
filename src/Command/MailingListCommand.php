@@ -7,12 +7,12 @@ use App\Model\Table\EventsTable;
 use App\Model\Table\MailingListLogTable;
 use App\Model\Table\MailingListTable;
 use BadMethodCallException;
+use Cake\Command\Command;
 use Cake\Console\Arguments;
-use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\Mailer\Exception\MissingActionException;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
@@ -33,15 +33,21 @@ class MailingListCommand extends Command
 {
     use MailerAwareTrait;
 
-    const WEEKLY_DELIVERY_DAY = 'Thursday';
-    const DEFAULT_RECIPIENT_EMAIL = 'graham@phantomwatson.com';
+    const string WEEKLY_DELIVERY_DAY = 'Thursday';
+    const string DEFAULT_RECIPIENT_EMAIL = 'graham@phantomwatson.com';
 
     /**
      * The limit of how many recipients will be emailed during this iteration
      *
      * Implemented due to InMotion's 250 messages per hour limit
      */
-    const RECIPIENT_LIMIT = 10;
+    const int RECIPIENT_LIMIT = 10;
+
+    private EventsTable $Events;
+    private MailingListTable $MailingList;
+    private ConsoleIo $io;
+    private string|null $recipientEmail;
+    private bool|null $overrideWeekly;
 
     /**
      * Command initialize method
@@ -148,7 +154,7 @@ class MailingListCommand extends Command
             ->find('published')
             ->find('ordered')
             ->find('withAllAssociated')
-            ->where(['date' => (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d')])
+            ->where(['date' => new DateTime('now', $timezone)->format('Y-m-d')])
             ->toArray();
 
         $eventCount = count($events);
@@ -167,7 +173,7 @@ class MailingListCommand extends Command
 
         // Send emails
         foreach ($recipients as $recipient) {
-            list($success, $message) = $this->sendDaily($recipient, $events);
+            [$success, $message] = $this->sendDaily($recipient, $events);
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\n Done");
@@ -279,7 +285,7 @@ class MailingListCommand extends Command
 
         // Send emails
         foreach ($recipients as $recipient) {
-            list($success, $message) = $this->sendWeekly($recipient, $events);
+            [$success, $message] = $this->sendWeekly($recipient, $events);
             $this->io->{$success ? 'success' : 'error'}($message);
         }
         $this->io->success("\nDone");
@@ -295,7 +301,7 @@ class MailingListCommand extends Command
     {
         $timezone = Configure::read('localTimezone');
 
-        return (new \Cake\I18n\DateTime('now', $timezone))->format('l') == self::WEEKLY_DELIVERY_DAY;
+        return new DateTime('now', $timezone)->format('l') == self::WEEKLY_DELIVERY_DAY;
     }
 
     /**

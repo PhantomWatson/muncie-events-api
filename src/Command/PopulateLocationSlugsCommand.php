@@ -2,12 +2,12 @@
 namespace App\Command;
 
 use App\Model\Entity\Event;
+use Cake\Command\Command;
+use Cake\Command\Helper\ProgressHelper;
 use Cake\Console\Arguments;
-use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\ORM\TableRegistry;
-use Cake\Shell\Helper\ProgressHelper;
 
 /**
  * PopulateLocationSlugs command
@@ -27,9 +27,7 @@ class PopulateLocationSlugsCommand extends Command
      */
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
-        $parser = parent::buildOptionParser($parser);
-
-        return $parser;
+        return parent::buildOptionParser($parser);
     }
 
     /**
@@ -42,7 +40,7 @@ class PopulateLocationSlugsCommand extends Command
      * @param ConsoleIo $io The console io
      * @return void
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $io->out('Collecting events...');
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
@@ -71,7 +69,7 @@ class PopulateLocationSlugsCommand extends Command
                 $this->abort();
             }
 
-            $progress->increment(1);
+            $progress->increment();
             $progress->draw();
         }
 

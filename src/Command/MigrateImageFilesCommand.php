@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Cake\Command\Command;
+use Cake\Command\Helper\ProgressHelper;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use Cake\Shell\Helper\ProgressHelper;
 
 /**
  * Copies image files from a previous version (e.g. CakePHP 3) to the current version of the website
@@ -26,9 +26,7 @@ class MigrateImageFilesCommand extends Command
      */
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
-        $parser = parent::buildOptionParser($parser);
-
-        return $parser;
+        return parent::buildOptionParser($parser);
     }
 
     /**
@@ -36,9 +34,9 @@ class MigrateImageFilesCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return null|void|int The exit code or null for success
+     * @return void The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $cake3DirName = Configure::read('migrateFilesFromDir');
         if (!$cake3DirName) {
@@ -94,7 +92,7 @@ class MigrateImageFilesCommand extends Command
                 if (!file_exists($destinationFile)) {
                     copy($sourceFile, $destinationFile);
                 }
-                $progress->increment(1);
+                $progress->increment();
                 $progress->draw();
             }
             $io->out();
