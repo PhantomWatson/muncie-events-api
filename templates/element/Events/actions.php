@@ -1,7 +1,7 @@
 <?php
 /**
- * @var AppView $this
- * @var Event $event
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Event $event
  * @var array $authUser
  */
 

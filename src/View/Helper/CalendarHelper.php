@@ -14,7 +14,7 @@ use Cake\View\Helper;
 /**
  * Class CalendarHelper
  * @package App\View\Helper
- * @property Helper\HtmlHelper $Html
+ * @property \Cake\View\Helper\HtmlHelper $Html
  */
 class CalendarHelper extends Helper
 {

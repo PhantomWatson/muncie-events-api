@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ * @var string $pageTitle
+ */
 use App\View\AppView;
 /**
  * @var AppView $this

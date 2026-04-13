@@ -1,7 +1,7 @@
 <?php
 /**
- * @var AppView $this
- * @var EventSeries $eventSeries
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\EventSeries $eventSeries
  * @var string $pageTitle
  */
 

@@ -9,6 +9,8 @@ use PHPUnit\Exception;
 
 /**
  * ContactControllerTest class
+ *
+ * @link \App\Controller\V1\ContactController
  */
 class ContactControllerTest extends ApplicationTest
 {

@@ -9,7 +9,7 @@ use Cake\View\Helper;
 use Cake\View\Helper\HtmlHelper;
 
 /**
- * @property HtmlHelper $Html
+ * @property \Cake\View\Helper\HtmlHelper $Html
  */
 class TagHelper extends Helper
 {

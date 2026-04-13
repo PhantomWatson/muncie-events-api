@@ -2,10 +2,12 @@
 /**
  * @var \App\Model\Entity\MailingList $subscription
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet|\App\Model\Entity\Category[] $categories
+ * @var \App\Model\Entity\Category[]|\Cake\Collection\CollectionInterface $categories
  * @var array $authUser
  * @var array $days
  * @var string $pageTitle
+ * @var string $categoriesError
+ * @var string $frequencyError
  */
 
 use Cake\Utility\Hash;

@@ -12,8 +12,8 @@ use Cake\ORM\Entity;
  * @property int $event_id
  * @property int $weight
  * @property string $caption
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
  * @property Image $image
  * @property Event $event

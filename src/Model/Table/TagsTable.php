@@ -18,23 +18,32 @@ use Cake\Validation\Validator;
 /**
  * Tags Model
  *
- * @property TagsTable|BelongsTo $ParentTags
- * @property UsersTable|BelongsTo $Users
- * @property TagsTable|HasMany $ChildTags
- * @property EventsTable|BelongsToMany $Events
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $ParentTags
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $ChildTags
+ * @property \App\Model\Table\EventsTable&\Cake\ORM\Association\BelongsToMany $Events
  * @property Tag[] $children
  *
- * @method Tag get($primaryKey, $options = [])
- * @method Tag newEntity($data = null, array $options = [])
- * @method Tag[] newEntities(array $data, array $options = [])
- * @method Tag|bool save(EntityInterface $entity, $options = [])
- * @method Tag patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Tag[] patchEntities($entities, array $data, array $options = [])
- * @method Tag findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Tag get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Tag newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Tag[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Tag|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Tag patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Tag[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Tag findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @method \Cake\ORM\Query\SelectQuery findByName($name)
  *
  * @mixin TimestampBehavior
  * @mixin TreeBehavior
+ * @method \App\Model\Entity\Tag newEmptyEntity()
+ * @method \App\Model\Entity\Tag saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Tag>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Tag> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Tag>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Tag> deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \Cake\ORM\Behavior\TreeBehavior
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior, Tree: \Cake\ORM\Behavior\TreeBehavior}>
  */
 class TagsTable extends Table
 {

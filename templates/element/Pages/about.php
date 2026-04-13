@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ */
 // The contents of this page are returned by the API endpoint /pages/about
 use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;

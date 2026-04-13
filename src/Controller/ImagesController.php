@@ -15,7 +15,7 @@ use Laminas\Diactoros\UploadedFile;
 /**
  * Images Controller
  *
- * @property ImagesTable $Images
+ * @property \App\Model\Table\ImagesTable $Images
  * @property UsersTable $Users
  *
  * @method Image[]|ResultSetInterface paginate($object = null, array $settings = [])

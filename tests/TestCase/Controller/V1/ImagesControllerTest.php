@@ -8,6 +8,8 @@ use PHPUnit\Exception;
 
 /**
  * ImagesControllerTest class
+ *
+ * @link \App\Controller\V1\ImagesController
  */
 class ImagesControllerTest extends ApplicationTest
 {

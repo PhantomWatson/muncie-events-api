@@ -1,7 +1,8 @@
 <?php
 /**
- * @var \Cake\ORM\ResultSet|\App\Model\Entity\Category[] $categories
+ * @var \App\Model\Entity\Category[]|\Cake\Collection\CollectionInterface $categories
  * @var string $pageTitle
+ * @var \App\View\AppView $this
  */
 
 use Cake\Routing\Router;

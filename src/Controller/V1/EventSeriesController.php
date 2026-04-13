@@ -13,7 +13,7 @@ use Exception;
 /**
  * Class EventSeriesController
  * @package App\Controller\V1
- * @property EventSeriesTable $EventSeries
+ * @property \App\Model\Table\EventSeriesTable $EventSeries
  */
 class EventSeriesController extends ApiController
 {

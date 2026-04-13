@@ -16,8 +16,8 @@ use Exception;
  * Class AppController
  *
  * @package App\Controller
- * @property EventsTable $Events
- * @property AuthenticationComponent $Authentication
+ * @property \App\Model\Table\EventsTable $Events
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  */
 class AppController extends Controller
 {

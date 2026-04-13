@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $event_id
- * @property int $tag_id
+ * @property int|null $tag_id
  *
  * @property Event $event
  * @property Tag $tag

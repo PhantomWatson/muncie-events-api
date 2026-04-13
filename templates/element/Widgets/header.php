@@ -3,6 +3,7 @@
  * @var array $filters
  * @var string $allEventsUrl
  * @var \Cake\ORM\ResultSet $categories
+ * @var \App\View\AppView $this
  */
 
 use Cake\Utility\Hash;

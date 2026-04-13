@@ -1,12 +1,12 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var Event[] $events
  * @var int $count
  * @var int $countOppositeDirection
  * @var string $direction
  * @var string $oppositeDirection
- * @var Tag $tag
+ * @var \App\Model\Entity\Tag $tag
  */
 
 use App\Model\Entity\Event;

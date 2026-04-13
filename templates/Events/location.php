@@ -7,6 +7,7 @@
  * @var string $headerText
  * @var string $locationName
  * @var string $locationSlug
+ * @var \App\View\AppView $this
  */
 
 use App\Application;

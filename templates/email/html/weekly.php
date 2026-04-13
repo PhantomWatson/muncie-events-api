@@ -3,6 +3,7 @@
  * @var \App\Model\Entity\MailingList $recipient
  * @var \App\Model\Entity\Event[] $events
  * @var array $settingsDisplay
+ * @var \App\View\AppView $this
  */
 
 use App\View\Helper\CalendarHelper;

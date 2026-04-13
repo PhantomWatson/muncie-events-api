@@ -1,7 +1,7 @@
 <?php
 /**
- * @var AppView $this
- * @var Category $category
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Category $category
  * @var \App\Model\Entity\Event[] $events
  */
 

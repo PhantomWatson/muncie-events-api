@@ -9,6 +9,7 @@
  * @var string $monthName
  * @var string $today YYYYMMDD
  * @var string $year
+ * @var \App\View\AppView $this
  */
 
 use App\View\Helper\CalendarHelper;

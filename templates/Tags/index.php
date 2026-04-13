@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Tag[] $tags
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $tagsByFirstLetter
  * @var callable $calculateFontSize
  * @var null|int $categoryId

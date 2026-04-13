@@ -3,6 +3,7 @@
  * @var array $locations
  * @var int $count
  * @var string $pageTitle
+ * @var \App\View\AppView $this
  */
 ?>
 <h1 class="page_title">

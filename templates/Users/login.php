@@ -1,8 +1,8 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var string $pageTitle
- * @var User $user
+ * @var \App\Model\Entity\User $user
  */
 
 use App\Model\Entity\User;

@@ -6,7 +6,7 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Table;
 
 /**
- * @property MailingListTable|BelongsTo $MailingList
+ * @property \App\Model\Table\MailingListTable&\Cake\ORM\Association\BelongsTo $MailingList
  */
 class MailingListLogTable extends Table
 {

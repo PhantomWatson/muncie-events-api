@@ -211,6 +211,7 @@ class MailingListCommand extends Command
         }
 
         try {
+            /** @uses \App\Mailer\MailingListMailer::daily() */
             $this->getMailer('MailingList')->send('daily', [$recipient, $events]);
             $this->MailingList->markDailyAsProcessed($recipient, MailingListLogTable::EMAIL_SENT);
 

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Tag $tag
+ * @var \App\View\AppView $this
  */
 
 echo $this->Form->create($tag);

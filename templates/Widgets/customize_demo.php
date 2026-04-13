@@ -3,6 +3,7 @@
  * @var string $iframeStyles
  * @var string $iframeUrl
  * @var string $codeUrl
+ * @var \App\View\AppView $this
  */
 ?>
 

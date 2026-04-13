@@ -3,6 +3,7 @@
  * @var \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface $events
  * @var bool $isAjax
  * @var int[] $eventIds
+ * @var \App\View\AppView $this
  */
 
 use App\View\Helper\CalendarHelper;

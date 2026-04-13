@@ -7,6 +7,8 @@ use Cake\TestSuite\IntegrationTestTrait;
 
 /**
  * App\Controller\ImagesController Test Case
+ *
+ * @link \App\Controller\ImagesController
  */
 class ImagesControllerTest extends ApplicationTest
 {

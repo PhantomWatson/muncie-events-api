@@ -12,7 +12,9 @@ use Cake\Routing\Router;
  * @property string $slug
  * @property int $weight
  *
- * @property Event[] $events
+ * @property \App\Model\Entity\Event[] $events
+ * @property string $url
+ * @property \App\Model\Entity\MailingList[] $mailing_list
  */
 class Category extends Entity
 {
@@ -43,6 +45,7 @@ class Category extends Entity
      * Returns the URL for the page that lists this category's upcoming events
      *
      * @return string
+     * @see \App\Model\Entity\Category::$url
      */
     protected function _getUrl()
     {

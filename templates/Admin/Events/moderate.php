@@ -1,10 +1,10 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $groupedEvents
  * @var Event $event
  * @var Image $image
- * @var Event[] $events
+ * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface $events
  * @var string $pageTitle
  * @var Tag $tag
  */

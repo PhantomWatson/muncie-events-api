@@ -1,10 +1,10 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $dividedEvents
  * @var bool $canEdit
  * @var Event $event
- * @var EventSeries $eventSeries
+ * @var \App\Model\Entity\EventSeries $eventSeries
  * @var string $pageTitle
  */
 use App\Model\Entity\Event;

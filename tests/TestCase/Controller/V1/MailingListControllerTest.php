@@ -15,6 +15,8 @@ use PHPUnit\Exception;
 
 /**
  * MailingListController Test Case
+ *
+ * @link \App\Controller\V1\MailingListController
  */
 class MailingListControllerTest extends ApplicationTest
 {

@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+?>
 <div id="event_accordion_loading_indicator" style="display: none;">
     <img id="" src="/img/loading_small.gif" alt="..." /> Loading...
 </div>

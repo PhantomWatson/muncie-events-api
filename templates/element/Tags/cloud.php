@@ -1,7 +1,7 @@
 <?php
 /**
- * @var AppView $this
- * @var Tag[] $tags
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Tag[]|\Cake\Collection\CollectionInterface $tags
  */
 
 use App\Model\Entity\Tag;

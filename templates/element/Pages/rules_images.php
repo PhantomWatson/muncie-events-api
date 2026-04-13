@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ */
     $uploadMax = ini_get('upload_max_filesize');
     $postMax = ini_get('post_max_size');
     $serverFilesizeLimit = min($uploadMax, $postMax);

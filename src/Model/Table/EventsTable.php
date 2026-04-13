@@ -25,22 +25,30 @@ use Cake\Validation\Validator;
 /**
  * Events Model
  *
- * @property UsersTable|BelongsTo $Users
- * @property CategoriesTable|BelongsTo $Categories
- * @property EventSeriesTable|BelongsTo $EventSeries
- * @property ImagesTable|BelongsToMany $Images
- * @property TagsTable|BelongsToMany $Tags
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $Categories
+ * @property \App\Model\Table\EventSeriesTable&\Cake\ORM\Association\BelongsTo $EventSeries
+ * @property \App\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsToMany $Images
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
  *
- * @method Event get($primaryKey, $options = [])
- * @method Event newEntity($data = null, array $options = [])
- * @method Event[] newEntities(array $data, array $options = [])
- * @method Event|bool save(EntityInterface $entity, $options = [])
- * @method Event patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Event[] patchEntities($entities, array $data, array $options = [])
- * @method Event findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Event get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Event newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Event[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Event|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Event patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Event[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Event findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  *
  * @mixin TimestampBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
+ * @method \App\Model\Entity\Event newEmptyEntity()
+ * @method \App\Model\Entity\Event saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event> deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior, Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class EventsTable extends Table
 {

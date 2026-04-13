@@ -28,11 +28,11 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  * Your application's default view class
  *
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
- * @property CalendarHelper $Calendar
- * @property IconHelper $Icon
- * @property NavHelper $Nav
- * @property RecaptchaHelper $Recaptcha
- * @property TagHelper $Tag
+ * @property \App\View\Helper\CalendarHelper $Calendar
+ * @property \App\View\Helper\IconHelper $Icon
+ * @property \App\View\Helper\NavHelper $Nav
+ * @property \Recaptcha\View\Helper\RecaptchaHelper $Recaptcha
+ * @property \App\View\Helper\TagHelper $Tag
  */
 class AppView extends View
 {

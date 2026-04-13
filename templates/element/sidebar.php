@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Category $category
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $authUser
  * @var int $unapprovedCount
  */

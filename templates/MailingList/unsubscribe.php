@@ -3,6 +3,7 @@
  * @var string $pageTitle
  * @var string $hash
  * @var int $subscriberId
+ * @var \App\View\AppView $this
  */
 ?>
 

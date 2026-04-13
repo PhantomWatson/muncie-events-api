@@ -1,7 +1,7 @@
 <?php
 /**
- * @var AppView $this
- * @var Image[]|CollectionInterface $images
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Image[]|\Cake\Collection\CollectionInterface $images
  */
 
 use App\Model\Entity\Image;

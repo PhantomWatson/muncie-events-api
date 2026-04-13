@@ -1,7 +1,8 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $ogMetaTags
+ * @var mixed $pageTitle
  */
 use App\View\AppView;
 use Cake\Utility\Text;

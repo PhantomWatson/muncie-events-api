@@ -1,8 +1,8 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var array $authUser
- * @var Event $event
+ * @var \App\Model\Entity\Event $event
  * @var string $filesizeLimit
  */
 

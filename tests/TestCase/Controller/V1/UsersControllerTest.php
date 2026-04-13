@@ -14,6 +14,8 @@ use PHPUnit\Exception;
 
 /**
  * UsersControllerTest class
+ *
+ * @link \App\Controller\V1\UsersController
  */
 class UsersControllerTest extends ApplicationTest
 {

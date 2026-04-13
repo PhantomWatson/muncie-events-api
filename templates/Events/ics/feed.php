@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Event[] $events
+ * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface $events
  */
 
 use App\Event\VEvent;

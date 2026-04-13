@@ -29,11 +29,12 @@ use Recaptcha\Controller\Component\RecaptchaComponent;
 /**
  * Events Controller
  *
- * @property EventsTable $Events
+ * @property \App\Model\Table\EventsTable $Events
  * @property TagsTable $Tags
  * @property RecaptchaComponent $Recaptcha
  *
  * @method Event[]|ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Calendar\Controller\Component\CalendarComponent $Calendar
  */
 class EventsController extends AppController
 {

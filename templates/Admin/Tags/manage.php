@@ -2,6 +2,7 @@
 /**
  * @var string $pageTitle
  * @var \App\Model\Entity\Tag $newTag
+ * @var \App\View\AppView $this
  */
 ?>
 

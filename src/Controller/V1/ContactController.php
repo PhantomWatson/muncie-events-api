@@ -49,6 +49,7 @@ class ContactController extends ApiController
             'email' => $this->request->getData('email'),
             'body' => $this->request->getData('body'),
         ];
+        /** @uses \App\Mailer\ContactMailer::contact() */
         $this->getMailer('Contact')->send('contact', [$data]);
 
         $this->set204Response();

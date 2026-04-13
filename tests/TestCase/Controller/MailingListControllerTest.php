@@ -7,6 +7,8 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\MailingListController Test Case
+ *
+ * @link \App\Controller\MailingListController
  */
 class MailingListControllerTest extends TestCase
 {

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var string $pageTitle
+ * @var \App\View\AppView $this
  */
 ?>
 

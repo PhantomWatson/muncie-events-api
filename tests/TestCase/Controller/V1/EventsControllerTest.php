@@ -20,6 +20,8 @@ use stdClass;
 
 /**
  * EventsControllerTest class
+ *
+ * @link \App\Controller\V1\EventsController
  */
 class EventsControllerTest extends ApplicationTest
 {

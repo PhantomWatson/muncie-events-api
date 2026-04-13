@@ -1,8 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Event[] $events
+ * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface $events
  * @var string $pageTitle
+ * @var \App\Model\Entity\Image $image
  */
 
 use Cake\Routing\Router;

@@ -1,6 +1,7 @@
 <?php
     /**
-     * @var \App\Model\Entity\Category[] $categories
+     * @var \App\Model\Entity\Category[]|\Cake\Collection\CollectionInterface $categories
+ * @var \App\View\AppView $this
      */
     echo $this->Html->script('tag_manager.js');
 ?>

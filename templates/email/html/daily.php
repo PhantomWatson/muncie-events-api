@@ -1,8 +1,9 @@
 <?php
 /**
  * @var \App\Model\Entity\MailingList $recipient
- * @var \App\Model\Entity\Event[] $events
+ * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface $events
  * @var array $settingsDisplay
+ * @var \App\View\AppView $this
  */
 
 use Cake\Core\Configure;

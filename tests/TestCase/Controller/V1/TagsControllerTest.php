@@ -10,6 +10,8 @@ use PHPUnit\Exception;
 
 /**
  * TagsControllerTest class
+ *
+ * @link \App\Controller\V1\TagsController
  */
 class TagsControllerTest extends ApplicationTest
 {

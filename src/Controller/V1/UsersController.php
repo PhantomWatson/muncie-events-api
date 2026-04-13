@@ -16,7 +16,7 @@ use Exception;
 /**
  * Class UsersController
  * @package App\Controller
- * @property UsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  */
 class UsersController extends ApiController
 {
@@ -187,6 +187,7 @@ class UsersController extends ApiController
             throw new NotFoundException('No account was found matching that email address');
         }
 
+        /** @uses \App\Mailer\UsersMailer::forgotPassword() */
         $this->getMailer('Users')->send('forgotPassword', [$user]);
 
         $this->set204Response();

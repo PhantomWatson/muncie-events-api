@@ -6,6 +6,8 @@
  * @var string $searchTerm
  * @var string $direction
  * @var \App\Model\Entity\Event[] $events
+ * @var \App\View\AppView $this
+ * @var object $htmlHelper
  */
 
 use Cake\Http\Exception\InternalErrorException;

@@ -8,7 +8,7 @@ use Exception;
 /**
  * Class CategoriesController
  * @package App\Controller\V1
- * @property CategoriesTable $Categories
+ * @property \App\Model\Table\CategoriesTable $Categories
  */
 class CategoriesController extends ApiController
 {

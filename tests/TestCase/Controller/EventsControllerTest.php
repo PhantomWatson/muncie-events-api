@@ -6,6 +6,8 @@ use Cake\TestSuite\IntegrationTestTrait;
 
 /**
  * App\Controller\EventsController Test Case
+ *
+ * @link \App\Controller\EventsController
  */
 class EventsControllerTest extends ApplicationTest
 {

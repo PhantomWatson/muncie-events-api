@@ -3,6 +3,7 @@
  * @var string $class
  * @var string $message
  * @var string $title
+ * @var \App\View\AppView $this
  */
 $alertClass = $class == 'error' ? 'alert-danger' : 'alert-success';
 ?>

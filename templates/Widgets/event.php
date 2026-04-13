@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Event $event
+ * @var \App\View\AppView $this
  */
 
 use Cake\Routing\Router;

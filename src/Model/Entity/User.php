@@ -12,22 +12,22 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $role
- * @property string $bio
+ * @property string|null $bio
  * @property string $email
  * @property string $password
- * @property int $mailing_list_id
- * @property int $facebook_id
+ * @property int|null $mailing_list_id
+ * @property int|null $facebook_id
  * @property string|null $api_key Grants access to the API
  * @property string|null $token Identifies a user to the API (may be a different user than the one the API key is
  *                              associated with, such as the catch-all "Muncie Events App" user)
  * @property string|null $reset_password_hash
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
- * @property EventSeries[] $event_series
- * @property Event[] $events
- * @property Image[] $images
- * @property Tag[] $tags
+ * @property \App\Model\Entity\EventSeries[] $event_series
+ * @property \App\Model\Entity\Event[] $events
+ * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\Tag[] $tags
  */
 class User extends Entity implements IdentityInterface
 {
@@ -60,6 +60,7 @@ class User extends Entity implements IdentityInterface
      *
      * @param string $password Password
      * @return string
+     * @see \App\Model\Entity\User::$password
      */
     protected function _setPassword(string $password): string
     {
@@ -72,6 +73,7 @@ class User extends Entity implements IdentityInterface
      *
      * @param string $email Email address
      * @return bool|string
+     * @see \App\Model\Entity\User::$email
      */
     protected function _setEmail($email)
     {

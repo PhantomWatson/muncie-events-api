@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+?>
 <p>
     Thanks for signing up for the Muncie Events mailing list! Don't hesitate to
     <?= $this->Html->link(

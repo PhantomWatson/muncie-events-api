@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var Event[] $events
  */
 use App\Model\Entity\Event;

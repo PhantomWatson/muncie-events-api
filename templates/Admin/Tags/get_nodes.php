@@ -2,6 +2,8 @@
 /**
  * @var \App\Model\Entity\Tag[] $nodes
  * @var bool $showNoEvents
+ * @var \App\View\AppView $this
+ * @var array $_GET
  */
 $data = [];
 foreach ($nodes as $node) {

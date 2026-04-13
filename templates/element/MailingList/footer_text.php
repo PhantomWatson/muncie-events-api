@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\MailingList $recipient
  * @var array $settingsDisplay
+ * @var \App\View\AppView $this
  */
 
 use Cake\Routing\Router;

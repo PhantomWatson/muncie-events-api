@@ -1,6 +1,7 @@
 <?php
     /**
      * @var array $defaults
+ * @var \App\View\AppView $this
      */
     $backgroundColors = [
         'Default' => 'backgroundColorDefault',

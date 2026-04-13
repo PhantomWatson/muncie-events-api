@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AppView $this
+ * @var \App\View\AppView $this
  * @var string $date
  * @var string $day
  * @var string $month

@@ -19,24 +19,24 @@ use Sabre\VObject;
  *
  * @property int $id
  * @property string $title
- * @property string $description
+ * @property string|null $description
  * @property string $location
  * @property string $location_details
  * @property string $location_slug
  * @property string $address
- * @property int $user_id
+ * @property int|null $user_id
  * @property int $category_id
- * @property int $series_id
- * @property \Cake\I18n\Date $date
- * @property \Cake\I18n\DateTime $time_start
- * @property \Cake\I18n\DateTime|null $time_end
+ * @property int|null $series_id
+ * @property \Cake\I18n\Date|null $date
+ * @property \Cake\I18n\Time $time_start
+ * @property \Cake\I18n\Time|null $time_end
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
  * @property bool $published
- * @property int $approved_by
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property int|null $approved_by
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  * @property string $location_medium 'physical' or 'virtual'
  * @property string $description_plaintext
  * @property string $ical_time_start
@@ -49,8 +49,8 @@ use Sabre\VObject;
  * @property User $user
  * @property Category $category
  * @property EventSeries $event_series
- * @property Image[] $images
- * @property Tag[] $tags
+ * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\Tag[] $tags
  */
 class Event extends Entity
 {
@@ -191,6 +191,7 @@ class Event extends Entity
      * Note that this is expected to be in local time, with timezone info specified separately from this return value
      *
      * @return string
+     * @see \App\Model\Entity\Event::$ical_time_start
      */
     protected function _getIcalTimeStart()
     {
@@ -203,6 +204,7 @@ class Event extends Entity
      * Note that this is expected to be in local time, with timezone info specified separately from this return value
      *
      * @return string
+     * @see \App\Model\Entity\Event::$ical_time_end
      */
     protected function _getIcalTimeEnd()
     {
@@ -377,6 +379,7 @@ class Event extends Entity
      * A virtual field that returns 'virtual' or 'physical' depending on whether the location name is 'Virtual Event'
      *
      * @return string
+     * @see \App\Model\Entity\Event::$location_medium
      */
     protected function _getLocationMedium()
     {
@@ -392,6 +395,7 @@ class Event extends Entity
      *
      * @param string $location
      * @return string
+     * @see \App\Model\Entity\Event::$location
      */
     protected function _getLocation($location)
     {
@@ -402,6 +406,7 @@ class Event extends Entity
      * A virtual field that returns this event's description in plain text, with HTML removed
      *
      * @return string
+     * @see \App\Model\Entity\Event::$description_plaintext
      */
     protected function _getDescriptionPlaintext()
     {
@@ -511,6 +516,7 @@ class Event extends Entity
      *
      * @param string $timeStart
      * @return \Cake\I18n\DateTime
+     * @see \App\Model\Entity\Event::$time_start
      */
     protected function _getTimeStart($timeStart): \Cake\I18n\DateTime
     {
@@ -537,6 +543,7 @@ class Event extends Entity
      * @param ?string $timeEnd
      * @return \Cake\I18n\DateTime|null
      * @throws \DateMalformedStringException
+     * @see \App\Model\Entity\Event::$time_end
      */
     protected function _getTimeEnd($timeEnd): ?\Cake\I18n\DateTime
     {
@@ -565,6 +572,7 @@ class Event extends Entity
 
     /**
      * @return string
+     * @see \App\Model\Entity\Event::$google_cal_time_start
      */
     protected function _getGoogleCalTimeStart()
     {
@@ -577,6 +585,7 @@ class Event extends Entity
 
     /**
      * @return string
+     * @see \App\Model\Entity\Event::$google_cal_time_end
      */
     protected function _getGoogleCalTimeEnd()
     {
@@ -592,6 +601,7 @@ class Event extends Entity
      * Returns the created time in the local timezone
      *
      * @return \Cake\I18n\DateTime
+     * @see \App\Model\Entity\Event::$created_local
      */
     protected function _getCreatedLocal()
     {
@@ -602,6 +612,7 @@ class Event extends Entity
      * Returns the modified time in the local timezone
      *
      * @return \Cake\I18n\DateTime
+     * @see \App\Model\Entity\Event::$modified_local
      */
     protected function _getModifiedLocal()
     {
