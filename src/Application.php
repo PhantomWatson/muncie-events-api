@@ -211,7 +211,12 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'loginUrl' => $loginUrl,
         ]);
 
-        $service->loadAuthenticator('ApiKey');
+        $service->loadAuthenticator(\App\Authenticator\ApiKeyAuthenticator::class, [
+            'identifier' => [
+                'className' => 'Authentication.Token',
+                'tokenField' => 'api_key',
+            ],
+        ]);
 
         return $service;
     }
