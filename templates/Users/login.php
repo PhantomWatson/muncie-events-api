@@ -19,7 +19,7 @@ use App\View\AppView;
     echo $this->Form->control('email');
     echo $this->Form->control('password');
     echo $this->Form->control(
-        'auto_login',
+        'remember_me',
         [
             'label' => 'Keep me logged in on this computer',
             'type' => 'checkbox',
