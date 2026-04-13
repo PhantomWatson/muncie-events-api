@@ -68,7 +68,10 @@ class EventsController extends AppController
             $this->loadRecaptcha();
         }
         $this->loadComponent('Calendar.Calendar');
-        $this->RequestHandler->setConfig('viewClassMap', ['ics' => 'Calendar.Ical']);
+
+        if ($this->request->getParam('_ext') === 'ics') {
+            $this->viewBuilder()->setClassName('Calendar.Ical');
+        }
 
         $this->Events = self::fetchTable('Events');
     }

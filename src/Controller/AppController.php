@@ -34,9 +34,6 @@ class AppController extends Controller
         // Make $this->Events available for all controllers
         $this->Events = $this->fetchTable('Events');
 
-        $this->loadComponent('RequestHandler', [
-            'enableBeforeRedirect' => false,
-        ]);
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Auth',
