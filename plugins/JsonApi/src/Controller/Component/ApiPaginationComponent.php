@@ -18,7 +18,7 @@ class ApiPaginationComponent extends Component
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'key' => 'pagination',
         'aliases' => [],
         'visible' => [],
@@ -29,7 +29,7 @@ class ApiPaginationComponent extends Component
      *
      * @var array
      */
-    protected $pagingInfo = [];
+    protected array $pagingInfo = [];
 
     /**
      * Injects the pagination info into the response if the current request is a
@@ -38,7 +38,7 @@ class ApiPaginationComponent extends Component
      * @param  \Cake\Event\Event $event The Controller.beforeRender event.
      * @return void
      */
-    public function beforeRender(Event $event)
+    public function beforeRender(Event $event): void
     {
         if (!$this->isPaginatedApiRequest()) {
             return;
@@ -75,7 +75,7 @@ class ApiPaginationComponent extends Component
      *
      * @return void
      */
-    protected function setAliases()
+    protected function setAliases(): void
     {
         foreach ($this->getConfig('aliases') as $key => $value) {
             $this->pagingInfo[$value] = $this->pagingInfo[$key];
@@ -89,7 +89,7 @@ class ApiPaginationComponent extends Component
      *
      * @return void
      */
-    protected function setVisibility()
+    protected function setVisibility(): void
     {
         $visible = $this->getConfig('visible');
         foreach ($this->pagingInfo as $key => $value) {
@@ -105,7 +105,7 @@ class ApiPaginationComponent extends Component
      *
      * @return bool True if JSON or XML with paging, otherwise false.
      */
-    protected function isPaginatedApiRequest()
+    protected function isPaginatedApiRequest(): bool
     {
         if (
             $this->getController()->getRequest()->getAttribute('paging')
