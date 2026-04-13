@@ -189,7 +189,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 [
                     'className' => 'Authentication.Legacy',
                     'hashType' => 'sha1',
-                    // 'salt' => false, // turn off default usage of salt
                 ],
             ],
         ];
