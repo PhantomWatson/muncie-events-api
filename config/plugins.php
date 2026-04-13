@@ -16,4 +16,5 @@ return [
     'Search' => [],
     'Calendar' => [],
     'Authentication' => [],
+    'IdeHelper' => [],
 ];
