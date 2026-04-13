@@ -1,9 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-use App\Auth\LegacyPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -59,11 +58,12 @@ class User extends Entity
      * Automatically hashes password
      *
      * @param string $password Password
-     * @return bool|string
+     * @return string
      */
-    protected function _setPassword($password)
+    protected function _setPassword(string $password): string
     {
-        return (new LegacyPasswordHasher())->hash($password);
+        $hasher = new DefaultPasswordHasher();
+        return $hasher->hash($password);
     }
 
     /**
