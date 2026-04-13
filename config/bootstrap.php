@@ -250,5 +250,4 @@ ServerRequest::addDetector('tablet', function ($request) {
 // \Cake\I18n\Date::setToStringFormat('dd.MM.yyyy');
 // \Cake\I18n\Time::setToStringFormat('dd.MM.yyyy HH:mm');
 
-\Cake\I18n\FrozenTime::setToStringFormat('HH:mm');
 \Cake\I18n\Time::setToStringFormat('HH:mm');
