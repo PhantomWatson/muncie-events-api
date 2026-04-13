@@ -21,7 +21,8 @@
         "mobiledetect/mobiledetectlib": "^4.8.03",
         "php": ">=8.5",
         "sabre/vobject": "^4.0",
-        "xety/cake3-cookieauth": "^1.1"
+        "xety/cake3-cookieauth": "^1.1",
+        "cakephp/authentication": "^4.0"
     },
     "require-dev": {
         "cakephp/bake": "^3.6",
