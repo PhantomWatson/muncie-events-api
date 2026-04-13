@@ -105,19 +105,29 @@ class UsersController extends AppController
             return null;
         }
 
-        $userData = $this->Auth->identify();
-        if (!$userData) {
+        // Check current session
+        $authentication = $this->request->getAttribute('authentication');
+        $result = $authentication->getResult();
+
+        // Bounce back to login page on error
+        if (!$result->isValid()) {
             $this->Flash->error('Email or password is incorrect');
             $this->request = $this->request->withData('password', '');
-
             return null;
         }
 
-        $this->Auth->setUser($userData);
+        // Rehash password if needed
+        if ($authentication->getIdentificationProvider()->needsPasswordRehash()) {
+            $user = $this
+                ->fetchTable('Users')
+                ->get($authentication->getIdentity()->getIdentifier());
+            $user->password = $this->request->getData('password');
+            $this->fetchTable('Users')->saveOrFail($user);
+        }
 
         // Remember login information
         if ($this->request->getData('auto_login')) {
-            $cookie = (new Cookie('CookieAuth'))
+            $cookie = new Cookie('CookieAuth')
                 ->withValue([
                     'email' => $this->request->getData('email'),
                     'password' => $this->request->getData('password'),
@@ -128,17 +138,19 @@ class UsersController extends AppController
             $this->response = $this->response->withCookie($cookie);
         }
 
-        return $this->redirect($this->Auth->redirectUrl());
+        return $this->redirect($this->Authentication->getLoginRedirect());
     }
 
     /**
      * Method for /users/logout
      *
-     * @return Response|null
+     * @return Response
      */
-    public function logout()
+    public function logout(): Response
     {
-        return $this->redirect($this->Auth->logout());
+        $this->Authentication->logout();
+
+        return $this->redirect('/');
     }
 
     /**

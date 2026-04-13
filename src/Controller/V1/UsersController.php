@@ -4,8 +4,7 @@ namespace App\Controller\V1;
 use App\Controller\ApiController;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
-use Cake\Auth\FormAuthenticate;
-use Cake\Controller\ComponentRegistry;
+use Authentication\Identity;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\NotFoundException;
@@ -97,7 +96,7 @@ class UsersController extends ApiController
      * @throws BadRequestException
      * @throws MethodNotAllowedException
      */
-    public function login()
+    public function login(): void
     {
         $this->request->allowMethod('post');
 
@@ -107,17 +106,20 @@ class UsersController extends ApiController
             }
         }
 
-        $user = $this->getUserFromLoginCredentials();
-        if (!$user) {
+        $authentication = $this->request->getAttribute('authentication');
+        $result = $authentication->getResult();
+
+        if (!$result->isValid()) {
             throw new BadRequestException('Email or password is incorrect');
         }
 
-        // Convert user array into user entity, as required by JsonApi view
+        /** @var Identity $identity */
+        $identity = $this->request->getAttribute('identity');
         /** @var User $user */
         $user = $this->Users
             ->find()
             ->select(['id', 'name', 'email', 'token'])
-            ->where(['id' => $user['id']])
+            ->where(['id' => $identity->getIdentifier()])
             ->first();
         if (!$user->token) {
             $user = $this->Users->addToken($user);
@@ -128,26 +130,6 @@ class UsersController extends ApiController
             '_serialize' => ['user'],
             'user' => $user,
         ]);
-    }
-
-    /**
-     * Identifies a user based on email and password
-     *
-     * @return array|bool
-     */
-    private function getUserFromLoginCredentials()
-    {
-        $registry = new ComponentRegistry();
-        $config = [
-            'fields' => ['username' => 'email'],
-            'passwordHasher' => [
-                'className' => 'Fallback',
-                'hashers' => ['Default', 'Legacy'],
-            ],
-        ];
-        $auth = new FormAuthenticate($registry, $config);
-
-        return $auth->authenticate($this->getRequest(), $this->response);
     }
 
     /**
