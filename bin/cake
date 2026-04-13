@@ -50,7 +50,7 @@ findCliPhp() {
 
 # If current path is a symlink, resolve to real path
 realname="$0"
-if [ -L "$realname" ]
+if [ -L "$realname" ] 
 then
 	realname=$(readlink -f "$0")
 fi
