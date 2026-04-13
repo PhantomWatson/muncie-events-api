@@ -25,7 +25,7 @@ class ContactController extends ApiController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow(['index']);
+        $this->Authentication->allowUnauthenticated(['index']);
     }
 
     /**

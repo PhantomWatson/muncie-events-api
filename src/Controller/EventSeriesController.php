@@ -29,7 +29,7 @@ class EventSeriesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow(['view']);
+        $this->Authentication->allowUnauthenticated(['view']);
     }
 
     /**
@@ -171,10 +171,8 @@ class EventSeriesController extends AppController
             $dividedEvents['upcoming'] = $eventSeries->upcomingEvents;
         }
 
-        $canEdit = (
-            $this->Auth->user('role') == 'admin'
-            || $this->Auth->user('id') == $eventSeries->user_id
-        );
+        $user = $this->getAuthUser();
+        $canEdit = $user->role == 'admin' || $user->id == $eventSeries->user_id;
 
         $this->set([
             'canEdit' => $canEdit,

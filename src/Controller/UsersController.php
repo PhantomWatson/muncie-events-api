@@ -29,7 +29,7 @@ class UsersController extends AppController
 
         $this->loadRecaptcha();
 
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'forgotPassword',
             'login',
             'logout',
@@ -65,7 +65,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success('Registration successful');
-                $this->Auth->setUser($user);
+                $this->Authentication->setIdentity($user);
 
                 return $this->redirect([
                     'controller' => 'Events',
@@ -106,6 +106,7 @@ class UsersController extends AppController
         }
 
         // Check current session
+        /** @var  $authentication */
         $authentication = $this->request->getAttribute('authentication');
         $result = $authentication->getResult();
 
@@ -162,7 +163,7 @@ class UsersController extends AppController
     {
         /** @var UsersTable $usersTable */
         $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $userId = $this->Auth->user('id');
+        $userId = $this->getAuthUser()?->id;
         $apiKey = $usersTable->getApiKey($userId);
 
         if ($this->request->is('post')) {
@@ -201,8 +202,7 @@ class UsersController extends AppController
      */
     public function account()
     {
-        $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId);
+        $user = $this->getAuthUser();
         if (!$this->request->is('get')) {
             $this->Users->patchEntity($user, $this->request->getData(), ['fields' => ['name', 'email']]);
             if ($this->Users->save($user)) {
@@ -229,8 +229,7 @@ class UsersController extends AppController
      */
     public function changePass()
     {
-        $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId);
+        $user = $this->getAuthUser();
         $this->set('pageTitle', 'Change Password');
 
         if ($this->request->is('get')) {
@@ -285,7 +284,7 @@ class UsersController extends AppController
 
         $this->set([
             'events' => $events,
-            'loggedIn' => (bool)$this->Auth->user(),
+            'loggedIn' => (bool)$this->getAuthUser(),
             'pageTitle' => $user->name,
             'totalCount' => $totalCount,
             'user' => $user,
@@ -330,7 +329,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $data = $user->toArray();
-                $this->Auth->setUser($data);
+                $this->Authentication->setIdentity($data);
                 $this->Flash->success('Password changed. You are now logged in.');
                 return $this->redirect('/');
             }

@@ -39,7 +39,7 @@ class UsersController extends ApiController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'events',
             'forgotPassword',
             'login',

@@ -30,7 +30,7 @@ class MailingListController extends AppController
         $this->Categories = $this->fetchTable('Categories');
         $this->Users = $this->fetchTable('Users');
 
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'index',
             'unsubscribe',
         ]);
@@ -85,17 +85,11 @@ class MailingListController extends AppController
 
             if ($this->MailingList->save($subscription)) {
                 if ($isNew) {
-                    $userId = $this->Auth->user('id');
-                    if ($userId) {
-                        /** @var \App\Model\Entity\User $user */
-                        $user = $this->Users
-                            ->find()
-                            ->where(['id' => $userId])
-                            ->first();
-                        if ($user) {
-                            $user->mailing_list_id = $subscription->id;
-                            $this->Users->save($user);
-                        }
+                    /** @var \App\Model\Entity\User $user */
+                    $user = $this->getAuthUser();
+                    if ($user) {
+                        $user->mailing_list_id = $subscription->id;
+                        $this->Users->save($user);
                     }
                     $this->Flash->success('Thanks for joining the Muncie Events mailing list!');
 
@@ -202,7 +196,7 @@ class MailingListController extends AppController
      */
     private function getCurrentUserSubscription()
     {
-        $userId = $this->Auth->user('id');
+        $userId = $this->getAuthUser()?->id;
         if (!$userId) {
             return null;
         }

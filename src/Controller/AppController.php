@@ -83,20 +83,6 @@ class AppController extends Controller
             );
         }
 
-        if (!$this->Auth->user() && $this->request->getCookie('CookieAuth')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-            } else {
-                $this->response = $this->response->withExpiredCookie(new Cookie('CookieAuth'));
-            }
-        }
-
-        // Replace "You are not authorized" error message with login prompt message if user is not logged in
-        if (!$this->Auth->user()) {
-            $this->Auth->setConfig('authError', 'You\'ll need to log in before accessing that page');
-        }
-
         return null;
     }
 
@@ -108,9 +94,10 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
+        $authUser = $this->getAuthUser();
         $this->set([
-            'authUser' => $this->Auth->user(),
-            'unapprovedCount' => $this->Auth->user() ? $this->Events->getUnapprovedCount() : 0,
+            'authUser' => $authUser,
+            'unapprovedCount' => $authUser ? $this->Events->getUnapprovedCount() : 0,
         ]);
     }
 
@@ -188,5 +175,15 @@ class AppController extends Controller
             default:
                 return false;
         }
+    }
+
+    /**
+     * Returns the User entity for the currently logged-in user, or null if the user is unauthenticated
+     *
+     * @return User|null
+     */
+    protected function getAuthUser(): ?User
+    {
+        return $this->Authentication->getIdentity()?->getOriginalData();
     }
 }

@@ -20,7 +20,10 @@ class PagesController extends ApiController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Auth->allow();
+
+        // Allow unauthenticated requests for all actions
+        $action = $this->getRequest()->getParam('action');
+        $this->Authentication->allowUnauthenticated([$action]);
     }
 
     /**
