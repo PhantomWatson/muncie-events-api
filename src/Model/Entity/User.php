@@ -17,8 +17,9 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property int $mailing_list_id
  * @property int $facebook_id
- * @property string|null $api_key
- * @property string|null $token
+ * @property string|null $api_key Grants access to the API
+ * @property string|null $token Identifies a user to the API (may be a different user than the one the API key is
+ *                              associated with, such as the catch-all "Muncie Events App" user)
  * @property string|null $reset_password_hash
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
