@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
+use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -16,6 +17,7 @@ use Exception;
  *
  * @package App\Controller
  * @property EventsTable $Events
+ * @property AuthenticationComponent $Authentication
  */
 class AppController extends Controller
 {
@@ -35,45 +37,9 @@ class AppController extends Controller
         $this->Events = $this->fetchTable('Events');
 
         $this->loadComponent('Flash');
-        $this->loadComponent(
-            'Auth',
-            [
-                'loginAction' => [
-                    'prefix' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                ],
-                'logoutRedirect' => [
-                    'prefix' => false,
-                    'controller' => 'Events',
-                    'action' => 'index',
-                ],
-                'authenticate' => [
-                    'Form' => [
-                        'fields' => [
-                            'username' => 'email',
-                            'password' => 'password',
-                        ],
-                        'passwordHasher' => [
-                            'className' => 'Fallback',
-                            'hashers' => [
-                                'Default',
-                                'Weak' => ['hashType' => 'sha1'],
-                            ],
-                        ],
-                    ],
-                    'Cookie' => [
-                        'fields' => [
-                            'username' => 'email',
-                            'password' => 'password',
-                        ],
-                    ],
-                ],
-                'authError' => 'You are not authorized to view this page',
-                'authorize' => 'Controller',
-            ]
-        );
-        $this->Auth->deny();
+        $this->loadComponent('Authentication.Authentication', [
+            'logoutRedirect' => '/login',
+        ]);
     }
 
     /**

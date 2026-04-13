@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Event\ApiCallsListener;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
+use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -14,6 +15,9 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Exception;
 
+/**
+ * @property AuthenticationComponent $Authentication
+ */
 class ApiController extends Controller
 {
     /**
@@ -47,15 +51,7 @@ class ApiController extends Controller
             }
         }
 
-        $this->loadComponent(
-            'Auth',
-            [
-                'authenticate' => ['ApiKey'],
-                'authError' => 'You are not authorized to view this page',
-                'authorize' => 'Controller',
-            ]
-        );
-        $this->Auth->deny();
+        $this->loadComponent('Authentication.Authentication');
 
         $apiCallsListener = new ApiCallsListener();
         EventManager::instance()->on($apiCallsListener);
