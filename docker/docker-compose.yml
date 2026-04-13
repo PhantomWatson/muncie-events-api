@@ -96,6 +96,7 @@ services:
       - MYSQL_IP=${MYSQL_IP}
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PHP_LISTENING_PORT=${PHP_LISTENING_PORT}
     restart: ${RESTART}
     dns: 8.8.8.8
 
