@@ -58,7 +58,7 @@ class AppController extends Controller
             return $this->redirect('/');
         }
 
-        if (!$this->request->is('ssl') && Configure::read('redirectToHttps')) {
+        if (!$this->request->is('https') && Configure::read('redirectToHttps')) {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
 
