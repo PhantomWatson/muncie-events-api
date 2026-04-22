@@ -74,7 +74,7 @@ class CalendarHelper extends Helper
             $lastDate = $lastEvent->date;
         }
 
-        return $lastDate->addDay(1)->format('Y-m-d');
+        return $lastDate->addDays(1)->format('Y-m-d');
     }
 
     /**
