@@ -5,8 +5,6 @@ use App\Model\Table\TagsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
@@ -509,65 +507,6 @@ class Event extends Entity
         $vcalendar->add($vt);
 
         return $vcalendar;
-    }
-
-    /**
-     * Returns $this->time_start as a FrozenTime
-     *
-     * @param string $timeStart
-     * @return \Cake\I18n\DateTime
-     * @see \App\Model\Entity\Event::$time_start
-     */
-    protected function _getTimeStart($timeStart): \Cake\I18n\DateTime
-    {
-        $time = explode(':', $timeStart);
-
-        // Default to noon today
-        $hour = $time[0] ?? 12;
-        $minute = $time[1] ?? 0;
-        $day = $this->date ? $this->date->day : date('j');
-        $month = $this->date ? $this->date->month : date('n');
-        $year = $this->date ? $this->date->year : date('Y');
-
-        return new \Cake\I18n\DateTime()
-            ->setTimezone(self::TIMEZONE)
-            ->setTime((int)$hour, (int)$minute)
-            ->day((int)$day)
-            ->month((int)$month)
-            ->year((int)$year);
-    }
-
-    /**
-     * Returns $this->time_end as a FrozenTime (or null)
-     *
-     * @param ?string $timeEnd
-     * @return \Cake\I18n\DateTime|null
-     * @throws \DateMalformedStringException
-     * @see \App\Model\Entity\Event::$time_end
-     */
-    protected function _getTimeEnd($timeEnd): ?\Cake\I18n\DateTime
-    {
-        if (!$timeEnd) {
-            return null;
-        }
-
-        $time = explode(':', $timeEnd);
-
-        // Default to today if no date is available
-        $day = $this->date ? $this->date->day : date('j');
-        $month = $this->date ? $this->date->month : date('n');
-        $year = $this->date ? $this->date->year : date('Y');
-
-        $datetime = new \Cake\I18n\DateTime()
-                ->setTimezone(self::TIMEZONE)
-                ->setTime((int)$time[0], (int)$time[1])
-                ->day((int)$day)
-                ->month((int)$month)
-                ->year((int)$year);
-        if ($datetime < $this->time_start) {
-            $datetime->modify('+1 day');
-        }
-        return $datetime;
     }
 
     /**
