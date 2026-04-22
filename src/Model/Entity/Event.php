@@ -523,18 +523,18 @@ class Event extends Entity
         $time = explode(':', $timeStart);
 
         // Default to noon today
-        $hour = (int) ($time[0] ?? 12);
-        $minute = (int) ($time[1] ?? 0);
+        $hour = $time[0] ?? 12;
+        $minute = $time[1] ?? 0;
         $day = $this->date ? $this->date->day : date('j');
         $month = $this->date ? $this->date->month : date('n');
         $year = $this->date ? $this->date->year : date('Y');
 
-        return (new \Cake\I18n\DateTime())
+        return new \Cake\I18n\DateTime()
             ->setTimezone(self::TIMEZONE)
-            ->setTime($hour, $minute)
-            ->day($day)
-            ->month($month)
-            ->year($year);
+            ->setTime((int)$hour, (int)$minute)
+            ->day((int)$day)
+            ->month((int)$month)
+            ->year((int)$year);
     }
 
     /**
@@ -558,13 +558,13 @@ class Event extends Entity
         $month = $this->date ? $this->date->month : date('n');
         $year = $this->date ? $this->date->year : date('Y');
 
-        $datetime = (new \Cake\I18n\DateTime())
+        $datetime = new \Cake\I18n\DateTime()
                 ->setTimezone(self::TIMEZONE)
-                ->setTime($time[0], $time[1])
-                ->day($day)
-                ->month($month)
-                ->year($year);
-        if ($datetime && $datetime < $this->time_start) {
+                ->setTime((int)$time[0], (int)$time[1])
+                ->day((int)$day)
+                ->month((int)$month)
+                ->year((int)$year);
+        if ($datetime < $this->time_start) {
             $datetime->modify('+1 day');
         }
         return $datetime;
