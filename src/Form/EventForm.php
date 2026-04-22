@@ -8,8 +8,7 @@ use App\Model\Table\EventsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Exception;
@@ -58,7 +57,7 @@ class EventForm
             if (!isset($data[$timeField])) {
                 continue;
             }
-            $data[$timeField] = $this->parseTime($date, $data[$timeField]);
+            $data[$timeField] = $this->parseTime($data[$timeField]);
         }
 
         // Remove event series data, because it's saved separately
@@ -136,14 +135,13 @@ class EventForm
     }
 
     /**
-     * Returns a FrozenTime object, throwing a BadRequestException if the provided time string can't be parsed
+     * Returns a Time object, throwing a BadRequestException if the provided time string can't be parsed
      *
-     * @param \Cake\I18n\Date|string $date Date object or string
      * @param array|string $time Time string (e.g. 2:30pm, 02:30 PM, 14:30) or hour/minute/meridian array
-     * @return \Cake\I18n\DateTime
+     * @return Time
      * @throws BadRequestException
      */
-    public function parseTime($date, $time)
+    public function parseTime($time)
     {
         if (is_array($time)) {
             $keysExist = array_key_exists('hour', $time)
@@ -161,7 +159,7 @@ class EventForm
                 $time = $time['hour'] . ':' . $time['minute'] . $time['meridian'];
             }
 
-            return new \Cake\I18n\DateTime($date . ' ' . $time, Event::TIMEZONE);
+            return new Time($time, Event::TIMEZONE);
         } catch (Exception $e) {
             throw new BadRequestException(sprintf(
                 'Invalid time: %s. Please provide this value in a format such as 2:30pm, 02:30 PM, 14:30, etc.',

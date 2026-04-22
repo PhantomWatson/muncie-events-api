@@ -390,7 +390,7 @@ class EventsController extends ApiController
             if (!isset($data[$timeField])) {
                 continue;
             }
-            $data[$timeField] = $eventForm->parseTime($data['date'], $data[$timeField]);
+            $data[$timeField] = $eventForm->parseTime($data[$timeField]);
         }
         $this->Events->patchEntity($event, $data, [
             'fields' => [
