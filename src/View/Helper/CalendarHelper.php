@@ -175,12 +175,12 @@ class CalendarHelper extends Helper
     public static function time($event)
     {
         $retval = $event->time_start->format(
-            $event->time_start->minute ? 'g:ia' : 'ga'
+            $event->time_start->getMinutes() ? 'g:ia' : 'ga'
         );
 
         if ($event->time_end) {
             $retval .= ' to ' . $event->time_end->format(
-                $event->time_end->minute ? 'g:ia' : 'ga'
+                $event->time_end->getMinutes() ? 'g:ia' : 'ga'
             );
         }
 
