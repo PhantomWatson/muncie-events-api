@@ -29,7 +29,7 @@ return function (RouteBuilder $routes): void {
         ];
         $routes
             ->connect(
-                "/:slug/",
+                "/{slug}/",
                 ['controller' => 'Events', 'action' => 'category']
             )
             ->setPass(['slug'])
@@ -38,21 +38,22 @@ return function (RouteBuilder $routes): void {
         // Events
         $routes->connect('/', ['controller' => 'Events', 'action' => 'index']);
         $routes->connect(
-            '/event/:id',
+            '/event/{id}',
             ['controller' => 'Events', 'action' => 'view'],
             ['id' => '[0-9]+', 'pass' => ['id']]
         );
         foreach (['edit', 'delete', 'duplicate'] as $action) {
-            $routes->connect(
-                "/event/$action/:id",
-                ['controller' => 'Events', 'action' => $action],
-                ['id' => '[0-9]+', 'pass' => ['id']]
-            );
+            $routes
+                ->connect(
+                    "/event/$action/{id}",
+                    ['controller' => 'Events', 'action' => $action],
+                    ['id' => '[0-9]+', 'pass' => ['id']]
+                );
         }
         $routes->connect('/today', ['controller' => 'Events', 'action' => 'today']);
         $routes->connect('/tomorrow', ['controller' => 'Events', 'action' => 'tomorrow']);
         $routes->connect(
-            '/virtual/:direction',
+            '/virtual/{direction}',
             ['controller' => 'Events', 'action' => 'location', 'location' => Event::VIRTUAL_LOCATION_SLUG],
             ['pass' => ['location', 'direction']]
         );
@@ -71,12 +72,12 @@ return function (RouteBuilder $routes): void {
             ['pass' => ['location', 'direction']]
         );
         $routes->connect(
-            '/location/:location/:direction/*',
+            '/location/{location}/{direction}/*',
             ['controller' => 'Events', 'action' => 'location'],
             ['pass' => ['location', 'direction']]
         );
         $routes->connect(
-            '/location/:location',
+            '/location/{location}',
             ['controller' => 'Events', 'action' => 'location'],
             ['pass' => ['location', 'direction']]
         );
@@ -106,22 +107,22 @@ return function (RouteBuilder $routes): void {
 
         // EventSeries
         $routes->connect(
-            '/event-series/:id',
+            '/event-series/{id}',
             ['controller' => 'EventSeries', 'action' => 'view'],
             ['id' => '[0-9]+', 'pass' => ['id']]
         );
         $routes->redirect(
-            '/event_series/:id',
+            '/event_series/{id}',
             ['controller' => 'EventSeries', 'action' => 'view'],
             ['persist' => 'id']
         );
         $routes->connect(
-            '/event-series/edit/:id',
+            '/event-series/edit/{id}',
             ['controller' => 'EventSeries', 'action' => 'edit'],
             ['id' => '[0-9]+', 'pass' => ['id']]
         );
         $routes->connect(
-            '/event-series/delete/:id',
+            '/event-series/delete/{id}',
             ['controller' => 'EventSeries', 'action' => 'delete'],
             ['id' => '[0-9]+', 'pass' => ['id']]
         );
@@ -129,7 +130,7 @@ return function (RouteBuilder $routes): void {
         // MailingList
         $routes->connect('/unsubscribe', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
         $routes->connect(
-            '/mailing-list/:id/:hash',
+            '/mailing-list/{id}/{hash}',
             ['controller' => 'MailingList', 'action' => 'index'],
             ['id' => '[0-9]+', 'pass' => ['id', 'hash']]
         );
@@ -146,12 +147,12 @@ return function (RouteBuilder $routes): void {
 
         // Tags
         $routes->connect(
-            "/tag/:slug/:direction",
+            "/tag/{slug}/{direction}",
             ['controller' => 'Events', 'action' => 'tag'],
             ['pass' => ['slug', 'direction']]
         );
         $routes->connect(
-            "/tag/:slug",
+            "/tag/{slug}",
             ['controller' => 'Events', 'action' => 'tag'],
             ['pass' => ['slug']]
         );
@@ -168,15 +169,15 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
         $routes->connect('/account', ['controller' => 'Users', 'action' => 'account']);
         $routes->connect('/change-password', ['controller' => 'Users', 'action' => 'changePass']);
-        $routes->connect('/user/:id', ['controller' => 'Users', 'action' => 'view'])
+        $routes->connect('/user/{id}', ['controller' => 'Users', 'action' => 'view'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
-        $routes->connect('/reset-password/:id/:hash', ['controller' => 'Users', 'action' => 'resetPassword'])
+        $routes->connect('/reset-password/{id}/{hash}', ['controller' => 'Users', 'action' => 'resetPassword'])
             ->setPass(['id', 'hash']);
 
         // Attack vectors
         $routes->connect(
-            '/:backupSearch',
+            '/{backupSearch}',
             ['controller' => 'Pages', 'action' => 'blackhole'],
             ['backupSearch' => 'muncieevents_[0-9]+\.zip']
         );
@@ -198,21 +199,21 @@ return function (RouteBuilder $routes): void {
 
         // Events
         $routes->post('/event', ['controller' => 'Events', 'action' => 'add']);
-        $routes->get('/event/:id', ['controller' => 'Events', 'action' => 'view'])
+        $routes->get('/event/{id}', ['controller' => 'Events', 'action' => 'view'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
-        $routes->patch('/event/:id', ['controller' => 'Events', 'action' => 'edit'])
+        $routes->patch('/event/{id}', ['controller' => 'Events', 'action' => 'edit'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
-        $routes->delete('/event/:id', ['controller' => 'Events', 'action' => 'delete'])
+        $routes->delete('/event/{id}', ['controller' => 'Events', 'action' => 'delete'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
 
         // EventSeries
-        $routes->get('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'view'])
+        $routes->get('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'view'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
-        $routes->delete('/event-series/:id', ['controller' => 'EventSeries', 'action' => 'delete'])
+        $routes->delete('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'delete'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
 
@@ -231,12 +232,12 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
         $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
         $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
-        $routes->connect('/user/:id', ['controller' => 'Users', 'action' => 'view'])
+        $routes->connect('/user/{id}', ['controller' => 'Users', 'action' => 'view'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
         $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
         $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null]);
-        $routes->connect('/user/:id/events', ['controller' => 'Users', 'action' => 'events'])
+        $routes->connect('/user/{id}/events', ['controller' => 'Users', 'action' => 'events'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);
         $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password']);
