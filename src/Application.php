@@ -210,7 +210,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'fields' => $fields,
             ],
             'fields' => $fields,
-            'passwordHasher' => $passwordHasherConfig,
             'loginUrl' => $loginUrl,
         ]);
 
