@@ -66,6 +66,7 @@ config/Migrations/schema-dump-default.lock
 
 # Other
 /webroot/img/events/*
+/src/Command/TesterCommand.php
 
 # Docker
 /docker/.env
