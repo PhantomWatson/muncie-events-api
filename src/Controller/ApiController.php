@@ -13,6 +13,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use Cake\View\JsonView;
 use Exception;
 
 /**
@@ -27,6 +28,11 @@ class ApiController extends Controller
      * @var User|null
      */
     protected $tokenUser;
+
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
+    }
 
     /**
      * Initialization hook method

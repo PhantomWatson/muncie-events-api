@@ -10,6 +10,7 @@ use Cake\Event\Event;
 use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\ORM\Table;
+use Cake\View\JsonView;
 use Exception;
 
 /**
@@ -22,6 +23,11 @@ use Exception;
 class AppController extends Controller
 {
     protected EventsTable|Table $Events;
+
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
+    }
 
     /**
      * Initialization hook method
