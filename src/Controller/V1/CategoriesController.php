@@ -40,8 +40,8 @@ class CategoriesController extends ApiController
 
         $this->set([
             '_entities' => ['Category'],
-            '_serialize' => ['categories'],
             'categories' => $categories,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['categories']);
     }
 }

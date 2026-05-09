@@ -50,9 +50,9 @@ class TagsController extends ApiController
         $this->set([
             '_entities' => ['Tag'],
             '_include' => ['children'],
-            '_serialize' => ['tags'],
             'tags' => $tags,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 
     /**
@@ -90,9 +90,9 @@ class TagsController extends ApiController
 
         $this->set([
             '_entities' => ['Tag'],
-            '_serialize' => ['tags'],
             'tags' => $tags,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 
     /**
@@ -133,10 +133,10 @@ class TagsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['tag'],
             '_include' => ['events'],
             'tag' => $tag,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tag']);
     }
 
     /**
@@ -162,9 +162,9 @@ class TagsController extends ApiController
 
         $this->set([
             '_entities' => ['Tag'],
-            '_serialize' => ['tags'],
             'tags' => $tags,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 
     /**
@@ -228,8 +228,8 @@ class TagsController extends ApiController
 
         $this->set([
             '_entities' => ['Tag'],
-            '_serialize' => ['tags'],
             'tags' => $tags,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 }

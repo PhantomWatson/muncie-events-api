@@ -184,9 +184,9 @@ class MailingListController extends ApiController
 
         $this->set([
             '_entities' => ['Category', 'MailingList'],
-            '_serialize' => ['subscription'],
             'subscription' => $this->getCurrentUserSubscription(),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['subscription']);
     }
 
     /**

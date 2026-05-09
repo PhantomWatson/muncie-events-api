@@ -75,9 +75,9 @@ class EventSeriesController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events'],
             'events' => $this->paginate($query, ['scope' => 'event']),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events']);
     }
 
     /**

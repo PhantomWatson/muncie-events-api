@@ -78,9 +78,9 @@ class EventsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events'],
             'events' => $this->paginate($query),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events']);
     }
 
     /**
@@ -109,9 +109,9 @@ class EventsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($query),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
     }
 
     /**
@@ -170,9 +170,9 @@ class EventsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($finalQuery),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
     }
 
     /**
@@ -215,9 +215,9 @@ class EventsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($query),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
     }
 
     /**
@@ -253,9 +253,9 @@ class EventsController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['event'],
             'event' => $event,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['event']);
     }
 
     /**
@@ -338,9 +338,9 @@ class EventsController extends ApiController
                 'User',
             ],
             '_links' => [],
-            '_serialize' => ['event'],
             'event' => $addedEvents[0],
         ]);
+        $this->viewBuilder()->setOption('serialize', ['event']);
     }
 
     /**
@@ -430,9 +430,9 @@ class EventsController extends ApiController
                 'User',
             ],
             '_links' => [],
-            '_serialize' => ['event'],
             'event' => $event,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['event']);
     }
 
     /**

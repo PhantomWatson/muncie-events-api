@@ -84,9 +84,9 @@ class UsersController extends ApiController
 
         $this->set([
             '_entities' => ['User'],
-            '_serialize' => ['user'],
             'user' => $user,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
     /**
@@ -127,9 +127,9 @@ class UsersController extends ApiController
 
         $this->set([
             '_entities' => ['User'],
-            '_serialize' => ['user'],
             'user' => $user,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
     /**
@@ -155,9 +155,9 @@ class UsersController extends ApiController
 
         $this->set([
             '_entities' => ['User'],
-            '_serialize' => ['user'],
             'user' => $user,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
     /**
@@ -215,9 +215,9 @@ class UsersController extends ApiController
 
         $this->set([
             '_entities' => ['Image'],
-            '_serialize' => ['images'],
             'images' => $images,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['images']);
     }
 
     /**
@@ -324,9 +324,9 @@ class UsersController extends ApiController
                 'Tag',
                 'User',
             ],
-            '_serialize' => ['events', 'pagination'],
             'events' => $this->paginate($query),
         ]);
+        $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
     }
 
     /**

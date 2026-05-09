@@ -37,8 +37,8 @@ class ImagesController extends ApiController
 
         $this->set([
             '_entities' => ['Image'],
-            '_serialize' => ['image'],
             'image' => $image,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['image']);
     }
 }

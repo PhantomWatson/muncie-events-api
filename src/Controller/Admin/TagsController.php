@@ -160,10 +160,8 @@ class TagsController extends AppController
         } elseif ($delta < 0) {
             $success = (bool)$this->Tags->moveUp($node, abs($delta));
         }
-        $this->set([
-            '_serialize' => ['success'],
-            'success' => $success ? 1 : 0,
-        ]);
+        $this->set(['success' => $success ? 1 : 0]);
+        $this->viewBuilder()->setOption('serialize', ['success']);
     }
 
     /**
@@ -209,10 +207,8 @@ class TagsController extends AppController
 
         $success = (bool)$this->Tags->save($tag);
 
-        $this->set([
-            '_serialize' => ['success'],
-            'success' => $success ? 1 : 0,
-        ]);
+        $this->set(['success' => $success ? 1 : 0]);
+        $this->viewBuilder()->setOption('serialize', ['success']);
     }
 
     /**
@@ -451,9 +447,9 @@ class TagsController extends AppController
 
         $this->set([
             '_entities' => ['Tag'],
-            '_serialize' => ['tags'],
             'tags' => $tags,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 
     /**
@@ -471,10 +467,10 @@ class TagsController extends AppController
         }
 
         $this->set([
-            '_serialize' => ['message', 'class'],
             'message' => 'Delete group emptied',
             'class' => 'success',
         ]);
+        $this->viewBuilder()->setOption('serialize', ['message', 'class']);
     }
 
     /**

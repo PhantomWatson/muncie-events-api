@@ -96,9 +96,7 @@ class ImagesController extends AppController
     public function filename($imageId)
     {
         $image = $this->Images->get((int)$imageId);
-        $this->set([
-            '_serialize' => ['filename'],
-            'filename' => $image->filename ?? false,
-        ]);
+        $this->set(['filename' => $image->filename ?? false]);
+        $this->viewBuilder()->setOption('serialize', ['filename']);
     }
 }

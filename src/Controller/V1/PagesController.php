@@ -43,9 +43,9 @@ class PagesController extends ApiController
 
         $this->set([
             '_entities' => ['Page'],
-            '_serialize' => ['page'],
             'page' => $page,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['page']);
     }
 
     /**
@@ -87,9 +87,9 @@ class PagesController extends ApiController
 
         $this->set([
             '_entities' => ['Page'],
-            '_serialize' => ['page'],
             'page' => $page,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['page']);
     }
 
     /**
@@ -107,9 +107,9 @@ class PagesController extends ApiController
 
         $this->set([
             '_entities' => ['Page'],
-            '_serialize' => ['page'],
             'page' => $page,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['page']);
     }
 
     /**
@@ -127,9 +127,9 @@ class PagesController extends ApiController
 
         $this->set([
             '_entities' => ['Page'],
-            '_serialize' => ['page'],
             'page' => $page,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['page']);
     }
 
     /**
@@ -147,8 +147,8 @@ class PagesController extends ApiController
 
         $this->set([
             '_entities' => ['Page'],
-            '_serialize' => ['page'],
             'page' => $page,
         ]);
+        $this->viewBuilder()->setOption('serialize', ['page']);
     }
 }
