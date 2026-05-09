@@ -412,6 +412,7 @@ class EventsTable extends Table
     {
         return $this
             ->find('upcoming')
+            ->find('published')
             ->find('inCategory', categoryId: $categoryId)
             ->count();
     }
