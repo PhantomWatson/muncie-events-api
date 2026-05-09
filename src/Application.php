@@ -205,7 +205,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         ]);
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Cookie', [
-            'identifier' => 'Authentication.Password',
+            'identifier' => [
+                'className' => 'Authentication.Password',
+                'fields' => $fields,
+            ],
             'fields' => $fields,
             'passwordHasher' => $passwordHasherConfig,
             'loginUrl' => $loginUrl,
