@@ -11,6 +11,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -311,5 +312,41 @@ class UsersTable extends Table
         $month = date('my');
 
         return md5($userId . $email . $salt . $month);
+    }
+
+    /**
+     * Selects users that have either posted events, acquired an API key, or subscribed to the mailing list
+     *
+     * @param SelectQuery $query
+     * @return SelectQuery
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query
+            ->leftJoinWith('Events')
+            ->where(function ($exp) {
+                return $exp->or([
+                    'Events.id IS NOT' => null,
+                    'Users.api_key IS NOT' => null,
+                    'Users.mailing_list_id IS NOT' => null,
+                ]);
+            })
+            ->distinct('Users.id');
+    }
+
+    /**
+     * Selects users that have neither posted events, acquired an API key, nor subscribed to the mailing list
+     *
+     * @param SelectQuery $query
+     * @return SelectQuery
+     */
+    public function findInactive(SelectQuery $query): SelectQuery
+    {
+        return $query
+            ->notMatching('Events')
+            ->where([
+                'Users.api_key IS' => null,
+                'Users.mailing_list_id IS' => null,
+            ]);
     }
 }
