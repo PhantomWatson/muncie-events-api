@@ -139,7 +139,7 @@ class UsersController extends AppController
             $this->response = $this->response->withCookie($cookie);
         }
 
-        return $this->redirect($this->Authentication->getLoginRedirect());
+        return $this->redirect($this->Authentication->getLoginRedirect() ?? '/');
     }
 
     /**
