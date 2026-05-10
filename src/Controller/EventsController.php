@@ -30,7 +30,6 @@ use Recaptcha\Controller\Component\RecaptchaComponent;
  * @property TagsTable $Tags
  * @property RecaptchaComponent $Recaptcha
  *
- * @method Event[]|ResultSetInterface paginate($object = null, array $settings = [])
  * @property \Calendar\Controller\Component\CalendarComponent $Calendar
  */
 class EventsController extends AppController
@@ -200,7 +199,7 @@ class EventsController extends AppController
 
         $this->set([
             'pageTitle' => 'Tag: ' . ucwords($tag->name),
-            'events' => $this->paginate($mainQuery)->toArray(),
+            'events' => $this->paginate($mainQuery),
             'count' => $mainQuery->count(),
             'direction' => $direction,
             'countOppositeDirection' => $oppositeDirectionQuery->count(),
@@ -683,7 +682,7 @@ class EventsController extends AppController
             ->find('atLocation', location_slug: $locationSlug)
             ->find($direction);
         $count = $primaryQuery->count();
-        $events = $this->paginate($primaryQuery)->toArray();
+        $events = $this->paginate($primaryQuery);
 
         // For finding the count of results in the other (past/upcoming) direction
         $secondaryQuery = $this->Events
@@ -794,7 +793,7 @@ class EventsController extends AppController
                 ->find('ordered', direction: 'DESC')
                 ->where(['user_id' => $userId]);
 
-            $events = $this->paginate($query)->toArray();
+            $events = $this->paginate($query);
         } else {
             $events = [];
         }
