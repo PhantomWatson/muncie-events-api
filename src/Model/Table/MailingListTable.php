@@ -117,7 +117,7 @@ class MailingListTable extends Table
 
         $validator
             ->boolean('new_subscriber')
-            ->requirePresence('new_subscriber', null, 'create');
+            ->requirePresence('new_subscriber', 'create');
 
         $validator
             ->dateTime('processed_daily')
