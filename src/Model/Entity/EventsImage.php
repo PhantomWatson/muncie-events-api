@@ -15,8 +15,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
- * @property Image $image
- * @property Event $event
+ * @property \App\Model\Entity\Image $image
+ * @property \App\Model\Entity\Event $event
  */
 class EventsImage extends Entity
 {

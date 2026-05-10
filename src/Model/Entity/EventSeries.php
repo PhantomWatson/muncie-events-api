@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
- * @property User $user
+ * @property \App\Model\Entity\User|null $user
  * @property \App\Model\Entity\Event[] $events
  * @property Event[] $pastEvents
  * @property Event[] $upcomingEvents

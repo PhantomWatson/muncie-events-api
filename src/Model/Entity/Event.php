@@ -44,9 +44,9 @@ use Sabre\VObject;
  * @property \Cake\I18n\DateTime $created_local
  * @property \Cake\I18n\DateTime $modified_local
  *
- * @property User $user
- * @property Category $category
- * @property EventSeries $event_series
+ * @property \App\Model\Entity\User|null $user
+ * @property \App\Model\Entity\Category $category
+ * @property \App\Model\Entity\EventSeries|null $event_series
  * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Tag[] $tags
  */

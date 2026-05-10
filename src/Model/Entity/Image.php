@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  * @property string $caption
  * @property string $filename
  *
- * @property User $user
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Event[] $events
  */
 class Image extends Entity

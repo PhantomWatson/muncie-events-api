@@ -19,8 +19,8 @@ use Cake\Utility\Text;
  * @property \Cake\I18n\DateTime|null $created
  * @property string $slug
  *
- * @property Tag $parent_tag
- * @property User $user
+ * @property \App\Model\Entity\Tag|null $parent_tag
+ * @property \App\Model\Entity\User|null $user
  * @property \App\Model\Entity\Tag[] $child_tags
  * @property \App\Model\Entity\Event[] $events
  */
