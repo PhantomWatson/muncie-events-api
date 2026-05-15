@@ -20,7 +20,7 @@ class ApiPaginationComponent extends \BryanCrowe\ApiPagination\Controller\Compon
      * @param Event $event The Controller.beforeRender event.
      * @return void
      */
-    public function beforeRender(\Cake\Event\EventInterface $event)
+    public function beforeRender(\Cake\Event\EventInterface $event): void
     {
         /** @var Controller $subject */
         $subject = $event->getSubject();
