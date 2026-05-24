@@ -11,7 +11,7 @@ return [
     'Migrations' => [
         'onlyCli' => true,
     ],
-    'JsonApi' => [],
+    'JsonApi' => ['path' => ROOT . DS . 'plugins' . DS . 'JsonApi' . DS],
     'Recaptcha' => [],
     'Search' => [],
     'Calendar' => [],
