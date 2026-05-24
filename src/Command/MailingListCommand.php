@@ -255,7 +255,7 @@ class MailingListCommand extends Command
     private function processWeekly(): int
     {
         // Make sure that today is the correct day
-        if (!$this->overrideWeekly && !$this->isWeeklyDeliveryDay()) {
+        if (!$this->overrideWeekly && !$this->isWeeklyDeliveryDay() && !Configure::read('debug')) {
             $this->io->out('Today is not the day of the week designated for delivering weekly emails.');
 
             return static::CODE_SUCCESS;
