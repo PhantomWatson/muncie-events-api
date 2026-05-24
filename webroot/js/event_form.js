@@ -144,9 +144,7 @@ function setupDescriptionField() {
         });
     const form = document.getElementById('EventForm');
     form.addEventListener('submit', function (event) {
-        console.log('submitted');
         const description = descriptionEditor.getData();
-        console.log(description);
         if (description === '' || description === null) {
             alert('Please enter a description of this event.');
             event.preventDefault();
