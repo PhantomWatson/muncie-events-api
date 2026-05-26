@@ -3,7 +3,8 @@ const loadingIndicator = document.querySelector('#forgot-password-button i');
 const handleSubmit = async function (event) {
     event.preventDefault();
     const email = document.getElementById('forgot-password-field').value;
-    const url = 'https://api.muncieevents.com/v1/users/forgot-password';
+    const apiBase = window.apiBase ?? 'https://api.muncieevents.com';
+    const url = `${apiBase}/v1/users/forgot-password`;
     loadingIndicator.style.display = 'inline-block';
     const alert = document.getElementById('forgot-password-alert');
     alert.style.visibility = 'hidden';
