@@ -47,18 +47,13 @@
         <div></div>
     </div>
     <?= $this->element('Widgets/noscript') ?>
-    <?= $this->element('bootstrap_css_local_fallback') ?>
-    <?= $this->element('bootstrap_js') ?>
-    <?= $this->Html->script('/magnific-popup/jquery.magnific-popup.min.js') ?>
-    <?= $this->Html->script('script') ?>
-    <?= $this->Html->script('image_popups') ?>
+    <?= $this->element('script_setup') ?>
     <?php $this->Html->scriptBlock(
-        'muncieEventsImagePopups.prepare(); ' .
         'muncieEventsFeedWidget.prepareWidget(); ' .
         'muncieEventsImagePopups.prepare();',
         ['block' => true]
     ); ?>
-    <?= $this->element('analytics') ?>
     <?= $this->fetch('script') ?>
+
 </body>
 </html>
