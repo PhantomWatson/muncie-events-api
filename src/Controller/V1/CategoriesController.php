@@ -39,7 +39,6 @@ class CategoriesController extends ApiController
             ->toArray();
 
         $this->set([
-            '_entities' => ['Category'],
             'categories' => $categories,
         ]);
         $this->viewBuilder()->setOption('serialize', ['categories']);

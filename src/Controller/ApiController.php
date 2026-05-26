@@ -63,8 +63,17 @@ class ApiController extends Controller
         EventManager::instance()->on($apiCallsListener);
 
         $this->viewBuilder()->setClassName('JsonApi.JsonApi');
-
         $this->set('_url', Router::url('/v1', true));
+        $this->set('_entities', [
+            'Category',
+            'Event',
+            'EventSeries',
+            'Image',
+            'MailingList',
+            'Page',
+            'Tag',
+            'User',
+        ]);
     }
 
     /**

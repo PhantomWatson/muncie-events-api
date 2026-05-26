@@ -48,8 +48,6 @@ class TagsController extends ApiController
         $tags = $this->filterOutHiddenTags($tags);
 
         $this->set([
-            '_entities' => ['Tag'],
-            '_include' => ['children'],
             'tags' => $tags,
         ]);
         $this->viewBuilder()->setOption('serialize', ['tags']);
@@ -89,7 +87,6 @@ class TagsController extends ApiController
         $tags = $eventsTable->getEventTags();
 
         $this->set([
-            '_entities' => ['Tag'],
             'tags' => $tags,
         ]);
         $this->viewBuilder()->setOption('serialize', ['tags']);
@@ -125,15 +122,6 @@ class TagsController extends ApiController
         }
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
-            '_include' => ['events'],
             'tag' => $tag,
         ]);
         $this->viewBuilder()->setOption('serialize', ['tag']);
@@ -161,7 +149,6 @@ class TagsController extends ApiController
             ->toArray();
 
         $this->set([
-            '_entities' => ['Tag'],
             'tags' => $tags,
         ]);
         $this->viewBuilder()->setOption('serialize', ['tags']);
@@ -227,7 +214,6 @@ class TagsController extends ApiController
         }
 
         $this->set([
-            '_entities' => ['Tag'],
             'tags' => $tags,
         ]);
         $this->viewBuilder()->setOption('serialize', ['tags']);

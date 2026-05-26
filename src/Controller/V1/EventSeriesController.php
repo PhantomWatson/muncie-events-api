@@ -67,14 +67,6 @@ class EventSeriesController extends ApiController
 
         $this->loadComponent('ApiPagination', ['model' => 'Events']);
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($query, ['scope' => 'event']),
         ]);
         $this->viewBuilder()->setOption('serialize', ['events']);

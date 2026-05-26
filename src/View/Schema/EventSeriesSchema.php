@@ -28,13 +28,13 @@ class EventSeriesSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param EventSeries $series EventSeries entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param EventSeries $resource EventSeries entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getAttributes($series, $fieldKeysFilter = null): array
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
-        return self::_getAttributes($series);
+        return self::_getAttributes($resource);
     }
 
     /**

@@ -42,7 +42,6 @@ class PagesController extends ApiController
             $this->getElement('Pages/about');
 
         $this->set([
-            '_entities' => ['Page'],
             'page' => $page,
         ]);
         $this->viewBuilder()->setOption('serialize', ['page']);
@@ -86,7 +85,6 @@ class PagesController extends ApiController
         $page->body = $this->getElement('Events/rules');
 
         $this->set([
-            '_entities' => ['Page'],
             'page' => $page,
         ]);
         $this->viewBuilder()->setOption('serialize', ['page']);
@@ -106,7 +104,6 @@ class PagesController extends ApiController
         $page->body = $this->getElement('Pages/rules_tags');
 
         $this->set([
-            '_entities' => ['Page'],
             'page' => $page,
         ]);
         $this->viewBuilder()->setOption('serialize', ['page']);
@@ -126,7 +123,6 @@ class PagesController extends ApiController
         $page->body = $this->getElement('Pages/rules_images');
 
         $this->set([
-            '_entities' => ['Page'],
             'page' => $page,
         ]);
         $this->viewBuilder()->setOption('serialize', ['page']);
@@ -146,7 +142,6 @@ class PagesController extends ApiController
         $page->body = $this->getElement('Pages/widgets');
 
         $this->set([
-            '_entities' => ['Page'],
             'page' => $page,
         ]);
         $this->viewBuilder()->setOption('serialize', ['page']);

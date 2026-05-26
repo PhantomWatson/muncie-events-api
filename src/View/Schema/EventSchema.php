@@ -10,11 +10,14 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
 class EventSchema extends EntitySchema
 {
-    protected $selfSubUrl = '/event';
-
     public function getType(): string
     {
         return 'events';
+    }
+
+    protected function getResourcesSubUrl(): string
+    {
+        return '/event';
     }
 
     /**
@@ -31,13 +34,14 @@ class EventSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output, setting any falsy values to NULL
      *
-     * @param Event $entity Entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Event $resource Entity
+     * @param ContextInterface $context
      * @return array
      * @throws Exception
      */
-    public function getAttributes($entity, $fieldKeysFilter = null): array
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
+        $entity = $resource;
         $baseUrl = Configure::read('mainSiteBaseUrl');
         $entity->category->noEventCount = true;
 

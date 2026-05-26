@@ -83,7 +83,6 @@ class UsersController extends ApiController
             ->first();
 
         $this->set([
-            '_entities' => ['User'],
             'user' => $user,
         ]);
         $this->viewBuilder()->setOption('serialize', ['user']);
@@ -126,7 +125,6 @@ class UsersController extends ApiController
         }
 
         $this->set([
-            '_entities' => ['User'],
             'user' => $user,
         ]);
         $this->viewBuilder()->setOption('serialize', ['user']);
@@ -154,7 +152,6 @@ class UsersController extends ApiController
         }
 
         $this->set([
-            '_entities' => ['User'],
             'user' => $user,
         ]);
         $this->viewBuilder()->setOption('serialize', ['user']);
@@ -214,7 +211,6 @@ class UsersController extends ApiController
             ->all();
 
         $this->set([
-            '_entities' => ['Image'],
             'images' => $images,
         ]);
         $this->viewBuilder()->setOption('serialize', ['images']);
@@ -316,17 +312,9 @@ class UsersController extends ApiController
             ->where(['Events.user_id' => $userId]);
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($query),
         ]);
-        $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
+        $this->viewBuilder()->setOption('serialize', ['events']);
     }
 
     /**

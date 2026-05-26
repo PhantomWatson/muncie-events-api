@@ -1,48 +1,52 @@
 <?php
 namespace App\View\Schema;
 
-use App\Model\Entity\Page;
-use Cake\ORM\Entity;
+use App\Model\Entity\User;
 use JsonApi\View\Schema\EntitySchema;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 
-class PageSchema extends EntitySchema
+class UserSchema extends EntitySchema
 {
     public function getType(): string
     {
-        return 'pages';
+        return 'users';
     }
 
     /**
-     * Returns the title of the page, which is effectively an ID
+     * Returns the user's ID
      *
-     * @param Page $entity Page entity
+     * @param User $resource User entity
      * @return string
      */
-    public function getId($entity): string
+    public function getId($resource): string
     {
-        return (string)$entity->id;
+        return (string)$resource->get('id');
     }
 
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Page $resource Page entity
+     * @param User $resource User entity
      * @param ContextInterface $context
      * @return array
      */
     public function getAttributes($resource, ContextInterface $context): iterable
     {
-        return [
-            'body' => $resource->body,
-            'title' => $resource->title,
-        ];
+        $attributes = ['name' => $resource->name];
+        if ($resource->email !== null) {
+            $attributes['email'] = $resource->email;
+        }
+        if ($resource->token !== null) {
+            $attributes['token'] = $resource->token;
+        }
+
+        return $attributes;
     }
 
     /**
      * Returns the relationships that this entity has with any other API-gettable entities
      *
-     * @param Entity $resource Entity
+     * @param User $resource User entity
      * @param ContextInterface $context
      * @return array
      */

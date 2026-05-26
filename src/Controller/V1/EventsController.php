@@ -70,14 +70,6 @@ class EventsController extends ApiController
             ->find('tagged', tags: $tags);
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($query),
         ]);
         $this->viewBuilder()->setOption('serialize', ['events']);
@@ -101,14 +93,6 @@ class EventsController extends ApiController
             ->find('tagged', tags: $tags);
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($query),
         ]);
         $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
@@ -162,14 +146,6 @@ class EventsController extends ApiController
         $finalQuery = $matchesEventDetails->union($matchesTag);
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($finalQuery),
         ]);
         $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
@@ -207,14 +183,6 @@ class EventsController extends ApiController
             ->find('tagged', tags: $tags);
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'events' => $this->paginate($query),
         ]);
         $this->viewBuilder()->setOption('serialize', ['events', 'pagination']);
@@ -245,14 +213,6 @@ class EventsController extends ApiController
             ->first();
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
             'event' => $event,
         ]);
         $this->viewBuilder()->setOption('serialize', ['event']);
@@ -329,15 +289,6 @@ class EventsController extends ApiController
         }
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
-            '_links' => [],
             'event' => $addedEvents[0],
         ]);
         $this->viewBuilder()->setOption('serialize', ['event']);
@@ -421,15 +372,6 @@ class EventsController extends ApiController
         }
 
         $this->set([
-            '_entities' => [
-                'Category',
-                'Event',
-                'EventSeries',
-                'Image',
-                'Tag',
-                'User',
-            ],
-            '_links' => [],
             'event' => $event,
         ]);
         $this->viewBuilder()->setOption('serialize', ['event']);

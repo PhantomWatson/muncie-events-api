@@ -28,18 +28,18 @@ class ImageSchema extends EntitySchema
     /**
      * Returns the attributes for this entity for API output
      *
-     * @param Image $image Image entity
-     * @param array|null $fieldKeysFilter Field keys filter
+     * @param Image $resource Image entity
+     * @param ContextInterface $context
      * @return array
      */
-    public function getAttributes($image, $fieldKeysFilter = null): array
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         $baseUrl = Configure::read('eventImageBaseUrl');
 
         return [
-            'tiny_url' => $baseUrl . 'tiny/' . $image->filename,
-            'small_url' => $baseUrl . 'small/' . $image->filename,
-            'full_url' => $baseUrl . 'full/' . $image->filename,
+            'tiny_url' => $baseUrl . 'tiny/' . $resource->filename,
+            'small_url' => $baseUrl . 'small/' . $resource->filename,
+            'full_url' => $baseUrl . 'full/' . $resource->filename,
         ];
     }
 

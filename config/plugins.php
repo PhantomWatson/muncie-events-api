@@ -11,10 +11,10 @@ return [
     'Migrations' => [
         'onlyCli' => true,
     ],
-    'JsonApi' => ['path' => ROOT . DS . 'plugins' . DS . 'JsonApi' . DS],
     'Recaptcha' => [],
     'Search' => [],
     'Calendar' => [],
     'Authentication' => [],
     'IdeHelper' => [],
+    'JsonApi' => [],
 ];

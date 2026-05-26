@@ -36,7 +36,6 @@ class ImagesController extends ApiController
         $image = $this->Images->processUpload($this->tokenUser->id, $file);
 
         $this->set([
-            '_entities' => ['Image'],
             'image' => $image,
         ]);
         $this->viewBuilder()->setOption('serialize', ['image']);
