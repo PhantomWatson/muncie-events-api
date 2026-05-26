@@ -210,7 +210,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'fields' => $fields,
             ],
             'fields' => $fields,
-            'loginUrl' => $loginUrl,
         ]);
 
         $service->loadAuthenticator(\App\Authenticator\ApiKeyAuthenticator::class, [
