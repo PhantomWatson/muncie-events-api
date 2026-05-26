@@ -179,12 +179,11 @@ class ApiController extends Controller
      */
     protected function set204Response()
     {
-        $this->response = $this->response->withStatus(204, 'No Content');
-
-        /* Bypass JsonApi plugin to render blank response,
-         * as required by the JSON API standard (https://jsonapi.org/format/#crud-creating-responses-204) */
-        $this->viewBuilder()->setClassName('Json');
-        $this->viewBuilder()->setOption('serialize', true);
+        $this->setResponse(
+            $this->response
+                ->withStatus(204, 'No Content')
+                ->withStringBody('')
+        );
     }
 
     /**
