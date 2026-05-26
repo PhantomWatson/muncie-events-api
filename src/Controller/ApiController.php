@@ -127,7 +127,7 @@ class ApiController extends Controller
 
         $event = new Event('apiCall', $this, ['meta' => [
             'url' => $this->request->getRequestTarget(),
-            'userId' => $this->Authentication->getIdentity()->getIdentifier(),
+            'userId' => $this->Authentication->getIdentity()?->getIdentifier(),
         ]]);
         $this->getEventManager()->dispatch($event);
     }
