@@ -190,6 +190,9 @@ class AppController extends Controller
      */
     protected function getAuthUser(): ?User
     {
-        return $this->Authentication->getIdentity()?->getOriginalData();
+        // This is a hack to convert the plain array from getOriginalData() to a User entity
+        $data = $this->Authentication->getIdentity()?->getOriginalData();
+        $usersTable = $this->fetchTable('Users');
+        return $data ? $usersTable->newEntity((array)$data) : null;
     }
 }

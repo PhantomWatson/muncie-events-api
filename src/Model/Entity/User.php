@@ -141,7 +141,7 @@ class User extends Entity implements IdentityInterface
     /**
      * Authentication\IdentityInterface method
      */
-    public function getOriginalData(): \ArrayAccess|array
+    public function getOriginalData(): \ArrayAccess|User
     {
         return $this;
     }
