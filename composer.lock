@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06deca9de997c5af50bf38ae70252b99",
+    "content-hash": "b77de0195c35043b6c9eb9f257603bc6",
     "packages": [
         {
             "name": "alek13/slack",
@@ -1531,16 +1531,16 @@
         },
         {
             "name": "phantomwatson/cakephp-json-api",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhantomWatson/cakephp-json-api.git",
-                "reference": "da7e229e2ce2690126e6ddef8e69832e042a54b1"
+                "reference": "1b7908301c79257f1ecc9a11a235fd340eca4e30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/da7e229e2ce2690126e6ddef8e69832e042a54b1",
-                "reference": "da7e229e2ce2690126e6ddef8e69832e042a54b1",
+                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/1b7908301c79257f1ecc9a11a235fd340eca4e30",
+                "reference": "1b7908301c79257f1ecc9a11a235fd340eca4e30",
                 "shasum": ""
             },
             "require": {
@@ -1583,7 +1583,7 @@
                 "issues": "https://github.com/josbeir/cakephp-json-api/issues",
                 "source": "https://github.com/josbeir/cakephp-json-api"
             },
-            "time": "2024-07-06T06:06:31+00:00"
+            "time": "2026-05-26T04:00:20+00:00"
         },
         {
             "name": "psr/clock",
