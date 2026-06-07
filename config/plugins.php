@@ -15,6 +15,8 @@ return [
     'Search' => [],
     'Calendar' => [],
     'Authentication' => [],
-    'IdeHelper' => [],
+    'IdeHelper' => [
+        'onlyDebug' => true,
+    ],
     'JsonApi' => [],
 ];
