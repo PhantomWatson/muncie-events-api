@@ -47,7 +47,7 @@ class ApiController extends Controller
 
         Configure::write('App.fullBaseUrl', 'https://api.muncieevents.com/');
 
-        if (getEnvironment() != 'development') {
+        if (getEnvironment() == 'production') {
             if (!$this->request->is('https')) {
                 throw new BadRequestException('API calls must be made with HTTPS protocol');
             }
