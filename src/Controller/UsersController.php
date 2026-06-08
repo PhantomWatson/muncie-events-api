@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Model\Table\UsersTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
@@ -95,7 +94,6 @@ class UsersController extends AppController
     public function login()
     {
         $userEntity = $this->Users->newEmptyEntity();
-        $userEntity->auto_login = true;
         $this->set([
             'pageTitle' => 'Log in',
             'user' => $userEntity,
@@ -124,19 +122,10 @@ class UsersController extends AppController
                 ->get($authentication->getIdentity()->getIdentifier());
             $user->password = $this->request->getData('password');
             $this->fetchTable('Users')->saveOrFail($user);
-        }
-
-        // Remember login information
-        if ($this->request->getData('auto_login')) {
-            $cookie = new Cookie('CookieAuth')
-                ->withValue([
-                    'email' => $this->request->getData('email'),
-                    'password' => $this->request->getData('password'),
-                ])
-                ->withSecure(true)
-                ->withExpiry(new \DateTime('+1 year'))
-                ->withHttpOnly(true);
-            $this->response = $this->response->withCookie($cookie);
+            
+            // Update the session identity so persistIdentity() uses the new bcrypt hash
+            // when creating the remember-me cookie token, not the legacy SHA1 hash
+            $this->Authentication->setIdentity($user);
         }
 
         return $this->redirect($this->Authentication->getLoginRedirect() ?? '/');

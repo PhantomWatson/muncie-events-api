@@ -205,11 +205,14 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         ]);
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Cookie', [
-            'identifier' => [
-                'className' => 'Authentication.Password',
-                'fields' => $fields,
-            ],
             'fields' => $fields,
+            'rememberMeField' => 'remember_me',
+            'cookie' => [
+                'expires' => '+1 year',
+                'httponly' => true,
+                'name' => 'CookieAuth',
+                'secure' => true,
+            ],
         ]);
 
         $service->loadAuthenticator(\App\Authenticator\ApiKeyAuthenticator::class, [
