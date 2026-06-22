@@ -5,7 +5,7 @@ use Migrations\BaseMigration;
 
 class Initial extends BaseMigration
 {
-    public $autoId = false;
+    public bool $autoId = false;
 
     /**
      * Up Method.
