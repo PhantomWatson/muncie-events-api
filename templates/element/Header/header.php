@@ -81,7 +81,7 @@ use App\View\AppView;
                 ) ?>
             </li>
 
-            <?php if ($authUser) : ?>
+            <?php if ($authUser ?? false) : ?>
                 <li class="<?= $this->Nav->getActiveLink('Users', 'account') ?> nav-item">
                     <?= $this->Html->link(
                         'Account',
