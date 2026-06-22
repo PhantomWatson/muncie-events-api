@@ -123,4 +123,11 @@ class PagesController extends AppController
             'pageTitle' => 'Hang tight! We\'re undergoing maintenance.',
         ]);
     }
+
+    public function helpOut(): void
+    {
+        $this->set([
+            'pageTitle' => 'Help Out',
+        ]);
+    }
 }

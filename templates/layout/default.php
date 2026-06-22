@@ -7,6 +7,8 @@
 
 use Cake\Core\Configure;
 
+$request = $this->getRequest();
+$isFrontPage = $request->getParam('controller') == 'Events' && $request->getParam('action') == 'index';
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml">
@@ -58,6 +60,16 @@ use Cake\Core\Configure;
             </p>
         </div>
     <?php endif; ?>
+
+    <?php if ($isFrontPage): ?>
+        <div class="row">
+            <p class="alert alert-info" style="margin: 0 auto 0.5em auto; width: 100%;">
+                Want to give back to your community by helping Muncie Events?
+                <?= $this->Html->link('Learn more about our volunteer opportunities!', ['controller' => 'Pages', 'action' => 'helpOut']) ?>
+            </p>
+        </div>
+    <?php endif; ?>
+
     <div class="row">
         <noscript id="noscript" class="alert alert-warning">
             <div>
