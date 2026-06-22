@@ -16,6 +16,8 @@ use Cake\Utility\Hash;
  */
 class WidgetsController extends AppController
 {
+    private Widget $Widget;
+
     /**
      * Initialization hook method
      *
