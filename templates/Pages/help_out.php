@@ -40,6 +40,12 @@ $years = (int)date('Y') - 2003;
         on their websites.
     </li>
     <li>
+        <strong>Social media copywriters</strong> - We hope to reach people through our mailing list, the local websites
+        that host Muncie Events calendars, and Google Calendar feeds, but we know that some people get most of their
+        info from social media. Volunteers can help us reach even more people by spotlighting special events through our
+        accounts on Facebook, Bluesky, and other social networks.
+    </li>
+    <li>
         <strong>Copyeditors</strong> - It's important to us to have high-quality event information, and that involves
         hands-on copyediting for submitted content as well as management of our evolving
         <?= $this->Html->link('tagging system', ['controller' => 'tags', 'action' => 'index']) ?>.
