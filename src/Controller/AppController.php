@@ -100,6 +100,9 @@ class AppController extends Controller
      */
     public function beforeRender(\Cake\Event\EventInterface $event)
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->setClassName('Ajax');
+        }
         $authUser = $this->getAuthUser();
         $this->set([
             'authUser' => $authUser,
