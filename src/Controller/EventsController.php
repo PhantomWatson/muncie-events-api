@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Alert\NewEventAlert;
 use App\Application;
 use App\Form\EventForm;
 use App\Model\Entity\Category;
@@ -8,11 +9,9 @@ use App\Model\Entity\Event;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
-use App\Slack\Slack;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
@@ -378,7 +377,7 @@ class EventsController extends AppController
         // Send Slack notification
         $phpUnitRunning = defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING;
         if ($addedEvents && !$phpUnitRunning) {
-            (new Slack())->sendNewEventAlert($addedEvents[0]->title);
+            NewEventAlert::send($addedEvents[0]->title);
         }
 
         $eventsCount = count($addedEvents);

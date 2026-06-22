@@ -1,10 +1,9 @@
 <?php
 namespace App\Controller\V1;
 
+use App\Alert\NewEventAlert;
 use App\Controller\ApiController;
 use App\Form\EventForm;
-use App\Model\Table\EventsTable;
-use App\Slack\Slack;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
@@ -285,7 +284,7 @@ class EventsController extends ApiController
 
         // Send Slack notification
         if (!defined('PHPUNIT_RUNNING') || !PHPUNIT_RUNNING) {
-            (new Slack())->sendNewEventAlert($addedEvents[0]->title);
+            NewEventAlert::send($addedEvents[0]->title);
         }
 
         $this->set([
