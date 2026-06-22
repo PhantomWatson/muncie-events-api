@@ -56,11 +56,11 @@ class CalendarHelper extends Helper
      */
     public static function getNextStartDate($events)
     {
-        if (!$events) {
-            return null;
-        }
         if (!is_array($events)) {
             $events = $events->toArray();
+        }
+        if (!$events) {
+            return null;
         }
 
         // If $events is arranged by date
