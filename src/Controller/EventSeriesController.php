@@ -172,7 +172,7 @@ class EventSeriesController extends AppController
         }
 
         $user = $this->getAuthUser();
-        $canEdit = $user->role == 'admin' || $user->id == $eventSeries->user_id;
+        $canEdit = $user?->role == 'admin' || $user?->id == $eventSeries->user_id;
 
         $this->set([
             'canEdit' => $canEdit,
