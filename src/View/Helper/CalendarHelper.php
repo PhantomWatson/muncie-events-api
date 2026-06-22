@@ -64,9 +64,9 @@ class CalendarHelper extends Helper
         }
 
         // If $events is arranged by date
-        if (is_string(array_keys($events)[0])) {
-            $dates = array_keys($events);
-            $lastDate = new \Cake\Chronos\ChronosDate(end($dates));
+        $keys = array_keys($events);
+        if (is_string($keys[0] ?? null)) {
+            $lastDate = new \Cake\Chronos\ChronosDate(end($keys));
 
         // If $events is a flat array
         } else {
