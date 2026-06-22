@@ -44,7 +44,7 @@ class Slack
      */
     public static function sendMessage(string $text)
     {
-        $url = Configure::read('slackWebhook');
+        $url = Configure::read('slackWebhooks.events');
         $curlHandle = curl_init($url);
         $payload = json_encode(compact('text'));
         curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $payload);
