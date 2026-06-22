@@ -23,16 +23,19 @@ class Slack
      */
     public const DELAY_BETWEEN_ATTEMPTS = 1;
 
+    public const string CHANNEL_EVENTS = 'events';
+
     /**
      * Sends an alert to slack about a new event being posted
      *
      * @param string $title Title of event
      * @return void
      */
-    public function sendNewEventAlert($title)
+    public function sendNewEventAlert(string $title): void
     {
         self::sendMessage(
-            "New event added: *$title*. <https://muncieevents.com/admin/moderate|Go to moderation page>"
+            "New event added: *$title*. <https://muncieevents.com/admin/moderate|Go to moderation page>",
+            self::CHANNEL_EVENTS
         );
     }
 
@@ -42,9 +45,14 @@ class Slack
      * @param string $text Message to send
      * @return void
      */
-    public static function sendMessage(string $text)
+    public static function sendMessage(string $text, string $channel)
     {
-        $url = Configure::read('slackWebhooks.events');
+        $url = Configure::read("slackWebhooks.$channel");
+        if (!$url) {
+            Log::error("No Slack webhook URL configured for channel: $channel");
+            return;
+        }
+
         $curlHandle = curl_init($url);
         $payload = json_encode(compact('text'));
         curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $payload);
