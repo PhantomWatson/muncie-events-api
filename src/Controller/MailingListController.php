@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Model\Entity\MailingList;
+use App\Model\Table\CategoriesTable;
+use App\Model\Table\UsersTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Response;
@@ -11,12 +13,13 @@ use Exception;
 /**
  * MailingLists Controller
  *
- * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\MailingListTable $MailingList
- * @property \App\Model\Table\UsersTable $Users
  */
 class MailingListController extends AppController
 {
+    private UsersTable $Users;
+    private CategoriesTable $Categories;
+
     /**
      * Initialization hook method.
      *
