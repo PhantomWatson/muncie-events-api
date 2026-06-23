@@ -48,6 +48,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
+    private const string AUTH_COOKIE_NAME = 'CookieAuth2'; // Renamed from CookieAuth to invalidate old cookies
+
     /**
      * Load all the application configuration and bootstrap logic.
      *
@@ -106,7 +108,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             //]))
 
             ->add(new EncryptedCookieMiddleware(
-                ['CookieAuth'],
+                [self::AUTH_COOKIE_NAME],
                 Configure::read('cookie_key')
             ))
 
@@ -210,7 +212,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'cookie' => [
                 'expires' => '+1 year',
                 'httponly' => true,
-                'name' => 'CookieAuth',
+                'name' => self::AUTH_COOKIE_NAME,
                 'secure' => true,
             ],
         ]);
