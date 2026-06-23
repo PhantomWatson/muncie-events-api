@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\Table\UsersTable;
+use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -122,7 +123,7 @@ class UsersController extends AppController
                 ->get($authentication->getIdentity()->getIdentifier());
             $user->password = $this->request->getData('password');
             $this->fetchTable('Users')->saveOrFail($user);
-            
+
             // Update the session identity so persistIdentity() uses the new bcrypt hash
             // when creating the remember-me cookie token, not the legacy SHA1 hash
             $this->Authentication->setIdentity($user);
@@ -259,6 +260,8 @@ class UsersController extends AppController
             );
 
             return $this->redirect('/');
+        } catch (InvalidPrimaryKeyException $e) {
+            $this->Flash->error('We couldn\'t find that user because no user ID was provided.');
         }
 
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
