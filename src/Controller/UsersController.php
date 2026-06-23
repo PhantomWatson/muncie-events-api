@@ -258,10 +258,10 @@ class UsersController extends AppController
                 'Sorry, we couldn\'t find that user. ' .
                 'You may have followed a link to a user profile that has been removed.'
             );
-
-            return $this->redirect('/');
+            return $this->redirect($this->referer() ?: '/');
         } catch (InvalidPrimaryKeyException $e) {
             $this->Flash->error('We couldn\'t find that user because no user ID was provided.');
+            return $this->redirect($this->referer() ?: '/');
         }
 
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
