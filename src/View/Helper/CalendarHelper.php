@@ -290,7 +290,7 @@ class CalendarHelper extends Helper
     public function prevDay($date)
     {
         list($year, $month, $day) = explode('-', $date);
-        $timestamp = mktime(0, 0, 0, $month, $day - 1, $year);
+        $timestamp = mktime(0, 0, 0, (int)$month, (int)$day - 1, (int)$year);
 
         return $this->Html->link(
             '&larr; Previous Day',
