@@ -254,16 +254,17 @@ class EventsController extends AppController
     /**
      * Shows the events taking place on the specified day
      *
-     * @param string $month Two-digit month, optionally zero-padded
-     * @param string $day Two-digit day, optionally zero-padded
-     * @param string $year Four-digit year
+     * @param string|null $month Two-digit month, optionally zero-padded
+     * @param string|null $day Two-digit day, optionally zero-padded
+     * @param string|null $year Four-digit year
      * @return void
      */
-    public function day($month, $day, $year)
+    public function day(?string $month = null, ?string $day = null, ?string $year = null): void
     {
         // Zero-pad day and month numbers
         $month = str_pad($month, 2, '0', STR_PAD_LEFT);
         $day = str_pad($day, 2, '0', STR_PAD_LEFT);
+        $year ??= date('Y');
         $date = "$year-$month-$day";
         $events = $this->Events
             ->find()
