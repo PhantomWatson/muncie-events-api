@@ -314,6 +314,9 @@ class CalendarHelper extends Helper
     public function nextDay($date)
     {
         list($year, $month, $day) = explode('-', $date);
+        $year = (int)$year;
+        $month = (int)$month;
+        $day = (int)$day;
         $timestamp = mktime(0, 0, 0, $month, $day + 1, $year);
 
         return $this->Html->link(
