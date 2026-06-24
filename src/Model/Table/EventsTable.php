@@ -422,45 +422,35 @@ class EventsTable extends Table
      * plus the count of how many events each is associated with
      *
      * @param string $direction Direction to search, either 'upcoming' or 'past'
-     * @param int $categoryId ID of a category record
+     * @param int|null $categoryId ID of a category record
      * @return Tag[]
      * @throws InternalErrorException
      */
-    public function getEventTags($direction = 'upcoming', $categoryId = null)
+    public function getEventTags(string $direction = 'upcoming', ?int $categoryId = null): array
     {
         if (!in_array($direction, ['upcoming', 'past'])) {
             throw new InternalErrorException('Invalid direction: ' . $direction);
         }
 
-        $query = $this->find($direction)
-            ->select(['id'])
-            ->where(['published' => true])
-            ->contain([
-                'Tags' => function (\Cake\ORM\Query\SelectQuery $query) {
-                    return $query->select(['id', 'name']);
-                },
-            ]);
-        if ($categoryId) {
-            $query->where(['category_id' => $categoryId]);
-        }
+        $cacheKey = sprintf('event_tags_%s_%s', $direction, $categoryId ?? 'all');
 
-        $events = $query->all();
+        return Cache::remember($cacheKey, function () use ($direction, $categoryId) {
+            return $this->Tags->getTarget()->find()
+                ->select(['Tags.id', 'Tags.name', 'count' => 'COUNT(DISTINCT Events.id)'])
+                ->innerJoinWith('Events', function (SelectQuery $q) use ($direction, $categoryId) {
+                    $q->find($direction)->where(['Events.published' => true]);
+                    if ($categoryId) {
+                        $q->where(['Events.category_id' => $categoryId]);
+                    }
 
-        $tags = [];
-        foreach ($events as $event) {
-            foreach ($event->tags as $tag) {
-                if (isset($tags[$tag->name])) {
-                    $tags[$tag->name]->count++;
-                    continue;
-                }
-                $tag->count = 1;
-                $tags[$tag->name] = $tag;
-            }
-        }
-
-        ksort($tags);
-
-        return $tags;
+                    return $q;
+                })
+                ->groupBy(['Tags.id', 'Tags.name'])
+                ->orderBy(['Tags.name' => 'ASC'])
+                ->all()
+                ->indexBy('name')
+                ->toArray();
+        }, 'daily');
     }
 
     /**
