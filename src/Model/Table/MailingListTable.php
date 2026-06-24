@@ -210,7 +210,7 @@ class MailingListTable extends Table
      * @param int $limit Limit of how many recipients to return, zero for no limit
      * @return MailingList[]|ResultSetInterface
      */
-    public function getDailyRecipients(string $email = null, int $limit = 0): ResultSetInterface|array
+    public function getDailyRecipients(?string $email, int $limit = 0): ResultSetInterface|array
     {
         $timezone = Configure::read('localTimezone');
         $now = new \Cake\I18n\DateTime('now', $timezone);
