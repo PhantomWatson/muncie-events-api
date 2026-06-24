@@ -171,7 +171,7 @@ class TagsController extends ApiController
             throw new BadRequestException('Search term missing');
         }
 
-        $limit = $this->request->getQuery('limit') === null ? 10 : $this->request->getQuery('limit');
+        $limit = $this->request->getQuery('limit', 10);
         if (!is_numeric($limit) || $limit < 1) {
             throw new BadRequestException("Invalid limit: $limit");
         }
