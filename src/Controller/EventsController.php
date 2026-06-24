@@ -262,8 +262,8 @@ class EventsController extends AppController
     public function day(?string $month = null, ?string $day = null, ?string $year = null): void
     {
         // Zero-pad day and month numbers
-        $month = str_pad($month, 2, '0', STR_PAD_LEFT);
-        $day = str_pad($day, 2, '0', STR_PAD_LEFT);
+        $month = str_pad((string)$month, 2, '0', STR_PAD_LEFT);
+        $day = str_pad((string)$day, 2, '0', STR_PAD_LEFT);
         $year ??= date('Y');
         $date = "$year-$month-$day";
         $events = $this->Events
