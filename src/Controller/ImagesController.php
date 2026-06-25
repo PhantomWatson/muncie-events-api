@@ -9,6 +9,7 @@ use App\Upload\ImageUploader;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\View\JsonView;
 use Exception;
 use Laminas\Diactoros\UploadedFile;
 
@@ -97,6 +98,9 @@ class ImagesController extends AppController
     {
         $image = $this->Images->get((int)$imageId);
         $this->set(['filename' => $image->filename ?? false]);
-        $this->viewBuilder()->setOption('serialize', ['filename']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['filename'])
+            ->setClassName(JsonView::class);
+
     }
 }
