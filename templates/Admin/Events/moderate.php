@@ -40,7 +40,7 @@ $getSeriesPartEventIds = function (Event $event) use ($groupedEvents)
 $getCountInGroup = function (Event $event) use ($groupedEvents)
 {
     $modifiedDay = $event->modified->format('Y-m-d H:i:s');
-    $seriesId = $event->series_id;
+    $seriesId = $event->series_id ?? '';
     return count($groupedEvents[$seriesId][$modifiedDay] ?? []);
 };
 
