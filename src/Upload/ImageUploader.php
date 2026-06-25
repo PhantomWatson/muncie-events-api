@@ -250,9 +250,6 @@ class ImageUploader
         if (!file_exists($destinationFile)) {
             throw new InternalErrorException('There was an error saving the thumbnail version of this image');
         }
-
-        imagedestroy($sourceImage);
-        imagedestroy($destinationImage);
     }
 
     /**
@@ -429,8 +426,6 @@ class ImageUploader
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (outputFn failed)');
         }
-
-        imagedestroy($tmpImage);
 
         return true;
     }
