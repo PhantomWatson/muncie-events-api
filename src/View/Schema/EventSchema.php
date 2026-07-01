@@ -99,7 +99,9 @@ class EventSchema extends EntitySchema
             $date->day,
             $time->getHours(),
             $time->getMinutes(),
-        )->format('c');
+        )
+            ->setTimezone(Event::TIMEZONE)
+            ->format('c');
     }
 
     /**
