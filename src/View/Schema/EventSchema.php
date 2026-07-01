@@ -3,6 +3,9 @@ namespace App\View\Schema;
 
 use App\Model\Entity\Event;
 use Cake\Core\Configure;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
+use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Exception;
 use JsonApi\View\Schema\EntitySchema;
@@ -59,8 +62,8 @@ class EventSchema extends EntitySchema
             'category' => CategorySchema::_getAttributes($entity->category),
             'series' => $entity->event_series ? EventSeriesSchema::_getAttributes($entity->event_series) : null,
             'date' => $entity->date->format('Y-m-d'),
-            'time_start' => $entity->time_start->toRfc3339String(),
-            'time_end' => $entity->time_end->toRfc3339String(),
+            'time_start' => $this->getFormattedTime($entity->date, $entity->time_start),
+            'time_end' => $this->getFormattedTime($entity->date, $entity->time_end),
             'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,
@@ -86,6 +89,17 @@ class EventSchema extends EntitySchema
         }
 
         return $attributes;
+    }
+
+    private function getFormattedTime(Date $date, Time $time): string
+    {
+        return DateTime::create(
+            $date->year,
+            $date->month,
+            $date->day,
+            $time->getHours(),
+            $time->getMinutes(),
+        )->format('c');
     }
 
     /**
