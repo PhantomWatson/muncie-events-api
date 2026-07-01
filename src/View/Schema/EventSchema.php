@@ -63,7 +63,7 @@ class EventSchema extends EntitySchema
             'series' => $entity->event_series ? EventSeriesSchema::_getAttributes($entity->event_series) : null,
             'date' => $entity->date->format('Y-m-d'),
             'time_start' => $this->getFormattedTime($entity->date, $entity->time_start),
-            'time_end' => $this->getFormattedTime($entity->date, $entity->time_end),
+            'time_end' => $this->getFormattedTime($entity->date, $entity->time_end ?? $entity->time_start),
             'age_restriction' => $entity->age_restriction ? $entity->age_restriction : null,
             'cost' => $entity->cost ? $entity->cost : null,
             'source' => $entity->source ? $entity->source : null,
