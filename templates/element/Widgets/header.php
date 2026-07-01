@@ -6,7 +6,11 @@
  * @var \App\View\AppView $this
  */
 
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+
+// Lazy hack to fix whatever's loading this without first providing a $categories view var
+$categories ??= TableRegistry::getTableLocator()->get('Categories')->find()->all();
 
 $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
 ?>
