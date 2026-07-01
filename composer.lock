@@ -1265,6 +1265,76 @@
             "time": "2025-10-12T20:58:29+00:00"
         },
         {
+            "name": "laravel-json-api/neomerx-json-api",
+            "version": "v5.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-json-api/neomerx-json-api.git",
+                "reference": "836342be5eb4bcf6c3734c7f8e82c9ceec3be550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-json-api/neomerx-json-api/zipball/836342be5eb4bcf6c3734c7f8e82c9ceec3be550",
+                "reference": "836342be5eb4bcf6c3734c7f8e82c9ceec3be550",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.17",
+                "mockery/mockery": "^1.4.4",
+                "phpmd/phpmd": "^2.11.1",
+                "phpunit/phpunit": "^9.5.10",
+                "scrutinizer/ocular": "^1.8",
+                "squizlabs/php_codesniffer": "^3.6.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/I18n/format.php"
+                ],
+                "psr-4": {
+                    "Neomerx\\JsonApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "neomerx",
+                    "email": "info@neomerx.com"
+                },
+                {
+                    "name": "Christopher Gammie",
+                    "email": "contact@gammie.co.uk"
+                }
+            ],
+            "description": "Framework agnostic JSON API (jsonapi.org) implementation",
+            "homepage": "https://github.com/neomerx/json-api",
+            "keywords": [
+                "JSON-API",
+                "api",
+                "json",
+                "jsonapi",
+                "jsonapi.org",
+                "neomerx"
+            ],
+            "support": {
+                "issues": "https://github.com/neomerx/json-api/issues",
+                "source": "https://github.com/laravel-json-api/neomerx-json-api/tree/v5.0.3"
+            },
+            "time": "2024-11-29T17:49:31+00:00"
+        },
+        {
             "name": "league/container",
             "version": "5.2.0",
             "source": {
@@ -1475,84 +1545,24 @@
             "time": "2026-01-09T16:21:59+00:00"
         },
         {
-            "name": "neomerx/json-api",
-            "version": "v4.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/neomerx/json-api.git",
-                "reference": "0e45254a4574a3118e0ed663312b43aca23b89c7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/neomerx/json-api/zipball/0e45254a4574a3118e0ed663312b43aca23b89c7",
-                "reference": "0e45254a4574a3118e0ed663312b43aca23b89c7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.14",
-                "mockery/mockery": "^1.0",
-                "phpmd/phpmd": "^2.6",
-                "phpunit/phpunit": "^7.0",
-                "scrutinizer/ocular": "^1.4",
-                "squizlabs/php_codesniffer": "^2.9"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/I18n/format.php"
-                ],
-                "psr-4": {
-                    "Neomerx\\JsonApi\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "neomerx",
-                    "email": "info@neomerx.com"
-                }
-            ],
-            "description": "Framework agnostic JSON API (jsonapi.org) implementation",
-            "homepage": "https://github.com/neomerx/json-api",
-            "keywords": [
-                "JSON-API",
-                "api",
-                "json",
-                "jsonapi",
-                "jsonapi.org",
-                "neomerx"
-            ],
-            "support": {
-                "issues": "https://github.com/neomerx/json-api/issues",
-                "source": "https://github.com/neomerx/json-api/tree/develop"
-            },
-            "time": "2020-03-03T05:56:54+00:00"
-        },
-        {
             "name": "phantomwatson/cakephp-json-api",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhantomWatson/cakephp-json-api.git",
-                "reference": "1909140295100d78d50db7c4829d05e4c109416a"
+                "reference": "35843467a668017a47398dbb3c28404855921fcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/1909140295100d78d50db7c4829d05e4c109416a",
-                "reference": "1909140295100d78d50db7c4829d05e4c109416a",
+                "url": "https://api.github.com/repos/PhantomWatson/cakephp-json-api/zipball/35843467a668017a47398dbb3c28404855921fcd",
+                "reference": "35843467a668017a47398dbb3c28404855921fcd",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "^5.0",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "neomerx/json-api": "^4.0",
+                "laravel-json-api/neomerx-json-api": "^5.0",
                 "php": ">=8.0"
             },
             "require-dev": {
@@ -1588,7 +1598,7 @@
                 "issues": "https://github.com/josbeir/cakephp-json-api/issues",
                 "source": "https://github.com/josbeir/cakephp-json-api"
             },
-            "time": "2026-07-01T01:35:19+00:00"
+            "time": "2026-07-01T02:09:25+00:00"
         },
         {
             "name": "psr/clock",
