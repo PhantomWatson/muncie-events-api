@@ -23,7 +23,8 @@
         "sabre/vobject": "^4.0",
         "xety/cake3-cookieauth": "^1.1",
         "cakephp/authentication": "^4.0",
-        "phantomwatson/cakephp-json-api": "^3.0"
+        "phantomwatson/cakephp-json-api": "^3.0",
+        "laravel-json-api/neomerx-json-api": "^5.0"
     },
     "require-dev": {
         "cakephp/bake": "^3.6",
