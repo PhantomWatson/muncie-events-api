@@ -356,7 +356,7 @@ class ImageUploader
 
         return match ($imageType) {
             IMAGETYPE_GIF => imagecreatefromgif($this->sourceFile),
-            IMAGETYPE_PNG => imagecreatefrompng($this->sourceFile),
+            IMAGETYPE_PNG => @imagecreatefrompng($this->sourceFile), // Suppress "gd-png: libpng warning: iCCP: known incorrect sRGB profile"
             default => imagecreatefromjpeg($this->sourceFile),
         };
     }
