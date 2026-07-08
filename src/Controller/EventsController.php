@@ -65,21 +65,35 @@ class EventsController extends AppController
         }
         $this->loadComponent('Calendar.Calendar');
 
-        if ($this->request->getParam('_ext') === 'ics') {
+        if ($this->isIcs()) {
             $this->viewBuilder()->setClassName('Calendar.Ical');
         }
 
         $this->Events = self::fetchTable('Events');
     }
 
+    private function isIcs(): bool
+    {
+        return $this->request->getParam('_ext') == 'ics';
+    }
+
     /**
      * Index method
      *
      * @param string|null $startDate The earliest date to fetch events for
-     * @return void
+     * @return Response|null
      */
-    public function index($startDate = null)
+    public function index($startDate = null): ?Response
     {
+        // Redirect /events.ics to /events/feed/all.ics
+        if ($this->isIcs()) {
+            return $this->redirect([
+                'action' => 'feed',
+                'all',
+                '_ext' => 'ics',
+            ]);
+        }
+
         $minEventCount = 30;
         $timezone = Configure::read('localTimezone');
         $defaultStartDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
@@ -119,6 +133,8 @@ class EventsController extends AppController
         if ($this->request->getQuery('page')) {
             $this->render('/Events/page');
         }
+
+        return null;
     }
 
     /**
@@ -224,7 +240,7 @@ class EventsController extends AppController
             ->where(['Events.id' => $id])
             ->firstOrFail();
 
-        if ($this->request->getParam('_ext') == 'ics') {
+        if ($this->isIcs()) {
             $filename = sprintf('%s-%s.ics', Text::slug($event->title), date('m-d-Y', strtotime($event->date)));
             $this->response = $this->response->withDownload($filename);
         }
@@ -816,7 +832,7 @@ class EventsController extends AppController
      */
     public function feed($categorySlug = 'all')
     {
-        if (!$this->request->getParam('_ext') == 'ics') {
+        if (!$this->isIcs()) {
             throw new BadRequestException('.ics extension required');
         }
 
