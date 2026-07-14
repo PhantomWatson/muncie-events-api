@@ -5,6 +5,8 @@ use App\Model\Table\TagsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\Date;
+use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
@@ -156,15 +158,13 @@ class Event extends Entity
      * @param \Cake\I18n\Time|null $localTime Time object
      * @return \Cake\I18n\DateTime|null
      */
-    private static function getCorrectedTime($date, $localTime)
+    private static function getCorrectedTime(Date $date, ?Time $localTime): ?\Cake\I18n\DateTime
     {
         if (!$localTime) {
             return null;
         }
 
-        // Set the timezone first so that setDate()/setTime() below set local wall-clock values directly,
-        // rather than being interpreted in the default (UTC) timezone and then converted
-        return (new \Cake\I18n\DateTime())
+        return new \Cake\I18n\DateTime()
             ->setTimezone(self::TIMEZONE)
             ->setDate($date->year, $date->month, $date->day)
             ->setTime($localTime->getHours(), $localTime->getMinutes());
