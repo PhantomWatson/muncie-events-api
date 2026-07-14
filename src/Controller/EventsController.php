@@ -904,7 +904,7 @@ class EventsController extends AppController
         $this->set(compact('event', 'isPast', 'pageTitle', 'contactEmail'));
     }
 
-    public function duplicate($eventId = null)
+    public function duplicate($eventId = null): ?Response
     {
         $eventExists = $this->Events->exists(['id' => $eventId]);
         if (!$eventExists) {
@@ -964,5 +964,7 @@ class EventsController extends AppController
             'event' => $event,
             'pageTitle' => 'Duplicate "' . $event->title . '"',
         ]);
+
+        return null;
     }
 }
