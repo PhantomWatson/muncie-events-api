@@ -33,6 +33,8 @@ use Recaptcha\Controller\Component\RecaptchaComponent;
  */
 class EventsController extends AppController
 {
+    private EventsTable $Events;
+
     /**
      * Initialization hook method
      *
@@ -69,7 +71,7 @@ class EventsController extends AppController
             $this->viewBuilder()->setClassName('Calendar.Ical');
         }
 
-        $this->Events = self::fetchTable('Events');
+        $this->Events = $this->fetchTable('Events');
     }
 
     private function isIcs(): bool
