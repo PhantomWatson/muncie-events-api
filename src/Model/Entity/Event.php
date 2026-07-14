@@ -9,7 +9,6 @@ use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use DateTime;
-use Exception;
 use Sabre\VObject;
 
 /**
@@ -146,15 +145,16 @@ class Event extends Entity
     }
 
     /**
-     * Returns a Time object with correct UTC offset representing the provided time
+     * Returns a DateTime object combining $date with the hours and minutes of $localTime, with the correct
+     * UTC offset for the event's timezone
      *
-     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", which is has no timezone info and may
-     * be assumed incorrectly to be UTC. This method returns an object with the correct timezone offset, time, and date
+     * Example: Events taking place at 10am in Indiana are stored as "10:00:00", a time-only value with no date
+     * or timezone info, which may be assumed incorrectly to be today's date and/or UTC. This method returns an
+     * object with the correct timezone offset, time, and date
      *
      * @param \Cake\I18n\Date $date Date object
-     * @param \Cake\I18n\DateTime|null $localTime Time object
+     * @param \Cake\I18n\Time|null $localTime Time object
      * @return \Cake\I18n\DateTime|null
-     * @throws Exception
      */
     private static function getCorrectedTime($date, $localTime)
     {
@@ -162,25 +162,12 @@ class Event extends Entity
             return null;
         }
 
-        // Create a time object with the correct timezone set
-        $timeString = $localTime->toDateTimeString();
-        $correctedTime = (new \Cake\I18n\DateTime($timeString))
+        // Set the timezone first so that setDate()/setTime() below set local wall-clock values directly,
+        // rather than being interpreted in the default (UTC) timezone and then converted
+        return (new \Cake\I18n\DateTime())
             ->setTimezone(self::TIMEZONE)
-            ->day($date->day)
-            ->month($date->month)
-            ->year($date->year);
-
-        // Change from Indiana time to UTC time
-        $offset = timezone_offset_get(timezone_open(self::TIMEZONE), new DateTime($localTime));
-        $isNegOffset = stripos($offset, '-') === 0;
-        $modification = str_replace(
-                $isNegOffset ? '-' : '+',
-                $isNegOffset ? '+' : '-',
-                $offset
-            ) . ' seconds';
-        $correctedTime->modify($modification);
-
-        return $correctedTime;
+            ->setDate($date->year, $date->month, $date->day)
+            ->setTime($localTime->getHours(), $localTime->getMinutes());
     }
 
     /**
@@ -193,7 +180,7 @@ class Event extends Entity
      */
     protected function _getIcalTimeStart()
     {
-        return $this->time_start->format('Ymd\THis');
+        return self::getCorrectedTime($this->date, $this->time_start)->format('Ymd\THis');
     }
 
     /**
@@ -206,7 +193,7 @@ class Event extends Entity
      */
     protected function _getIcalTimeEnd()
     {
-        return $this->time_end?->format('Ymd\THis');
+        return self::getCorrectedTime($this->date, $this->time_end)?->format('Ymd\THis');
     }
 
 
@@ -515,11 +502,7 @@ class Event extends Entity
      */
     protected function _getGoogleCalTimeStart()
     {
-        return sprintf(
-            '%sT%s',
-            $this->time_start->i18nFormat('yyyyMMdd'),
-            $this->time_start->i18nFormat('HHmmss')
-        );
+        return self::getCorrectedTime($this->date, $this->time_start)->format('Ymd\THis');
     }
 
     /**
@@ -529,11 +512,8 @@ class Event extends Entity
     protected function _getGoogleCalTimeEnd()
     {
         $time = $this->time_end ?: $this->time_start;
-        return sprintf(
-            '%sT%s',
-            $time->i18nFormat('yyyyMMdd'),
-            $time->i18nFormat('HHmmss')
-        );
+
+        return self::getCorrectedTime($this->date, $time)->format('Ymd\THis');
     }
 
     /**
