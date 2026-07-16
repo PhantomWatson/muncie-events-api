@@ -111,21 +111,6 @@ class AppController extends Controller
     }
 
     /**
-     * isAuthorized method
-     *
-     * @param User $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user)
-    {
-        if (!$this->request->getParam('prefix')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Loads the Recaptcha component
      *
      * @throws \Exception

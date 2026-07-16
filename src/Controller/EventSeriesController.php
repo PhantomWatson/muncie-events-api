@@ -3,12 +3,11 @@ namespace App\Controller;
 
 use App\Model\Entity\EventSeries;
 use App\Model\Entity\User;
-use App\Model\Table\EventSeriesTable;
 use App\Model\Table\EventsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\I18n\FrozenTime;
 use Exception;
 
 /**
@@ -33,28 +32,24 @@ class EventSeriesController extends AppController
     }
 
     /**
-     * Determines whether or not the user is authorized to make the current request
+     * Returns TRUE if the current user is allowed to edit/delete the event series specified in the ID route parameter
      *
-     * @param User|null $user User entity
+     * @param int $seriesId
      * @return bool
      */
-    public function isAuthorized($user = null)
+    private function mayEdit(int $seriesId): bool
     {
+        $user = $this->getAuthUser();
+
         // Grant access if this user is an admin
-        $role = $user['role'] ?? null;
-        if ($role == 'admin') {
+        if ($user->role == User::ROLE_ADMIN) {
             return true;
         }
 
-        // Grant access to edit and delete functions only if the current user is this series's author
-        $seriesId = $this->request->getParam('id');
-        $userId = php_sapi_name() == 'cli'
-            ? $this->request->getSession()->read('Auth.User.id')
-            : $user['id'];
-
+        // Grant access if this user is the series's author
         return $this->EventSeries->exists([
             'id' => $seriesId,
-            'user_id' => $userId,
+            'user_id' => $user->id,
         ]);
     }
 
@@ -67,6 +62,10 @@ class EventSeriesController extends AppController
      */
     public function edit($seriesId = null)
     {
+        if (!$this->mayEdit($seriesId)) {
+            throw new ForbiddenException();
+        }
+
         try {
             /** @var EventSeries $eventSeries */
             $eventSeries = $this->EventSeries
@@ -175,7 +174,7 @@ class EventSeriesController extends AppController
         $canEdit = $user?->role == User::ROLE_ADMIN || $user?->id == $eventSeries->user_id;
 
         $this->set([
-            'canEdit' => $canEdit,
+            'canEdit' => $this->mayEdit($seriesId),
             'dividedEvents' => $dividedEvents,
             'eventSeries' => $eventSeries,
             'pageTitle' => 'Event Series: ' . $eventSeries->title,
@@ -192,6 +191,10 @@ class EventSeriesController extends AppController
      */
     public function delete($seriesId)
     {
+        if (!$this->mayEdit($seriesId)) {
+            throw new ForbiddenException();
+        }
+
         $eventSeries = $this->EventSeries->get($seriesId);
 
         if ($this->EventSeries->delete($eventSeries)) {
