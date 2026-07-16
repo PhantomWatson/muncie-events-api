@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property string $role
+ * @property string $role 'user' or 'admin'
  * @property string|null $bio
  * @property string $email
  * @property string $password
@@ -31,6 +31,8 @@ use Cake\ORM\Entity;
  */
 class User extends Entity implements IdentityInterface
 {
+    public const string ROLE_USER = 'user';
+    public const string ROLE_ADMIN = 'admin';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

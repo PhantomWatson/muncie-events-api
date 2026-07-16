@@ -6,6 +6,7 @@ use App\Application;
 use App\Form\EventForm;
 use App\Model\Entity\Category;
 use App\Model\Entity\Event;
+use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
@@ -603,7 +604,7 @@ class EventsController extends AppController
         }
 
         // Any admin may edit
-        return $authUser->role == 'admin';
+        return $authUser->role == User::ROLE_ADMIN;
     }
 
     /**

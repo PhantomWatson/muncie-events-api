@@ -270,7 +270,7 @@ class UsersTable extends Table
 
         $isAdmin = $this->exists([
             'id' => $userId,
-            'role' => 'admin',
+            'role' => User::ROLE_ADMIN,
         ]);
         if ($isAdmin) {
             return true;

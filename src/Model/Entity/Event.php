@@ -212,7 +212,7 @@ class Event extends Entity
         if (!is_array($user)) {
             $user = $user->toArray();
         }
-        if (isset($user['role']) && $user['role'] == 'admin') {
+        if (isset($user['role']) && $user['role'] == User::ROLE_ADMIN) {
             if (!isset($user['id'])) {
                 throw new InternalErrorException('Cannot approve event. Administrator ID unknown.');
             }
@@ -251,7 +251,7 @@ class Event extends Entity
             return false;
         }
 
-        if (isset($user['role']) && $user['role'] == 'admin') {
+        if (isset($user['role']) && $user['role'] == User::ROLE_ADMIN) {
             return true;
         }
 
