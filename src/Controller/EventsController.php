@@ -271,6 +271,7 @@ class EventsController extends AppController
                 'article:author' => $event->user->name ?? 'Anonymous',
             ],
         ]);
+        $this->viewBuilder()->setOption('serialize', 'event');
     }
 
     /**
