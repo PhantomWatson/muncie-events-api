@@ -142,17 +142,6 @@ class ApiController extends Controller
     }
 
     /**
-     * isAuthorized method
-     *
-     * @param User $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user)
-    {
-        return true;
-    }
-
-    /**
      * Returns the user identified by the token provided in the query string
      *
      * @return User

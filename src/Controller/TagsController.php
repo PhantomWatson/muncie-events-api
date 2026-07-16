@@ -31,17 +31,6 @@ class TagsController extends AppController
     }
 
     /**
-     * Returns TRUE if the user is authorized to make the current request
-     *
-     * @param User|null $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user = null)
-    {
-        return true;
-    }
-
-    /**
      * Tag index / cloud page
      *
      * @param string $direction Either 'upcoming' or 'past'
