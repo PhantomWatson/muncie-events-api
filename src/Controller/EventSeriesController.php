@@ -41,6 +41,10 @@ class EventSeriesController extends AppController
     {
         $user = $this->getAuthUser();
 
+        if (!$user) {
+            return false;
+        }
+
         // Grant access if this user is an admin
         if ($user->role == User::ROLE_ADMIN) {
             return true;
