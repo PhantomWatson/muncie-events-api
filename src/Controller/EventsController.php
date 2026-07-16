@@ -18,9 +18,9 @@ use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
-use Cake\View\JsonView;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
 
@@ -71,11 +71,12 @@ class EventsController extends AppController
         if ($this->isIcs()) {
             $this->viewBuilder()->setClassName('Calendar.Ical');
         }
-    }
 
-    public function viewClasses(): array
-    {
-        return [JsonView::class];
+        // Disallow JSON requests outside of the API
+        if ($this->request->is('json')) {
+            $apiUrl = Router::url(['controller' => 'Pages', 'action' => 'api'], true);
+            throw new BadRequestException("To fetch JSON data, use the API. For information, visit $apiUrl");
+        }
     }
 
     private function isIcs(): bool
@@ -271,7 +272,6 @@ class EventsController extends AppController
                 'article:author' => $event->user->name ?? 'Anonymous',
             ],
         ]);
-        $this->viewBuilder()->setOption('serialize', 'event');
     }
 
     /**
