@@ -16,7 +16,7 @@ use Exception;
  * @property \App\Model\Table\TagsTable $Tags
  * @property \App\Model\Table\EventsTagsTable $EventsTags
  */
-class TagsController extends AppController
+class TagsController extends AdminController
 {
     /**
      * Initialization hook method
@@ -27,17 +27,6 @@ class TagsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-    }
-
-    /**
-     * Returns TRUE if the user is authorized to make the current request
-     *
-     * @param User|null $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user = null)
-    {
-        return $user['role'] == 'admin';
     }
 
     /**

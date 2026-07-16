@@ -14,7 +14,7 @@ use Exception;
  * @property EventSeriesTable $EventSeries
  * @property \App\Model\Table\EventsTable $Events
  */
-class EventsController extends AppController
+class EventsController extends AdminController
 {
     /**
      * Initialization hook method
@@ -25,17 +25,6 @@ class EventsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-    }
-
-    /**
-     * Returns TRUE if the user is authorized to make the current request
-     *
-     * @param User|null $user User entity
-     * @return bool
-     */
-    public function isAuthorized($user = null)
-    {
-        return $user['role'] == 'admin';
     }
 
     /**
