@@ -20,6 +20,7 @@ use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
+use Cake\View\JsonView;
 use Exception;
 use Recaptcha\Controller\Component\RecaptchaComponent;
 
@@ -70,6 +71,11 @@ class EventsController extends AppController
         if ($this->isIcs()) {
             $this->viewBuilder()->setClassName('Calendar.Ical');
         }
+    }
+
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
     }
 
     private function isIcs(): bool
