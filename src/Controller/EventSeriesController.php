@@ -174,9 +174,6 @@ class EventSeriesController extends AppController
             $dividedEvents['upcoming'] = $eventSeries->upcomingEvents;
         }
 
-        $user = $this->getAuthUser();
-        $canEdit = $user?->role == User::ROLE_ADMIN || $user?->id == $eventSeries->user_id;
-
         $this->set([
             'canEdit' => $this->mayEdit($seriesId),
             'dividedEvents' => $dividedEvents,
