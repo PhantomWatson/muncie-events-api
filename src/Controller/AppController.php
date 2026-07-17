@@ -8,8 +8,10 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Cookie\Cookie;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\ORM\Table;
+use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Exception;
 
@@ -179,5 +181,14 @@ class AppController extends Controller
     protected function getAuthUser(): ?User
     {
         return $this->Authentication->getIdentity();
+    }
+
+    protected function blockJsonRequests(): void
+    {
+        // Disallow JSON requests outside of the API
+        if ($this->request->is('json')) {
+            $apiUrl = Router::url(['controller' => 'Pages', 'action' => 'api'], true);
+            throw new BadRequestException("To fetch JSON data, use the API. For information, visit $apiUrl");
+        }
     }
 }

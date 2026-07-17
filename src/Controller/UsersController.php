@@ -37,6 +37,8 @@ class UsersController extends AppController
             'resetPassword',
             'view',
         ]);
+
+        $this->blockJsonRequests();
     }
 
     /**

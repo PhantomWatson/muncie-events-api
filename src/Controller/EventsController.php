@@ -18,7 +18,6 @@ use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
 use Exception;
@@ -72,11 +71,7 @@ class EventsController extends AppController
             $this->viewBuilder()->setClassName('Calendar.Ical');
         }
 
-        // Disallow JSON requests outside of the API
-        if ($this->request->is('json')) {
-            $apiUrl = Router::url(['controller' => 'Pages', 'action' => 'api'], true);
-            throw new BadRequestException("To fetch JSON data, use the API. For information, visit $apiUrl");
-        }
+        $this->blockJsonRequests();
     }
 
     private function isIcs(): bool
