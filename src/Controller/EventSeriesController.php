@@ -29,6 +29,8 @@ class EventSeriesController extends AppController
     {
         parent::initialize();
         $this->Authentication->allowUnauthenticated(['view']);
+
+        $this->blockJsonRequests();
     }
 
     /**
