@@ -32,7 +32,9 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
             if ($includeTrace) {
                 $message .= "\nTrace:\n" . $error->getTraceAsString() . "\n";
             }
-            ErrorAlert::send($message);
+            if (!$this->isAlertExemptMessage($message)) {
+                ErrorAlert::send($message);
+            }
         }
 
         parent::logError($error, $request, $includeTrace);
@@ -63,8 +65,25 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
             if ($request !== null) {
                 $message .= $this->getRequestContext($request);
             }
-            ErrorAlert::send($message);
+            if (!$this->isAlertExemptMessage($message)) {
+                ErrorAlert::send($message);
+            }
         }
         parent::logException($exception, $request, $includeTrace);
+    }
+
+    /**
+     * Returns TRUE if this is an error that we don't want to send an alert for (but do want to log)
+     *
+     * @param string $message
+     * @return bool
+     */
+    private function isAlertExemptMessage(string $message): bool
+    {
+        // Bots seem to hit non-JSON pages with JSON requests, causing these exceptions
+        $lines = explode("\n", $message);
+        $firstLine = $lines[0];
+        return str_contains($firstLine, 'Cake\View\Exception\MissingTemplateException')
+            && str_contains($firstLine, '/json/');
     }
 }
