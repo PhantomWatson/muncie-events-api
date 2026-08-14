@@ -46,7 +46,7 @@ class MailingListController extends AppController
      * @param string|null $hash Hash for verifying that the user making this request is the subscriber
      * @return Response|null
      */
-    public function index($subscriberId = null, $hash = null)
+    public function index(?int $subscriberId = null, ?string $hash = null): ?Response
     {
         // Redirect if hash is invalid
         if ($subscriberId) {
@@ -57,14 +57,9 @@ class MailingListController extends AppController
         }
 
         // Get subscription entity
-        if ($subscriberId) {
-            $subscription = $this->MailingList->get($subscriberId, contain: ['Categories']);
-        } else {
-            $subscription = $this->getCurrentUserSubscription();
-        }
-        if ($this->request->is('get') && !$subscription) {
-            $subscription = $this->MailingList->newEntityWithDefaults();
-        }
+        $subscription = $subscriberId
+            ? $this->MailingList->get($subscriberId, contain: ['Categories'])
+            : ($this->getCurrentUserSubscription() ?? $this->MailingList->newEntityWithDefaults());
 
         // Update with post data
         if ($this->request->is(['post', 'put'])) {
