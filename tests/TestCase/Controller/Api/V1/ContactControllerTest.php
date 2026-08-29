@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
@@ -10,7 +10,7 @@ use PHPUnit\Exception;
 /**
  * ContactControllerTest class
  *
- * @link \App\Controller\V1\ContactController
+ * @link \App\Controller\Api\V1\ContactController
  */
 class ContactControllerTest extends ApplicationTest
 {

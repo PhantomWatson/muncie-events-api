@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Test\Fixture\CategoriesFixture;
 use App\Test\TestCase\ApplicationTest;
@@ -9,7 +9,7 @@ use PHPUnit\Exception;
 /**
  * CategoriesControllerTest class
  *
- * @link \App\Controller\V1\CategoriesController
+ * @link \App\Controller\Api\V1\CategoriesController
  */
 class CategoriesControllerTest extends ApplicationTest
 {

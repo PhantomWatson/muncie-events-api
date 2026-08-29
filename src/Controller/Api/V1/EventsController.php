@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\V1;
+namespace App\Controller\Api\V1;
 
 use App\Alert\NewEventAlert;
 use App\Controller\ApiController;

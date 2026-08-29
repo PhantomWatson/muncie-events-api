@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Model\Entity\Image;
 use App\Test\TestCase\ApplicationTest;
@@ -9,7 +9,7 @@ use PHPUnit\Exception;
 /**
  * ImagesControllerTest class
  *
- * @link \App\Controller\V1\ImagesController
+ * @link \App\Controller\Api\V1\ImagesController
  */
 class ImagesControllerTest extends ApplicationTest
 {
@@ -119,16 +119,16 @@ class ImagesControllerTest extends ApplicationTest
 
         // Assert that images are within allowed dimensions
         $path = $this->imagesDestination . DS . 'full' . DS . $expectedFilename;
-        list($width, $height) = getimagesize($path);
+        [$width, $height] = getimagesize($path);
         $this->assertLessThanOrEqual(Image::MAX_HEIGHT, $height);
         $this->assertLessThanOrEqual(Image::MAX_WIDTH, $width);
 
         $path = $this->imagesDestination . DS . 'small' . DS . $expectedFilename;
-        list($width) = getimagesize($path);
+        [$width] = getimagesize($path);
         $this->assertLessThanOrEqual(Image::SMALL_WIDTH, $width);
 
         $path = $this->imagesDestination . DS . 'tiny' . DS . $expectedFilename;
-        list($width, $height) = getimagesize($path);
+        [$width, $height] = getimagesize($path);
         $this->assertLessThanOrEqual(Image::TINY_HEIGHT, $height);
         $this->assertLessThanOrEqual(Image::TINY_WIDTH, $width);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Model\Entity\Event;
 use App\Test\Fixture\CategoriesFixture;
@@ -11,7 +11,6 @@ use App\Test\Fixture\UsersFixture;
 use App\Test\TestCase\ApplicationTest;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -21,7 +20,7 @@ use stdClass;
 /**
  * EventsControllerTest class
  *
- * @link \App\Controller\V1\EventsController
+ * @link \App\Controller\Api\V1\EventsController
  */
 class EventsControllerTest extends ApplicationTest
 {

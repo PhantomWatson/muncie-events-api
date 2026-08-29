@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Auth\LegacyPasswordHasher;
 use App\Model\Entity\User;
@@ -15,7 +15,7 @@ use PHPUnit\Exception;
 /**
  * UsersControllerTest class
  *
- * @link \App\Controller\V1\UsersController
+ * @link \App\Controller\Api\V1\UsersController
  */
 class UsersControllerTest extends ApplicationTest
 {

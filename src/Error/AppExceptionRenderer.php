@@ -46,7 +46,7 @@ class AppExceptionRenderer extends WebExceptionRenderer
      */
     public function isApiRequest(): bool
     {
-        $apiPrefixes = ['v1'];
+        $apiPrefixes = ['Api/V1'];
         $prefix = $this->_getController()->getRequest()->getParam('prefix');
 
         return in_array($prefix, $apiPrefixes);

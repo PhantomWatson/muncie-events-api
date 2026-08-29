@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Test\TestCase\ApplicationTest;
 use Cake\ORM\TableRegistry;
@@ -9,7 +9,7 @@ use PHPUnit\Exception;
 /**
  * EventSeriesControllerTest class
  *
- * @link \App\Controller\V1\EventSeriesController
+ * @link \App\Controller\Api\V1\EventSeriesController
  */
 class EventSeriesControllerTest extends ApplicationTest
 {

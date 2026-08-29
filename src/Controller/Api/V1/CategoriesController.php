@@ -1,8 +1,7 @@
 <?php
-namespace App\Controller\V1;
+namespace App\Controller\Api\V1;
 
 use App\Controller\ApiController;
-use App\Model\Table\CategoriesTable;
 use Exception;
 
 /**

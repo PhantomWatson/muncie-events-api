@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Model\Entity\MailingList;
 use App\Model\Entity\User;
@@ -16,7 +16,7 @@ use PHPUnit\Exception;
 /**
  * MailingListController Test Case
  *
- * @link \App\Controller\V1\MailingListController
+ * @link \App\Controller\Api\V1\MailingListController
  */
 class MailingListControllerTest extends ApplicationTest
 {

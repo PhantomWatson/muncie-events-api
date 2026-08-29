@@ -1,9 +1,8 @@
 <?php
-namespace App\Controller\V1;
+namespace App\Controller\Api\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\User;
-use App\Model\Table\UsersTable;
 use Authentication\Identity;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller\V1;
+namespace App\Test\TestCase\Controller\Api\V1;
 
 use App\Model\Table\TagsTable;
 use App\Test\Fixture\EventsFixture;
@@ -11,7 +11,7 @@ use PHPUnit\Exception;
 /**
  * TagsControllerTest class
  *
- * @link \App\Controller\V1\TagsController
+ * @link \App\Controller\Api\V1\TagsController
  */
 class TagsControllerTest extends ApplicationTest
 {
