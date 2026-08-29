@@ -10,11 +10,11 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotAcceptableException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\View\JsonView;
-use Exception;
 
 /**
  * @property AuthenticationComponent $Authentication
@@ -39,17 +39,15 @@ class ApiController extends Controller
      *
      * @return void
      * @throws BadRequestException
-     * @throws Exception
+     * @throws NotAcceptableException
      */
     public function initialize(): void
     {
         parent::initialize();
 
-        Configure::write('App.fullBaseUrl', 'https://api.muncieevents.com/');
-
         if (getEnvironment() == 'production') {
             if (!$this->request->is('https')) {
-                throw new BadRequestException('API calls must be made with HTTPS protocol');
+                throw new NotAcceptableException('API calls must be made with HTTPS protocol');
             }
 
             if (!$this->isApiSubdomain() && !defined('PHPUNIT_RUNNING')) {
