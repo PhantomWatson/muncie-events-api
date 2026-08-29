@@ -199,55 +199,61 @@ return function (RouteBuilder $routes): void {
     });
 
     // API
-    $routes->prefix('Api', function (RouteBuilder $routes) {
-        $routes->prefix('V1', function (RouteBuilder $routes) {
-            $routes->fallbacks(DashedRoute::class);
+    $apiV1Routes = function (RouteBuilder $routes): void {
+        $routes->fallbacks(DashedRoute::class);
 
-            // Events
-            $routes->post('/event', ['controller' => 'Events', 'action' => 'add']);
-            $routes->get('/event/{id}', ['controller' => 'Events', 'action' => 'view'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
-            $routes->patch('/event/{id}', ['controller' => 'Events', 'action' => 'edit'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
-            $routes->delete('/event/{id}', ['controller' => 'Events', 'action' => 'delete'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
+        // Events
+        $routes->post('/event', ['controller' => 'Events', 'action' => 'add']);
+        $routes->get('/event/{id}', ['controller' => 'Events', 'action' => 'view'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
+        $routes->patch('/event/{id}', ['controller' => 'Events', 'action' => 'edit'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
+        $routes->delete('/event/{id}', ['controller' => 'Events', 'action' => 'delete'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
 
-            // EventSeries
-            $routes->get('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'view'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
-            $routes->delete('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'delete'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
+        // EventSeries
+        $routes->get('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'view'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
+        $routes->delete('/event-series/{id}', ['controller' => 'EventSeries', 'action' => 'delete'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
 
-            // Images
-            $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
+        // Images
+        $routes->connect('/image', ['controller' => 'Images', 'action' => 'add']);
 
-            // MailingList
-            $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus']);
-            $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate']);
-            $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
+        // MailingList
+        $routes->get('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionStatus']);
+        $routes->put('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'subscriptionUpdate']);
+        $routes->delete('/mailing-list/subscription', ['controller' => 'MailingList', 'action' => 'unsubscribe']);
 
-            // Tags
-            $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
+        // Tags
+        $routes->connect('/tag/*', ['controller' => 'Tags', 'action' => 'view']);
 
-            // Users
-            $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
-            $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
-            $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
-            $routes->connect('/user/{id}', ['controller' => 'Users', 'action' => 'view'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
-            $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
-            $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null]);
-            $routes->connect('/user/{id}/events', ['controller' => 'Users', 'action' => 'events'])
-                ->setPass(['id'])
-                ->setPatterns(['id' => '[0-9]+']);
-            $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password']);
-            $routes->connect('/user/profile', ['controller' => 'Users', 'action' => 'profile']);
-        });
+        // Users
+        $routes->connect('/user/register', ['controller' => 'Users', 'action' => 'register']);
+        $routes->connect('/user/login', ['controller' => 'Users', 'action' => 'login']);
+        $routes->connect('/user/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
+        $routes->connect('/user/{id}', ['controller' => 'Users', 'action' => 'view'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
+        $routes->connect('/user/', ['controller' => 'Users', 'action' => 'view', null]);
+        $routes->connect('/user/images', ['controller' => 'Users', 'action' => 'images', null]);
+        $routes->connect('/user/{id}/events', ['controller' => 'Users', 'action' => 'events'])
+            ->setPass(['id'])
+            ->setPatterns(['id' => '[0-9]+']);
+        $routes->connect('/user/password', ['controller' => 'Users', 'action' => 'password']);
+        $routes->connect('/user/profile', ['controller' => 'Users', 'action' => 'profile']);
+    };
+
+    // Canonical API URLs: /api/v1/...
+    $routes->prefix('Api', function (RouteBuilder $routes) use ($apiV1Routes): void {
+        $routes->prefix('V1', $apiV1Routes);
     });
+
+    // Legacy API URLs: /v1/...
+    $routes->prefix('Api/V1', ['path' => '/v1'], $apiV1Routes);
 };
