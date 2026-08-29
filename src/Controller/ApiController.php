@@ -49,10 +49,6 @@ class ApiController extends Controller
             if (!$this->request->is('https')) {
                 throw new NotAcceptableException('API calls must be made with HTTPS protocol');
             }
-
-            if (!$this->isApiSubdomain() && !defined('PHPUNIT_RUNNING')) {
-                throw new BadRequestException('API calls must be made on the api subdomain');
-            }
         }
 
         $this->loadComponent('Authentication.Authentication');
