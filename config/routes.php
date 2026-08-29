@@ -138,13 +138,17 @@ return function (RouteBuilder $routes): void {
         // Pages
         $routes->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
         $routes->connect('/api', ['controller' => 'Pages', 'action' => 'api']);
-        $routes->connect('/api/docs/v1', ['controller' => 'Pages', 'action' => 'apiDocsV1']);
         $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
-        $routes->connect('/docs/v1', ['controller' => 'Pages', 'action' => 'docsV1']);
         $routes->connect('/help-out', ['controller' => 'Pages', 'action' => 'helpOut']);
         $routes->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
-        $routes->redirect('/api/docs', ['controller' => 'Pages', 'action' => 'apiDocsV1']);
-        $routes->redirect('/docs', '/docs/v1');
+
+        // API docs
+        $apiDocs = ['controller' => 'Pages', 'action' => 'apiDocsV1'];
+        $routes->connect('/api-docs/v1', $apiDocs);
+        $routes->redirect('/api-docs', $apiDocs);
+        $routes->redirect('/api/docs/v1', $apiDocs);
+        $routes->redirect('/api/docs', $apiDocs);
+        $routes->redirect('/docs', $apiDocs);
 
         // Tags
         $routes->connect(
