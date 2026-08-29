@@ -22,6 +22,12 @@ use Cake\View\JsonView;
 class ApiController extends Controller
 {
     /**
+     * Date after which the legacy `/v1/...` API URLs may stop working, sent to clients that
+     * still use those URLs via the RFC 8594 Sunset response header.
+     */
+    public const LEGACY_API_URL_SUNSET_DATE = '2027-01-01';
+
+    /**
      * An array of user information for the user identified by the user token provided in request data
      * (distinct from the user identified by the API key)
      *
@@ -90,6 +96,19 @@ class ApiController extends Controller
         }
 
         $response = $this->response->withHeader('Access-Control-Allow-Origin', '*');
+
+        // Flag requests using the deprecated `/v1/...` prefix
+        $matchedRoute = (string)$this->request->getParam('_matchedRoute');
+        if ($matchedRoute === '/v1' || str_starts_with($matchedRoute, '/v1/')) {
+            $response = $response
+                ->withHeader('Deprecation', '@1787990425') // Deprecated as of August 29, 2026
+                ->withHeader(
+                    'Sunset',
+                    gmdate('D, d M Y H:i:s \G\M\T', (int)strtotime(self::LEGACY_API_URL_SUNSET_DATE))
+                )
+                ->withHeader('Link', '<' . Router::url('/api/v1', true) . '>; rel="successor-version"');
+        }
+
         $this->setResponse($response);
 
         return null;
