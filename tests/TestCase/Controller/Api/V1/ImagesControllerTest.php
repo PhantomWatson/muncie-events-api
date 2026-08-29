@@ -50,7 +50,7 @@ class ImagesControllerTest extends ApplicationTest
         Configure::write('eventImagePath', $this->imagesDestination);
 
         $this->addUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Images',
             'action' => 'add',
             '?' => [

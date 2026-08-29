@@ -39,7 +39,7 @@ class ContactControllerTest extends ApplicationTest
         parent::setUp();
 
         $this->contactUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Contact',
             'action' => 'index',
             '?' => ['apikey' => $this->getApiKey()],

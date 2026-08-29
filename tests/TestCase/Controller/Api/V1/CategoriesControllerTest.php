@@ -42,7 +42,7 @@ class CategoriesControllerTest extends ApplicationTest
         parent::setUp();
 
         $this->indexUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Categories',
             'action' => 'index',
             '?' => ['apikey' => $this->getApiKey()],

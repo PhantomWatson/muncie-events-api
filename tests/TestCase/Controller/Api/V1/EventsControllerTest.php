@@ -73,7 +73,7 @@ class EventsControllerTest extends ApplicationTest
         parent::setUp();
 
         $this->addUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'add',
             '?' => [
@@ -82,7 +82,7 @@ class EventsControllerTest extends ApplicationTest
             ],
         ];
         $this->updateUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'edit',
             $this->updateEventId,
@@ -92,7 +92,7 @@ class EventsControllerTest extends ApplicationTest
             ],
         ];
         $this->deleteUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'delete',
             $this->updateEventId,
@@ -102,7 +102,7 @@ class EventsControllerTest extends ApplicationTest
             ],
         ];
         $this->futureUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'upcoming',
             '?' => ['apikey' => $this->getApiKey()],
@@ -110,33 +110,33 @@ class EventsControllerTest extends ApplicationTest
         $event = (new EventsFixture())->records[0];
         $eventId = $event['id'];
         $this->eventUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'view',
             $eventId,
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->indexUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'index',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->searchUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'search',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->searchPastUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'search',
             'past',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->categoryUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Events',
             'action' => 'category',
             CategoriesFixture::DEFAULT_CATEGORY_ID,

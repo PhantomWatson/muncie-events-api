@@ -41,27 +41,27 @@ class PagesControllerTest extends ApplicationTest
             'environment' => ['HTTPS' => 'on'],
         ]);
         $this->aboutUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Pages',
             'action' => 'about',
         ];
         $this->rulesEventsUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Pages',
             'action' => 'rulesEvents',
         ];
         $this->rulesImagesUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Pages',
             'action' => 'rulesImages',
         ];
         $this->rulesTagsUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Pages',
             'action' => 'rulesTags',
         ];
         $this->widgetsUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Pages',
             'action' => 'widgets',
         ];

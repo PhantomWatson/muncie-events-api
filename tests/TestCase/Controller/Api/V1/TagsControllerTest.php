@@ -48,28 +48,28 @@ class TagsControllerTest extends ApplicationTest
         parent::setUp();
 
         $this->treeUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Tags',
             'action' => 'tree',
         ];
         $this->futureUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Tags',
             'action' => 'upcoming',
         ];
         $this->viewUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Tags',
             'action' => 'view',
             TagsFixture::TAG_WITH_EVENT,
         ];
         $this->indexUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Tags',
             'action' => 'index',
         ];
         $this->autocompleteUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Tags',
             'action' => 'autocomplete',
         ];

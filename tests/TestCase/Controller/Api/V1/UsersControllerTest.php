@@ -54,7 +54,7 @@ class UsersControllerTest extends ApplicationTest
         parent::setUp();
 
         $this->updateProfileUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'profile',
             '?' => [
@@ -64,7 +64,7 @@ class UsersControllerTest extends ApplicationTest
         ];
 
         $this->updatePasswordUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'password',
             '?' => [
@@ -74,7 +74,7 @@ class UsersControllerTest extends ApplicationTest
         ];
 
         $this->registerUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'register',
             '?' => ['apikey' => $this->getApiKey()],
@@ -215,7 +215,7 @@ class UsersControllerTest extends ApplicationTest
     public function testLoginSuccess()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'login',
             '?' => ['apikey' => $this->getApiKey()],
@@ -252,7 +252,7 @@ class UsersControllerTest extends ApplicationTest
     public function testLoginFailBadCredentials()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'login',
             '?' => ['apikey' => $this->getApiKey()],
@@ -280,7 +280,7 @@ class UsersControllerTest extends ApplicationTest
     public function testLoginFailBadMethod()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'login',
             '?' => ['apikey' => $this->getApiKey()],
@@ -299,7 +299,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 1;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'view',
             $userId,
@@ -327,7 +327,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 1;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'view',
             $userId,
@@ -347,7 +347,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 999;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'view',
             $userId,
@@ -358,7 +358,7 @@ class UsersControllerTest extends ApplicationTest
         $this->assertResponseError();
 
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'view',
             null,
@@ -378,7 +378,7 @@ class UsersControllerTest extends ApplicationTest
     public function testForgotPasswordSuccess()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
             '?' => ['apikey' => $this->getApiKey()],
@@ -405,7 +405,7 @@ class UsersControllerTest extends ApplicationTest
     public function testForgotPasswordFailUnknownUser()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
             '?' => ['apikey' => $this->getApiKey()],
@@ -426,7 +426,7 @@ class UsersControllerTest extends ApplicationTest
     public function testForgotPasswordFailMissingEmail()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'forgotPassword',
             '?' => ['apikey' => $this->getApiKey()],
@@ -449,7 +449,7 @@ class UsersControllerTest extends ApplicationTest
     public function testImagesSuccess()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'images',
             '?' => [
@@ -481,7 +481,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 2;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'images',
             '?' => [
@@ -503,7 +503,7 @@ class UsersControllerTest extends ApplicationTest
     public function testImagesFailBadToken()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'images',
             '?' => [
@@ -528,7 +528,7 @@ class UsersControllerTest extends ApplicationTest
     public function testImagesFailBadMethod()
     {
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'images',
             '?' => [
@@ -765,7 +765,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 1;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'events',
             $userId,
@@ -794,7 +794,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 1;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'events',
             $userId,
@@ -813,7 +813,7 @@ class UsersControllerTest extends ApplicationTest
     {
         $userId = 999;
         $url = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'Users',
             'action' => 'events',
             $userId,

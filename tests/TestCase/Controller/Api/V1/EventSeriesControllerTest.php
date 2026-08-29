@@ -45,7 +45,7 @@ class EventSeriesControllerTest extends ApplicationTest
         $seriesId = 1;
         $userId = 1;
         $this->deleteUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'EventSeries',
             'action' => 'delete',
             $seriesId,
@@ -57,7 +57,7 @@ class EventSeriesControllerTest extends ApplicationTest
 
         $seriesId = 1;
         $this->viewUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'EventSeries',
             'action' => 'view',
             $seriesId,

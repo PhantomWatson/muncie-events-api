@@ -90,25 +90,25 @@ class MailingListControllerTest extends ApplicationTest
     private function setUrls()
     {
         $this->subscribeUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'MailingList',
             'action' => 'subscribe',
             '?' => ['userToken' => $this->getUserToken(1)],
         ];
         $this->getUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'MailingList',
             'action' => 'subscriptionStatus',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->putUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'MailingList',
             'action' => 'subscriptionUpdate',
             '?' => ['apikey' => $this->getApiKey()],
         ];
         $this->deleteUrl = [
-            'prefix' => 'v1',
+            'prefix' => 'Api/V1',
             'controller' => 'MailingList',
             'action' => 'unsubscribe',
             '?' => ['apikey' => $this->getApiKey()],
