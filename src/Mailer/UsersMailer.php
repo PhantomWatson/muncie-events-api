@@ -18,8 +18,8 @@ class UsersMailer extends Mailer
     {
         $this->viewBuilder()->setTemplate('forgot_password');
 
-        /* We build a relative URL and then add the prefix so that the api.muncieevents.com subdomain isn't used,
-         * despite an API endpoint being the thing that sends these emails */
+        /* We build a relative URL and then add the prefix so that no foo.muncieevents.com subdomain is used,
+         * regardless of what sends this */
         $resetUrl = Router::url(
             [
                 'controller' => 'Users',
