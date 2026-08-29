@@ -96,18 +96,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Returns TRUE if the current request is made on a valid API subdomain
-     *
-     * @return bool
-     */
-    private function isApiSubdomain()
-    {
-        $host = $this->request->host();
-
-        return stripos($host, 'api.') === 0;
-    }
-
-    /**
      * Before render callback.
      *
      * @param Event $event The beforeRender event.
