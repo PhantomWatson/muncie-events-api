@@ -1696,7 +1696,6 @@ namespace PHPSTORM_META {
 		'DebugKit.toolbar',
 		'ajax',
 		'api',
-		'api_error',
 		'default',
 		'error',
 	);

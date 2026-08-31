@@ -3,6 +3,7 @@ namespace App\Error;
 
 use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Response;
+use Cake\View\JsonView;
 
 class AppExceptionRenderer extends WebExceptionRenderer
 {
@@ -17,24 +18,21 @@ class AppExceptionRenderer extends WebExceptionRenderer
             return parent::render();
         }
 
-        $code = $this->error->getCode();
-        $this->_getController()
-            ->setResponse($this->_getController()->getResponse()->withStatus($code))
-            ->set([
-                'errors' => [
-                    'errors' => [
-                        [
-                            'status' => $code,
-                            'detail' => $this->_message($this->error, $code),
-                        ],
-                    ],
+        $code = $this->getHttpCode($this->error);
+        $this->controller
+            ->setResponse($this->controller->getResponse()->withStatus($code))
+            ->set('errors', [
+                [
+                    'detail' => $this->_message($this->error, $code),
+                    'status' => (string)$code,
                 ],
             ]);
 
         $this->controller->viewBuilder()
-            ->setTemplate('json_api_error')
-            ->setLayout('api_error')
+            ->setClassName(JsonView::class)
             ->setOption('serialize', ['errors']);
+
+        $this->controller->render();
 
         return $this->_shutdown();
     }
@@ -46,8 +44,8 @@ class AppExceptionRenderer extends WebExceptionRenderer
      */
     public function isApiRequest(): bool
     {
-        $apiPrefixes = ['Api/V1'];
-        $prefix = $this->_getController()->getRequest()->getParam('prefix');
+        $apiPrefixes = ['Api/V1', 'V1'];
+        $prefix = $this->controller->getRequest()->getParam('prefix');
 
         return in_array($prefix, $apiPrefixes);
     }
