@@ -8,7 +8,7 @@
 
 use Cake\Core\Configure;
 
-$apiBase = Configure::read('apiBase') ?? 'https://api.muncieevents.com';
+$apiBase = Configure::read('apiBase') ?? 'https://muncieevents.com';
 ?>
 
 <?= $this->element('bootstrap_css_local_fallback') ?>

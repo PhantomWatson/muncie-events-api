@@ -176,8 +176,8 @@ function setupSearch() {
                 if (query === '') {
                     return [];
                 }
-                const apiBase = window.apiBase ?? 'https://api.muncieevents.com';
-                const source = await fetch(`${apiBase}/v1/tags/autocomplete?term=${query}`);
+                const apiBase = window.apiBase ?? 'https://muncieevents.com';
+                const source = await fetch(`${apiBase}/api/v1/tags/autocomplete?term=${query}`);
                 const apiResponse = await source.json();
                 const data = apiResponse.hasOwnProperty('data') ? apiResponse.data : null;
                 if (!data) {
