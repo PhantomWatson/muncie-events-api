@@ -282,7 +282,7 @@ class MailingListController extends ApiController
     }
 
     /**
-     * DELETE /v1/mailing-list/subscription endpoint
+     * DELETE /api/v1/mailing-list/subscription endpoint
      *
      * @return void
      * @throws ForbiddenException

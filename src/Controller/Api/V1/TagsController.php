@@ -126,7 +126,7 @@ class TagsController extends ApiController
     }
 
     /**
-     * GET /v1/tags endpoint
+     * GET /api/v1/tags endpoint
      *
      * Returns all listed and selectable tags
      *
@@ -153,7 +153,7 @@ class TagsController extends ApiController
     }
 
     /**
-     * GET /v1/tags/autocomplete endpoint
+     * GET /api/v1/tags/autocomplete endpoint
      *
      * Returns a list of matching (and listed and selectable) tags
      *

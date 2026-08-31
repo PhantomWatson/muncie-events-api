@@ -72,7 +72,7 @@ class EventSeriesController extends ApiController
     }
 
     /**
-     * DELETE /v1/event-series/{seriesId} endpoint
+     * DELETE /api/v1/event-series/{seriesId} endpoint
      *
      * @param int|null $eventSeriesId EventSeries ID
      * @return void
