@@ -5904,6 +5904,7 @@ a.calendar_controls {
 .event .footer_details {
   color: #666;
   font-size: 80%;
+  overflow-wrap: break-word;
 }
 .event .footer_details a {
   color: #666;
