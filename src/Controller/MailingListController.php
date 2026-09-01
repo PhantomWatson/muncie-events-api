@@ -56,10 +56,19 @@ class MailingListController extends AppController
             }
         }
 
-        // Get subscription entity
-        $subscription = $subscriberId
-            ? $this->MailingList->get($subscriberId, contain: ['Categories'])
-            : ($this->getCurrentUserSubscription() ?? $this->MailingList->newEntityWithDefaults());
+        // Get subscription entity, first by checking for a passed subscriber ID
+        if ($subscriberId) {
+            $subscription = $this->MailingList->get($subscriberId, contain: ['Categories']);
+        } else {
+            // Then by checking the currently logged-in user, if any,
+            // Then by checking for a match for the submitted email address,
+            // and falling back to a new entity
+            $subscription = $this->getCurrentUserSubscription()
+                ?: $this->getSubscriptionForSubmittedEmail()
+                ?? $this->MailingList->newEntityWithDefaults();
+        }
+
+        // var_dump($subscription); exit;
 
         // Update with post data
         if ($this->request->is(['post', 'put'])) {
@@ -214,6 +223,30 @@ class MailingListController extends AppController
         return $this->MailingList
             ->find()
             ->where(['id' => $subscriberId])
+            ->contain(['Categories'])
+            ->first();
+    }
+
+    /**
+     * Returns the mailing list record associated with the email address submitted in the request,
+     * or null if no such record is found
+     *
+     * @return MailingList|null
+     */
+    private function getSubscriptionForSubmittedEmail(): ?MailingList
+    {
+        $requestData = (array)$this->request->getParsedBody();
+        $email = $requestData['email'] ?? null;
+
+        if (!$email) {
+            return null;
+        }
+
+        return $this->MailingList
+            ->find()
+            ->where([
+                'email' => strtolower(trim($email))
+            ])
             ->contain(['Categories'])
             ->first();
     }
