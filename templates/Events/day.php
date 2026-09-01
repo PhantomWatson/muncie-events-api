@@ -19,9 +19,7 @@ $timezone = Configure::read('localTimezone');
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?php echo $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div class="prev_next_day">
     <?= $this->Calendar->prevDay($date) ?>

@@ -8,8 +8,6 @@
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <?= $this->element('Events/event', compact('event')) ?>

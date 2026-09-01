@@ -7,9 +7,8 @@
 use Cake\Routing\Router;
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
+
 <p>
     Have a website? Enhance it and support your community by adding a Muncie Events calendar widget and keeping your
     visitors informed about local events. They're free, update automatically, and can be customized in both their

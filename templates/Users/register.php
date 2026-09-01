@@ -10,9 +10,7 @@ use App\View\AppView;
 
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <section class="alert alert-info">
     <h4>Why register an account?</h4>

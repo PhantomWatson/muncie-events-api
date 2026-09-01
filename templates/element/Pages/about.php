@@ -14,9 +14,7 @@ $timezone = Configure::read('localTimezone');
 $yearsCount = (int)(new FrozenTime('now', $timezone))->format('Y') - 2009;
 ?>
 
-<h1 class="page_title">
-    About Muncie Events
-</h1>
+<?= $this->element('page_title', ['pageTitle' => 'About Muncie Events']) ?>
 
 <p>
     Muncie Events is a free, comprehensive event promotion service provided to the city of Muncie, Indiana.

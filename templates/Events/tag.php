@@ -17,15 +17,13 @@ use Cake\Utility\Text;
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?= sprintf(
-        '%s %s %s with the %s tag',
-        number_format($count),
-        $direction,
-        __n('event', 'events', $count),
-        $tag->name
-    ) ?>
-</h1>
+<?= $this->element('page_title', ['pageTitle' => sprintf(
+    '%s %s %s with the %s tag',
+    number_format($count),
+    $direction,
+    __n('event', 'events', $count),
+    $tag->name
+)]) ?>
 
 <?= $this->Html->link(
     sprintf(

@@ -13,9 +13,7 @@ foreach ($categories as $category) {
 }
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div class="alert alert-info">
     <p>

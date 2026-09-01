@@ -11,10 +11,10 @@ use App\View\AppView;
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?= $category->name ?>
-    <?= $this->Icon->category($category->name) ?>
-</h1>
+<?= $this->element(
+    'page_title',
+    ['pageTitle' => $category->name . ' ' . $this->Icon->category($category->name)]
+) ?>
 
 <?php
     $this->Html->scriptBlock(

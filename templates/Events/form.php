@@ -61,9 +61,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
 <?php $this->Html->scriptEnd(); ?>
 
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <p id="posting-rules-toggler-container">
     <span>Before continuing, please read the</span>

@@ -1,6 +1,5 @@
-<h1 class="page_title">
-    Web Site Terms and Conditions of Use
-</h1>
+
+<?= $this->element('page_title', ['pageTitle' => 'Web Site Terms and Conditions of Use']) ?>
 
 <h6>
     1. Terms

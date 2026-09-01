@@ -6,9 +6,7 @@
  */
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div id="tag_management_tabs" class="clearfix">
     <ul>

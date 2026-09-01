@@ -23,9 +23,8 @@ $i = 0;
 $this->Form->setTemplates(['submitContainer' => '{{content}}']);
 $timezone = Configure::read('localTimezone');
 ?>
-<h1 class="page_title">
-    <?= $pageTitle; ?>
-</h1>
+
+<?= $this->element('page_title') ?>
 
 <p class="alert alert-info">
     Here, you can edit the name of your event series and edit basic information about each event.

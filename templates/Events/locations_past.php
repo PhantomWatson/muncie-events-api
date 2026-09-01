@@ -6,13 +6,12 @@
  * @var \App\View\AppView $this
  */
 ?>
-<h1 class="page_title">
-    <?= sprintf(
-        '%s %s of Past Events',
-        $count,
-        __n('Location', 'Locations', $count)
-    ) ?>
-</h1>
+
+<?= $this->element('page_title', ['pageTitle' => sprintf(
+    '%s %s of Past Events',
+    $count,
+    __n('Location', 'Locations', $count)
+)]) ?>
 
 <?php if (empty($locations)): ?>
     <p class="alert alert-info">

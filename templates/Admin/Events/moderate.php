@@ -144,9 +144,9 @@ $getEditLink = function (Event $event) use ($getCountInGroup)
     );
 };
 ?>
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+
+<?= $this->element('page_title') ?>
+
 <div id="moderate_events">
     <?php if (empty($events)): ?>
         <p>

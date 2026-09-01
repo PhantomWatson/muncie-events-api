@@ -7,9 +7,7 @@
  */
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <p>
     Are you sure you would like to unsubscribe from the mailing list? You can instead change your settings to change

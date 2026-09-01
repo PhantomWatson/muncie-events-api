@@ -9,9 +9,7 @@ $adminEmail = Configure::read('adminEmail');
 $session = $this->request->getSession();
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <p>
     For any questions or comments, please email the Muncie Events administrator at

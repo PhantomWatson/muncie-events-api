@@ -6,9 +6,8 @@
  * @var string $pageTitle
  */
 ?>
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+
+<?= $this->element('page_title') ?>
 
 <div id="my_account">
     <p>

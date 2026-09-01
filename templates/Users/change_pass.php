@@ -5,9 +5,8 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+
+<?= $this->element('page_title') ?>
 
 <p>
     <?= $this->Html->link(

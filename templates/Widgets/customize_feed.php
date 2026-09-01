@@ -5,9 +5,7 @@
  */
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <?= $this->Html->link(
     '<i class="fas fa-arrow-left"></i> Back to Widgets Overview',

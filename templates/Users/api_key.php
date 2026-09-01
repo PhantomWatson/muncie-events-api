@@ -8,9 +8,7 @@
 use Cake\Routing\Router;
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <p class="mt-2">
     <?= $this->Html->link(

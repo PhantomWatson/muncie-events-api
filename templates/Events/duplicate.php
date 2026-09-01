@@ -18,9 +18,7 @@ $this->Html->css('/flatpickr/flatpickr.min.css', ['block' => true]);
     new EventForm({mode: 'add'});
 <?php $this->Html->scriptEnd(); ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <?= $this->Form->create(
     $event,

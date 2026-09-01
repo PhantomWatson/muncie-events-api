@@ -25,9 +25,7 @@
     <?php endif; ?>
 </div>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <?php if ($event): ?>
     <?= $this->element('Events/event', compact('event')) ?>

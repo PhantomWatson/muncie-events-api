@@ -10,9 +10,7 @@ use Cake\Routing\Router;
 
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <?php if ($events): ?>
     <?= $this->element('pagination', ['passQueryParams' => true]) ?>

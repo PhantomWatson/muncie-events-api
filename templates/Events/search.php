@@ -41,9 +41,8 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
+
 <div id="search_results">
     <h2 class="search_results">
         <?= sprintf(

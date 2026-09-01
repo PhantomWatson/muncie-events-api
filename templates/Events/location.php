@@ -33,9 +33,7 @@ $linkText = sprintf(
 
 <?= $this->element('Header/event_header') ?>
 
-<h1 class="page_title">
-    <?= $headerText ?>
-</h1>
+<?= $this->element('page_title', ['pageTitle' => $headerText]) ?>
 
 <?php if ($countOtherDirection) : ?>
     <?= $this->Html->link($linkText, [

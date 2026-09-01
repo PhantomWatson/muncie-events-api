@@ -4,9 +4,8 @@
  */
 $years = (int)date('Y') - 2003;
 ?>
-<h1 class="page_title">
-    Help Out Muncie Events
-</h1>
+
+<?= $this->element('page_title', ['pageTitle' => 'Help Out Muncie Events']) ?>
 
 <p>
     For <?= $years ?> years, Muncie Events has been a labor of love, provided as a gift to the community by Munsonians

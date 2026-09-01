@@ -9,9 +9,7 @@ use Cake\Core\Configure;
 $adminEmail = Configure::read('adminEmail');
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div id="api-info">
     <section>

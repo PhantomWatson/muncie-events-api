@@ -18,9 +18,7 @@
 <?= $this->element('Header/event_header') ?>
 
 <div id="user_view">
-    <h1 class="page_title">
-        <?= $user->name ?>
-    </h1>
+    <?= $this->element('page_title', ['pageTitle' => $user->name]) ?>
 
     <span class="email">
         <?php if ($loggedIn) : ?>

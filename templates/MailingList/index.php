@@ -41,9 +41,7 @@ if ($frequencyValue != 'custom') {
 }
 ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div id="mailing-list-form">
     <?= $this->Form->create($subscription, [

@@ -11,9 +11,7 @@ use App\Model\Entity\Event;
 use App\Model\Entity\EventSeries;
 use App\View\AppView; ?>
 
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+<?= $this->element('page_title') ?>
 
 <div class="event_series">
     <?php if ($canEdit) : ?>

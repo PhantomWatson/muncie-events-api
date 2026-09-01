@@ -7,9 +7,8 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<h1 class="page_title">
-    <?= $pageTitle ?>
-</h1>
+
+<?= $this->element('page_title') ?>
 
 <div class="content_box col-lg-6">
     <?= $this->Form->create($user, [
