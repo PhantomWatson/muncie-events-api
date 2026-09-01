@@ -311,13 +311,38 @@ class EventForm {
     }
 
     setupSubmit() {
-        // If multi-date event is being submitted with a blank series title, insert event title into series title field
+        const form = document.getElementById('EventForm');
         const submitButton = document.getElementById('event-form-submit');
+        const originalLabel = submitButton.value;
+
+        // If multi-date event is being submitted with a blank series title, insert event title into series title field
         submitButton.addEventListener('click', function () {
             const seriesTitle = document.getElementById('EventSeriesTitle');
             if (seriesTitle && seriesTitle.required && seriesTitle.value === '') {
                 const eventTitle = document.getElementById('EventTitle');
                 seriesTitle.value = eventTitle.value;
+            }
+        });
+
+        // Disable the submit button once a valid form has been submitted so it can't be submitted twice
+        form.addEventListener('submit', function (event) {
+            // Other submit handlers (e.g. the description check) may have cancelled the submission
+            if (event.defaultPrevented) {
+                return;
+            }
+
+            // Defer so the button's value is still sent with the request and the submission isn't cancelled
+            window.setTimeout(function () {
+                submitButton.disabled = true;
+                submitButton.value = 'Submitting…';
+            }, 0);
+        });
+
+        // Restore the button if the user comes back via the browser's back/forward cache
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                submitButton.disabled = false;
+                submitButton.value = originalLabel;
             }
         });
     }
