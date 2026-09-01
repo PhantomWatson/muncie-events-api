@@ -17,6 +17,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
@@ -340,8 +341,15 @@ class EventsController extends AppController
             return $this->render('form');
         }
 
+        try {
+            $passedBotDetection = $this->passedBotDetection();
+        } catch (Exception $e) {
+            Log::critical('Error verifying reCAPTCHA: ' . $e->getMessage());
+            $passedBotDetection = false;
+        }
+
         // Abort on CAPTCHA error
-        if (!$this->passedBotDetection()) {
+        if (!$passedBotDetection) {
             $this->Flash->error(
                 'Spam detection failed. ' .
                 'Please try the reCAPTCHA challenge again or log in before submitting an event.'
