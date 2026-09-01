@@ -130,4 +130,11 @@ class PagesController extends AppController
             'pageTitle' => 'Help Out',
         ]);
     }
+
+    public function rules(): void
+    {
+        $this->set([
+            'pageTitle' => 'Rules for Posting Events',
+        ]);
+    }
 }

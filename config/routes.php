@@ -141,6 +141,7 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
         $routes->connect('/help-out', ['controller' => 'Pages', 'action' => 'helpOut']);
         $routes->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
+        $routes->connect('/rules', ['controller' => 'Pages', 'action' => 'rules']);
 
         // API docs
         $apiDocs = ['controller' => 'Pages', 'action' => 'apiDocsV1'];
