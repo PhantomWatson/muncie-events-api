@@ -43,7 +43,8 @@ $adminEmail = Configure::read('adminEmail');
     <li>
         <strong>Language:</strong> To be considerate of our wide and diverse audience, offensive language
         is not allowed. In general, any words that would be censored on television are not allowed in
-        posted events.
+        posted events. Also, Muncie Events is an English-language site, so event titles and descriptions must be
+        provided in English, though translations into other languages may also be included.
     </li>
     <li>
         <strong>Adult-Oriented Events</strong>: Any events of a sexual nature or with any other content
