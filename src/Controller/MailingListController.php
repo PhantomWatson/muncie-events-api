@@ -92,8 +92,12 @@ class MailingListController extends AppController
 
             if ($this->MailingList->save($subscription)) {
                 if ($isNew) {
+                    // If the user ain't logged in, fall back to the user who matches this email address
                     /** @var \App\Model\Entity\User $user */
-                    $user = $this->getAuthUser();
+                    $user = $this->getAuthUser() ?? $this->Users
+                        ->find()
+                        ->where(['email' => $subscription->email])
+                        ->first();
                     if ($user) {
                         $user->mailing_list_id = $subscription->id;
                         $this->Users->save($user);
