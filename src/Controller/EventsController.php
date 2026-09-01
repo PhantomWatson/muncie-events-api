@@ -19,6 +19,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
 use Exception;
@@ -634,10 +635,14 @@ class EventsController extends AppController
 
         if ($this->Events->delete($event)) {
             $this->Flash->success('The event has been deleted.');
-            $redirectUrl = $this->request->getQuery('redirect');
-            $redirectUrl = $redirectUrl ? $redirectUrl : '/';
 
-            return $this->redirect($redirectUrl);
+            // Avoid redirecting back to the deleted event page if the user came from there
+            $wasReferredByEventPage = $this->request->getParam('controller') == 'Events'
+                && $this->request->getParam('action') == 'view';
+            $referrer = $this->request->referer();
+            $redirectUrl = $this->request->getQuery('redirect');
+
+            return $this->redirect($redirectUrl ?? ($wasReferredByEventPage ? '/' : $referrer));
         }
         $this->Flash->error(
             'The event could not be deleted. Please try again or contact an administrator for assistance.'
