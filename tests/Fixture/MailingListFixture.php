@@ -15,7 +15,7 @@ class MailingListFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'mailing_list';
+    public string $table = 'mailing_list';
 
     /**
      * Fields
@@ -55,7 +55,7 @@ class MailingListFixture extends TestFixture
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         $this->records = [
             [

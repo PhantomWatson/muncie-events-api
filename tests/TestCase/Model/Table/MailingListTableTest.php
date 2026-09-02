@@ -23,7 +23,7 @@ class MailingListTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.MailingList',
         'app.Users',
         'app.Categories',

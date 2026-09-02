@@ -26,7 +26,7 @@ class TagsControllerTest extends ApplicationTest
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.ApiCalls',
         'app.Categories',
         'app.EventSeries',

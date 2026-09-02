@@ -56,7 +56,7 @@ class EventsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [];
+    public array $records = [];
 
     /**
      * The event ID that is associated with a tag
@@ -88,7 +88,7 @@ class EventsFixture extends TestFixture
     const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 120;
     const PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 121;
 
-    public function init()
+    public function init(): void
     {
         $this->addEventsByCategory();
         $this->addEventsByTag();

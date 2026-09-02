@@ -2,7 +2,7 @@
 namespace App\Test\Fixture;
 
 use App\Auth\LegacyPasswordHasher;
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -53,7 +53,7 @@ class UsersFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => self::SUBSCRIBED_USER_WITHOUT_ASSOCIATION,
             'name' => 'User',
@@ -103,7 +103,7 @@ class UsersFixture extends TestFixture
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 

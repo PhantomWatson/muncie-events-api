@@ -38,7 +38,7 @@ class ImagesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'filename' => 'filename1.png',

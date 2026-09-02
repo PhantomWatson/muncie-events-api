@@ -18,7 +18,7 @@ class EventsControllerTest extends ApplicationTest
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Events',
         'app.Users',
         'app.Categories',

@@ -15,7 +15,7 @@ class CategoriesMailingListFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'categories_mailing_list';
+    public string $table = 'categories_mailing_list';
 
     /**
      * Fields
@@ -42,7 +42,7 @@ class CategoriesMailingListFixture extends TestFixture
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         $this->records = [
             [

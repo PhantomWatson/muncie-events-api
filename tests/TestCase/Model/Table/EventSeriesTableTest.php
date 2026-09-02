@@ -23,7 +23,7 @@ class EventSeriesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.EventSeries',
         'app.Users',
     ];

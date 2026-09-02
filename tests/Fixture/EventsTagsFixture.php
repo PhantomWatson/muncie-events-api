@@ -35,7 +35,7 @@ class EventsTagsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 1,
             'event_id' => EventsFixture::EVENT_WITH_TAG,
