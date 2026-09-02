@@ -139,14 +139,23 @@ class NavHelper extends Helper
     {
         $eventsTable = TableRegistry::getTableLocator()->get('Events');
 
-        return $eventsTable
+        $locations = $eventsTable
             ->find('published')
             ->find('upcoming')
             ->select(['location', 'location_slug'])
             ->distinct(['location', 'location_slug'])
-            ->orderByAsc('location')
             ->enableHydration(false)
             ->toArray();
+
+        // Sort locations alphabetically, ignoring "The" at the beginning of names
+        usort($locations, function ($a, $b) {
+            return strcasecmp(
+                preg_replace('/^the /i', '', $a['location']),
+                preg_replace('/^the /i', '', $b['location'])
+            );
+        });
+
+        return $locations;
     }
 
     /**

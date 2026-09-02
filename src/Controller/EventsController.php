@@ -751,10 +751,17 @@ class EventsController extends AppController
             ->find('past')
             ->select(['location', 'location_slug'])
             ->distinct(['location', 'location_slug'])
-            ->orderByAsc('location')
             ->enableHydration(false)
             ->toArray();
         $count = count($locations);
+
+        // Sort locations alphabetically, ignoring "The" at the beginning of names
+        usort($locations, function ($a, $b) {
+            return strcasecmp(
+                preg_replace('/^the /i', '', $a['location']),
+                preg_replace('/^the /i', '', $b['location'])
+            );
+        });
 
         $this->set([
             'count' => $count,
