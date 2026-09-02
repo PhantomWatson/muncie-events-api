@@ -3,7 +3,6 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
-    syntaxCheck="false"
     bootstrap="./tests/bootstrap.php"
     >
     <php>
@@ -18,17 +17,6 @@
         </testsuite>
         <!-- Add plugin test suites here. -->
     </testsuites>
-
-    <!-- Setup a listener for fixtures -->
-    <listeners>
-        <listener
-        class="\Cake\TestSuite\Fixture\FixtureInjector"
-        file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
-            <arguments>
-                <object class="\Cake\TestSuite\Fixture\FixtureManager" />
-            </arguments>
-        </listener>
-    </listeners>
 
     <!-- Ignore vendor tests in code coverage reports -->
     <filter>
