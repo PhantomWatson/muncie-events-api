@@ -40,6 +40,8 @@ use Sabre\VObject;
  * @property string $description_plaintext
  * @property string $ical_time_start
  * @property string $ical_time_end
+ * @property string|null $start_datetime_iso8601
+ * @property string|null $end_datetime_iso8601
  * @property string $google_cal_time_start
  * @property string $google_cal_time_end
  * @property \Cake\I18n\DateTime $created_local
@@ -196,6 +198,29 @@ class Event extends Entity
         return self::getCorrectedTime($this->date, $this->time_end)?->format('Ymd\THis');
     }
 
+    /**
+     * Returns this event's start date/time in ISO 8601 format with UTC offset, for use in
+     * schema.org/JSON-LD structured data
+     *
+     * @return string|null
+     * @see \App\Model\Entity\Event::$start_datetime_iso8601
+     */
+    protected function _getStartDatetimeIso8601()
+    {
+        return self::getCorrectedTime($this->date, $this->time_start)?->format(DATE_ATOM);
+    }
+
+    /**
+     * Returns this event's end date/time in ISO 8601 format with UTC offset, or NULL if no end
+     * time is set, for use in schema.org/JSON-LD structured data
+     *
+     * @return string|null
+     * @see \App\Model\Entity\Event::$end_datetime_iso8601
+     */
+    protected function _getEndDatetimeIso8601()
+    {
+        return self::getCorrectedTime($this->date, $this->time_end)?->format(DATE_ATOM);
+    }
 
     /**
      * Sets the event to approved if $user (the user submitting the form) is an administrator

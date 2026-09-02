@@ -30,6 +30,7 @@ use Recaptcha\View\Helper\RecaptchaHelper;
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
  * @property \App\View\Helper\CalendarHelper $Calendar
  * @property \App\View\Helper\IconHelper $Icon
+ * @property \App\View\Helper\JsonLdHelper $JsonLd
  * @property \App\View\Helper\NavHelper $Nav
  * @property \Recaptcha\View\Helper\RecaptchaHelper $Recaptcha
  * @property \App\View\Helper\TagHelper $Tag
@@ -49,6 +50,7 @@ class AppView extends View
     {
         $this->loadHelper('Calendar');
         $this->loadHelper('Form', ['templates' => 'bootstrap_form']);
+        $this->loadHelper('JsonLd');
         $this->loadHelper('Nav');
         $this->loadHelper('Html');
 
