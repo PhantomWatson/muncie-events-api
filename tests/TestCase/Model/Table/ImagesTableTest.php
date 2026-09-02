@@ -23,7 +23,7 @@ class ImagesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Images',
         'app.Users',
         'app.Events',

@@ -24,7 +24,7 @@ class ContactControllerTest extends ApplicationTest
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.ApiCalls',
         'app.Users',
     ];

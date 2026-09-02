@@ -23,7 +23,7 @@ class TagsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Tags',
         'app.Users',
         'app.Events',

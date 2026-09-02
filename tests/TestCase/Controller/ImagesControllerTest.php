@@ -19,7 +19,7 @@ class ImagesControllerTest extends ApplicationTest
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'app.Images',
         'app.Users',
         'app.Events',

@@ -40,7 +40,7 @@ class CategoriesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
+    public array $records = [
         [
             'id' => 8,
             'name' => 'Music',

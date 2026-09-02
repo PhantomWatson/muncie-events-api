@@ -18,7 +18,7 @@ class WidgetsControllerTest extends ApplicationTest
      *
      * @var array
      */
-    public $fixtures = [];
+    public array $fixtures = [];
 
     /**
      * Test index method
