@@ -72,6 +72,14 @@ class JsonLdHelper extends Helper
             $data['organizer'] = [
                 '@type' => 'Person',
                 'name' => $event->user->name,
+                'url' => Router::url(
+                    [
+                        'controller' => 'Users',
+                        'action' => 'view',
+                        'id' => $event->user_id,
+                    ],
+                    true
+                ),
             ];
         }
 
@@ -104,7 +112,7 @@ class JsonLdHelper extends Helper
      * Returns a schema.org Offer array if the event's free-text cost field can be confidently
      * parsed as a single numeric price, or NULL otherwise
      *
-     * @param \App\Model\Entity\Event $event Event entity
+     * @param \App\Model\Entity\Event $event Event entity, used for the Offer's validFrom date
      * @param string $url Canonical event URL, used as the Offer URL
      * @return array|null
      */
@@ -125,10 +133,11 @@ class JsonLdHelper extends Helper
 
         return [
             '@type' => 'Offer',
+            'availability' => 'https://schema.org/InStock',
             'price' => $price,
             'priceCurrency' => 'USD',
-            'availability' => 'https://schema.org/InStock',
             'url' => $url,
+            'validFrom' => $event->created?->format(DATE_ATOM),
         ];
     }
 
