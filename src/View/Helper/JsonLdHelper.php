@@ -45,9 +45,7 @@ class JsonLdHelper extends Helper
             $data['description'] = $event->description_plaintext;
         }
 
-        if ($event->end_datetime_iso8601) {
-            $data['endDate'] = $event->end_datetime_iso8601;
-        }
+        $data['endDate'] = $event->end_datetime_iso8601 ?: $event->start_datetime_iso8601;
 
         if ($event->location_medium === 'virtual') {
             $data['eventAttendanceMode'] = 'https://schema.org/OnlineEventAttendanceMode';
