@@ -391,6 +391,10 @@ class UsersControllerTest extends ApplicationTest
         $this->assertResponseCode(204);
         $this->assertMailSentFrom(Configure::read('automailer_address'));
         $this->assertMailSentTo($user->email);
+
+        // Reload to pick up the reset_password_expires value set by the forgotPassword() action
+        /** @var User $user */
+        $user = $usersTable->get($user->id);
         $resetUrl = 'https://muncieevents.com/reset_password/' . $user->id . '/' . $user->getResetPasswordHash();
 
         $this->assertMailContains($resetUrl);

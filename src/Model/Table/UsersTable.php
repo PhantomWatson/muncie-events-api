@@ -4,13 +4,9 @@ namespace App\Model\Table;
 use App\Model\Entity\Image;
 use App\Model\Entity\User;
 use ArrayObject;
-use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
-use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -123,11 +119,6 @@ class UsersTable extends Table
             ->scalar('token')
             ->lengthBetween('token', [32, 32])
             ->ascii('token');
-
-        $validator
-            ->scalar('reset_password_hash')
-            ->lengthBetween('reset_password_hash', [32, 32])
-            ->ascii('reset_password_hash');
 
         return $validator;
     }
@@ -297,21 +288,6 @@ class UsersTable extends Table
             ->where(['user_id' => $userId])
             ->orderByDesc('created')
             ->all();
-    }
-
-    /**
-     * get the security hash for the password reset
-     *
-     * @param int $userId User ID
-     * @param string $email Recipient email
-     * @return string
-     */
-    public function getResetPasswordHash($userId, $email)
-    {
-        $salt = Configure::read('password_reset_salt');
-        $month = date('my');
-
-        return md5($userId . $email . $salt . $month);
     }
 
     /**

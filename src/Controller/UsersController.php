@@ -7,7 +7,6 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Exception;
-use Recaptcha\Controller\Component\RecaptchaComponent;
 
 /**
  * Class UsersController
@@ -307,11 +306,11 @@ class UsersController extends AppController
             'user' => $user,
         ]);
 
-        $expectedHash = $this->Users->getResetPasswordHash($userId, $email);
+        $expectedHash = $user->getResetPasswordHash();
 
-        if ($resetPasswordHash != $expectedHash) {
+        if ($user->isResetPasswordExpired() || $resetPasswordHash != $expectedHash) {
             $this->Flash->error('Invalid password-resetting code. Make sure that you entered the correct address and that the link emailed to you hasn\'t expired.');
-            $this->redirect('/');
+            return $this->redirect('/');
         }
 
         if (!$this->request->is('get')) {
@@ -320,6 +319,7 @@ class UsersController extends AppController
                 'confirm_password' => $this->request->getData('new_confirm_password')
             ]);
             $user->password = $this->request->getData('new_password');
+            $user->reset_password_expires = null;
 
             if ($this->Users->save($user)) {
                 $data = $user->toArray();

@@ -20,7 +20,7 @@ use Cake\ORM\Entity;
  * @property string|null $api_key Grants access to the API
  * @property string|null $token Identifies a user to the API (may be a different user than the one the API key is
  *                              associated with, such as the catch-all "Muncie Events App" user)
- * @property string|null $reset_password_hash
+ * @property \Cake\I18n\DateTime|null $reset_password_expires
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  *
@@ -119,17 +119,27 @@ class User extends Entity implements IdentityInterface
     }
 
     /**
-     * Returns a security code for a password reset for this user
+     * Returns a security code for a password reset for this user, derived from the user's ID, email,
+     * a salt, and this user's reset_password_expires value
      *
      * @return string
      */
     public function getResetPasswordHash()
     {
         $salt = Configure::read('password_reset_salt');
-        $timezone = Configure::read('localTimezone');
-        $month = (new \Cake\I18n\DateTime('now', $timezone))->format('my');
+        $expires = $this->reset_password_expires?->format('Y-m-d H:i:s');
 
-        return md5($this->id . $this->email . $salt . $month);
+        return md5($this->id . $this->email . $salt . $expires);
+    }
+
+    /**
+     * Returns TRUE if this user has no active password reset window or if it has already expired
+     *
+     * @return bool
+     */
+    public function isResetPasswordExpired(): bool
+    {
+        return $this->reset_password_expires === null || $this->reset_password_expires->isPast();
     }
 
     /**

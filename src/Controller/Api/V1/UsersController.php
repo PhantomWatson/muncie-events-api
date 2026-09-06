@@ -7,6 +7,7 @@ use Authentication\Identity;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\DateTime;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -175,6 +176,7 @@ class UsersController extends ApiController
             throw new BadRequestException('Please provide an email address');
         }
 
+        /** @var User|null $user */
         $user = $this->Users
             ->find()
             ->where(['email' => $email])
@@ -182,6 +184,9 @@ class UsersController extends ApiController
         if (!$user) {
             throw new NotFoundException('No account was found matching that email address');
         }
+
+        $user->reset_password_expires = new DateTime('+24 hours');
+        $this->Users->save($user);
 
         /** @uses \App\Mailer\UsersMailer::forgotPassword() */
         $this->getMailer('Users')->send('forgotPassword', [$user]);
