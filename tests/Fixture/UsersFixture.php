@@ -47,6 +47,7 @@ class UsersFixture extends TestFixture
     const SUBSCRIBED_USER_WITH_ASSOCIATION = 2;
     const SUBSCRIBED_USER_WITHOUT_ASSOCIATION = 1;
     const USER_NOT_SUBSCRIBED = 3;
+    const ADMIN_USER = 4;
 
     /**
      * Records
@@ -96,6 +97,20 @@ class UsersFixture extends TestFixture
             'created' => '2017-11-20 22:39:17',
             'modified' => '2017-11-20 22:39:17',
         ],
+        [
+            'id' => self::ADMIN_USER,
+            'name' => 'Admin',
+            'role' => 'admin',
+            'bio' => '',
+            'email' => 'admin@example.com',
+            'password' => '',
+            'mailing_list_id' => null,
+            'facebook_id' => null,
+            'api_key' => null,
+            'token' => 'kUYFVsFGceQZjrIYewYqYnvNfXV9UEnV',
+            'created' => '2017-11-20 22:39:17',
+            'modified' => '2017-11-20 22:39:17',
+        ],
     ];
 
     /**
@@ -112,7 +127,7 @@ class UsersFixture extends TestFixture
         // Add default-style password hashes
         $hasher = new DefaultPasswordHasher();
         $hash = $hasher->hash($password);
-        for ($n = 0; $n <= 1; $n++) {
+        foreach ([0, 1, 3] as $n) {
             $this->records[$n]['password'] = $hash;
         }
 

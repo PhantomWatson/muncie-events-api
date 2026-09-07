@@ -87,12 +87,20 @@ class EventsFixture extends TestFixture
     const PAST_EVENT_WITH_SEARCHABLE_TITLE_ALT_CATEGORY = 119;
     const PAST_EVENT_WITH_SEARCHABLE_DESCRIPTION_ALT_CATEGORY = 120;
     const PAST_EVENT_WITH_SEARCHABLE_LOCATION_ALT_CATEGORY = 121;
+    const EVENT_AT_MERGE_LOCATION_A = 130;
+    const EVENT_AT_MERGE_LOCATION_A_2 = 131;
+    const EVENT_AT_MERGE_LOCATION_B = 132;
+    const MERGE_LOCATION_A = 'Merge Test Venue A';
+    const MERGE_LOCATION_A_SLUG = 'merge-test-venue-a';
+    const MERGE_LOCATION_B = 'Merge Test Venue B';
+    const MERGE_LOCATION_B_SLUG = 'merge-test-venue-b';
 
     public function init(): void
     {
         $this->addEventsByCategory();
         $this->addEventsByTag();
         $this->addSearchableEvents();
+        $this->addMergeLocationEvents();
 
         parent::init();
     }
@@ -264,6 +272,32 @@ class EventsFixture extends TestFixture
             'date' => date('Y-m-d', strtotime('yesterday')),
             'location' => self::SEARCHABLE_LOCATION,
             'category_id' => CategoriesFixture::ALT_CATEGORY_ID,
+        ]);
+    }
+
+    /**
+     * Adds events at two distinct locations, used to test merging one location's name into another
+     *
+     * @return void
+     */
+    private function addMergeLocationEvents(): void
+    {
+        $defaultEvent = $this->getDefaultEventData();
+
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_AT_MERGE_LOCATION_A,
+            'location' => self::MERGE_LOCATION_A,
+            'location_slug' => self::MERGE_LOCATION_A_SLUG,
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_AT_MERGE_LOCATION_A_2,
+            'location' => self::MERGE_LOCATION_A,
+            'location_slug' => self::MERGE_LOCATION_A_SLUG,
+        ]);
+        $this->records[] = array_merge($defaultEvent, [
+            'id' => self::EVENT_AT_MERGE_LOCATION_B,
+            'location' => self::MERGE_LOCATION_B,
+            'location_slug' => self::MERGE_LOCATION_B_SLUG,
         ]);
     }
 }

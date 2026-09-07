@@ -649,6 +649,54 @@ class EventsTable extends Table
     }
 
     /**
+     * Returns an alphabetically sorted list of the distinct, non-blank location names used across all events
+     *
+     * @return string[]
+     */
+    public function getUniqueLocationNames(): array
+    {
+        return $this->find()
+            ->select(['location'])
+            ->distinct(['location'])
+            ->where(['location !=' => ''])
+            ->orderByAsc('location')
+            ->all()
+            ->extract('location')
+            ->toArray();
+    }
+
+    /**
+     * Renames every event at $targetLocation to $destinationLocation, regenerating location_slug to match
+     *
+     * @param string $targetLocation Location name to be replaced
+     * @param string $destinationLocation Location name to replace it with
+     * @return int Number of events updated
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public function mergeLocations(string $targetLocation, string $destinationLocation): int
+    {
+        /** @var Event[] $events */
+        $events = $this->find()
+            ->where(['location' => $targetLocation])
+            ->all();
+
+        $count = 0;
+        foreach ($events as $event) {
+            $event->location = $destinationLocation;
+            $event->setLocationSlug();
+            if (!$this->save($event)) {
+                throw new InternalErrorException(
+                    'Error merging location "' . $targetLocation . '" into "' . $destinationLocation . '": ' .
+                    print_r($event->getErrors(), true)
+                );
+            }
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
      * A custom general finder for searching for events by an arbitrary string
      *
      * Takes a 'q' search term and modifies the query to return events with searchable fields or associated models

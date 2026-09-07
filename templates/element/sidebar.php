@@ -39,6 +39,14 @@ $categories = $this->Nav->getCategories();
                         'action' => 'manage',
                     ]) ?>
                 </li>
+                <li>
+                    <?= $this->Html->link('Manage Locations', [
+                        'plugin' => false,
+                        'prefix' => 'Admin',
+                        'controller' => 'Locations',
+                        'action' => 'index',
+                    ]) ?>
+                </li>
             </ul>
         </div>
     <?php endif; ?>
