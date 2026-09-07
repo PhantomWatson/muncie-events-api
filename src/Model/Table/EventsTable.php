@@ -655,7 +655,7 @@ class EventsTable extends Table
      */
     public function getUniqueLocationNames(): array
     {
-        return $this->find()
+        $locations = $this->find()
             ->select(['location'])
             ->distinct(['location'])
             ->where(['location !=' => ''])
@@ -663,6 +663,16 @@ class EventsTable extends Table
             ->all()
             ->extract('location')
             ->toArray();
+
+        // Sort locations alphabetically, ignoring "The" at the beginning of names
+        usort($locations, function ($a, $b) {
+            return strcasecmp(
+                preg_replace('/^the /i', '', $a),
+                preg_replace('/^the /i', '', $b)
+            );
+        });
+
+        return $locations;
     }
 
     /**
