@@ -123,7 +123,7 @@ $isVirtual = $event->location == Event::VIRTUAL_LOCATION;
             <?php endif; ?>
 
             <?php if ($event->description) : ?>
-                <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
+                <?= $event->description_autolinked ?>
             <?php endif; ?>
 
         </div>

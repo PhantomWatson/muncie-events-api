@@ -83,7 +83,7 @@ $eventUrl = Router::url([
         </table>
     </div>
     <div class="description">
-        <?= $this->Text->autolink($event->description, ['escape' => false]) ?>
+        <?= $event->description_autolinked ?>
     </div>
     <div class="footer">
         <p class="text-center">

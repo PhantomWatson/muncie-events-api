@@ -50,7 +50,7 @@ class EventSchema extends EntitySchema
 
         $attributes = [
             'title' => $entity->title,
-            'description' => $entity->description,
+            'description' => $entity->description_autolinked,
             'location' => $entity->location,
             'location_details' => $entity->location_details ? $entity->location_details : null,
             'address' => $entity->address ? $entity->address : null,

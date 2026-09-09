@@ -10,8 +10,11 @@ use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
+use Cake\View\Helper\TextHelper;
+use Cake\View\View;
 use DateTime;
 use Sabre\VObject;
+use function Cake\Core\h;
 
 /**
  * Event Entity
@@ -38,6 +41,7 @@ use Sabre\VObject;
  * @property \Cake\I18n\DateTime|null $modified
  * @property string $location_medium 'physical' or 'virtual'
  * @property string $description_plaintext
+ * @property string|null $description_autolinked
  * @property string $ical_time_start
  * @property string $ical_time_end
  * @property string|null $start_datetime_iso8601
@@ -426,6 +430,63 @@ class Event extends Entity
         $plaintext = strip_tags($plaintext);
 
         return trim($plaintext);
+    }
+
+    /**
+     * A virtual field that returns this event's description with plain URLs and email addresses converted to links
+     *
+     * Email addresses are linked via {@see \Cake\View\Helper\TextHelper::autoLinkEmails()}. URLs are linked by
+     * {@see \App\Model\Entity\Event::autoLinkBoundedUrls()}, which behaves like
+     * {@see \Cake\View\Helper\TextHelper::autoLinkUrls()} but only links a URL when it is set off from the
+     * surrounding content by whitespace or a string boundary. That restriction keeps a manually-created link
+     * whose href contains a second URL-like substring, e.g.
+     * "https://urldefense.com/v3/__https:/www.thefiercemusic.com/the-songwriter-sessions/february-2026__;!!NHHyjs",
+     * from having that substring ("www.thefiercemusic.com/...") wrapped in a nested anchor tag, which would
+     * produce invalid HTML.
+     *
+     * @return string|null
+     * @see \App\Model\Entity\Event::$description_autolinked
+     */
+    protected function _getDescriptionAutolinked(): ?string
+    {
+        if ($this->description === null || $this->description === '') {
+            return $this->description;
+        }
+
+        $linked = self::autoLinkBoundedUrls($this->description);
+
+        return new TextHelper(new View())->autoLinkEmails($linked, ['escape' => false]);
+    }
+
+    /**
+     * Wraps bare URLs in $text in anchor tags
+     *
+     * This is equivalent to {@see \Cake\View\Helper\TextHelper::autoLinkUrls()} except that a URL is only linked
+     * when the character immediately before and after it is whitespace or a string boundary, so URL-like
+     * substrings embedded in a larger token (such as inside the href of an existing link) are left alone.
+     *
+     * @param string $text Text that may contain URLs and existing HTML markup
+     * @return string
+     */
+    private static function autoLinkBoundedUrls(string $text): string
+    {
+        $pattern = '#(?<!\S)(' .
+            '(?:https?|ftp|nntp)://[\p{L}0-9.\-_:]+' .
+            '(?:[/?][\p{L}0-9.\-_:/?=&>\[\]()\#@+~!;,%]+[^-_:?>\[(@+~!;<,.%\s])?' .
+            '|' .
+            'www\.[^\s%<]+[^\s<%,.](?<!\))' .
+            ')(?!\S)#iu';
+
+        return (string)preg_replace_callback(
+            $pattern,
+            function (array $matches) {
+                $label = $matches[1];
+                $url = preg_match('#^[a-z]+://#i', $label) ? $label : 'http://' . $label;
+
+                return sprintf('<a href="%s">%s</a>', h($url), h($label));
+            },
+            $text,
+        );
     }
 
     /**

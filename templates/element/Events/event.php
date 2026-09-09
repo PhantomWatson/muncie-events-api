@@ -108,7 +108,7 @@ use App\Model\Entity\Event;
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <?= $this->Text->autoLink($event->description, ['escape' => false]) ?>
+        <?= $event->description_autolinked ?>
     </div>
 
     <div class="footer_details">
