@@ -40,11 +40,15 @@ class TagsFixture extends TestFixture
     const TAG_NAME = 'test tag';
     const TAG_NAME_ALTERNATE = 'another tag';
     const TAG_NAME_CHILD = 'child tag';
+    const TAG_NAME_EXEMPT_DESCENDANT = 'jazz';
+    const TAG_NAME_EXEMPT_GROUP = 'Musical Genres';
     const TAG_NAME_UNLISTED = 'unlisted tag';
     const TAG_WITH_EVENT = 1;
     const TAG_WITH_DIFFERENT_EVENT = 2;
     const TAG_ID_CHILD = 3;
     const TAG_ID_UNLISTED = 4;
+    const TAG_ID_EXEMPT_DESCENDANT = 5;
+    const TAG_ID_EXEMPT_GROUP = 6;
 
     /**
      * Records
@@ -102,6 +106,41 @@ class TagsFixture extends TestFixture
             'lft' => 9,
             'rght' => 10,
             'name' => 'unlisted',
+            'listed' => 0,
+            'selectable' => 0,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12',
+        ],
+        // Named in PruneUnusedTagsCommand::EXEMPT_TAG_NAMES (case-insensitively), so it and its whole subtree
+        // are never offered for deletion despite having no associated events
+        [
+            'id' => self::TAG_ID_EXEMPT_GROUP,
+            'parent_id' => null,
+            'lft' => 11,
+            'rght' => 14,
+            'name' => self::TAG_NAME_EXEMPT_GROUP,
+            'listed' => 1,
+            'selectable' => 1,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12',
+        ],
+        [
+            'id' => self::TAG_ID_EXEMPT_DESCENDANT,
+            'parent_id' => self::TAG_ID_EXEMPT_GROUP,
+            'lft' => 12,
+            'rght' => 13,
+            'name' => self::TAG_NAME_EXEMPT_DESCENDANT,
+            'listed' => 1,
+            'selectable' => 1,
+            'user_id' => 1,
+            'created' => '2017-11-20 22:39:12',
+        ],
+        [
+            'id' => TagsTable::DELETE_GROUP_ID,
+            'parent_id' => null,
+            'lft' => 15,
+            'rght' => 16,
+            'name' => 'delete',
             'listed' => 0,
             'selectable' => 0,
             'user_id' => 1,
