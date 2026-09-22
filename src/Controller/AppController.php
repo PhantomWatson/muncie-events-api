@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use App\Model\Table\EventsTable;
 use Authentication\Controller\Component\AuthenticationComponent;
+use Authentication\IdentityInterface;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -178,9 +179,11 @@ class AppController extends Controller
      *
      * @return User|null
      */
-    protected function getAuthUser(): ?User
+    protected function getAuthUser(): ?IdentityInterface
     {
-        return $this->Authentication->getIdentity();
+        /** @var User|null $identity */
+        $identity = $this->Authentication->getIdentity();
+        return $identity;
     }
 
     protected function blockJsonRequests(): void
