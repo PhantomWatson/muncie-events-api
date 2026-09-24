@@ -255,7 +255,7 @@ class WidgetsController extends AppController
 
         // Events displayed per day
         if (isset($options['events_displayed_per_day'])) {
-            $eventsDisplayedPerDay = $options['events_displayed_per_day'];
+            $eventsDisplayedPerDay = (int)$options['events_displayed_per_day'];
         } else {
             $defaults = $this->Widget->getDefaults();
             $eventsDisplayedPerDay = $defaults['event_options']['events_displayed_per_day'];
