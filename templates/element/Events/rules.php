@@ -57,6 +57,12 @@ $adminEmail = Configure::read('adminEmail');
         Using CAPS LOCK FOR EMPHASIS and other unpleasantly-formatted text is not allowed.
     </li>
     <li>
+        <strong>Generative AI</strong>: While AI-generated text is allowed in event descriptions, overtly AI-generated
+        images may be removed at the discretion of the administrators. For promotional images, Muncie Events strongly
+        suggests using locally-designed images, original photography, or licensed/public-domain stock images to avoid
+        copyright infringement.
+    </li>
+    <li>
         <strong>Questions?</strong> Please email <a href="mailto:<?= $adminEmail ?>"><?= $adminEmail ?></a> if you have
         any questions.
     </li>
