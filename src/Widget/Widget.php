@@ -247,7 +247,7 @@ class Widget
         $defaults = $this->getDefaults();
 
         if (isset($defaults['styles'][$key])) {
-            return $defaults['styles'][$key] != $val;
+            return $defaults['styles'][$key] != $val && $this->isValidStyleValue($key, $val);
         } elseif (isset($defaults['event_options'][$key])) {
             return $defaults['event_options'][$key] != $val;
         } elseif (isset($defaults['iframe_options'][$key])) {
@@ -255,6 +255,35 @@ class Widget
         }
 
         return false;
+    }
+
+    /**
+     * Returns TRUE if $val is a safe, well-formed value for the style option $key
+     *
+     * Style values are output directly into CSS, so anything that isn't strictly a color, a font size, or a boolean
+     * flag is rejected to prevent CSS/HTML injection
+     *
+     * @param string $key Style option key
+     * @param mixed $val Style option value
+     * @return bool
+     */
+    public function isValidStyleValue($key, $val)
+    {
+        if (!is_scalar($val)) {
+            return false;
+        }
+        $val = (string)$val;
+
+        switch ($key) {
+            case 'fontSize':
+                return (bool)preg_match('/^\d*\.?\d+(px|em|rem|pt|%)$/i', $val);
+            case 'hideGeneralEventsIcon':
+            case 'showIcons':
+                return (bool)preg_match('/^(0|1|true|false)$/i', $val);
+            default:
+                // Hex colors (#rgb, #rgba, #rrggbb, #rrggbbaa) or named colors
+                return (bool)preg_match('/^(#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})|[a-z]+)$/i', $val);
+        }
     }
 
     /**
@@ -325,7 +354,7 @@ class Widget
             if ($val == '') {
                 continue;
             } elseif (isset($defaults['styles'][$var])) {
-                if ($defaults['styles'][$var] == $val) {
+                if ($defaults['styles'][$var] == $val || !$this->isValidStyleValue($var, $val)) {
                     continue;
                 }
             } else {
