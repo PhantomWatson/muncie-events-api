@@ -49,7 +49,7 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                             $categoryNames = [];
                             foreach ($filters['category'] as $categoryId) {
                                 $categoryName = $categories[$categoryId]->name;
-                                $categoryNames[] = $categoryName;
+                                $categoryNames[] = h($categoryName);
                             }
                             echo $this->Text->toList($categoryNames);
                         ?>
@@ -60,7 +60,7 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                         <strong>
                             Location:
                         </strong>
-                        <?= $filters['location'] ?>
+                        <?= h($filters['location']) ?>
                     </li>
                 <?php endif; ?>
                 <?php if (isset($filters['tags_included_names'])): ?>
@@ -68,7 +68,7 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                         <strong>
                             With <?= count($filters['tags_included_names']) == 1 ? 'tag' : 'tags' ?>:
                         </strong>
-                        <?= $this->Text->toList($filters['tags_included_names']) ?>
+                        <?= $this->Text->toList(array_map('h', $filters['tags_included_names'])) ?>
                     </li>
                 <?php endif; ?>
                 <?php if (isset($filters['tags_excluded_names'])): ?>
@@ -76,7 +76,7 @@ $categories = Hash::combine($categories->toArray(), '{n}.id', '{n}');
                         <strong>
                             Without <?= count($filters['tags_excluded_names']) == 1 ? 'tag' : 'tags' ?>:
                         </strong>
-                        <?= $this->Text->toList($filters['tags_excluded_names']) ?>
+                        <?= $this->Text->toList(array_map('h', $filters['tags_excluded_names'])) ?>
                     </li>
                 <?php endif; ?>
             </ul>

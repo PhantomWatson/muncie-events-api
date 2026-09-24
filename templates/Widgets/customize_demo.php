@@ -7,10 +7,10 @@
  */
 ?>
 
-<iframe style="<?= $iframeStyles ?>" src="<?= $iframeUrl ?>"></iframe>
+<iframe style="<?= h($iframeStyles) ?>" src="<?= $iframeUrl ?>"></iframe>
 <p>
     To include this widget in your webpage, insert the following code where you would like it to appear:
     <code>
-        &lt;iframe style="<?= $iframeStyles ?>" src="<?= $codeUrl ?>"&gt;&lt;/iframe&gt;
+        &lt;iframe style="<?= h($iframeStyles) ?>" src="<?= $codeUrl ?>"&gt;&lt;/iframe&gt;
     </code>
 </p>
