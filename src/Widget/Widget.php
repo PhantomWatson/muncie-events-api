@@ -163,7 +163,10 @@ class Widget
         $defaults = $this->getDefaults();
         $iframeParams = [];
         foreach ($queryParameters as $key => $val) {
-            // Clean up option and skip blanks
+            // Skip non-string values (e.g. arrays), clean up option, and skip blanks
+            if (!is_string($val)) {
+                continue;
+            }
             $val = trim($val);
             if ($val == '') {
                 continue;
@@ -350,6 +353,9 @@ class Widget
         foreach ($options as $var => $val) {
             if (stripos($var, 'amp;') !== false) {
                 $var = str_replace('amp;', '', $var);
+            }
+            if (!is_string($val)) {
+                continue;
             }
             $val = trim($val);
             $var = trim($var);

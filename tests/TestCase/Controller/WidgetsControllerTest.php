@@ -101,4 +101,24 @@ class WidgetsControllerTest extends ApplicationTest
         $this->assertResponseOk();
         $this->assertResponseNotContains('onload="alert(1)');
     }
+
+    /**
+     * Tests that array-valued options fall back to defaults instead of causing an error
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testMonthIgnoresArrayOptions()
+    {
+        $this->get([
+            'controller' => 'Widgets',
+            'action' => 'month',
+            '?' => [
+                'events_displayed_per_day' => ['5'],
+                'textColorLink' => ['#ff0000'],
+            ],
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('#ff0000');
+    }
 }

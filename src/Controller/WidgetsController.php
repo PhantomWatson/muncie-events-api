@@ -132,7 +132,10 @@ class WidgetsController extends AppController
 
         $options = [];
         foreach ($queryParams as $key => $val) {
-            // Clean up option and skip blanks
+            // Skip non-string values (e.g. arrays), clean up option, and skip blanks
+            if (!is_string($val)) {
+                continue;
+            }
             $val = trim($val);
             if ($val == '') {
                 continue;
