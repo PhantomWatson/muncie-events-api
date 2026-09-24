@@ -253,10 +253,13 @@ class WidgetsController extends AppController
         $this->viewbuilder()->setLayout($this->request->is('ajax') ? 'ajax' : 'Widgets' . DS . 'month');
         $this->Widget->processCustomStyles($options);
 
-        // Events displayed per day
-        if (isset($options['events_displayed_per_day'])) {
-            $eventsDisplayedPerDay = (int)$options['events_displayed_per_day'];
-        } else {
+        // Events displayed per day, falling back to the default if missing or not a non-negative integer
+        $eventsDisplayedPerDay = filter_var(
+            $options['events_displayed_per_day'] ?? null,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 0]]
+        );
+        if ($eventsDisplayedPerDay === false) {
             $defaults = $this->Widget->getDefaults();
             $eventsDisplayedPerDay = $defaults['event_options']['events_displayed_per_day'];
         }

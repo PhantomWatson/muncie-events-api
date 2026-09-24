@@ -299,12 +299,16 @@ class Widget
 
         // Dimensions
         foreach (['height', 'width'] as $dimension) {
-            if (isset($options[$dimension])) {
-                $unit = substr($options[$dimension], -1) == '%' ? '%' : 'px';
-                $value = preg_replace("/[^0-9]/", "", $options[$dimension]);
-            } else {
+            $value = isset($options[$dimension])
+                ? preg_replace("/[^0-9]/", "", $options[$dimension])
+                : '';
+
+            // Fall back to the default dimension if none (or an invalid one) was provided
+            if ($value === '') {
                 $unit = $dimension == 'height' ? 'px' : '%';
                 $value = $defaults['iframe_options'][$dimension];
+            } else {
+                $unit = substr($options[$dimension], -1) == '%' ? '%' : 'px';
             }
             $iframeStyles[] = "$dimension: {$value}$unit";
         }
@@ -350,7 +354,8 @@ class Widget
             $val = trim($val);
             $var = trim($var);
 
-            // Skip blank values, default values, and unrecognized 'styles' options
+            /* Skip blank values, default values, invalid values, and unrecognized 'styles' options. Skipped options
+             * fall back to their default values, which are set in the widget's stylesheet. */
             if ($val == '') {
                 continue;
             } elseif (isset($defaults['styles'][$var])) {
