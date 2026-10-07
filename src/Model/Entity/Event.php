@@ -229,24 +229,21 @@ class Event extends Entity
     /**
      * Sets the event to approved if $user (the user submitting the form) is an administrator
      *
-     * @param array|User|null $user The user submitting the form (not necessarily the original event author)
+     * @param User|null $user The user submitting the form (not necessarily the original event author)
      * @return void
      * @throws InternalErrorException
      */
-    public function autoApprove($user)
+    public function autoApprove(User|null $user): void
     {
-        if (!$user) {
+        if (!$user?->role || $user->role != User::ROLE_ADMIN) {
             return;
         }
-        if (!is_array($user)) {
-            $user = $user->toArray();
+
+        if (!$user->id) {
+            throw new InternalErrorException('Cannot approve event. Administrator ID unknown.');
         }
-        if (isset($user['role']) && $user['role'] == User::ROLE_ADMIN) {
-            if (!isset($user['id'])) {
-                throw new InternalErrorException('Cannot approve event. Administrator ID unknown.');
-            }
-            $this->approved_by = $user['id'];
-        }
+
+        $this->approved_by = $user->id;
     }
 
     /**
