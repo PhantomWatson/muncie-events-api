@@ -116,7 +116,7 @@ class EventsController extends ApiController
         }
 
         $this->loadComponent('ApiPagination');
-        $search = $this->request->getQuery('q');
+        $search = (string)$this->request->getQuery('q');
         $search = trim($search);
         if (!$search) {
             throw new BadRequestException('The parameter "q" is required');
