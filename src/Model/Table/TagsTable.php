@@ -144,13 +144,17 @@ class TagsTable extends Table
         $tagId = (explode('-', $idAndSlug))[0];
         $tagId = (explode('_', $tagId))[0];
 
+        if (!is_numeric($tagId)) {
+            return false;
+        }
+
         /** @var Tag $tag */
         $tag = $this->find()
             ->select(['id', 'name'])
             ->where(['id' => $tagId])
             ->first();
 
-        return $tag ? $tag : false;
+        return $tag ?: false;
     }
 
     /**
