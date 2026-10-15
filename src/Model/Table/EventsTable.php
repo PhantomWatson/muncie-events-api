@@ -770,7 +770,7 @@ class EventsTable extends Table
     {
         return $this->Tags->getTarget()->find()
             ->select(['Tags.id', 'Tags.name'])
-            ->where(['Tags.name' => mb_strtolower($searchTerm)])
+            ->where(['Tags.name LIKE' => '%' . mb_strtolower($searchTerm) . '%'])
             ->innerJoinWith('Events', function (SelectQuery $q) use ($direction) {
                 $q->find('published');
                 if (in_array($direction, ['upcoming', 'past'])) {
