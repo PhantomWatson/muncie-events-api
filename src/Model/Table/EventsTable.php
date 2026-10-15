@@ -21,6 +21,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use Search\Model\Behavior\SearchBehavior;
 
 /**
  * Events Model
@@ -48,7 +49,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event>|false deleteMany(iterable $entities, array $options = [])
  * @method \App\Model\Entity\Event[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Event> deleteManyOrFail(iterable $entities, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @extends \Cake\ORM\Table<array{Search: \Search\Model\Behavior\SearchBehavior, Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
+ * @property SearchBehavior Search
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class EventsTable extends Table
 {
@@ -69,7 +71,7 @@ class EventsTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->addBehavior('Search.Search');
-        $this->searchManager()
+        $this->Search->searchManager()
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
