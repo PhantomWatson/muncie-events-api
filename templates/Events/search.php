@@ -6,6 +6,7 @@
  * @var string $searchTerm
  * @var string $direction
  * @var \App\Model\Entity\Event[] $events
+ * @var \App\Model\Entity\Tag[] $matchingTags
  * @var \App\View\AppView $this
  * @var object $htmlHelper
  */
@@ -70,9 +71,37 @@ function getSearchLink($searchTerm, $dir, $count, HtmlHelper $htmlHelper)
         <?php endif; ?>
     </p>
 
+    <?php if (!empty($matchingTags)): ?>
+        <p class="matching_tags">
+            For more results, try
+            <?= __n('this matching tag:', 'these matching tags:', count($matchingTags)) ?>
+            <?php
+                $tagLinks = [];
+                foreach ($matchingTags as $tag) {
+                    $tagLinks[] = $this->Html->link(
+                        $tag->name,
+                        [
+                            'plugin' => false,
+                            'prefix' => false,
+                            'controller' => 'Events',
+                            'action' => 'tag',
+                            'slug' => $tag->slug,
+                            'direction' => $direction == 'past' ? 'past' : null,
+                        ]
+                    );
+                }
+                echo implode(', ', $tagLinks);
+            ?>
+        </p>
+    <?php endif; ?>
+
     <?php if (isset($events) && !empty($events)): ?>
 
+        <?= $this->element('pagination', ['passQueryParams' => true]) ?>
+
         <?= $this->element('Events/accordion/wrapper') ?>
+
+        <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 
         <?php $this->Html->scriptBlock('setupEventAccordion();', ['block' => true]); ?>
     <?php endif; ?>

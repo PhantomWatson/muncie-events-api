@@ -792,16 +792,17 @@ class EventsController extends AppController
         // Get search results
         $query = $this->Events->getSearchResultsQuery($searchTerm, $direction);
         $counts[$direction] = $query->count();
-        $order = $direction == 'past' ? 'DESC' : 'ASC';
-        $query->epilog("ORDER BY Events__date $order, Events__time_start ASC");
-        $events = $query->all()->toArray();
+        $query->orderBy([
+            'Events.date' => $direction == 'past'
+                ? 'DESC'
+                : 'ASC',
+            'Events.time_start' => 'ASC'
+        ]);
+        $events = $this->paginate($query);
 
         if ($direction == 'all') {
-            $timezone = Configure::read('localTimezone');
-            $currentDate = (new \Cake\I18n\DateTime('now', $timezone))->format('Y-m-d');
-            foreach ($events as $event) {
-                $key = $event->date->format('Y-m-d') >= $currentDate ? 'upcoming' : 'past';
-                $counts[$key]++;
+            foreach (['upcoming', 'past'] as $dir) {
+                $counts[$dir] = $this->Events->getSearchResultsQuery($searchTerm, $dir)->count();
             }
         } else {
             // Determine if there are events in the opposite direction
@@ -814,6 +815,7 @@ class EventsController extends AppController
             'direction' => $direction,
             'directionAdjective' => $direction,
             'events' => $events,
+            'matchingTags' => $this->Events->getTagsMatchingSearch($searchTerm, $direction),
             'searchTerm' => $searchTerm,
         ]);
     }

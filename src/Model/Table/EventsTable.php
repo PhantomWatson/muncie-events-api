@@ -6,19 +6,12 @@ use App\Model\Entity\Tag;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
-use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
-use Cake\ORM\Association\BelongsTo;
-use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
-use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use Search\Model\Behavior\SearchBehavior;
@@ -744,7 +737,7 @@ class EventsTable extends Table
     }
 
     /**
-     * Returns a Query for event search results
+     * Returns a Query for event search results, matching on events' own searchable fields
      *
      * Making this a custom finder resulted in "maximum function nesting level reached" errors, suggesting that finders
      * cannot be nested.
@@ -755,16 +748,42 @@ class EventsTable extends Table
      */
     public function getSearchResultsQuery($searchTerm, $direction)
     {
-        $baseQuery = $this
+        $query = $this
             ->find('published')
-            ->find('withAllAssociated');
+            ->find('withAllAssociated')
+            ->find('search', search: ['q' => $searchTerm]);
         if (in_array($direction, ['upcoming', 'past'])) {
-            $baseQuery->find($direction);
+            $query->find($direction);
         }
-        $fieldsQuery = (clone $baseQuery)->find('search', search: ['q' => $searchTerm]);
-        $tagsQuery = (clone $baseQuery)->cleanCopy()->find('tagged', tags: [mb_strtolower($searchTerm)]);
 
-        return $fieldsQuery->union($tagsQuery);
+        return $query;
+    }
+
+    /**
+     * Returns tags whose names match the search term and that have associated published events
+     *
+     * @param string $searchTerm An arbitrary string to search for
+     * @param string $direction Either 'upcoming', 'past', or 'all' (ignored) expected. If 'upcoming' or 'past', tags
+     *      must have events in that direction.
+     * @return \App\Model\Entity\Tag[]
+     */
+    public function getTagsMatchingSearch(string $searchTerm, string $direction): array
+    {
+        return $this->Tags->getTarget()->find()
+            ->select(['Tags.id', 'Tags.name'])
+            ->where(['Tags.name' => mb_strtolower($searchTerm)])
+            ->innerJoinWith('Events', function (SelectQuery $q) use ($direction) {
+                $q->find('published');
+                if (in_array($direction, ['upcoming', 'past'])) {
+                    $q->find($direction);
+                }
+
+                return $q;
+            })
+            ->distinct(['Tags.id'])
+            ->orderBy(['Tags.name' => 'ASC'])
+            ->all()
+            ->toArray();
     }
 
     /**
@@ -942,7 +961,6 @@ class EventsTable extends Table
                 'Categories' => function (\Cake\ORM\Query\SelectQuery $q) {
                     return $q->select(['id', 'name', 'slug']);
                 },
-                'Images',
             ]);
 
         return $query;
