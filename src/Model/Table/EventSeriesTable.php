@@ -128,7 +128,6 @@ class EventSeriesTable extends Table
                     return $q
                         ->find('ordered')
                         ->find('published')
-                        ->find('withAllAssociated')
                         ->select([
                             'date',
                             'id',
