@@ -45,7 +45,7 @@ class MailingListCommand extends Command
 
     private EventsTable $Events;
     private MailingListTable $MailingList;
-    private ConsoleIo $io;
+    protected ConsoleIo $io;
     private string|null $recipientEmail;
     private bool|null $overrideWeekly;
 
