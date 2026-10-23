@@ -8,7 +8,11 @@ $totalPages = $this->Paginator->counter('{{pages}}');
 $currentPage = $this->Paginator->counter('{{page}}');
 
 $passQueryParams = $passQueryParams ?? false;
-$url = ['?' => $passQueryParams ? $this->request->getQueryParams() : []];
+$url = [
+    '?' => $passQueryParams
+        ? $this->request->getQueryParams()
+        : []
+];
 
 $hasPrev = $this->Paginator->hasPrev();
 $prevButton = $this->Paginator->prev(
@@ -46,7 +50,7 @@ $next = $hasNext ? $nextButton : null;
                             <?php if ($p == $currentPage) :
                                 ?>selected="selected"<?php
                             endif; ?>
-                            data-url="<?= $this->Paginator->generateUrl($url + ['page' => $p]) ?>"
+                            data-url="<?= $this->Paginator->generateUrl(['page' => $p], $url) ?>"
                         >
                             <?= $p ?>
                         </option>
