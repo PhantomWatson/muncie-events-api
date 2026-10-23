@@ -209,8 +209,9 @@ div.checkbox label {
   text-align: center;
 }
 .pagination {
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
-  width: 45%;
 }
 @media (max-width: 576px) {
   .pagination {
@@ -224,12 +225,12 @@ div.checkbox label {
   }
 }
 .pagination li {
+  align-items: center;
   background-color: #fff;
-  border: 1px solid #ddd;
   border-bottom-left-radius: 0.25rem;
   border-top-left-radius: 0.25rem;
   color: #0275d8;
-  display: block;
+  display: flex;
   line-height: 1.25;
   margin-left: 0;
   padding: 0.5rem 0.75rem;
