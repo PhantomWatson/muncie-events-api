@@ -209,7 +209,6 @@ class EventsController extends AppController
 
         $baseQuery = $this->Events
             ->find('published')
-            ->find('ordered', direction: $direction == 'past' ? 'DESC' : 'ASC')
             ->find('withAllAssociated')
             ->find('tagged', tags: [$tag->name]);
         $mainQuery = (clone $baseQuery)->find($direction);
@@ -218,7 +217,12 @@ class EventsController extends AppController
 
         $this->set([
             'pageTitle' => 'Tag: ' . ucwords($tag->name),
-            'events' => $this->paginate($mainQuery),
+            'events' => $this->paginate($mainQuery, [
+                'order' => [
+                    'date' => $direction == 'past' ? 'DESC' : 'ASC',
+                    'time_start' => 'ASC',
+                ]
+            ]),
             'count' => $mainQuery->count(),
             'direction' => $direction,
             'countOppositeDirection' => $oppositeDirectionQuery->count(),
