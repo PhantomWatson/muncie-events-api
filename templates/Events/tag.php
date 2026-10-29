@@ -10,9 +10,6 @@
  */
 
 use App\Model\Entity\Event;
-use App\Model\Entity\Tag;
-use App\View\AppView;
-use Cake\Utility\Text;
 ?>
 
 <?= $this->element('Header/event_header') ?>
@@ -41,7 +38,7 @@ use Cake\Utility\Text;
 ); ?>
 
 <?php if ($events) : ?>
-    <?= $this->element('Events/accordion/wrapper') ?>
+    <?= $this->element('Events/accordion/wrapper', ['sortNewestFirst' => $direction == 'past']) ?>
     <?= $this->element('pagination', ['passQueryParams' => true]) ?>
 <?php else : ?>
     <p class="alert alert-info">
