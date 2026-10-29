@@ -7,13 +7,14 @@
  * @var \App\View\AppView $this
  * @var \Cake\ORM\ResultSet|\App\Model\Entity\Event[] $events
  * @var bool $hideDateHeaders
+ * @var bool|null $sortNewestFirst
  */
 
-use App\View\AppView;
 use App\View\Helper\CalendarHelper;
 
 $nextStartDate = CalendarHelper::getNextStartDate($events);
-$eventsByDate = CalendarHelper::arrangeByDate($events);
+$sortNewestFirst ??= false;
+$eventsByDate = CalendarHelper::arrangeByDate($events, $sortNewestFirst);
 ?>
 
 <?php if ($events): ?>

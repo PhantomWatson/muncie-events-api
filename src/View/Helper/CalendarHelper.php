@@ -31,7 +31,7 @@ class CalendarHelper extends Helper
      * @param ResultSet|Event[] $events Array of Event objects
      * @return array
      */
-    public static function arrangeByDate($events)
+    public static function arrangeByDate($events, bool $sortNewestFirst = false): array
     {
         if (!is_array($events)) {
             $events = $events->toArray();
@@ -43,7 +43,11 @@ class CalendarHelper extends Helper
             $retval[$date][] = $event;
         }
 
-        ksort($retval);
+        if ($sortNewestFirst) {
+            krsort($retval);
+        } else {
+            ksort($retval);
+        }
 
         return $retval;
     }
