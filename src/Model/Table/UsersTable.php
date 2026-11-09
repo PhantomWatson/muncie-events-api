@@ -12,6 +12,7 @@ use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -379,10 +380,28 @@ class UsersTable extends Table
      */
     private function fetchLeaderboards(): array
     {
-        return [
-            'allTime' => $this->getTopPosters(),
-            'recent' => $this->getTopPosters(new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS))),
+        $categories = TableRegistry::getTableLocator()->get('Categories')
+            ->find()
+            ->orderByAsc('weight')
+            ->all();
+        $retval = [
+            'Overall' => [
+                'allTime' => $this->getTopPosters(),
+                'recent' => $this->getTopPosters(
+                    new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS)),
+                ),
+            ],
         ];
+        foreach ($categories as $category) {
+            $retval[$category->name] = [
+                'allTime' => $this->getTopPosters(null, $category->id),
+                'recent' => $this->getTopPosters(
+                    new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS)),
+                    $category->id,
+                ),
+            ];
+        }
+        return $retval;
     }
 
     /**
@@ -391,7 +410,7 @@ class UsersTable extends Table
      * @param \Cake\I18n\DateTime|null $since If provided, only events created at or after this time are counted
      * @return array<int, array<string, mixed>>
      */
-    private function getTopPosters(?DateTime $since = null): array
+    private function getTopPosters(?DateTime $since = null, ?int $categoryId = null): array
     {
         $query = $this->find();
 
@@ -401,10 +420,13 @@ class UsersTable extends Table
                 'Users.id',
                 'Users.name',
             ])
-            ->innerJoinWith('Events', function (SelectQuery $q) use ($since) {
+            ->innerJoinWith('Events', function (SelectQuery $q) use ($since, $categoryId) {
                 $q->find('published');
                 if ($since) {
                     $q->where(['Events.created >=' => $since]);
+                }
+                if ($categoryId) {
+                    $q->where(['Events.category_id' => $categoryId]);
                 }
 
                 return $q;

@@ -6607,11 +6607,20 @@ table.feeds tbody td:last-child {
   text-align: center;
   vertical-align: middle;
 }
+#leaderboard h2 {
+  border-bottom: 1px solid #666;
+}
+#leaderboard table {
+  margin-bottom: 50px;
+  width: 100%;
+}
 #leaderboard th {
   font-size: 125%;
 }
 #leaderboard td {
+  padding-right: 1em;
   vertical-align: top;
+  width: 50%;
 }
 #sidebar {
   float: right;
