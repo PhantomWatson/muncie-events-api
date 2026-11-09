@@ -4,8 +4,10 @@ namespace App\Model\Table;
 use App\Model\Entity\Image;
 use App\Model\Entity\User;
 use ArrayObject;
+use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\DateTime;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -41,6 +43,26 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+    /**
+     * Key that the user leaderboards are cached under
+     *
+     * @var string
+     */
+    public const string LEADERBOARDS_CACHE_KEY = 'user_leaderboards';
+
+    /**
+     * Number of days that the "recent" leaderboard looks back
+     *
+     * @var int
+     */
+    public const int LEADERBOARD_RECENT_DAYS = 100;
+
+    /**
+     * Number of users included in each leaderboard
+     *
+     * @var int
+     */
+    public const int LEADERBOARD_SIZE = 10;
 
     /**
      * Initialize method
@@ -324,5 +346,74 @@ class UsersTable extends Table
                 'Users.api_key IS' => null,
                 'Users.mailing_list_id IS' => null,
             ]);
+    }
+
+    /**
+     * Returns the users who have posted the most published events, both overall and recently
+     *
+     * Results are cached for 24 hours.
+     *
+     * @return array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}
+     */
+    public function getCachedLeaderboards(): array
+    {
+        return Cache::remember(self::LEADERBOARDS_CACHE_KEY, function () {
+            return $this->fetchLeaderboards();
+        }, 'daily');
+    }
+
+    /**
+     * Regenerates the cached leaderboards, even if the current cached copy hasn't expired yet
+     *
+     * @return bool TRUE if the leaderboards were successfully written to the cache
+     */
+    public function refreshLeaderboards(): bool
+    {
+        return Cache::write(self::LEADERBOARDS_CACHE_KEY, $this->fetchLeaderboards(), 'daily');
+    }
+
+    /**
+     * Fetches the current leaderboards from the database
+     *
+     * @return array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}
+     */
+    private function fetchLeaderboards(): array
+    {
+        return [
+            'allTime' => $this->getTopPosters(),
+            'recent' => $this->getTopPosters(new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS))),
+        ];
+    }
+
+    /**
+     * Returns the IDs, names, and event counts of the users who have posted the most published events
+     *
+     * @param \Cake\I18n\DateTime|null $since If provided, only events created at or after this time are counted
+     * @return array<int, array<string, mixed>>
+     */
+    private function getTopPosters(?DateTime $since = null): array
+    {
+        $query = $this->find();
+
+        return $query
+            ->select([
+                'event_count' => $query->func()->count('Events.id'),
+                'Users.id',
+                'Users.name',
+            ])
+            ->innerJoinWith('Events', function (SelectQuery $q) use ($since) {
+                $q->find('published');
+                if ($since) {
+                    $q->where(['Events.created >=' => $since]);
+                }
+
+                return $q;
+            })
+            ->groupBy(['Users.id', 'Users.name'])
+            ->orderBy(['event_count' => 'DESC', 'Users.name' => 'ASC'])
+            ->limit(self::LEADERBOARD_SIZE)
+            ->enableHydration(false)
+            ->all()
+            ->toList();
     }
 }

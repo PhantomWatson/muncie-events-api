@@ -30,6 +30,7 @@ class UsersController extends AppController
 
         $this->Authentication->allowUnauthenticated([
             'forgotPassword',
+            'leaderboards',
             'login',
             'logout',
             'register',
@@ -284,6 +285,19 @@ class UsersController extends AppController
         ]);
 
         return null;
+    }
+
+    /**
+     * Page displaying the users who have posted the most events
+     *
+     * @return void
+     */
+    public function leaderboards()
+    {
+        $this->set([
+            'leaderboards' => $this->Users->getCachedLeaderboards(),
+            'pageTitle' => 'Leaderboards',
+        ]);
     }
 
     /**

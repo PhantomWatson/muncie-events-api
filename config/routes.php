@@ -175,6 +175,7 @@ return function (RouteBuilder $routes): void {
         $routes->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
         $routes->connect('/account', ['controller' => 'Users', 'action' => 'account']);
         $routes->connect('/change-password', ['controller' => 'Users', 'action' => 'changePass']);
+        $routes->connect('/leaderboards', ['controller' => 'Users', 'action' => 'leaderboards']);
         $routes->connect('/user/{id}', ['controller' => 'Users', 'action' => 'view'])
             ->setPass(['id'])
             ->setPatterns(['id' => '[0-9]+']);

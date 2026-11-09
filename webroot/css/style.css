@@ -6607,6 +6607,12 @@ table.feeds tbody td:last-child {
   text-align: center;
   vertical-align: middle;
 }
+#leaderboard th {
+  font-size: 125%;
+}
+#leaderboard td {
+  vertical-align: top;
+}
 #sidebar {
   float: right;
   padding-right: 10px;
