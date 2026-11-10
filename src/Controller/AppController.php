@@ -107,7 +107,7 @@ class AppController extends Controller
         $authUser = $this->getAuthUser();
         $this->set([
             'authUser' => $authUser,
-            'topPosters' => TableRegistry::getTableLocator()->get('Users')->getCachedLeaderboard('allTime'),
+            'topPosters' => TableRegistry::getTableLocator()->get('Users')->getCachedLeaderboard('recent'),
             'unapprovedCount' => $authUser ? $this->Events->getUnapprovedCount() : 0,
         ]);
 
