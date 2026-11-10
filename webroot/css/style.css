@@ -6729,14 +6729,4 @@ table.feeds tbody td:last-child {
   margin-top: 0.5em;
   margin-bottom: 0;
 }
-#sidebar_mailinglist p,
-#sidebar_widget p {
-  font-size: 80%;
-  margin: 0;
-}
-#sidebar_mailinglist p a,
-#sidebar_widget p a {
-  font-size: 100%;
-  font-weight: bold;
-}
 /*# sourceMappingURL=style.css.map */
