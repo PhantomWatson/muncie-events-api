@@ -361,7 +361,10 @@ class UsersTable extends Table
      *
      * Each leaderboard is read from its own cache entry (see getCachedLeaderboard()).
      *
-     * @return array<string, array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}>
+     * @return array<string, array{
+     *     allTime: array<int, array{name: string, id: int}>,
+     *     recent: array<int, array{name: string, id: int}>
+     * }>
      */
     public function getCachedLeaderboards(): array
     {
@@ -380,7 +383,7 @@ class UsersTable extends Table
      *
      * @param string $period Either 'allTime' or 'recent'
      * @param int|null $categoryId A category ID, or NULL for the overall leaderboard
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array{name: string, id: int}>
      */
     public function getCachedLeaderboard(string $period, ?int $categoryId = null): array
     {
@@ -452,7 +455,7 @@ class UsersTable extends Table
      *
      * @param string $period Either 'allTime' or 'recent'
      * @param int|null $categoryId A category ID, or NULL for the overall leaderboard
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array{name: string, id: int}>
      */
     private function fetchLeaderboard(string $period, ?int $categoryId = null): array
     {
@@ -464,10 +467,10 @@ class UsersTable extends Table
     }
 
     /**
-     * Returns the IDs, names, and event counts of the users who have posted the most published events
+     * Returns the IDs and names of the users who have posted the most published events
      *
      * @param \Cake\I18n\DateTime|null $since If provided, only events created at or after this time are counted
-     * @return array<int, array<string, mixed>>
+     * @return array<int, array{name: string, id: int}>
      */
     private function getTopPosters(?DateTime $since = null, ?int $categoryId = null): array
     {
