@@ -51,6 +51,47 @@ $categories = $this->Nav->getCategories();
         </div>
     <?php endif; ?>
 
+    <div id="sidebar_widget">
+        <h2>
+            More ways to connect
+        </h2>
+        <ul>
+            <li>
+                <?= $this->Html->link(
+                    'Google Calendar feeds',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Events',
+                        'action' => 'feeds',
+                    ]
+                ) ?>
+            </li>
+            <li>
+                <?= $this->Html->link(
+                    'Mailing list',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'MailingList',
+                        'action' => 'index',
+                    ]
+                ) ?>
+            </li>
+            <li>
+                <?= $this->Html->link(
+                    'Calendar widgets',
+                    [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Widgets',
+                        'action' => 'index',
+                    ]
+                ) ?>
+            </li>
+        </ul>
+    </div>
+
     <?php if ($categories) : ?>
         <div class="categories">
             <h2>Categories</h2>
@@ -134,65 +175,4 @@ $categories = $this->Nav->getCategories();
             ) ?>
         </div>
     <?php endif; ?>
-
-    <div id="sidebar_widget">
-        <h2>
-            Google Calendar Feeds
-        </h2>
-        <p>
-            Use our
-            <strong>
-                <?= $this->Html->link(
-                    'event feeds',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'Events',
-                        'action' => 'feeds',
-                    ]
-                ) ?>
-            </strong>
-            to subscribe to local events in any of your favorite calendar applications.
-        </p>
-    </div>
-
-    <div id="sidebar_mailinglist">
-        <h2>
-            Mailing List
-        </h2>
-        <p>
-            <?= $this->Html->link(
-                'Join the Mailing List',
-                [
-                    'plugin' => false,
-                    'prefix' => false,
-                    'controller' => 'MailingList',
-                    'action' => 'index',
-                ]
-            ) ?>
-            and get daily or weekly emails about all upcoming events or only the categories
-            that you're interested in.
-        </p>
-    </div>
-
-    <div id="sidebar_widget">
-        <h2>
-            Calendar Widgets
-        </h2>
-        <p>
-            Join our event promotion network by displaying a free
-            <strong>
-                <?= $this->Html->link(
-                    'custom calendar widget',
-                    [
-                        'plugin' => false,
-                        'prefix' => false,
-                        'controller' => 'Widgets',
-                        'action' => 'index',
-                    ]
-                ) ?>
-            </strong>
-            on your website.
-        </p>
-    </div>
 </div>
