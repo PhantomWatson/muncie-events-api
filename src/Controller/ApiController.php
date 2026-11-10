@@ -118,9 +118,9 @@ class ApiController extends Controller
      * Before render callback.
      *
      * @param Event $event The beforeRender event.
-     * @return Response|null|void
+     * @return void
      */
-    public function beforeRender(\Cake\Event\EventInterface $event)
+    public function beforeRender(\Cake\Event\EventInterface $event): void
     {
         parent::beforeRender($event);
     }
