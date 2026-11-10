@@ -9,6 +9,7 @@ use Cake\Event\Event;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Exception;
@@ -96,9 +97,9 @@ class AppController extends Controller
      * Before render callback.
      *
      * @param Event $event The beforeRender event.
-     * @return Response|null|void
+     * @return Response|null
      */
-    public function beforeRender(\Cake\Event\EventInterface $event)
+    public function beforeRender(\Cake\Event\EventInterface $event): ?Response
     {
         if ($this->request->is('ajax') && !$this->viewBuilder()->getClassName()) {
             $this->viewBuilder()->setClassName('Ajax');
@@ -106,8 +107,11 @@ class AppController extends Controller
         $authUser = $this->getAuthUser();
         $this->set([
             'authUser' => $authUser,
+            'topPosters' => TableRegistry::getTableLocator()->get('Users')->getCachedLeaderboard('allTime'),
             'unapprovedCount' => $authUser ? $this->Events->getUnapprovedCount() : 0,
         ]);
+
+        return null;
     }
 
     /**

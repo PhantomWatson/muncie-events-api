@@ -6729,4 +6729,14 @@ table.feeds tbody td:last-child {
   margin-top: 0.5em;
   margin-bottom: 0;
 }
+#sidebar-leaderboards p {
+  margin-bottom: 0;
+}
+#sidebar-leaderboards ol {
+  margin-bottom: 0;
+  padding-left: 1.5em;
+}
+#sidebar-leaderboards li {
+  list-style-type: decimal;
+}
 /*# sourceMappingURL=style.css.map */

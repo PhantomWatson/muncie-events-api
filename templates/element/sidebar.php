@@ -4,8 +4,10 @@
  * @var \App\View\AppView $this
  * @var array $authUser
  * @var int $unapprovedCount
+ * @var array<int, array{name: string, id: int}> $topPosters
  */
 use App\Model\Entity\Category;
+use App\Model\Table\UsersTable;
 use App\View\AppView;
 
 $this->Html->scriptBlock('setupSidebar();', ['block' => true]);
@@ -51,7 +53,7 @@ $categories = $this->Nav->getCategories();
         </div>
     <?php endif; ?>
 
-    <div id="sidebar_widget">
+    <div>
         <h2>
             More ways to connect
         </h2>
@@ -163,8 +165,7 @@ $categories = $this->Nav->getCategories();
                         'action' => 'index',
                     ],
                     ['class' => 'see_all']
-                )
-                ?>
+                ) ?>
             </h2>
             <?= $this->element(
                 'Tags/cloud',
@@ -175,4 +176,40 @@ $categories = $this->Nav->getCategories();
             ) ?>
         </div>
     <?php endif; ?>
+
+    <div id="sidebar-leaderboards">
+        <h2>
+            Leaderboards
+            <?= $this->Html->link(
+                'See all',
+                [
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'Users',
+                    'action' => 'leaderboards',
+                ],
+                ['class' => 'see_all']
+            ) ?>
+        </h2>
+
+        <?php if ($topPosters) : ?>
+            <p>
+                Top recent posters:
+            </p>
+            <ol>
+                <?php foreach ($topPosters as $user) : ?>
+                    <li>
+                        <?= $this->Html->link(
+                            $user['name'],
+                            [
+                                'action' => 'view',
+                                'controller' => 'Users',
+                                'id' => $user['id'],
+                            ]
+                        ) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        <?php endif; ?>
+    </div>
 </div>
