@@ -132,7 +132,7 @@ use App\Model\Entity\Event;
             <?php if ($event->source): ?>
                 <br />
                 Source:
-                <?= $this->Text->autoLink($event->source) ?>
+                <?= $event->source_linked ?>
             <?php endif; ?>
         </p>
     </div>

@@ -35,6 +35,7 @@ use function Cake\Core\h;
  * @property string $age_restriction
  * @property string $cost
  * @property string $source
+ * @property string $source_linked
  * @property bool $published
  * @property int|null $approved_by
  * @property \Cake\I18n\DateTime|null $created
@@ -494,6 +495,24 @@ class Event extends Entity
         $linked = self::autoLinkBoundedUrls($this->description);
 
         $linked = new TextHelper(new View())->autoLinkEmails($linked, ['escape' => false]);
+
+        return self::qualifyUserGeneratedLinks($linked);
+    }
+
+    /**
+     * A virtual field that returns this event's source with the text escaped and URLs and email addresses converted to
+     * links that are qualified with rel="nofollow noopener ugc"
+     *
+     * @return string
+     * @see \App\Model\Entity\Event::$source_linked
+     */
+    protected function _getSourceLinked(): string
+    {
+        if (empty(trim($this->source))) {
+            return '';
+        }
+
+        $linked = new TextHelper(new View())->autoLink($this->source);
 
         return self::qualifyUserGeneratedLinks($linked);
     }

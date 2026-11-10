@@ -156,7 +156,7 @@ $isVirtual = $event->location == Event::VIRTUAL_LOCATION;
                     <tr class="source">
                         <th>Source:</th>
                         <td>
-                            <?= $this->Text->autoLink($event->source) ?>
+                            <?= $event->source_linked ?>
                         </td>
                     </tr>
                 <?php endif; ?>

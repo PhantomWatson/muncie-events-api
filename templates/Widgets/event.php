@@ -92,7 +92,7 @@ $eventUrl = Router::url([
         <?php if ($event->source): ?>
             <p>
                 Source:
-                <?= $this->Text->autoLink($event->source) ?>
+                <?= $event->source_linked ?>
             </p>
         <?php endif; ?>
     </div>
