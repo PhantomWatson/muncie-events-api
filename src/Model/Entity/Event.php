@@ -64,6 +64,47 @@ class Event extends Entity
     const VIRTUAL_LOCATION_SLUG = 'virtual-event';
 
     /**
+     * Matches the opening tag of an anchor element, e.g. '<a href="/">'
+     *
+     * @var string
+     */
+    private const string ANCHOR_OPENING_TAG_PATTERN = <<<'REGEX'
+        ~
+        <a \b               # "<a", but not "<abbr", etc.
+        (?:
+            [^>"']          # any character other than a quote or the end of the tag
+            | "[^"]*"       # a double-quoted attribute value (which may contain ">")
+            | '[^']*'       # a single-quoted attribute value (which may contain ">")
+        )*
+        >
+        ~ix
+        REGEX;
+
+    /**
+     * Matches a rel attribute (including the whitespace before it) and captures its value in one of three groups,
+     * depending on how it was quoted
+     *
+     * @var string
+     */
+    private const string REL_ATTRIBUTE_PATTERN = <<<'REGEX'
+        ~
+        \s rel \s* = \s*
+        (?:
+            " (?<double>[^"]*) "
+            | ' (?<single>[^']*) '
+            | (?<bare>[^\s>"']+)
+        )
+        ~ix
+        REGEX;
+
+    /**
+     * Matches the end of an opening tag: '>' or '/>', along with any whitespace before it
+     *
+     * @var string
+     */
+    private const string TAG_ENDING_PATTERN = '~\s*/?>$~';
+
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
@@ -452,7 +493,61 @@ class Event extends Entity
 
         $linked = self::autoLinkBoundedUrls($this->description);
 
-        return new TextHelper(new View())->autoLinkEmails($linked, ['escape' => false]);
+        $linked = new TextHelper(new View())->autoLinkEmails($linked, ['escape' => false]);
+
+        return self::qualifyUserGeneratedLinks($linked);
+    }
+
+    /**
+     * Adds rel="nofollow noopener ugc" to every anchor tag in $html, preserving any other rel values already present
+     *
+     * Links in event descriptions are user-generated, so they are qualified to discourage link spam and to prevent
+     * the linked page from accessing window.opener.
+     *
+     * @param string $html HTML that may contain anchor tags
+     * @return string
+     */
+    private static function qualifyUserGeneratedLinks(string $html): string
+    {
+        return (string)preg_replace_callback(
+            self::ANCHOR_OPENING_TAG_PATTERN,
+            fn (array $matches) => self::addRelValues($matches[0], ['nofollow', 'noopener', 'ugc']),
+            $html,
+        );
+    }
+
+    /**
+     * Returns an anchor's opening tag with $newRels merged into its rel attribute (which is created if missing)
+     *
+     * @param string $openingTag An opening anchor tag, e.g. '<a href="/" rel="external">'
+     * @param string[] $newRels Values to add to the tag's rel attribute
+     * @return string
+     */
+    private static function addRelValues(string $openingTag, array $newRels): string
+    {
+        // Strip out the existing rel attribute (if any), remembering its values
+        $oldRels = [];
+        $openingTag = (string)preg_replace_callback(
+            self::REL_ATTRIBUTE_PATTERN,
+            function (array $matches) use (&$oldRels) {
+                $value = ($matches['double'] ?? '') . ($matches['single'] ?? '') . ($matches['bare'] ?? '');
+                $oldRels = array_merge($oldRels, preg_split('/\s+/', strtolower(trim($value))));
+
+                return '';
+            },
+            $openingTag,
+        );
+
+        $rels = array_unique(array_filter(array_merge($oldRels, $newRels)));
+        sort($rels);
+
+        // Re-add the merged rel attribute just before the tag's closing '>' or '/>'
+        return (string)preg_replace(
+            self::TAG_ENDING_PATTERN,
+            sprintf(' rel="%s"$0', implode(' ', $rels)),
+            $openingTag,
+            1,
+        );
     }
 
     /**
