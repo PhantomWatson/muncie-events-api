@@ -45,7 +45,7 @@ use Cake\Validation\Validator;
 class UsersTable extends Table
 {
     /**
-     * Key that the user leaderboards are cached under
+     * Prefix of the keys that the user leaderboards are cached under (see getLeaderboardCacheKey())
      *
      * @var string
      */
@@ -57,6 +57,13 @@ class UsersTable extends Table
      * @var int
      */
     public const int LEADERBOARD_RECENT_DAYS = 100;
+
+    /**
+     * Time periods that each leaderboard is generated for
+     *
+     * @var string[]
+     */
+    public const array LEADERBOARD_PERIODS = ['allTime', 'recent'];
 
     /**
      * Number of users included in each leaderboard
@@ -350,58 +357,110 @@ class UsersTable extends Table
     }
 
     /**
-     * Returns the users who have posted the most published events, both overall and recently
+     * Returns the users who have posted the most published events, for every category and time period
      *
-     * Results are cached for 24 hours.
+     * Each leaderboard is read from its own cache entry (see getCachedLeaderboard()).
      *
-     * @return array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}
+     * @return array<string, array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}>
      */
     public function getCachedLeaderboards(): array
     {
-        return Cache::remember(self::LEADERBOARDS_CACHE_KEY, function () {
-            return $this->fetchLeaderboards();
-        }, 'daily');
+        $retval = [];
+        foreach ($this->getLeaderboardCategories() as $categoryName => $categoryId) {
+            foreach (self::LEADERBOARD_PERIODS as $period) {
+                $retval[$categoryName][$period] = $this->getCachedLeaderboard($period, $categoryId);
+            }
+        }
+
+        return $retval;
     }
 
     /**
-     * Regenerates the cached leaderboards, even if the current cached copy hasn't expired yet
+     * Returns a single leaderboard (e.g. Overall + recent), fetching and caching it for 24 hours if necessary
      *
-     * @return bool TRUE if the leaderboards were successfully written to the cache
+     * @param string $period Either 'allTime' or 'recent'
+     * @param int|null $categoryId A category ID, or NULL for the overall leaderboard
+     * @return array<int, array<string, mixed>>
+     */
+    public function getCachedLeaderboard(string $period, ?int $categoryId = null): array
+    {
+        return Cache::remember(
+            self::getLeaderboardCacheKey($period, $categoryId),
+            fn () => $this->fetchLeaderboard($period, $categoryId),
+            'daily',
+        );
+    }
+
+    /**
+     * Regenerates every cached leaderboard, even if the current cached copies haven't expired yet
+     *
+     * Each combination of period ('allTime' / 'recent') and category (Overall / each individual category) is cached
+     * under its own key.
+     *
+     * @return bool TRUE if all of the leaderboards were successfully written to the cache
      */
     public function refreshLeaderboards(): bool
     {
-        return Cache::write(self::LEADERBOARDS_CACHE_KEY, $this->fetchLeaderboards(), 'daily');
+        $success = true;
+        foreach ($this->getLeaderboardCategories() as $categoryId) {
+            foreach (self::LEADERBOARD_PERIODS as $period) {
+                $written = Cache::write(
+                    self::getLeaderboardCacheKey($period, $categoryId),
+                    $this->fetchLeaderboard($period, $categoryId),
+                    'daily',
+                );
+                $success = $written && $success;
+            }
+        }
+
+        return $success;
     }
 
     /**
-     * Fetches the current leaderboards from the database
+     * Returns the cache key for a single leaderboard
      *
-     * @return array{allTime: array<int, array<string, mixed>>, recent: array<int, array<string, mixed>>}
+     * @param string $period Either 'allTime' or 'recent'
+     * @param int|null $categoryId A category ID, or NULL for the overall leaderboard
+     * @return string
      */
-    private function fetchLeaderboards(): array
+    public static function getLeaderboardCacheKey(string $period, ?int $categoryId = null): string
+    {
+        return sprintf('%s_%s_%s', self::LEADERBOARDS_CACHE_KEY, $categoryId ?? 'overall', $period);
+    }
+
+    /**
+     * Returns category IDs keyed by category name, beginning with 'Overall' (NULL ID)
+     *
+     * @return array<string, int|null>
+     */
+    private function getLeaderboardCategories(): array
     {
         $categories = TableRegistry::getTableLocator()->get('Categories')
             ->find()
             ->orderByAsc('weight')
             ->all();
-        $retval = [
-            'Overall' => [
-                'allTime' => $this->getTopPosters(),
-                'recent' => $this->getTopPosters(
-                    new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS)),
-                ),
-            ],
-        ];
+        $retval = ['Overall' => null];
         foreach ($categories as $category) {
-            $retval[$category->name] = [
-                'allTime' => $this->getTopPosters(null, $category->id),
-                'recent' => $this->getTopPosters(
-                    new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS)),
-                    $category->id,
-                ),
-            ];
+            $retval[$category->name] = $category->id;
         }
+
         return $retval;
+    }
+
+    /**
+     * Fetches a single leaderboard from the database
+     *
+     * @param string $period Either 'allTime' or 'recent'
+     * @param int|null $categoryId A category ID, or NULL for the overall leaderboard
+     * @return array<int, array<string, mixed>>
+     */
+    private function fetchLeaderboard(string $period, ?int $categoryId = null): array
+    {
+        $since = $period === 'recent'
+            ? new DateTime(sprintf('-%d days', self::LEADERBOARD_RECENT_DAYS))
+            : null;
+
+        return $this->getTopPosters($since, $categoryId);
     }
 
     /**
