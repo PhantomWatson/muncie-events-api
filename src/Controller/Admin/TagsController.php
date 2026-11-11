@@ -8,6 +8,7 @@ use App\Model\Table\TagsTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Utility\Hash;
+use Cake\View\JsonView;
 use Exception;
 
 /**
@@ -27,6 +28,11 @@ class TagsController extends AdminController
     public function initialize(): void
     {
         parent::initialize();
+    }
+
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
     }
 
     /**
@@ -50,10 +56,10 @@ class TagsController extends AdminController
      */
     public function recover()
     {
-        list($startUsec, $startSec) = explode(' ', microtime());
+        [$startUsec, $startSec] = explode(' ', microtime());
         set_time_limit(3600);
         $this->Tags->recover();
-        list($endUsec, $endSec) = explode(' ', microtime());
+        [$endUsec, $endSec] = explode(' ', microtime());
         $startTime = $startUsec + $startSec;
         $endTime = $endUsec + $endSec;
         $loadingTime = $endTime - $startTime;
