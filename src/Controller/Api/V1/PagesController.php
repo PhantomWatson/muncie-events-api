@@ -56,7 +56,7 @@ class PagesController extends ApiController
      */
     private function getElement(string $path): string
     {
-        return $this->createView(AppView::class)->element($path);
+        return new AppView($this->getRequest(), $this->getResponse())->element($path);
     }
 
     /**
