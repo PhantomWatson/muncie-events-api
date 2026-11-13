@@ -3,6 +3,7 @@ namespace App\Controller\Api\V1;
 
 use App\Controller\ApiController;
 use App\Model\Entity\Page;
+use App\View\AppView;
 use Exception;
 
 /**
@@ -53,22 +54,9 @@ class PagesController extends ApiController
      * @param string $path Path to element file without extension, e.g. 'Pages/about'
      * @return string
      */
-    private function getElement($path)
+    private function getElement(string $path): string
     {
-        // Get path to file
-        $fullPath = str_replace(
-            ['/', '\\'],
-            DS,
-            ROOT . '/templates/element/' . $path . '.php'
-        );
-
-        // Collect parsed contents of the file
-        ob_start();
-        include($fullPath);
-        $contents = ob_get_contents();
-        ob_end_clean();
-
-        return $contents;
+        return $this->createView(AppView::class)->element($path);
     }
 
     /**
