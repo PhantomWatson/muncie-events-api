@@ -59,7 +59,7 @@ class PagesController extends ApiController
         $fullPath = str_replace(
             ['/', '\\'],
             DS,
-            ROOT . '/src/template/element/' . $path . '.php'
+            ROOT . '/templates/element/' . $path . '.php'
         );
 
         // Collect parsed contents of the file
