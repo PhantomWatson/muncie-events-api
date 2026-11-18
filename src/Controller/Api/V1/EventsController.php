@@ -132,17 +132,22 @@ class EventsController extends ApiController
             }
         }
 
+        // Matching IDs are collected with a UNION of ID-only queries, since the associations contained by the 'forApi'
+        // finder add columns that cause a column-count mismatch when the full queries are unioned
         $baseQuery = $this->Events
-            ->find('forApi', $this->getFinderOptions())
-            ->find($direction ?? 'upcoming');
+            ->find('published')
+            ->find($direction ?? 'upcoming')
+            ->select(['Events.id']);
         if ($categoryId) {
-            $baseQuery->where(['category_id' => $categoryId]);
+            $baseQuery->where(['Events.category_id' => $categoryId]);
         }
-        $matchesEventDetails = $baseQuery->cleanCopy()
+        $matchesEventDetails = (clone $baseQuery)
             ->find('search', search: $this->request->getQueryParams());
-        $matchesTag = $baseQuery->cleanCopy()
+        $matchesTag = (clone $baseQuery)
             ->find('tagged', tags: [$search]);
-        $finalQuery = $matchesEventDetails->union($matchesTag);
+        $finalQuery = $this->Events
+            ->find('forApi', $this->getFinderOptions())
+            ->where(['Events.id IN' => $matchesEventDetails->union($matchesTag)]);
 
         $this->set([
             'events' => $this->paginate($finalQuery),
